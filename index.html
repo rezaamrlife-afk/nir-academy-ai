@@ -1652,6 +1652,166 @@ a{text-decoration:none;color:inherit}button{cursor:pointer;font-family:'Raleway'
 @media(max-width:600px){
   .ast-detail-pill{font-size:10px;padding:3px 10px;}
 }
+
+/* ════════════════════════════════════════
+   LIGHT MODE — Academic Clean Theme
+   Toggle via html.light class
+   Dark mode = default (no class needed)
+════════════════════════════════════════ */
+
+/* ── Theme toggle button ── */
+.tb-theme-btn {
+  background: transparent;
+  border: 1px solid var(--bdr2);
+  border-radius: var(--r);
+  color: var(--muted);
+  font-size: 14px;
+  padding: 5px 9px;
+  cursor: pointer;
+  transition: all .2s;
+  line-height: 1;
+}
+.tb-theme-btn:hover { border-color: var(--gold); }
+
+/* ── Light Mode Variables ── */
+html.light {
+  /* Backgrounds */
+  --bg:       #FFFFFF;
+  --bg2:      #F5F5F5;
+  --bg3:      #EFEFEF;
+  --bg4:      #E8E8E8;
+  --bg5:      #DEDEDE;
+  --bg6:      #D4D4D4;
+
+  /* Text */
+  --text:     #111111;
+  --muted:    #555555;
+  --dim:      #888888;
+
+  /* Accent — blue for light mode (gold stays for dark) */
+  --gold:     #1a56db;
+  --gold-l:   #2563eb;
+  --gold-dim: rgba(26,86,219,.55);
+  --gold-glow:rgba(26,86,219,.10);
+
+  /* Borders */
+  --bdr:      rgba(26,86,219,.18);
+  --bdr2:     rgba(26,86,219,.32);
+  --bdr3:     rgba(26,86,219,.55);
+}
+
+/* ── Light Mode: fix hardcoded white text on dark bg ── */
+html.light .ph h1,
+html.light .stitle,
+html.light .tc h3,
+html.light .lc h4,
+html.light .ic h3,
+html.light .eo h4,
+html.light .wt h4,
+html.light .ob-step h4,
+html.light .onboard h2,
+html.light .home-tools h2,
+html.light .hcta h2,
+html.light .roadmap h2,
+html.light .rm h3,
+html.light .blog-card h3,
+html.light #home-hero h1,
+html.light .rc-title,
+html.light .hh-desc,
+html.light .foot-brand p { color: var(--text); }
+
+/* ── Light Mode: fix hardcoded inline styles in saved/history pages ── */
+html.light .out-txt { color: var(--text); }
+
+/* ── Light Mode: topbar ── */
+html.light #topbar {
+  background: #FFFFFF;
+  border-bottom: 1px solid #e0e0e0;
+  box-shadow: 0 1px 4px rgba(0,0,0,.08);
+}
+html.light .tb-theme-btn { color: #555; }
+
+/* ── Light Mode: sidebar ── */
+html.light aside { background: #F8F8F8; border-right: 1px solid #E0E0E0; }
+html.light .sb-lbl { color: #999; }
+html.light .sb-item { color: var(--text); }
+html.light .sb-item:hover, html.light .sb-item.active { background: var(--bg3); }
+
+/* ── Light Mode: announce bar ── */
+html.light #announce { background: #f0f4ff; color: #1a56db; }
+html.light #announce a { color: #1a56db; }
+
+/* ── Light Mode: buttons ── */
+html.light .btn-gen,
+html.light .btn-p { background: linear-gradient(135deg,#1a56db,#2563eb); color: #fff; }
+html.light .btn-o { border-color: var(--bdr2); color: var(--gold); }
+html.light .tb-ghost { border-color: var(--bdr2); color: var(--text); }
+html.light .tb-solid { background: var(--gold); color: #fff; }
+
+/* ── Light Mode: inputs ── */
+html.light .tin,
+html.light .sg select,
+html.light textarea { background: #fff; border-color: #ccc; color: var(--text); }
+html.light .tin:focus,
+html.light .sg select:focus,
+html.light textarea:focus { border-color: var(--gold); }
+
+/* ── Light Mode: cards ── */
+html.light .tc,
+html.light .lc,
+html.light .ic,
+html.light .blog-card,
+html.light .rm-card { background: #fff; border-color: #e0e0e0; }
+
+/* ── Light Mode: AI output ── */
+html.light .out-txt { background: #f8f9fa; border-color: #ddd; }
+html.light .rp-out   { background: #f8f9fa; }
+
+/* ── Light Mode: Tab 7 ast-* ── */
+html.light .ast-mode-btn { background: #fff; border-color: #ddd; }
+html.light .ast-mode-btn:hover,
+html.light .ast-mode-btn.active { background: #f0f4ff; border-color: var(--gold); }
+html.light .ast-mode-name { color: #111; }
+html.light .ast-panel-header { background: #f8f9fa; border-color: #ddd; }
+html.light .ast-history { background: #f8f9fa; border-color: #ddd; }
+html.light .ast-msg-user .ast-bubble { background: var(--gold); color: #fff; }
+html.light .ast-msg-ai .ast-bubble { background: #fff; border-color: #ddd; color: #111; }
+html.light .ast-input { background: #fff; border-color: #ccc; color: #111; }
+html.light .ast-global-layer { background: #f0f0f0; border-color: #ddd; }
+html.light .ast-sub-btn { background: #fff; border-color: #ddd; color: #555; }
+html.light .ast-sub-btn:hover { border-color: var(--gold); color: var(--gold); }
+html.light .ast-sub-btn.active { border-color: var(--gold); color: var(--gold); background: #f0f4ff; }
+html.light .ast-detail-pill { border-color: #ccc; color: #666; }
+html.light .ast-detail-pill:hover,
+html.light .ast-detail-pill.active { border-color: var(--gold); color: var(--gold); }
+html.light .ast-send-btn { background: var(--gold); color: #fff; }
+html.light .ast-empty-state { background: transparent; }
+
+/* ── Light Mode: footer ── */
+html.light footer,
+html.light .iband { background: #F0F0F0; border-color: #ddd; }
+html.light .foot-col h5 { color: #111; }
+html.light .foot-col a { color: #555; }
+html.light .foot-copy { color: #888; border-color: #ddd; }
+
+/* ── Light Mode: dashboard stats ── */
+html.light .ic-n { color: var(--gold); }
+
+/* ── Light Mode: pro sidebar block ── */
+html.light .sb-pro { background: #eef2ff; border-color: var(--bdr2); }
+
+/* ── Light Mode toggle icon ── */
+html.light #theme-toggle { color: #555; }
+
+/* ── Light Mode: Tab 7 missing overrides (audit fix) ── */
+html.light .ast-global-btn  { color: #333333; border-color: #bbbbbb; }
+html.light .ast-mode-desc   { color: #555555; }
+html.light .ast-context-label { color: #444444; }
+
+/* ── Light Mode: chip hover contrast fix ── */
+html.light .chip            { color: #333333; border-color: #bbbbbb; }
+html.light .chip:hover      { color: #111111; border-color: #888888; }
+html.light .lvl:hover       { color: #111111; border-color: var(--bdr2); }
 </style>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -1797,6 +1957,43 @@ a{text-decoration:none;color:inherit}button{cursor:pointer;font-family:'Raleway'
 
 </style>
 
+
+<script>
+// ── THEME SYSTEM ── isolated, no impact on existing logic ──
+(function() {
+  var THEME_KEY = 'nir_theme';
+
+  function applyTheme(theme) {
+    var html = document.documentElement;
+    var btn  = document.getElementById('theme-toggle');
+    if (theme === 'light') {
+      html.classList.add('light');
+      if (btn) btn.textContent = '🌙';
+    } else {
+      html.classList.remove('light');
+      if (btn) btn.textContent = '☀️';
+    }
+  }
+
+  window.toggleTheme = function() {
+    var current = document.documentElement.classList.contains('light') ? 'light' : 'dark';
+    var next    = current === 'light' ? 'dark' : 'light';
+    localStorage.setItem(THEME_KEY, next);
+    applyTheme(next);
+  };
+
+  // Apply saved preference on load
+  var saved = localStorage.getItem(THEME_KEY) || 'dark';
+  applyTheme(saved);
+  // Update button icon after DOM ready
+  document.addEventListener('DOMContentLoaded', function() {
+    var btn = document.getElementById('theme-toggle');
+    if (btn) {
+      btn.textContent = document.documentElement.classList.contains('light') ? '🌙' : '☀️';
+    }
+  });
+})();
+</script>
 </head>
 <body>
 
@@ -1879,6 +2076,7 @@ a{text-decoration:none;color:inherit}button{cursor:pointer;font-family:'Raleway'
   </nav>
   <div id="topbar-user-menu-slot"></div>
   
+<button id="theme-toggle" class="tb-theme-btn" onclick="toggleTheme()" title="Toggle theme" aria-label="Toggle Light/Dark Mode">🌙</button>
 <div id="lang-switcher">
   <button class="lang-btn active" data-lang="en" onclick="applyLang('en')">
     <span class="lf">🇬🇧</span> EN
