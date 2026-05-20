@@ -1154,7 +1154,7 @@ a{text-decoration:none;color:inherit}button{cursor:pointer;font-family:'Raleway'
 
 /* ══ INPUTS ══ */
 .tin{background:var(--bg5);border:1px solid var(--bdr);border-radius:var(--r);padding:9px 13px;font-family:'Raleway',sans-serif;font-size:14px;color:var(--text);outline:none;width:100%;transition:border-color .15s}
-.tin:focus{border-color:var(--bdr2)}
+.tin:focus{border-color:var(--gold);box-shadow:0 0 0 3px var(--gold-glow)}
 .tin::placeholder{color:var(--dim)}
 .ttags{display:flex;flex-wrap:wrap;gap:5px;margin-top:7px}
 .ttag{background:transparent;border:1px dashed var(--bdr);border-radius:var(--r);padding:3px 9px;font-size:11px;color:var(--muted);cursor:pointer;transition:all .14s}
@@ -1162,7 +1162,7 @@ a{text-decoration:none;color:inherit}button{cursor:pointer;font-family:'Raleway'
 .selg{display:grid;grid-template-columns:repeat(3,1fr);gap:.9rem}
 .sg label{display:block;font-size:11px;color:var(--muted);letter-spacing:2px;text-transform:uppercase;margin-bottom:5px;font-weight:700}
 .sg select{width:100%;background:var(--bg5);border:1px solid var(--bdr);border-radius:var(--r);padding:7px 26px 7px 10px;font-family:'Raleway',sans-serif;font-size:14px;color:var(--text);outline:none;cursor:pointer;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10'%3E%3Cpath fill='%23666' d='M5 7L.5 2.5h9z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 8px center}
-.sg select:focus{border-color:var(--bdr2)}
+.sg select:focus{border-color:var(--bdr2);box-shadow:0 0 0 3px var(--gold-glow)}
 .etarea{background:var(--bg4);border:1px solid var(--bdr);border-radius:var(--rl);padding:.9rem 1.1rem;font-family:'Raleway',sans-serif;font-size:12.5px;color:var(--text);width:100%;min-height:150px;resize:vertical;outline:none;line-height:1.8;transition:border-color .2s}
 .etarea:focus{border-color:var(--bdr2)}
 .etarea::placeholder{color:var(--dim)}
@@ -1182,7 +1182,7 @@ a{text-decoration:none;color:inherit}button{cursor:pointer;font-family:'Raleway'
 .rp-btn{background:var(--bg4);border:1px solid var(--bdr);border-radius:var(--r);padding:5px 12px;font-size:13px;font-weight:600;color:var(--muted);letter-spacing:.4px;transition:all .14s}
 .rp-btn:hover{border-color:var(--bdr2);color:var(--gold)}
 .rp-btn.ok{color:#5cb85c;border-color:#2d5c2d}
-.out-txt{font-size:15px;line-height:2;color:#ccc;white-space:pre-wrap;word-break:break-word;font-family:'Raleway',sans-serif;min-height:100px}
+.out-txt{font-size:15px;line-height:1.9;color:var(--text);border-left:3px solid var(--bdr2);padding-left:14px;white-space:pre-wrap;word-break:break-word;font-family:'Raleway',sans-serif;min-height:100px}
 .cur{display:inline-block;width:2px;height:14px;background:var(--gold);animation:blink .75s step-end infinite;vertical-align:-2px}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
 .rp-empty{text-align:center;padding:2.5rem 1rem;color:var(--dim)}
@@ -1199,7 +1199,7 @@ a{text-decoration:none;color:inherit}button{cursor:pointer;font-family:'Raleway'
 .lf.active{background:rgba(201,168,76,.1);border-color:var(--gold);color:var(--gold);font-weight:600}
 .lgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1rem}
 .lc{background:var(--bg3);border:1px solid var(--bdr);border-radius:var(--rl);padding:1.3rem;transition:all .2s;cursor:pointer}
-.lc:hover{border-color:var(--bdr2);transform:translateY(-2px)}
+.lc:hover{border-color:var(--bdr2);transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,.28)}
 .lc-tag{display:inline-block;background:rgba(201,168,76,.1);border:1px solid var(--bdr);border-radius:20px;padding:2px 9px;font-size:10px;color:var(--gold);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:.55rem;font-weight:700}
 .lc h4{font-size:14px;color:#ddd;margin-bottom:.3rem;font-weight:600}
 .lc p{font-size:11px;color:var(--muted);line-height:1.65}
@@ -1208,7 +1208,7 @@ a{text-decoration:none;color:inherit}button{cursor:pointer;font-family:'Raleway'
 /* ══ IELTS ══ */
 .igrid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.8rem}
 .ic{background:var(--bg3);border:1px solid var(--bdr);border-radius:var(--rl);padding:1.6rem;cursor:pointer;transition:all .2s;text-align:center}
-.ic:hover{border-color:var(--bdr2);transform:translateY(-2px)}
+.ic:hover{border-color:var(--bdr2);transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,.28)}
 .ic-n{font-family:'Cinzel',serif;font-size:2.2rem;color:var(--gold);font-weight:900;margin-bottom:.25rem}
 .ic h3{font-family:'Cinzel',serif;font-size:14px;color:#fff;margin-bottom:.4rem}
 .ic p{font-size:11px;color:var(--muted);line-height:1.6}
@@ -1346,7 +1346,7 @@ a{text-decoration:none;color:inherit}button{cursor:pointer;font-family:'Raleway'
 /* ══ INSIGHTS / BLOG ══ */
 .blog-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1.1rem}
 .blog-card{background:var(--bg3);border:1px solid var(--bdr);border-radius:var(--rl);padding:1.5rem;transition:all .2s;cursor:pointer}
-.blog-card:hover{border-color:var(--bdr2);transform:translateY(-2px)}
+.blog-card:hover{border-color:var(--bdr2);transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,.28)}
 .blog-cat{display:inline-block;background:rgba(201,168,76,.1);border:1px solid var(--bdr2);border-radius:20px;padding:2px 10px;font-size:9px;color:var(--gold);font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:.7rem}
 .blog-card h3{font-family:'Cinzel',serif;font-size:14px;color:#fff;margin-bottom:.4rem;font-weight:600;line-height:1.4}
 .blog-card p{font-size:11.5px;color:var(--muted);line-height:1.65}
@@ -1754,7 +1754,7 @@ html.light .sg select,
 html.light textarea { background: #fff; border-color: #ccc; color: var(--text); }
 html.light .tin:focus,
 html.light .sg select:focus,
-html.light textarea:focus { border-color: var(--gold); }
+html.light textarea:focus { border-color: var(--gold); ;box-shadow:0 0 0 3px var(--gold-glow)}
 
 /* ── Light Mode: cards ── */
 html.light .tc,
@@ -1909,6 +1909,61 @@ html.light .lvl:hover       { color: #111111; border-color: var(--bdr2); }
 html.light .nira-ob-overlay { background:rgba(0,0,0,.75); }
 html.light .nira-ob-box     { background:#fff;border-color:#ddd; }
 html.light .nira-ob-quote   { color:#222; }
+
+/* ── Icon System: Lucide SVG icons ── */
+.si svg, .tc-ico svg, .ast-mode-icon svg, .qa-ico svg {
+  display:inline-block;
+  vertical-align:middle;
+  stroke:currentColor;
+  fill:none;
+  stroke-width:1.75;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+}
+.si svg       { width:16px; height:16px; }
+.tc-ico svg   { width:28px; height:28px; }
+.ast-mode-icon svg { width:32px; height:32px; }
+.qa-ico svg   { width:20px; height:20px; }
+
+html.light .tin:focus,
+html.light .sg select:focus,
+html.light textarea:focus { border-color:var(--gold);box-shadow:0 0 0 3px rgba(26,86,219,.12); }
+
+html.light .out-txt { border-left-color:var(--gold);background:#f8f9fa; }
+
+/* ── Phase 3: focus-visible accessibility ring ── */
+:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 3px;
+}
+/* Suppress default focus for mouse users */
+:focus:not(:focus-visible) {
+  outline: none;
+}
+/* Light mode: blue focus ring */
+html.light :focus-visible {
+  outline-color: var(--gold);
+}
+
+/* ── Mobile sidebar backdrop (mobile only, no desktop impact) ── */
+#sb-backdrop {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.45);
+  z-index: 149;
+  cursor: pointer;
+}
+@media(max-width:960px) {
+  #sb-backdrop.visible { display: block; }
+}
+
+/* ── Touch target safety (mobile only) ── */
+@media(max-width:960px) {
+  .hamburger { padding: 10px; min-width: 40px; min-height: 40px; }
+  .tb-solid  { padding: 10px 14px; min-height: 40px; }
+  .tb-theme-btn { padding: 9px 11px; min-height: 40px; }
+}
 </style>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -2065,10 +2120,10 @@ html.light .nira-ob-quote   { color:#222; }
     var btn  = document.getElementById('theme-toggle');
     if (theme === 'light') {
       html.classList.add('light');
-      if (btn) btn.textContent = '🌙';
+      if (btn) { btn.setAttribute('data-lucide-btn','moon'); btn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>'; }
     } else {
       html.classList.remove('light');
-      if (btn) btn.textContent = '☀️';
+      if (btn) { btn.setAttribute('data-lucide-btn','sun'); btn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>'; }
     }
   }
 
@@ -2143,6 +2198,7 @@ html.light .nira-ob-quote   { color:#222; }
   });
 })();
 </script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
 </head>
 <body>
 
@@ -2295,30 +2351,30 @@ html.light .nira-ob-quote   { color:#222; }
 <aside id="sidebar">
   <div class="sb-sec">
     <span class="sb-lbl" id="sb-lbl-main">Main</span>
-    <div class="sb-item active" id="sb-home" onclick="go('home')"><span class="si">🏠</span> <span id="sb-txt-home">Home</span></div>
-    <div class="sb-item" id="sb-dashboard" onclick="go('dashboard')"><span class="si">📊</span> <span id="sb-txt-dashboard">Dashboard</span> <span class="sb-badge">NEW</span></div>
+    <div class="sb-item active" id="sb-home" onclick="go('home')"><span class="si"><i data-lucide="home"></i></span> <span id="sb-txt-home">Home</span></div>
+    <div class="sb-item" id="sb-dashboard" onclick="go('dashboard')"><span class="si"><i data-lucide="layout-dashboard"></i></span> <span id="sb-txt-dashboard">Dashboard</span> <span class="sb-badge">NEW</span></div>
   </div>
   <div class="sb-sec">
     <span class="sb-lbl" id="sb-lbl-tools">AI Tools</span>
-    <div class="sb-item" id="sb-generator" onclick="go('generator')"><span class="si">⚡</span> <span id="sb-txt-generator">Prompt Generator</span></div>
-    <div class="sb-item" id="sb-lesson" onclick="go('lesson')"><span class="si">📋</span> <span id="sb-txt-lesson">Lesson Planner</span> <span class="sb-new">NEW</span></div>
-    <div class="sb-item" id="sb-ielts" onclick="go('ielts')"><span class="si">📘</span> <span id="sb-txt-ielts">IELTS Generator</span> <span class="sb-new">NEW</span></div>
-    <div class="sb-item" id="sb-error" onclick="go('error')"><span class="si">✅</span> <span id="sb-txt-error">Error Correction</span> <span class="sb-new">NEW</span></div>
-    <div class="sb-item" id="sb-worksheet" onclick="go('worksheet')"><span class="si">📄</span> <span id="sb-txt-worksheet">Worksheet Builder</span> <span class="sb-new">NEW</span></div>
-    <div class="sb-item" id="sb-assistant" onclick="go('assistant')"><span class="si">🧠</span> <span id="sb-txt-assistant">AI Assistant</span> <span class="sb-badge">NEW</span></div>
+    <div class="sb-item" id="sb-generator" onclick="go('generator')"><span class="si"><i data-lucide="zap"></i></span> <span id="sb-txt-generator">Prompt Generator</span></div>
+    <div class="sb-item" id="sb-lesson" onclick="go('lesson')"><span class="si"><i data-lucide="clipboard-list"></i></span> <span id="sb-txt-lesson">Lesson Planner</span> <span class="sb-new">NEW</span></div>
+    <div class="sb-item" id="sb-ielts" onclick="go('ielts')"><span class="si"><i data-lucide="book-open"></i></span> <span id="sb-txt-ielts">IELTS Generator</span> <span class="sb-new">NEW</span></div>
+    <div class="sb-item" id="sb-error" onclick="go('error')"><span class="si"><i data-lucide="check-circle"></i></span> <span id="sb-txt-error">Error Correction</span> <span class="sb-new">NEW</span></div>
+    <div class="sb-item" id="sb-worksheet" onclick="go('worksheet')"><span class="si"><i data-lucide="file-text"></i></span> <span id="sb-txt-worksheet">Worksheet Builder</span> <span class="sb-new">NEW</span></div>
+    <div class="sb-item" id="sb-assistant" onclick="go('assistant')"><span class="si"><i data-lucide="brain-circuit"></i></span> <span id="sb-txt-assistant">AI Assistant</span> <span class="sb-badge">NEW</span></div>
   </div>
   <div class="sb-sec">
     <span class="sb-lbl" id="sb-lbl-resources">Resources</span>
-    <div class="sb-item" id="sb-library" onclick="go('library')"><span class="si">📚</span> <span id="sb-txt-library"><span id="hero-cta3"><span id="ft-lib-lnk">Prompt Library</span></span></span></div>
-    <div class="sb-item" id="sb-insights" onclick="go('insights')"><span class="si">💡</span> <span id="sb-txt-insights">Insights &amp; Blog</span></div>
+    <div class="sb-item" id="sb-library" onclick="go('library')"><span class="si"><i data-lucide="library"></i></span> <span id="sb-txt-library"><span id="hero-cta3"><span id="ft-lib-lnk">Prompt Library</span></span></span></div>
+    <div class="sb-item" id="sb-insights" onclick="go('insights')"><span class="si"><i data-lucide="lightbulb"></i></span> <span id="sb-txt-insights">Insights &amp; Blog</span></div>
   </div>
   <div class="sb-div"></div>
   <div class="sb-sec" id="sb-account-sec" style="display:none">
     <span class="sb-lbl" id="sb-lbl-account">Account</span>
-    <div class="sb-item" id="sb-profile" style="display:none" onclick="go('profile')"><span class="si">👤</span> <span id="sb-txt-profile">My Profile</span></div>
-    <div class="sb-item" id="sb-saved" style="display:none" onclick="go('saved')"><span class="si">🔖</span> <span id="sb-txt-saved">Saved Prompts</span></div>
-    <div class="sb-item" id="sb-history" style="display:none" onclick="go('history')"><span class="si">🕐</span> <span id="sb-txt-history">History</span></div>
-    <div class="sb-item" id="sb-analytics" style="display:none" onclick="go('analytics')"><span class="si">📈</span> <span id="sb-txt-analytics">Analytics</span></div>
+    <div class="sb-item" id="sb-profile" style="display:none" onclick="go('profile')"><span class="si"><i data-lucide="user"></i></span> <span id="sb-txt-profile">My Profile</span></div>
+    <div class="sb-item" id="sb-saved" style="display:none" onclick="go('saved')"><span class="si"><i data-lucide="bookmark"></i></span> <span id="sb-txt-saved">Saved Prompts</span></div>
+    <div class="sb-item" id="sb-history" style="display:none" onclick="go('history')"><span class="si"><i data-lucide="clock"></i></span> <span id="sb-txt-history">History</span></div>
+    <div class="sb-item" id="sb-analytics" style="display:none" onclick="go('analytics')"><span class="si"><i data-lucide="bar-chart-2"></i></span> <span id="sb-txt-analytics">Analytics</span></div>
   </div>
   
 <div class="sb-div"></div>
@@ -2338,6 +2394,7 @@ html.light .nira-ob-quote   { color:#222; }
     <button onclick="window.open('https://niracademy.com','_blank')" id="sb-pro-btn">Upgrade to Pro →</button>
   </div>
 </aside>
+<div id="sb-backdrop" onclick="closeSB()" aria-hidden="true"></div>
 
 <!-- MAIN -->
 <main id="main">
@@ -2389,12 +2446,12 @@ html.light .nira-ob-quote   { color:#222; }
     <h2 id="tools-title">Your AI Teaching Toolkit</h2>
     <p class="ht-s" id="tools-sub">Six specialised tools. One platform. Zero overwhelm.</p>
     <div class="tgrid">
-      <div class="tc" onclick="go('generator')"><span class="tc-ico">⚡</span><span class="tc-bdg core">CORE</span><h3>Prompt Generator</h3><p id="tc-gen-d">Build expert-level AI prompts for any ELT task in 5 structured steps.</p><button class="tc-cta"><span class="tc-open">Open Tool →</span></button></div>
-      <div class="tc" onclick="go('lesson')"><span class="tc-ico">📋</span><span class="tc-bdg new">NEW</span><h3>Lesson Planner</h3><p id="tc-les-d">Generate complete TESOL-aligned lesson plans with all stages included.</p><button class="tc-cta"><span class="tc-open">Open Tool →</span></button></div>
-      <div class="tc" onclick="go('ielts')"><span class="tc-ico">📘</span><span class="tc-bdg new">NEW</span><h3>IELTS Generator</h3><p id="tc-iel-d">Task 1, Task 2, Reading passages and Speaking at target band levels.</p><button class="tc-cta"><span class="tc-open">Open Tool →</span></button></div>
-      <div class="tc" onclick="go('error')"><span class="tc-ico">✅</span><span class="tc-bdg new">NEW</span><h3>Error Correction</h3><p id="tc-err-d">Detailed linguistic feedback on student writing with metalinguistic notes.</p><button class="tc-cta"><span class="tc-open">Open Tool →</span></button></div>
-      <div class="tc" onclick="go('worksheet')"><span class="tc-ico">📄</span><span class="tc-bdg new">NEW</span><h3>Worksheet Builder</h3><p id="tc-ws-d">Print-ready worksheets with grammar, vocabulary and integrated skills.</p><button class="tc-cta"><span class="tc-open">Open Tool →</span></button></div>
-      <div class="tc" onclick="go('library')"><span class="tc-ico">📚</span><span class="tc-bdg free">FREE</span><h3>Prompt Library</h3><p id="tc-lib-d">Curated bank of 30+ ready-to-use ELT prompts across all skill areas.</p><button class="tc-cta"><span class="tc-browse">Browse Library →</span></button></div>
+      <div class="tc" onclick="go('generator')"><span class="tc-ico"><i data-lucide="zap"></i></span><span class="tc-bdg core">CORE</span><h3>Prompt Generator</h3><p id="tc-gen-d">Build expert-level AI prompts for any ELT task in 5 structured steps.</p><button class="tc-cta"><span class="tc-open">Open Tool →</span></button></div>
+      <div class="tc" onclick="go('lesson')"><span class="tc-ico"><i data-lucide="clipboard-list"></i></span><span class="tc-bdg new">NEW</span><h3>Lesson Planner</h3><p id="tc-les-d">Generate complete TESOL-aligned lesson plans with all stages included.</p><button class="tc-cta"><span class="tc-open">Open Tool →</span></button></div>
+      <div class="tc" onclick="go('ielts')"><span class="tc-ico"><i data-lucide="book-open"></i></span><span class="tc-bdg new">NEW</span><h3>IELTS Generator</h3><p id="tc-iel-d">Task 1, Task 2, Reading passages and Speaking at target band levels.</p><button class="tc-cta"><span class="tc-open">Open Tool →</span></button></div>
+      <div class="tc" onclick="go('error')"><span class="tc-ico"><i data-lucide="check-circle"></i></span><span class="tc-bdg new">NEW</span><h3>Error Correction</h3><p id="tc-err-d">Detailed linguistic feedback on student writing with metalinguistic notes.</p><button class="tc-cta"><span class="tc-open">Open Tool →</span></button></div>
+      <div class="tc" onclick="go('worksheet')"><span class="tc-ico"><i data-lucide="file-text"></i></span><span class="tc-bdg new">NEW</span><h3>Worksheet Builder</h3><p id="tc-ws-d">Print-ready worksheets with grammar, vocabulary and integrated skills.</p><button class="tc-cta"><span class="tc-open">Open Tool →</span></button></div>
+      <div class="tc" onclick="go('library')"><span class="tc-ico"><i data-lucide="library"></i></span><span class="tc-bdg free">FREE</span><h3>Prompt Library</h3><p id="tc-lib-d">Curated bank of 30+ ready-to-use ELT prompts across all skill areas.</p><button class="tc-cta"><span class="tc-browse">Browse Library →</span></button></div>
     </div>
   </section>
 
@@ -2473,10 +2530,10 @@ html.light .nira-ob-quote   { color:#222; }
     <!-- QUICK ACTIONS -->
     <div class="stitle"><span class="stg" id="quick-title">Quick Actions</span></div>
     <div class="qactions">
-      <div class="qa" onclick="go('generator')"><div class="qa-ico">⚡</div><h4 id="qa1h">New Prompt</h4><p id="qa1d">AI Prompt Generator</p></div>
-      <div class="qa" onclick="go('lesson')"><div class="qa-ico">📋</div><h4 id="qa2h">Plan Lesson</h4><p id="qa2d">Lesson Planner</p></div>
-      <div class="qa" onclick="go('ielts')"><div class="qa-ico">📘</div><h4 id="qa3h">IELTS Task</h4><p id="qa3d">IELTS Generator</p></div>
-      <div class="qa" onclick="go('error')"><div class="qa-ico">✅</div><h4 id="qa4h">Check Writing</h4><p id="qa4d">Error Correction</p></div>
+      <div class="qa" onclick="go('generator')"><div class="qa-ico"><i data-lucide="zap"></i></div><h4 id="qa1h">New Prompt</h4><p id="qa1d">AI Prompt Generator</p></div>
+      <div class="qa" onclick="go('lesson')"><div class="qa-ico"><i data-lucide="clipboard-list"></i></div><h4 id="qa2h">Plan Lesson</h4><p id="qa2d">Lesson Planner</p></div>
+      <div class="qa" onclick="go('ielts')"><div class="qa-ico"><i data-lucide="book-open"></i></div><h4 id="qa3h">IELTS Task</h4><p id="qa3d">IELTS Generator</p></div>
+      <div class="qa" onclick="go('error')"><div class="qa-ico"><i data-lucide="check-circle"></i></div><h4 id="qa4h">Check Writing</h4><p id="qa4d">Error Correction</p></div>
     </div>
 
     <!-- RECENT PROMPTS (sample) -->
@@ -2490,12 +2547,12 @@ html.light .nira-ob-quote   { color:#222; }
     <!-- ALL TOOLS -->
     <div class="stitle" style="margin-top:1.5rem"><span class="stg">All Tools</span></div>
     <div class="tgrid">
-      <div class="tc" onclick="go('generator')"><span class="tc-ico">⚡</span><h3>Prompt Generator</h3><p>Structured AI prompts for any ELT task.</p><button class="tc-cta">Launch →</button></div>
-      <div class="tc" onclick="go('lesson')"><span class="tc-ico">📋</span><span class="tc-bdg new">NEW</span><h3>Lesson Planner</h3><p>TESOL-aligned lesson plans in seconds.</p><button class="tc-cta">Launch →</button></div>
-      <div class="tc" onclick="go('ielts')"><span class="tc-ico">📘</span><span class="tc-bdg new">NEW</span><h3>IELTS Generator</h3><p>Task 1 &amp; 2 at target band level.</p><button class="tc-cta">Launch →</button></div>
-      <div class="tc" onclick="go('error')"><span class="tc-ico">✅</span><span class="tc-bdg new">NEW</span><h3>Error Correction</h3><p>Linguistic feedback on student writing.</p><button class="tc-cta">Launch →</button></div>
-      <div class="tc" onclick="go('worksheet')"><span class="tc-ico">📄</span><span class="tc-bdg new">NEW</span><h3>Worksheet Builder</h3><p>Print-ready classroom worksheets.</p><button class="tc-cta">Launch →</button></div>
-      <div class="tc" onclick="go('library')"><span class="tc-ico">📚</span><h3>Prompt Library</h3><p>30+ curated ready-to-use prompts.</p><button class="tc-cta">Browse →</button></div>
+      <div class="tc" onclick="go('generator')"><span class="tc-ico"><i data-lucide="zap"></i></span><h3>Prompt Generator</h3><p>Structured AI prompts for any ELT task.</p><button class="tc-cta">Launch →</button></div>
+      <div class="tc" onclick="go('lesson')"><span class="tc-ico"><i data-lucide="clipboard-list"></i></span><span class="tc-bdg new">NEW</span><h3>Lesson Planner</h3><p>TESOL-aligned lesson plans in seconds.</p><button class="tc-cta">Launch →</button></div>
+      <div class="tc" onclick="go('ielts')"><span class="tc-ico"><i data-lucide="book-open"></i></span><span class="tc-bdg new">NEW</span><h3>IELTS Generator</h3><p>Task 1 &amp; 2 at target band level.</p><button class="tc-cta">Launch →</button></div>
+      <div class="tc" onclick="go('error')"><span class="tc-ico"><i data-lucide="check-circle"></i></span><span class="tc-bdg new">NEW</span><h3>Error Correction</h3><p>Linguistic feedback on student writing.</p><button class="tc-cta">Launch →</button></div>
+      <div class="tc" onclick="go('worksheet')"><span class="tc-ico"><i data-lucide="file-text"></i></span><span class="tc-bdg new">NEW</span><h3>Worksheet Builder</h3><p>Print-ready classroom worksheets.</p><button class="tc-cta">Launch →</button></div>
+      <div class="tc" onclick="go('library')"><span class="tc-ico"><i data-lucide="library"></i></span><h3>Prompt Library</h3><p>30+ curated ready-to-use prompts.</p><button class="tc-cta">Browse →</button></div>
     </div>
 
     <!-- COMING SOON -->
@@ -2993,9 +3050,9 @@ html.light .nira-ob-quote   { color:#222; }
 
     <div class="stitle" style="margin-top:1.5rem"><span class="stg">Most Used Tools</span></div>
     <div class="tgrid">
-      <div class="tc" onclick="go('generator')"><span class="tc-ico">⚡</span><h3>Prompt Generator</h3><p>Your most powerful ELT tool.</p><button class="tc-cta">Open →</button></div>
-      <div class="tc" onclick="go('lesson')"><span class="tc-ico">📋</span><h3>Lesson Planner</h3><p>TESOL-aligned lesson plans.</p><button class="tc-cta">Open →</button></div>
-      <div class="tc" onclick="go('ielts')"><span class="tc-ico">📘</span><h3>IELTS Generator</h3><p>Band-targeted IELTS tasks.</p><button class="tc-cta">Open →</button></div>
+      <div class="tc" onclick="go('generator')"><span class="tc-ico"><i data-lucide="zap"></i></span><h3>Prompt Generator</h3><p>Your most powerful ELT tool.</p><button class="tc-cta">Open →</button></div>
+      <div class="tc" onclick="go('lesson')"><span class="tc-ico"><i data-lucide="clipboard-list"></i></span><h3>Lesson Planner</h3><p>TESOL-aligned lesson plans.</p><button class="tc-cta">Open →</button></div>
+      <div class="tc" onclick="go('ielts')"><span class="tc-ico"><i data-lucide="book-open"></i></span><h3>IELTS Generator</h3><p>Band-targeted IELTS tasks.</p><button class="tc-cta">Open →</button></div>
     </div>
 
     <div class="stitle" style="margin-top:1.5rem"><span class="stg">Upgrade to Pro</span></div>
@@ -3020,17 +3077,17 @@ html.light .nira-ob-quote   { color:#222; }
   <!-- MODE SELECTOR -->
   <div id="ast-mode-selector" class="ast-modes">
     <button class="ast-mode-btn" id="ast-btn-teacher" onclick="astSelectMode('teacher')">
-      <span class="ast-mode-icon">👨‍🏫</span>
+      <span class="ast-mode-icon"><i data-lucide="graduation-cap"></i></span>
       <span class="ast-mode-name" id="ast-mode-name-teacher">Teacher Mode</span>
       <span class="ast-mode-desc" id="ast-mode-desc-teacher">Lesson design · Pedagogy · Classroom</span>
     </button>
     <button class="ast-mode-btn" id="ast-btn-student" onclick="astSelectMode('student')">
-      <span class="ast-mode-icon">🎓</span>
+      <span class="ast-mode-icon"><i data-lucide="book-marked"></i></span>
       <span class="ast-mode-name" id="ast-mode-name-student">Student Mode</span>
       <span class="ast-mode-desc" id="ast-mode-desc-student">IELTS · TOEFL · PTE · General English</span>
     </button>
     <button class="ast-mode-btn" id="ast-btn-kids" onclick="astSelectMode('kids')">
-      <span class="ast-mode-icon">👶</span>
+      <span class="ast-mode-icon"><i data-lucide="star"></i></span>
       <span class="ast-mode-name" id="ast-mode-name-kids">Kids Mode</span>
       <span class="ast-mode-desc" id="ast-mode-desc-kids">Games · Stories · Visual · Rewards</span>
     </button>
@@ -3255,7 +3312,27 @@ function clearAuthMessages(){
 }
 
 
-function toggleSB(){document.getElementById("sidebar").classList.toggle("open");}
+function toggleSB(){
+  var sb  = document.getElementById("sidebar");
+  var bd  = document.getElementById("sb-backdrop");
+  var isOpen = sb.classList.contains("open");
+  if(isOpen){
+    sb.classList.remove("open");
+    if(bd) bd.classList.remove("visible");
+    document.body.style.overflow = "";
+  } else {
+    sb.classList.add("open");
+    if(bd) bd.classList.add("visible");
+    if(window.innerWidth <= 960) document.body.style.overflow = "hidden";
+  }
+}
+function closeSB(){
+  var sb = document.getElementById("sidebar");
+  var bd = document.getElementById("sb-backdrop");
+  sb.classList.remove("open");
+  if(bd) bd.classList.remove("visible");
+  document.body.style.overflow = "";
+}
 
 // ══ CHIP / PILL SELECTION ══
 function SC(el,id){
@@ -3960,35 +4037,35 @@ window.A = {
 // ── SUB-MODE DEFINITIONS ──
 const AST_SUBMODES = {
   teacher: [
-    { id:'lesson-delivery',      label:'📋 Lesson Delivery',     langKey:'ast_t_lesson',
+    { id:'lesson-delivery',      label:'Lesson Delivery',     langKey:'ast_t_lesson',
       details: ['PPP','TBL','ESA'] },
-    { id:'classroom-management', label:'🏫 Classroom Management', langKey:'ast_t_class',
+    { id:'classroom-management', label:'Classroom Management', langKey:'ast_t_class',
       details: ['Activities','Engagement Tools','Emergency Rescue'] },
-    { id:'language-focus',       label:'🔤 Language Focus',       langKey:'ast_t_lang',
+    { id:'language-focus',       label:'Language Focus',       langKey:'ast_t_lang',
       details: ['Grammar','Vocabulary','Explanation'] },
-    { id:'feedback',             label:'✅ Feedback',             langKey:'ast_t_feedback',
+    { id:'feedback',             label:'Feedback',             langKey:'ast_t_feedback',
       details: ['Error Correction','Scaffolding','Student Feedback'] }
   ],
   student: [
-    { id:'ielts',            label:'📝 IELTS',           langKey:'ast_s_ielts',
+    { id:'ielts',            label:'IELTS',           langKey:'ast_s_ielts',
       details: ['Academic','General','Band Target','Scoring Simulation'] },
-    { id:'toefl',            label:'📘 TOEFL 2026',       langKey:'ast_s_toefl',
+    { id:'toefl',            label:'TOEFL 2026',       langKey:'ast_s_toefl',
       details: ['Reading','Listening','Speaking','Writing','Integrated Tasks'] },
-    { id:'pte',              label:'💻 PTE',             langKey:'ast_s_pte',
+    { id:'pte',              label:'PTE',             langKey:'ast_s_pte',
       details: ['AI Scoring','Task Practice'] },
-    { id:'university-exams', label:'🎓 University Exams',langKey:'ast_s_uni',
+    { id:'university-exams', label:'University Exams',langKey:'ast_s_uni',
       details: ['Essay','Assignment','Lecture Tasks'] },
-    { id:'general-english',  label:'🌐 General English', langKey:'ast_s_general',
+    { id:'general-english',  label:'General English', langKey:'ast_s_general',
       details: ['A1–C2 Levels','Skill Practice','Level Test'] }
   ],
   kids: [
-    { id:'games',           label:'🎮 Games',          langKey:'ast_k_games',
+    { id:'games',           label:'Games',          langKey:'ast_k_games',
       details: ['Vocabulary Games','Classroom Games'] },
-    { id:'stories',         label:'📖 Stories',        langKey:'ast_k_stories',
+    { id:'stories',         label:'Stories',        langKey:'ast_k_stories',
       details: ['Role Play','Story Learning'] },
-    { id:'visual-learning', label:'🖼 Visual Learning', langKey:'ast_k_visual',
+    { id:'visual-learning', label:'Visual Learning', langKey:'ast_k_visual',
       details: ['Picture Tasks','TPR Activities'] },
-    { id:'rewards',         label:'⭐ Rewards',         langKey:'ast_k_rewards',
+    { id:'rewards',         label:'Rewards',         langKey:'ast_k_rewards',
       details: ['XP','Badges','Streaks'] }
   ]
 };
@@ -4373,5 +4450,14 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 </script>
 
+
+<script>
+// ── Lucide icon activation ──
+document.addEventListener('DOMContentLoaded', function() {
+  if (typeof lucide !== 'undefined') {
+    lucide.createIcons();
+  }
+});
+</script>
 </body>
 </html>
