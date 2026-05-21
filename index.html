@@ -1155,7 +1155,7 @@ a{text-decoration:none;color:inherit}button{cursor:pointer;font-family:'Raleway'
 /* ══ INPUTS ══ */
 .tin{background:var(--bg5);border:1px solid var(--bdr);border-radius:var(--r);padding:9px 13px;font-family:'Raleway',sans-serif;font-size:14px;color:var(--text);outline:none;width:100%;transition:border-color .15s}
 .tin:focus{border-color:var(--gold);box-shadow:0 0 0 3px var(--gold-glow)}
-.tin::placeholder{color:var(--dim)}
+.tin::placeholder{color:var(--muted)}
 .ttags{display:flex;flex-wrap:wrap;gap:5px;margin-top:7px}
 .ttag{background:transparent;border:1px dashed var(--bdr);border-radius:var(--r);padding:3px 9px;font-size:11px;color:var(--muted);cursor:pointer;transition:all .14s}
 .ttag:hover{border-color:var(--gold);color:var(--gold);border-style:solid}
@@ -1165,7 +1165,7 @@ a{text-decoration:none;color:inherit}button{cursor:pointer;font-family:'Raleway'
 .sg select:focus{border-color:var(--bdr2);box-shadow:0 0 0 3px var(--gold-glow)}
 .etarea{background:var(--bg4);border:1px solid var(--bdr);border-radius:var(--rl);padding:.9rem 1.1rem;font-family:'Raleway',sans-serif;font-size:12.5px;color:var(--text);width:100%;min-height:150px;resize:vertical;outline:none;line-height:1.8;transition:border-color .2s}
 .etarea:focus{border-color:var(--bdr2)}
-.etarea::placeholder{color:var(--dim)}
+.etarea::placeholder{color:var(--muted)}
 
 /* ══ GEN BUTTON ══ */
 .btn-gen{width:100%;background:linear-gradient(135deg,#B8922E,#C9A84C,#E8C96A);color:var(--bg);font-family:'Cinzel',serif;font-weight:700;font-size:13px;letter-spacing:2px;text-transform:uppercase;border:none;border-radius:var(--rl);padding:15px;transition:all .3s;box-shadow:0 4px 22px rgba(201,168,76,.22);margin-top:.4rem}
@@ -1312,6 +1312,10 @@ a{text-decoration:none;color:inherit}button{cursor:pointer;font-family:'Raleway'
 .roadmap h2{font-family:'Cinzel',serif;font-size:1.3rem;color:#fff;margin-bottom:1.8rem}
 .rm-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem}
 .rm{background:var(--bg3);border:1px solid var(--bdr);border-radius:var(--rl);padding:1.3rem}
+.rm:hover{border-color:var(--bdr2);transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,.28)}
+
+html.light .rm:hover{box-shadow:0 6px 20px rgba(0,0,0,.12);}
+
 .rm-ph{font-size:10px;color:var(--gold);letter-spacing:2px;text-transform:uppercase;font-weight:700;margin-bottom:.45rem;display:block}
 .rm h3{font-family:'Cinzel',serif;font-size:12.5px;color:#fff;margin-bottom:.55rem}
 .rm ul{list-style:none;padding:0}
@@ -1964,6 +1968,13 @@ html.light :focus-visible {
   .tb-solid  { padding: 10px 14px; min-height: 40px; }
   .tb-theme-btn { padding: 9px 11px; min-height: 40px; }
 }
+
+::selection{background:var(--gold-dim);color:var(--text);}
+html.light ::selection{background:rgba(26,86,219,.18);color:#111;}
+
+.ast-input::placeholder{color:var(--muted);opacity:.8;}
+
+@media(max-width:960px){#lang-switcher{display:none}}
 </style>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -2385,6 +2396,7 @@ html.light :focus-visible {
     <button class="lang-btn" data-lang="tr" onclick="applyLang('tr');toggleSB()" style="background:var(--bg4);border:1px solid var(--bdr);border-radius:6px">🇹🇷 TR</button>
     <button class="lang-btn" data-lang="ar" onclick="applyLang('ar');toggleSB()" style="background:var(--bg4);border:1px solid var(--bdr);border-radius:6px">🇸🇦 AR</button>
     <button class="lang-btn" data-lang="zh" onclick="applyLang('zh');toggleSB()" style="background:var(--bg4);border:1px solid var(--bdr);border-radius:6px">🇨🇳 ZH</button>
+    <button class="lang-btn" data-lang="fa" onclick="applyLang('fa');toggleSB()" style="background:var(--bg4);border:1px solid var(--bdr);border-radius:6px">🇮🇷 FA</button>
   </div>
 </div>
 
