@@ -2267,25 +2267,41 @@ html.light .sb-usage-bar { background: #e0e0e0; }
     var block  = document.getElementById('sb-usage-block');
     var fill   = document.getElementById('sb-usage-fill');
     var count  = document.getElementById('sb-usage-count');
+    var plan_el = document.getElementById('sb-usage-plan');
+    var bar    = document.getElementById('sb-usage-bar');
+    var label  = document.getElementById('sb-usage-label');
     var user   = window.currentUser;
 
     if (!block) return;
 
-    // Only show for explore users
-    if (!user || user.user_metadata && user.user_metadata.plan === 'pro') {
-      block.style.display = 'none';
-      return;
-    }
+    // Always show block for logged-in users
+    if (!user) { block.style.display = 'none'; return; }
 
-    var safeUsed = Math.min(typeof used === 'number' ? used : 0, DAILY_LIMIT);
-    var remaining = DAILY_LIMIT - safeUsed;
-    var pct = Math.min((safeUsed / DAILY_LIMIT) * 100, 100);
+    var isPro = user.user_metadata && user.user_metadata.plan === 'pro';
 
     block.style.display = 'block';
-    fill.style.width = pct + '%';
-    fill.className = 'sb-usage-fill' +
-      (remaining <= 0 ? ' used' : remaining <= 2 ? ' low' : '');
-    count.textContent = remaining + ' / ' + DAILY_LIMIT + ' remaining today';
+
+    if (isPro) {
+      // Pro: show status badge, hide bar
+      if (bar)    bar.style.display    = 'none';
+      if (label)  label.style.display  = 'none';
+      count.textContent = '✦ Pro plan active';
+      count.style.color = 'var(--gold)';
+      if (plan_el) plan_el.textContent = 'Unlimited · No daily limit';
+    } else {
+      // Explore: show bar + counter
+      if (bar)    bar.style.display    = 'block';
+      if (label)  label.style.display  = 'block';
+      count.style.color = '';
+      var safeUsed  = Math.min(typeof used === 'number' ? used : 0, DAILY_LIMIT);
+      var remaining = DAILY_LIMIT - safeUsed;
+      var pct       = Math.min((safeUsed / DAILY_LIMIT) * 100, 100);
+      fill.style.width  = pct + '%';
+      fill.className    = 'sb-usage-fill' +
+        (remaining <= 0 ? ' used' : remaining <= 2 ? ' low' : '');
+      count.textContent = remaining + ' / ' + DAILY_LIMIT + ' remaining today';
+      if (plan_el) plan_el.textContent = 'Free plan · 8 generations per day';
+    }
   };
 
   // Fetch today's usage from Supabase after login
@@ -2521,7 +2537,7 @@ html.light .sb-usage-bar { background: #e0e0e0; }
 
 <div class="sb-usage" id="sb-usage-block" style="display:none">
     <div class="sb-usage-label" id="sb-usage-label">Daily Usage</div>
-    <div class="sb-usage-bar"><div class="sb-usage-fill" id="sb-usage-fill" style="width:0%"></div></div>
+    <div class="sb-usage-bar" id="sb-usage-bar"><div class="sb-usage-fill" id="sb-usage-fill" style="width:0%"></div></div>
     <div class="sb-usage-count" id="sb-usage-count">— / 8</div>
     <div class="sb-usage-plan" id="sb-usage-plan">Free plan · 8 generations per day</div>
   </div>
