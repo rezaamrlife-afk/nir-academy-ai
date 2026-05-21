@@ -2835,7 +2835,11 @@ html.light .auth-modal .am-sub { color: #555555; }
             </div>
           </div>
           <div id="prompt-out" class="out-txt">
-            <div class="rp-empty"><div class="re-ico">✦</div><p>Configure options on the left and click <strong style="color:var(--gold)">Generate</strong> to build your professional ELT prompt.</p></div>
+            <div class="rp-empty">
+  <div class="re-ico">✦</div>
+  <p>Configure options on the left and click <strong style="color:var(--gold)">Generate</strong> to build your professional ELT prompt.</p>
+  <p style="margin-top:0.75rem;font-size:11px;opacity:0.7">Try: <em>Topic: "Present Perfect" · Level: B1 · Mode: Grammar Focus</em></p>
+</div>
           </div>
           <div class="rp-foot">
             <img src="" class="nir-logo" alt="">
@@ -2905,7 +2909,11 @@ html.light .auth-modal .am-sub { color: #555555; }
       <div>
         <div class="rpanel">
           <div class="rp-hdr"><span class="rp-lbl">Lesson Plan</span><div class="rp-acts"><button class="rp-btn" onclick="copyOut('lp-out')">Copy</button><button class="rp-btn" onclick="generateLesson()">Regenerate</button></div></div>
-          <div id="lp-out" class="out-txt"><div class="rp-empty"><div class="re-ico">📋</div><p>Your complete lesson plan will appear here.</p></div></div>
+          <div id="lp-out" class="out-txt"><div class="rp-empty">
+  <div class="re-ico">📋</div>
+  <p>Your complete TESOL-aligned lesson plan will appear here.</p>
+  <p style="margin-top:0.75rem;font-size:11px;opacity:0.7">Includes: objectives · staged activities · timing · materials · assessment</p>
+</div></div>
           <div class="rp-foot"><img src="" class="nir-logo" alt=""> NIR Academy · Dr. Niki Majidi</div>
         </div>
       </div>
@@ -2968,7 +2976,11 @@ html.light .auth-modal .am-sub { color: #555555; }
       <div>
         <div class="rpanel">
           <div class="rp-hdr"><span class="rp-lbl">IELTS Task</span><div class="rp-acts"><button class="rp-btn" onclick="copyOut('ielts-out')">Copy</button><button class="rp-btn" onclick="generateIELTS()">Regenerate</button></div></div>
-          <div id="ielts-out" class="out-txt"><div class="rp-empty"><div class="re-ico">📘</div><p>Your IELTS task with model answer will appear here.</p></div></div>
+          <div id="ielts-out" class="out-txt"><div class="rp-empty">
+  <div class="re-ico">📘</div>
+  <p>Your IELTS task with full model answer will appear here.</p>
+  <p style="margin-top:0.75rem;font-size:11px;opacity:0.7">Task 1 · Task 2 · Reading · Listening · Speaking — band-targeted output</p>
+</div></div>
           <div class="rp-foot"><img src="" class="nir-logo" alt=""> NIR Academy · Dr. Niki Majidi</div>
         </div>
       </div>
@@ -3013,7 +3025,11 @@ html.light .auth-modal .am-sub { color: #555555; }
       <div>
         <div class="rpanel">
           <div class="rp-hdr"><span class="rp-lbl">Feedback Report</span><div class="rp-acts"><button class="rp-btn" onclick="copyOut('ec-out')">Copy</button><button class="rp-btn" onclick="generateError()">Re-analyse</button></div></div>
-          <div id="ec-out" class="out-txt"><div class="rp-empty"><div class="re-ico">✅</div><p>Paste student writing and click Analyse for detailed linguistic feedback.</p></div></div>
+          <div id="ec-out" class="out-txt"><div class="rp-empty">
+  <div class="re-ico">✅</div>
+  <p>Paste student writing above and click <strong style="color:var(--gold)">Analyse</strong> for detailed linguistic feedback.</p>
+  <p style="margin-top:0.75rem;font-size:11px;opacity:0.7">Identifies: grammar errors · vocabulary · coherence · CEFR level · improvement suggestions</p>
+</div></div>
           <div class="rp-foot"><img src="" class="nir-logo" alt=""> NIR Academy · Dr. Niki Majidi</div>
         </div>
       </div>
@@ -3076,7 +3092,11 @@ html.light .auth-modal .am-sub { color: #555555; }
       <div>
         <div class="rpanel">
           <div class="rp-hdr"><span class="rp-lbl">Worksheet</span><div class="rp-acts"><button class="rp-btn" onclick="copyOut('ws-out')">Copy</button><button class="rp-btn" onclick="generateWorksheet()">Regenerate</button></div></div>
-          <div id="ws-out" class="out-txt"><div class="rp-empty"><div class="re-ico">📄</div><p>Your print-ready worksheet will appear here.</p></div></div>
+          <div id="ws-out" class="out-txt"><div class="rp-empty">
+  <div class="re-ico">📄</div>
+  <p>Your print-ready worksheet will appear here.</p>
+  <p style="margin-top:0.75rem;font-size:11px;opacity:0.7">Ready to copy, print, or share directly with your class</p>
+</div></div>
           <div class="rp-foot"><img src="" class="nir-logo" alt=""> NIR Academy · Dr. Niki Majidi</div>
         </div>
       </div>
@@ -3137,10 +3157,14 @@ html.light .auth-modal .am-sub { color: #555555; }
   </div>
   <div class="content">
     <div id="saved-prompts-grid" class="saved-grid">
-      <p style="color:#464646;font-size:13px;text-align:center;padding:3rem;grid-column:1/-1">
+      <p id="saved-signin-msg" style="color:#464646;font-size:13px;text-align:center;padding:3rem;grid-column:1/-1">
         Sign in to see your saved prompts.
         <br><br>
         <button class="btn-gen" style="width:auto;padding:12px 28px" onclick="openAuth()">✦ Sign In</button>
+      </p>
+      <p id="saved-empty-msg" style="display:none;font-size:13px;color:var(--muted);text-align:center;padding:3rem;grid-column:1/-1">
+        No saved prompts yet.<br>
+        <span style="font-size:11px;opacity:0.7">After generating, click <strong>Save</strong> on any output to add it here.</span>
       </p>
     </div>
   </div>
