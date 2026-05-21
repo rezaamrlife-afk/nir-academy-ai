@@ -71,7 +71,7 @@ const LANGS = {
     hero_sub: 'Pedagogy First · AI Enhanced · Future Ready',
     hero_desc: 'Six professional AI tools for lesson planning, IELTS prep, error correction, worksheet building and prompt engineering — built for teachers, by teachers.',
     hero_by: 'By', hero_by2: 'Dr. Niki Majidi',
-    hero_cta1: '✦ Start Generating', hero_cta2: 'View Dashboard', hero_cta3: 'Prompt Library',
+    hero_cta1: '✦ Build Your First Lesson', hero_cta2: 'View Dashboard', hero_cta3: 'Prompt Library',
     // FEAT STRIP
     feat1t: '6 AI Tools', feat1d: 'Purpose-built for ELT',
     feat2t: 'CEFR Aligned', feat2d: 'A1 – C1 & IELTS',
@@ -1975,6 +1975,51 @@ html.light ::selection{background:rgba(26,86,219,.18);color:#111;}
 .ast-input::placeholder{color:var(--muted);opacity:.8;}
 
 @media(max-width:960px){#lang-switcher{display:none}}
+
+/* ── Free Plan Clarity Layer: usage counter ── */
+.sb-usage {
+  margin: 0.5rem 0.8rem 0;
+  padding: 8px 12px;
+  background: var(--bg3);
+  border: 1px solid var(--bdr);
+  border-radius: var(--r);
+  font-size: 11px;
+}
+.sb-usage-label {
+  color: var(--muted);
+  letter-spacing: 0.5px;
+  margin-bottom: 4px;
+  font-size: 10px;
+  text-transform: uppercase;
+}
+.sb-usage-bar {
+  height: 3px;
+  background: var(--bg5);
+  border-radius: 2px;
+  margin: 5px 0 4px;
+  overflow: hidden;
+}
+.sb-usage-fill {
+  height: 100%;
+  background: var(--gold);
+  border-radius: 2px;
+  transition: width 0.4s ease;
+}
+.sb-usage-fill.low  { background: #e8a838; }
+.sb-usage-fill.used { background: #c0392b; }
+.sb-usage-count {
+  color: var(--text);
+  font-weight: 600;
+  font-size: 11px;
+}
+.sb-usage-plan {
+  color: var(--dim);
+  font-size: 10px;
+  margin-top: 2px;
+}
+html.light .sb-usage { background: #f5f5f5; border-color: #e0e0e0; }
+html.light .sb-usage-bar { background: #e0e0e0; }
+@media(max-width:960px){ .sb-usage { margin: 0.4rem 0.6rem 0; } }
 </style>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -2210,6 +2255,80 @@ html.light ::selection{background:rgba(26,86,219,.18);color:#111;}
 })();
 </script>
 <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+
+<script>
+// ── Free Plan Clarity Layer: usage counter ──
+// Reads usage from Supabase after auth — display only, no enforcement
+(function() {
+
+  var DAILY_LIMIT = 8;
+
+  window.updateUsageCounter = function(used) {
+    var block  = document.getElementById('sb-usage-block');
+    var fill   = document.getElementById('sb-usage-fill');
+    var count  = document.getElementById('sb-usage-count');
+    var user   = window.currentUser;
+
+    if (!block) return;
+
+    // Only show for explore users
+    if (!user || user.user_metadata && user.user_metadata.plan === 'pro') {
+      block.style.display = 'none';
+      return;
+    }
+
+    var safeUsed = Math.min(typeof used === 'number' ? used : 0, DAILY_LIMIT);
+    var remaining = DAILY_LIMIT - safeUsed;
+    var pct = Math.min((safeUsed / DAILY_LIMIT) * 100, 100);
+
+    block.style.display = 'block';
+    fill.style.width = pct + '%';
+    fill.className = 'sb-usage-fill' +
+      (remaining <= 0 ? ' used' : remaining <= 2 ? ' low' : '');
+    count.textContent = remaining + ' / ' + DAILY_LIMIT + ' remaining today';
+  };
+
+  // Fetch today's usage from Supabase after login
+  window.fetchAndShowUsage = async function() {
+    try {
+      if (!window.SB || !window.currentUser) return;
+      var today = new Date().toISOString().split('T')[0];
+      var uid   = window.currentUser.id;
+      var plan  = window.currentUser.user_metadata && window.currentUser.user_metadata.plan;
+      if (plan === 'pro') { window.updateUsageCounter(0); return; }
+      var { data } = await window.SB
+        .from('usage_daily')
+        .select('usage_count')
+        .eq('user_id', uid)
+        .eq('date', today)
+        .maybeSingle();
+      window.updateUsageCounter(data ? data.usage_count : 0);
+    } catch(_) {}
+  };
+
+  // Hook: increment display after successful API call
+  // Called from callAPI and astSend after successful response
+  window._usageIncrement = function() {
+    var countEl = document.getElementById('sb-usage-count');
+    if (!countEl) return;
+    var text = countEl.textContent;
+    var m = text.match(/^(\d+)/);
+    if (m) {
+      var newRemaining = Math.max(0, parseInt(m[1]) - 1);
+      var fill = document.getElementById('sb-usage-fill');
+      var used = DAILY_LIMIT - newRemaining;
+      var pct  = Math.min((used / DAILY_LIMIT) * 100, 100);
+      countEl.textContent = newRemaining + ' / ' + DAILY_LIMIT + ' remaining today';
+      if (fill) {
+        fill.style.width = pct + '%';
+        fill.className = 'sb-usage-fill' +
+          (newRemaining <= 0 ? ' used' : newRemaining <= 2 ? ' low' : '');
+      }
+    }
+  };
+
+})();
+</script>
 </head>
 <body>
 
@@ -2400,7 +2519,13 @@ html.light ::selection{background:rgba(26,86,219,.18);color:#111;}
   </div>
 </div>
 
-<div class="sb-pro">
+<div class="sb-usage" id="sb-usage-block" style="display:none">
+    <div class="sb-usage-label" id="sb-usage-label">Daily Usage</div>
+    <div class="sb-usage-bar"><div class="sb-usage-fill" id="sb-usage-fill" style="width:0%"></div></div>
+    <div class="sb-usage-count" id="sb-usage-count">— / 8</div>
+    <div class="sb-usage-plan" id="sb-usage-plan">Free plan · 8 generations per day</div>
+  </div>
+  <div class="sb-pro">
     <div class="sp-t" id="sb-pro-title">✦ Go Pro</div>
     <div class="sp-d" id="sb-pro-desc">Unlimited prompts, saved library, priority AI &amp; all tools.</div>
     <button onclick="window.open('https://niracademy.com','_blank')" id="sb-pro-btn">Upgrade to Pro →</button>
@@ -2427,7 +2552,7 @@ html.light ::selection{background:rgba(26,86,219,.18);color:#111;}
       <p class="hh-desc" id="hero-desc">Six professional AI tools for lesson planning, IELTS prep, error correction, worksheet building and prompt engineering — built for teachers, by teachers.</p>
       <div class="hh-by"><span id="hero-by">By</span> <strong id="hero-by2">Dr. Niki Majidi</strong> &nbsp;·&nbsp; <a href="https://niracademy.com" target="_blank">niracademy.com</a></div>
       <div class="hero-btns">
-        <button class="btn-p" onclick="go('generator')"><span id="hero-cta1">✦ &nbsp;Start Generating</span></button>
+        <button class="btn-p" onclick="go('generator')"><span id="hero-cta1">✦ &nbsp;Build Your First Lesson</span></button>
         <button class="btn-o" onclick="go('dashboard')"><span id="hero-cta2">View Dashboard</span></button>
         <button class="btn-o" onclick="go('library')">Prompt Library</button>
       </div>
@@ -3497,7 +3622,7 @@ Make it visually clear and immediately printable.`;
 }
 
 // ══ API CALL ══
-async // ── Auth token helper ──
+// ── Auth token helper ──
 async function getAuthToken(){
   try{
     if(window.SB){
@@ -3536,6 +3661,7 @@ async function callAPI(prompt,outId,btn){
     const spd=text.length>700?7:12;
     const tick=setInterval(()=>{if(i<text.length){c.before(text[i++])}else{c.remove();clearInterval(tick);}},spd);
     S.last=text;
+    if(window._usageIncrement) window._usageIncrement();
   }catch(e){out.textContent="Connection error. Check your internet and try again.";}
   if(btn){btn.classList.remove("loading");btn.textContent="✦  "+(btn.dataset.lbl||"Generate");}
 }
@@ -3781,6 +3907,7 @@ async function initAuth(){
     if(event==='SIGNED_IN' && session){
       currentUser = session.user;
       window.currentUser = currentUser;
+      if(window.fetchAndShowUsage) window.fetchAndShowUsage();
       onLogin(session.user);
     } else if(event==='SIGNED_OUT'){
       currentUser = null;
@@ -4352,6 +4479,7 @@ async function astSend() {
     var aiText = (data.content || []).map(function(b) { return b.text || ''; }).join('') || 'I could not generate a response. Please try again.';
     window.A.history.push({ role:'assistant', content: aiText });
     astRenderMessage('assistant', aiText);
+    if (window._usageIncrement) window._usageIncrement();
   } catch(e) {
     astRenderMessage('assistant', 'Connection error. Please check your internet and try again.');
   }
