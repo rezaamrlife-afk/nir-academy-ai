@@ -2020,6 +2020,12 @@ html.light ::selection{background:rgba(26,86,219,.18);color:#111;}
 html.light .sb-usage { background: #f5f5f5; border-color: #e0e0e0; }
 html.light .sb-usage-bar { background: #e0e0e0; }
 @media(max-width:960px){ .sb-usage { margin: 0.4rem 0.6rem 0; } }
+
+/* ── Light Mode: auth modal ── */
+html.light #auth-overlay { background: rgba(0,0,0,.6); }
+html.light .auth-modal { background: #ffffff; border-color: #e0e0e0; }
+html.light .auth-modal h2 { color: #111111; }
+html.light .auth-modal .am-sub { color: #555555; }
 </style>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -2406,9 +2412,18 @@ html.light .sb-usage-bar { background: #e0e0e0; }
     <div id="auth-form-login">
       <div class="auth-field"><label>Email</label><input type="email" id="login-email" placeholder="your@email.com"></div>
       <div class="auth-field"><label>Password</label><input type="password" id="login-pass" placeholder="••••••••"></div>
+      <div style="text-align:right;margin:-8px 0 12px">
+        <button id="forgot-pw-btn" onclick="showForgotPw()" style="background:none;border:none;color:var(--muted);font-size:11px;cursor:pointer;padding:0;text-decoration:underline">Forgot password?</button>
+      </div>
       <button class="auth-submit" onclick="doLogin()">✦ &nbsp;Sign In</button>
       <div class="auth-divider">OR</div>
       <button class="auth-submit" style="background:#1E1E1E;color:#C9A84C;border:1px solid rgba(201,168,76,.35)" onclick="doGoogleLogin()"><span id="auth-google-btn">Continue with Google</span></button>
+    </div>
+    <div id="auth-form-forgot" style="display:none">
+      <p style="font-size:12px;color:var(--muted);margin-bottom:1rem;text-align:center">Enter your email and we'll send a reset link.</p>
+      <div class="auth-field"><label>Email</label><input type="email" id="forgot-email" placeholder="your@email.com"></div>
+      <button class="auth-submit" onclick="doForgotPw()">✦ &nbsp;Send Reset Link</button>
+      <button onclick="showLoginForm()" style="display:block;width:100%;margin-top:8px;background:none;border:none;color:var(--muted);font-size:11px;cursor:pointer;text-decoration:underline">← Back to Sign In</button>
     </div>
     <div id="auth-form-register" style="display:none">
       <div class="auth-field"><label>Full Name</label><input type="text" id="reg-name" placeholder="Dr. Jane Smith"></div>
@@ -3445,6 +3460,56 @@ function switchTab(tab){
     if(t1) t1.classList.remove('active');
   }
 }
+// ── Password Recovery ──
+function showForgotPw() {
+  document.getElementById('auth-form-login').style.display   = 'none';
+  document.getElementById('auth-form-forgot').style.display  = 'block';
+  document.getElementById('auth-form-register').style.display= 'none';
+  var title = document.getElementById('auth-title');
+  if (title) title.textContent = 'Reset Password';
+  var err = document.getElementById('auth-error');
+  if (err) { err.textContent = ''; err.style.display = 'none'; }
+}
+
+function showLoginForm() {
+  document.getElementById('auth-form-login').style.display   = 'block';
+  document.getElementById('auth-form-forgot').style.display  = 'none';
+  document.getElementById('auth-form-register').style.display= 'none';
+  var title = document.getElementById('auth-title');
+  if (title) title.textContent = 'Welcome Back';
+}
+
+async function doForgotPw() {
+  if (!SB) { showAuthError('Service not ready. Please refresh.'); return; }
+  var email = document.getElementById('forgot-email').value.trim();
+  if (!email || !email.includes('@')) { showAuthError('Please enter a valid email.'); return; }
+
+  var btn = document.querySelector('#auth-form-forgot .auth-submit');
+  if (btn) { btn.disabled = true; btn.textContent = 'Sending…'; }
+
+  try {
+    var redirectTo = window.location.origin + window.location.pathname;
+    var { error } = await SB.auth.resetPasswordForEmail(email, {
+      redirectTo: redirectTo
+    });
+    if (error) throw error;
+
+    // Show success
+    var err = document.getElementById('auth-error');
+    if (err) { err.textContent = ''; err.style.display = 'none'; }
+    var succ = document.getElementById('auth-success');
+    if (succ) {
+      succ.textContent = 'Reset link sent! Check your email inbox.';
+      succ.style.display = 'block';
+    }
+    document.getElementById('forgot-email').value = '';
+  } catch(e) {
+    showAuthError(e.message || 'Could not send reset email. Please try again.');
+  } finally {
+    if (btn) { btn.disabled = false; btn.textContent = '✦ \u00a0Send Reset Link'; }
+  }
+}
+
 function showAuthError(msg){
   const el = document.getElementById('auth-error');
   if(el){ el.textContent = msg; el.style.display = 'block'; }
@@ -4652,6 +4717,52 @@ document.addEventListener('DOMContentLoaded', function() {
     lucide.createIcons();
   }
 });
+</script>
+<script>
+// ── Handle password recovery redirect ──
+(function() {
+  var hash = window.location.hash;
+  if (hash && hash.includes('type=recovery')) {
+    // Show a new password form after redirect
+    document.addEventListener('DOMContentLoaded', function() {
+      showAuth();
+      // Supabase handles session via onAuthStateChange
+      // User is now logged in with recovery token — prompt new password
+      var title = document.getElementById('auth-title');
+      if (title) title.textContent = 'Set New Password';
+      // Show a simple new-password UI
+      var loginForm = document.getElementById('auth-form-login');
+      if (loginForm) {
+        loginForm.innerHTML = '<div class="auth-field"><label>New Password</label><input type="password" id="new-pass" placeholder="Min 6 characters"></div>' +
+          '<button class="auth-submit" onclick="doSetNewPassword()">✦ &nbsp;Update Password</button>';
+        loginForm.style.display = 'block';
+      }
+      ['auth-form-register','auth-form-forgot'].forEach(function(id) {
+        var el = document.getElementById(id);
+        if (el) el.style.display = 'none';
+      });
+      document.querySelectorAll('.auth-tabs').forEach(function(el) { el.style.display = 'none'; });
+    });
+  }
+})();
+
+async function doSetNewPassword() {
+  var pass = document.getElementById('new-pass');
+  if (!pass || pass.value.length < 6) { showAuthError('Password must be at least 6 characters.'); return; }
+  var btn = document.querySelector('#auth-form-login .auth-submit');
+  if (btn) { btn.disabled = true; btn.textContent = 'Updating…'; }
+  try {
+    var { error } = await SB.auth.updateUser({ password: pass.value });
+    if (error) throw error;
+    var succ = document.getElementById('auth-success');
+    if (succ) { succ.textContent = 'Password updated successfully! Redirecting…'; succ.style.display = 'block'; }
+    setTimeout(function() { closeAuth(); window.location.hash = ''; }, 1500);
+  } catch(e) {
+    showAuthError(e.message || 'Could not update password.');
+  } finally {
+    if (btn) { btn.disabled = false; btn.textContent = '✦ \u00a0Update Password'; }
+  }
+}
 </script>
 </body>
 </html>
