@@ -3497,15 +3497,38 @@ Make it visually clear and immediately printable.`;
 }
 
 // ══ API CALL ══
+async // ── Auth token helper ──
+async function getAuthToken(){
+  try{
+    if(window.SB){
+      const{data}=await window.SB.auth.getSession();
+      return data?.session?.access_token||null;
+    }
+  }catch(_){}
+  return null;
+}
+
+// ── Plan limit message ──
+function showLimitMsg(outId,btn){
+  const out=document.getElementById(outId);
+  if(out) out.textContent="Daily limit reached. Upgrade to Nira Pro for unlimited access.";
+  if(btn){btn.classList.remove("loading");btn.textContent="✦  "+(btn.dataset.lbl||"Generate");}
+}
+
 async function callAPI(prompt,outId,btn){
   if(btn){btn.classList.add("loading");const lbl=btn.dataset.lbl||"Generate";btn.textContent="⟳  Generating…";}
   const out=document.getElementById(outId);
   out.innerHTML="<span class='cur'></span>";
   try{
+    const token=await getAuthToken();
+    const headers={"Content-Type":"application/json"};
+    if(token) headers["Authorization"]="Bearer "+token;
     const res=await fetch("/api/generate",{
-      method:"POST",headers:{"Content-Type":"application/json"},
+      method:"POST",headers,
       body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:1000,messages:[{role:"user",content:prompt}]})
     });
+    if(res.status===429){showLimitMsg(outId,btn);return;}
+    if(res.status===401){if(out) out.textContent="Please sign in to continue.";if(btn){btn.classList.remove("loading");btn.textContent="✦  "+(btn.dataset.lbl||"Generate");}return;}
     const data=await res.json();
     const text=data.content?.map(b=>b.text||"").join("")||"Unable to generate. Please try again.";
     out.textContent="";
@@ -4301,15 +4324,30 @@ async function astSend() {
   }
 
   try {
+    var astToken = await getAuthToken();
+    var astHeaders = { 'Content-Type': 'application/json' };
+    if (astToken) astHeaders['Authorization'] = 'Bearer ' + astToken;
     var res = await fetch('/api/generate', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: astHeaders,
       body: JSON.stringify({
         model: 'claude-sonnet-4-20250514',
         max_tokens: 2048,
         messages: messages
       })
     });
+    if (res.status === 429) {
+      if (sendBtn) sendBtn.disabled = false;
+      if (thinking) thinking.style.display = 'none';
+      astRenderMessage('assistant', 'Daily limit reached. Upgrade to Nira Pro for unlimited access.');
+      return;
+    }
+    if (res.status === 401) {
+      if (sendBtn) sendBtn.disabled = false;
+      if (thinking) thinking.style.display = 'none';
+      astRenderMessage('assistant', 'Please sign in to continue.');
+      return;
+    }
     var data = await res.json();
     var aiText = (data.content || []).map(function(b) { return b.text || ''; }).join('') || 'I could not generate a response. Please try again.';
     window.A.history.push({ role:'assistant', content: aiText });
