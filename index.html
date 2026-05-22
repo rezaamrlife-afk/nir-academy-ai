@@ -2043,6 +2043,45 @@ html.light .auth-modal .am-sub { color: #555555; }
 #elt-meta-strip.visible { display: block; }
 html.light #elt-meta-strip { background: #f5f5f5; border-color: #e0e0e0; }
 html.light #elt-meta-strip strong { color: #111; }
+
+/* ── Next Step Bar ── */
+#next-step-bar {
+  display: none;
+  margin-top: 12px;
+  padding: 10px 12px;
+  background: var(--bg3);
+  border: 1px solid var(--bdr);
+  border-radius: var(--r);
+  display: none;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+#next-step-bar.visible { display: flex; }
+.ns-label {
+  font-size: 10px;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  flex-shrink: 0;
+  margin-right: 4px;
+}
+.ns-btn {
+  background: var(--bg4);
+  border: 1px solid var(--bdr);
+  border-radius: 20px;
+  padding: 5px 13px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text);
+  cursor: pointer;
+  transition: border-color .2s, background .2s;
+  white-space: nowrap;
+}
+.ns-btn:hover { border-color: var(--gold); color: var(--gold); background: var(--bg3); }
+html.light #next-step-bar { background: #f5f5f5; border-color: #e0e0e0; }
+html.light .ns-btn { background: #fff; border-color: #d0d0d0; color: #333; }
+html.light .ns-btn:hover { border-color: var(--gold); color: var(--gold); }
 </style>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -2411,6 +2450,63 @@ function updateELTMeta() {
     strip.classList.remove('visible');
     strip.innerHTML = '';
   }
+}
+</script>
+<script>
+// ── Next Step Bar ──
+function showNextSteps() {
+  var bar = document.getElementById('next-step-bar');
+  if (!bar) return;
+
+  // Context map: S.goal → [label, action, label2, action2]
+  var map = {
+    'Create a detailed lesson plan':
+      [['📄 Turn into Worksheet',    function(){ go('worksheet'); if(S.topic){ setT(S.topic); } }],
+       ['💬 Create Speaking Activity', function(){ go('generator'); SC(document.querySelector('#goal-chips .chip:nth-child(7)'), 'goal-chips'); if(S.topic){ setT(S.topic); } }]],
+    'Generate an engaging classroom activity':
+      [['📋 Build a Full Lesson Plan', function(){ SC(document.querySelector('#goal-chips .chip:first-child'), 'goal-chips'); if(S.topic){ setT(S.topic); } generate(); }],
+       ['📄 Turn into Worksheet',      function(){ go('worksheet'); if(S.topic){ setT(S.topic); } }]],
+    'Design a printable worksheet':
+      [['📋 Create Lesson Plan',   function(){ go('generator'); SC(document.querySelector('#goal-chips .chip:first-child'), 'goal-chips'); if(S.topic){ setT(S.topic); } }],
+       ['🔄 Regenerate Worksheet', function(){ generateWorksheet(); }]],
+    'Build a test or quiz':
+      [['✅ Analyse Student Errors', function(){ go('error'); }],
+       ['🔄 Generate Another Quiz',  function(){ generate(); }]],
+    'Correct student errors with detailed feedback':
+      [['📋 Create Practice Task', function(){ go('generator'); if(S.topic){ setT(S.topic); } }],
+       ['🔄 Re-analyse',           function(){ generateError(); }]],
+    'Generate an academic writing task':
+      [['📘 Try IELTS Version',   function(){ go('ielts'); }],
+       ['🔄 Generate Another',    function(){ generate(); }]],
+    'Create speaking discussion questions':
+      [['📋 Build Lesson Around This', function(){ SC(document.querySelector('#goal-chips .chip:first-child'), 'goal-chips'); if(S.topic){ setT(S.topic); } generate(); }],
+       ['🔄 More Questions',           function(){ generate(); }]],
+    'Design a vocabulary practice set':
+      [['📄 Create Worksheet',    function(){ go('worksheet'); if(S.topic){ setT(S.topic); } }],
+       ['🔄 More Vocabulary',     function(){ generate(); }]],
+    'Create a reading comprehension passage':
+      [['❓ Create Comprehension Quiz', function(){ SC(document.querySelector('#goal-chips .chip:nth-child(4)'), 'goal-chips'); if(S.topic){ setT(S.topic); } generate(); }],
+       ['🔄 Generate Another',          function(){ generate(); }]],
+    'Generate an IELTS-style exam task':
+      [['📘 Use IELTS Generator',  function(){ go('ielts'); }],
+       ['🔄 Generate Similar Task', function(){ generate(); }]]
+  };
+
+  var steps = map[S.goal] || [
+    ['🔄 Regenerate',          function(){ generate(); }],
+    ['📄 Try Worksheet Builder', function(){ go('worksheet'); }]
+  ];
+
+  bar.innerHTML = '<span class="ns-label">Next step:</span>';
+  steps.forEach(function(step) {
+    var btn = document.createElement('button');
+    btn.className = 'ns-btn';
+    btn.textContent = step[0];
+    btn.onclick = step[1];
+    bar.appendChild(btn);
+  });
+
+  bar.classList.add('visible');
 }
 </script>
 </head>
@@ -2904,6 +3000,7 @@ function updateELTMeta() {
   <p style="margin-top:0.75rem;font-size:11px;opacity:0.7">Try: <em>Topic: "Present Perfect" · Level: B1 · Mode: Grammar Focus</em></p>
 </div>
           </div>
+          <div id="next-step-bar" role="complementary" aria-label="Suggested next steps"></div>
           <div class="rp-foot">
             <img src="" class="nir-logo" alt="">
             NIR Academy · Dr. Niki Majidi · <a href="https://niracademy.com" target="_blank">niracademy.com</a>
@@ -3812,6 +3909,7 @@ async function callAPI(prompt,outId,btn){
   if(btn){btn.classList.add("loading");const lbl=btn.dataset.lbl||"Generate";btn.textContent="⟳  Generating…";}
   const out=document.getElementById(outId);
   out.innerHTML="<span class='cur'></span>";
+  var nsb=document.getElementById('next-step-bar'); if(nsb){nsb.classList.remove('visible');nsb.innerHTML='';}
   try{
     const token=await getAuthToken();
     const headers={"Content-Type":"application/json"};
@@ -3831,6 +3929,7 @@ async function callAPI(prompt,outId,btn){
     S.last=text;
     if(window._usageIncrement) window._usageIncrement();
     if(window.updateELTMeta) window.updateELTMeta();
+    if(window.showNextSteps) window.showNextSteps();
     // ── Fix 1: dynamic ELT output label ──
     (function(){
       var lbl = document.getElementById('rp-lbl-txt');
