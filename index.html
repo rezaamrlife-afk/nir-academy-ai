@@ -2404,7 +2404,7 @@ html.light #session-banner { background: #f5f5f5; border-color: #e0e0e0; border-
       fill.className    = 'sb-usage-fill' +
         (remaining <= 0 ? ' used' : remaining <= 2 ? ' low' : '');
       count.textContent = remaining + ' / ' + DAILY_LIMIT + ' remaining today';
-      if (plan_el) plan_el.textContent = 'Free plan · 8 generations per day';
+      if (plan_el) plan_el.textContent = remaining <= 0 ? 'Resets at midnight UTC · Upgrade for unlimited' : 'Free plan · 8 generations per day';
     }
   };
 
