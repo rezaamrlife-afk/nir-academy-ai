@@ -2026,6 +2026,23 @@ html.light #auth-overlay { background: rgba(0,0,0,.6); }
 html.light .auth-modal { background: #ffffff; border-color: #e0e0e0; }
 html.light .auth-modal h2 { color: #111111; }
 html.light .auth-modal .am-sub { color: #555555; }
+
+/* ── ELT Metadata Strip ── */
+#elt-meta-strip {
+  display: none;
+  padding: 7px 12px;
+  margin-bottom: 8px;
+  background: var(--bg4);
+  border: 1px solid var(--bdr);
+  border-radius: 6px;
+  font-size: 10.5px;
+  color: var(--muted);
+  line-height: 1.7;
+}
+#elt-meta-strip strong { color: var(--text); font-weight: 600; }
+#elt-meta-strip.visible { display: block; }
+html.light #elt-meta-strip { background: #f5f5f5; border-color: #e0e0e0; }
+html.light #elt-meta-strip strong { color: #111; }
 </style>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -2350,6 +2367,51 @@ html.light .auth-modal .am-sub { color: #555555; }
   };
 
 })();
+</script>
+<script>
+// ── ELT Metadata Strip updater ──
+function updateELTMeta() {
+  var strip = document.getElementById('elt-meta-strip');
+  if (!strip) return;
+
+  var level  = (S.level || '').trim();
+  var goal   = (S.goal  || '').trim();
+  var topic  = (S.topic || '').trim();
+
+  var methodMap = {
+    'Create a detailed lesson plan':                   ['PPP','Presentation – Practice – Production'],
+    'Generate an engaging classroom activity':         ['TBL','Task-Based Learning'],
+    'Design a printable worksheet':                    ['CLT','Communicative Language Teaching'],
+    'Build a test or quiz':                            ['CBA','Competency-Based Assessment'],
+    'Correct student errors with detailed feedback':   ['CF','Corrective Feedback'],
+    'Generate an academic writing task':               ['PWP','Process Writing Pedagogy'],
+    'Create speaking discussion questions':            ['CLT','Communicative Language Teaching'],
+    'Design a vocabulary practice set':                ['VLT','Vocabulary Learning'],
+    'Create a reading comprehension passage':          ['SBI','Skills-Based Instruction'],
+    'Generate an IELTS-style exam task':               ['TBA','Test-Based Assessment']
+  };
+  var method = methodMap[goal] || null;
+
+  var lines = [];
+
+  if (level) {
+    lines.push('<strong>CEFR Level:</strong> ' + level);
+  }
+  if (method) {
+    lines.push('<strong>Methodology:</strong> ' + method[0] + ' (' + method[1] + ')');
+  }
+  if (topic) {
+    lines.push('<strong>Topic:</strong> ' + topic);
+  }
+
+  if (lines.length > 0) {
+    strip.innerHTML = lines.join('&nbsp;&nbsp;·&nbsp;&nbsp;');
+    strip.classList.add('visible');
+  } else {
+    strip.classList.remove('visible');
+    strip.innerHTML = '';
+  }
+}
 </script>
 </head>
 <body>
@@ -2834,6 +2896,7 @@ html.light .auth-modal .am-sub { color: #555555; }
               <button class="rp-btn" onclick="saveP()"><span id="save-btn-txt">Save</span></button>
             </div>
           </div>
+          <div id="elt-meta-strip" role="status" aria-live="polite"></div>
           <div id="prompt-out" class="out-txt">
             <div class="rp-empty">
   <div class="re-ico">✦</div>
@@ -3767,6 +3830,7 @@ async function callAPI(prompt,outId,btn){
     const tick=setInterval(()=>{if(i<text.length){c.before(text[i++])}else{c.remove();clearInterval(tick);}},spd);
     S.last=text;
     if(window._usageIncrement) window._usageIncrement();
+    if(window.updateELTMeta) window.updateELTMeta();
     // ── Fix 1: dynamic ELT output label ──
     (function(){
       var lbl = document.getElementById('rp-lbl-txt');
