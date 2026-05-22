@@ -3767,6 +3767,20 @@ async function callAPI(prompt,outId,btn){
     const tick=setInterval(()=>{if(i<text.length){c.before(text[i++])}else{c.remove();clearInterval(tick);}},spd);
     S.last=text;
     if(window._usageIncrement) window._usageIncrement();
+    // ── Fix 1: dynamic ELT output label ──
+    (function(){
+      var lbl = document.getElementById('rp-lbl-txt');
+      if(!lbl) return;
+      var lvl   = (S.level||'').replace(/\s*\(.*\)/,'').trim();
+      var goal  = (S.goal||'').replace(/^(?:Create|Generate|Design|Build|Correct|Write|Make)\s+/i,'').replace(/^(?:a|an|the)\s+/i,'').trim();
+      var topic = (S.topic||'').trim();
+      // Capitalise first letter of goal
+      if(goal) goal = goal.charAt(0).toUpperCase() + goal.slice(1);
+      var parts = [lvl, goal, topic].filter(function(p){ return p && p.length > 0; });
+      if(parts.length > 0){
+        lbl.textContent = parts.join(' · ');
+      }
+    })();
   }catch(e){out.textContent="Connection error. Check your internet and try again.";}
   if(btn){btn.classList.remove("loading");btn.textContent="✦  "+(btn.dataset.lbl||"Generate");}
 }
