@@ -1445,13 +1445,14 @@ html.light .rm:hover{box-shadow:0 6px 20px rgba(0,0,0,.12);}
 /* ═══ TAB 7 — AI ASSISTANT ═══ */
 .ast-modes{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:2rem;}
 .ast-mode-btn{
-  background:var(--bg3);border:1px solid var(--bdr);border-radius:var(--r);
+  background:var(--bg2);border:1px solid var(--bdr);border-radius:var(--r);
   padding:24px 16px;cursor:pointer;transition:all .2s;text-align:center;
   display:flex;flex-direction:column;align-items:center;gap:8px;
+  opacity:0.65;
 }
-.ast-mode-btn:hover{border-color:var(--gold);background:var(--bg4);}
-.ast-mode-btn.active{border-color:var(--gold);background:var(--bg4);box-shadow:0 0 0 1px var(--gold-dim);}
-.ast-mode-icon{font-size:2rem;}
+.ast-mode-btn:hover{border-color:var(--gold);background:var(--bg4);opacity:0.9;}
+.ast-mode-btn.active{border-color:var(--gold);background:var(--bg5);box-shadow:0 0 0 2px var(--gold-dim),0 4px 16px rgba(201,168,76,.1);opacity:1;}
+.ast-mode-icon{font-size:2rem;color:var(--gold);}
 .ast-mode-name{font-size:14px;font-weight:600;color:var(--text);}
 .ast-mode-desc{font-size:11px;color:#AAAAAA;line-height:1.4;}
 .ast-panel{margin-top:1.5rem;}
@@ -1773,6 +1774,7 @@ html.light .rp-out   { background: #f8f9fa; }
 
 /* ── Light Mode: Tab 7 ast-* ── */
 html.light .ast-mode-btn { background: #fff; border-color: #ddd; }
+html.light .ast-mode-icon { color: var(--gold); }
 html.light .ast-mode-btn:hover,
 html.light .ast-mode-btn.active { background: #f0f4ff; border-color: var(--gold); }
 html.light .ast-mode-name { color: #111; }
