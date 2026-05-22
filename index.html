@@ -2082,6 +2082,46 @@ html.light #elt-meta-strip strong { color: #111; }
 html.light #next-step-bar { background: #f5f5f5; border-color: #e0e0e0; }
 html.light .ns-btn { background: #fff; border-color: #d0d0d0; color: #333; }
 html.light .ns-btn:hover { border-color: var(--gold); color: var(--gold); }
+
+/* ── Phase 7: Session Memory Banner ── */
+#session-banner {
+  display: none;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  padding: 9px 14px;
+  margin-bottom: 1rem;
+  background: var(--bg3);
+  border: 1px solid var(--bdr);
+  border-left: 3px solid var(--gold);
+  border-radius: var(--r);
+  font-size: 11.5px;
+}
+#session-banner.visible { display: flex; }
+.sb-session-label { color: var(--muted); flex-shrink: 0; }
+.sb-session-info  { color: var(--text); font-weight: 600; flex: 1; }
+.sb-session-continue {
+  background: var(--gold);
+  color: var(--bg);
+  border: none;
+  border-radius: 20px;
+  padding: 4px 14px;
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+.sb-session-dismiss {
+  background: none;
+  border: none;
+  color: var(--muted);
+  font-size: 16px;
+  cursor: pointer;
+  padding: 0 2px;
+  line-height: 1;
+  flex-shrink: 0;
+}
+html.light #session-banner { background: #f5f5f5; border-color: #e0e0e0; border-left-color: var(--gold); }
 </style>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -2509,6 +2549,71 @@ function showNextSteps() {
   bar.classList.add('visible');
 }
 </script>
+<script>
+// ── Phase 7: Session Memory ──
+var NIR_SESSION_KEY = 'nir_last_session';
+
+function saveSession() {
+  if (!S.topic || !S.topic.trim()) return;  // don't save empty sessions
+  var session = {
+    level: S.level || '',
+    goal:  S.goal  || '',
+    topic: S.topic || '',
+    ts:    Date.now()
+  };
+  try { localStorage.setItem(NIR_SESSION_KEY, JSON.stringify(session)); } catch(_) {}
+}
+
+function loadSession() {
+  try {
+    var raw = localStorage.getItem(NIR_SESSION_KEY);
+    if (!raw) return null;
+    var s = JSON.parse(raw);
+    // Only show if session < 30 days old
+    if (Date.now() - s.ts > 30 * 24 * 60 * 60 * 1000) { localStorage.removeItem(NIR_SESSION_KEY); return null; }
+    return s;
+  } catch(_) { return null; }
+}
+
+function showSessionBanner() {
+  var s = loadSession();
+  if (!s || !s.topic) return;
+  var banner = document.getElementById('session-banner');
+  var info   = document.getElementById('session-banner-info');
+  var btn    = document.getElementById('session-continue-btn');
+  if (!banner || !info || !btn) return;
+
+  // Build label: "B1 · Lesson Plan · Present Perfect"
+  var lvl   = (s.level || '').replace(/\s*\(.*\)/,'').trim();
+  var goal  = (s.goal  || '').replace(/^(?:Create|Generate|Design|Build|Correct|Write|Make)\s+/i,'')
+                             .replace(/^(?:a|an|the)\s+/i,'').trim();
+  if (goal) goal = goal.charAt(0).toUpperCase() + goal.slice(1);
+  var parts = [lvl, goal, s.topic].filter(function(p){ return p && p.length > 0; });
+  if (parts.length === 0) return;
+
+  info.textContent = parts.join(' · ');
+  btn.onclick = function() { continueSession(s); };
+  banner.classList.add('visible');
+}
+
+function continueSession(s) {
+  // Restore state
+  S.level = s.level || S.level;
+  S.goal  = s.goal  || S.goal;
+  S.topic = s.topic || '';
+  // Navigate to generator with topic prefilled
+  go('generator');
+  setTimeout(function() {
+    if (s.topic) setT(s.topic);
+  }, 50);
+  dismissSessionBanner();
+}
+
+function dismissSessionBanner() {
+  var banner = document.getElementById('session-banner');
+  if (banner) banner.classList.remove('visible');
+}
+</script>
 </head>
 <body>
 
@@ -2830,6 +2935,14 @@ function showNextSteps() {
     <p>All six AI tools, your activity overview, and quick-launch actions in one professional workspace.</p>
   </div>
   <div class="content">
+
+    <!-- SESSION MEMORY BANNER (Phase 7) -->
+    <div id="session-banner" role="status" aria-live="polite">
+      <span class="sb-session-label">Last session:</span>
+      <span class="sb-session-info" id="session-banner-info"></span>
+      <button class="sb-session-continue" id="session-continue-btn">Continue →</button>
+      <button class="sb-session-dismiss" onclick="dismissSessionBanner()" aria-label="Dismiss">×</button>
+    </div>
 
     <!-- WELCOME CARD -->
     <div class="dash-welcome">
@@ -3599,6 +3712,7 @@ function go(id){
   });
   const p=document.getElementById("page-"+id);
   if(p)p.classList.add("active");
+  if(id==="dashboard" && window.showSessionBanner) window.showSessionBanner();
   ["sb-"+id,"nav-"+id,"mn-"+id].forEach(i=>{const e=document.getElementById(i);if(e)e.classList.add("active");});
   if(window.innerWidth<=960)document.getElementById("sidebar").classList.remove("open");
   window.scrollTo({top:0,behavior:"smooth"});
@@ -3930,6 +4044,7 @@ async function callAPI(prompt,outId,btn){
     if(window._usageIncrement) window._usageIncrement();
     if(window.updateELTMeta) window.updateELTMeta();
     if(window.showNextSteps) window.showNextSteps();
+    if(window.saveSession) window.saveSession();
     // ── Fix 1: dynamic ELT output label ──
     (function(){
       var lbl = document.getElementById('rp-lbl-txt');
