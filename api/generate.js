@@ -10,7 +10,6 @@ export default async function handler(req, res) {
   if (req.method === 'OPTIONS') return res.status(200).end();
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
-  // Parse body safely
   let body = req.body;
   if (typeof body === 'string') {
     try { body = JSON.parse(body); } catch (_) { body = {}; }
@@ -20,13 +19,9 @@ export default async function handler(req, res) {
   const messages = body.messages;
 
   if (!messages || !Array.isArray(messages) || messages.length === 0) {
-    return res.status(400).json({ 
-      error: 'Invalid request: messages required',
-      received: JSON.stringify(body).slice(0, 100)
-    });
+    return res.status(400).json({ error: 'Invalid request: messages required' });
   }
 
-  // Auth
   const authHeader = req.headers.authorization || '';
   const token = authHeader.startsWith('Bearer ') ? authHeader.slice(7) : null;
 
@@ -34,7 +29,6 @@ export default async function handler(req, res) {
     return res.status(401).json({ error: 'Authentication required' });
   }
 
-  // Supabase auth check
   const SUPABASE_URL = process.env.SUPABASE_URL;
   const SUPABASE_SERVICE = process.env.SUPABASE_SERVICE_KEY;
   let userId = null;
@@ -56,7 +50,6 @@ export default async function handler(req, res) {
     return res.status(401).json({ error: 'Authentication required' });
   }
 
-  // Daily limit check
   const EXPLORE_DAILY_LIMIT = 8;
   if (userPlan === 'explore' && SUPABASE_URL && SUPABASE_SERVICE) {
     try {
@@ -75,7 +68,6 @@ export default async function handler(req, res) {
     } catch (_) {}
   }
 
-  // Call AI
   const AI_PROVIDER = process.env.AI_PROVIDER || 'anthropic';
   let aiUrl, aiHeaders, aiBody;
 
@@ -84,7 +76,7 @@ export default async function handler(req, res) {
     if (!key) return res.status(500).json({ error: 'API key not configured' });
     aiUrl = 'https://api.groq.com/openai/v1/chat/completions';
     aiHeaders = { 'Content-Type': 'application/json', 'Authorization': `Bearer ${key}` };
-    aiBody = { model: 'llama-3.1-70b-versatile', max_tokens: 2048, messages };
+    aiBody = { model: 'llama-3.3-70b-versatile', max_tokens: 2048, messages };
   } else {
     const key = process.env.ANTHROPIC_API_KEY;
     if (!key) return res.status(500).json({ error: 'API key not configured' });
@@ -101,10 +93,8 @@ export default async function handler(req, res) {
     });
     const data = await aiRes.json();
 
-    // Normalize Groq response to Anthropic format
     if (aiRes.ok && AI_PROVIDER === 'groq') {
       const text = data.choices?.[0]?.message?.content || '';
-      // Increment usage
       if (userPlan === 'explore' && SUPABASE_URL && SUPABASE_SERVICE) {
         try {
           const { createClient } = await import('@supabase/supabase-js');
@@ -119,7 +109,6 @@ export default async function handler(req, res) {
       return res.status(200).json({ content: [{ type: 'text', text }] });
     }
 
-    // Anthropic pass-through
     if (aiRes.ok && userPlan === 'explore' && SUPABASE_URL && SUPABASE_SERVICE) {
       try {
         const { createClient } = await import('@supabase/supabase-js');
