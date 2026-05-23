@@ -2267,6 +2267,67 @@ html.light #session-banner { background: #f5f5f5; border-color: #e0e0e0; border-
   .lang-btn span:not(.lf) { display: none; }
 }
 
+/* ══ FOCUS MODE ══ */
+.focus-mode #sidebar { display: none !important; }
+.focus-mode .glayout { grid-template-columns: 1fr !important; }
+.focus-mode .glayout > div:first-child { display: none !important; }
+#focus-btn {
+  background: transparent;
+  border: 1px solid var(--bdr2);
+  border-radius: var(--r);
+  color: var(--muted);
+  font-size: 12px;
+  padding: 5px 10px;
+  cursor: pointer;
+  transition: all .2s;
+  flex-shrink: 0;
+  margin-right: 4px;
+}
+#focus-btn:hover { border-color: var(--gold); color: var(--gold); }
+html.light #focus-btn { color: #555; }
+
+/* ══ SETTINGS DROPDOWN ══ */
+#settings-dropdown-wrap { position: relative; flex-shrink: 0; }
+#settings-toggle {
+  background: transparent;
+  border: 1px solid var(--bdr2);
+  border-radius: var(--r);
+  color: var(--muted);
+  font-size: 14px;
+  padding: 5px 10px;
+  cursor: pointer;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+#settings-toggle:hover { border-color: var(--gold); color: var(--gold); }
+html.light #settings-toggle { color: #555; }
+#settings-menu {
+  display: none;
+  position: absolute;
+  right: 0;
+  top: calc(100% + 6px);
+  background: var(--bg2);
+  border: 1px solid var(--bdr);
+  border-radius: var(--rl);
+  padding: 10px 12px;
+  z-index: 600;
+  min-width: 210px;
+  box-shadow: 0 8px 24px rgba(0,0,0,.3);
+  flex-direction: column;
+  gap: 10px;
+}
+#settings-menu.open { display: flex; }
+.sm-label { font-size: 11px; color: var(--muted); margin-bottom: 4px; }
+.sm-lang-row { display: flex; gap: 4px; flex-wrap: wrap; }
+html.light #settings-menu { background: #fff; border-color: #ddd; }
+
+/* ══ OUTPUT EMPHASIS ══ */
+@media (min-width: 961px) {
+  .glayout { grid-template-columns: 1fr 1.4fr; }
+}
+
 </style>
 
 
@@ -2745,23 +2806,26 @@ function dismissSessionBanner() {
   </nav>
   <div id="topbar-user-menu-slot"></div>
   
-<button id="theme-toggle" class="tb-theme-btn" onclick="toggleTheme()" title="Toggle theme" aria-label="Toggle Light/Dark Mode">🌙</button>
-<div id="lang-switcher">
-  <button class="lang-btn active" data-lang="en" onclick="applyLang('en')">
-    <span class="lf">🇬🇧</span> EN
-  </button>
-  <button class="lang-btn" data-lang="tr" onclick="applyLang('tr')">
-    <span class="lf">🇹🇷</span> TR
-  </button>
-  <button class="lang-btn" data-lang="ar" onclick="applyLang('ar')">
-    <span class="lf">🇸🇦</span> AR
-  </button>
-  <button class="lang-btn" data-lang="zh" onclick="applyLang('zh')">
-    <span class="lf">🇨🇳</span> ZH
-  </button>
-  <button class="lang-btn" data-lang="fa" onclick="applyLang('fa')">
-    <span class="lf">🇮🇷</span> FA
-  </button>
+<button id="focus-btn" onclick="toggleFocus()" title="Focus Mode">⊞ Focus</button>
+
+<div id="settings-dropdown-wrap">
+  <button id="settings-toggle" onclick="toggleSettingsMenu()" title="Settings">⚙ <span style="font-size:10px">▾</span></button>
+  <div id="settings-menu">
+    <div>
+      <div class="sm-label">Theme</div>
+      <button class="tb-theme-btn" onclick="toggleTheme();toggleSettingsMenu()" style="width:100%">🌙 Toggle Dark / Light</button>
+    </div>
+    <div>
+      <div class="sm-label">Language</div>
+      <div class="sm-lang-row">
+        <button class="lang-btn active" data-lang="en" onclick="applyLang('en');toggleSettingsMenu()"><span class="lf">🇬🇧</span> EN</button>
+        <button class="lang-btn" data-lang="tr" onclick="applyLang('tr');toggleSettingsMenu()"><span class="lf">🇹🇷</span> TR</button>
+        <button class="lang-btn" data-lang="ar" onclick="applyLang('ar');toggleSettingsMenu()"><span class="lf">🇸🇦</span> AR</button>
+        <button class="lang-btn" data-lang="zh" onclick="applyLang('zh');toggleSettingsMenu()"><span class="lf">🇨🇳</span> ZH</button>
+        <button class="lang-btn" data-lang="fa" onclick="applyLang('fa');toggleSettingsMenu()"><span class="lf">🇮🇷</span> FA</button>
+      </div>
+    </div>
+  </div>
 </div>
 
 <div class="tb-actions">
@@ -5082,6 +5146,30 @@ async function doSetNewPassword() {
     if (btn) { btn.disabled = false; btn.textContent = '✦ \u00a0Update Password'; }
   }
 }
+</script>
+
+<script>
+// ── Focus Mode ──
+function toggleFocus() {
+  var active = document.body.classList.toggle('focus-mode');
+  var btn = document.getElementById('focus-btn');
+  if (btn) btn.textContent = active ? '⊟ Exit Focus' : '⊞ Focus';
+}
+
+// ── Settings Dropdown ──
+function toggleSettingsMenu() {
+  var menu = document.getElementById('settings-menu');
+  if (menu) menu.classList.toggle('open');
+}
+
+// Close settings menu when clicking outside
+document.addEventListener('click', function(e) {
+  var wrap = document.getElementById('settings-dropdown-wrap');
+  var menu = document.getElementById('settings-menu');
+  if (wrap && menu && !wrap.contains(e.target)) {
+    menu.classList.remove('open');
+  }
+});
 </script>
 </body>
 </html>
