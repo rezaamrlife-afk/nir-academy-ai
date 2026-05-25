@@ -3250,7 +3250,8 @@ function dismissSessionBanner() {
       </div>
       <div>
         <div class="rpanel">
-          <div class="rp-hdr"><span class="rp-lbl">Lesson Plan</span><div class="rp-acts"><button class="rp-btn" onclick="copyOut('lp-out')">Copy</button><button class="rp-btn" onclick="generateLesson()">Regenerate</button></div></div>
+          <div class="rp-hdr"><span class="rp-lbl">Lesson Plan</span><div class="rp-acts"><button class="rp-btn" onclick="copyOut('lp-out')">Copy</button><button class="rp-btn" onclick="generateLesson()">Regenerate</button><button class="rp-btn" onclick="nirPrint('lp-out')" title="Print">🖨</button></div></div>
+          <div id="lp-wc" style="font-size:11px;color:var(--muted);text-align:right;min-height:16px;padding-right:2px;"></div>
           <div id="lp-out" class="out-txt"><div class="rp-empty">
   <div class="re-ico">📋</div>
   <p>Your complete TESOL-aligned lesson plan will appear here.</p>
@@ -3317,7 +3318,8 @@ function dismissSessionBanner() {
       </div>
       <div>
         <div class="rpanel">
-          <div class="rp-hdr"><span class="rp-lbl">IELTS Task</span><div class="rp-acts"><button class="rp-btn" onclick="copyOut('ielts-out')">Copy</button><button class="rp-btn" onclick="generateIELTS()">Regenerate</button></div></div>
+          <div class="rp-hdr"><span class="rp-lbl">IELTS Task</span><div class="rp-acts"><button class="rp-btn" onclick="copyOut('ielts-out')">Copy</button><button class="rp-btn" onclick="generateIELTS()">Regenerate</button><button class="rp-btn" onclick="nirPrint('ielts-out')" title="Print">🖨</button></div></div>
+          <div id="ielts-wc" style="font-size:11px;color:var(--muted);text-align:right;min-height:16px;padding-right:2px;"></div>
           <div id="ielts-out" class="out-txt"><div class="rp-empty">
   <div class="re-ico">📘</div>
   <p>Your IELTS task with full model answer will appear here.</p>
@@ -3366,7 +3368,8 @@ function dismissSessionBanner() {
       </div>
       <div>
         <div class="rpanel">
-          <div class="rp-hdr"><span class="rp-lbl">Feedback Report</span><div class="rp-acts"><button class="rp-btn" onclick="copyOut('ec-out')">Copy</button><button class="rp-btn" onclick="generateError()">Re-analyse</button></div></div>
+          <div class="rp-hdr"><span class="rp-lbl">Feedback Report</span><div class="rp-acts"><button class="rp-btn" onclick="copyOut('ec-out')">Copy</button><button class="rp-btn" onclick="generateError()">Re-analyse</button><button class="rp-btn" onclick="nirPrint('ec-out')" title="Print">🖨</button></div></div>
+          <div id="ec-wc" style="font-size:11px;color:var(--muted);text-align:right;min-height:16px;padding-right:2px;"></div>
           <div id="ec-out" class="out-txt"><div class="rp-empty">
   <div class="re-ico">✅</div>
   <p>Paste student writing above and click <strong style="color:var(--gold)">Analyse</strong> for detailed linguistic feedback.</p>
@@ -3433,7 +3436,8 @@ function dismissSessionBanner() {
       </div>
       <div>
         <div class="rpanel">
-          <div class="rp-hdr"><span class="rp-lbl">Worksheet</span><div class="rp-acts"><button class="rp-btn" onclick="copyOut('ws-out')">Copy</button><button class="rp-btn" onclick="generateWorksheet()">Regenerate</button></div></div>
+          <div class="rp-hdr"><span class="rp-lbl">Worksheet</span><div class="rp-acts"><button class="rp-btn" onclick="copyOut('ws-out')">Copy</button><button class="rp-btn" onclick="generateWorksheet()">Regenerate</button><button class="rp-btn" onclick="nirPrint('ws-out')" title="Print">🖨</button></div></div>
+          <div id="ws-wc" style="font-size:11px;color:var(--muted);text-align:right;min-height:16px;padding-right:2px;"></div>
           <div id="ws-out" class="out-txt"><div class="rp-empty">
   <div class="re-ico">📄</div>
   <p>Your print-ready worksheet will appear here.</p>
@@ -4108,7 +4112,7 @@ async function callAPI(prompt,outId,btn){
     out.textContent="";
     let i=0;const c=document.createElement("span");c.className="cur";out.appendChild(c);
     const spd=text.length>700?7:12;
-    const tick=setInterval(()=>{if(i<text.length){c.before(text[i++])}else{c.remove();clearInterval(tick);nirWordCount(outId,"wc-strip");}},spd);
+    const tick=setInterval(()=>{if(i<text.length){c.before(text[i++])}else{c.remove();clearInterval(tick);nirWordCount(outId,outId.replace("-out","-wc"));}},spd);
     S.last=text;
     if(window._usageIncrement) window._usageIncrement();
     if(window.updateELTMeta) window.updateELTMeta();
