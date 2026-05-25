@@ -3170,9 +3170,11 @@ function dismissSessionBanner() {
               <button class="rp-btn" id="copy-btn" onclick="copyOut('prompt-out')"><span id="copy-btn-txt">Copy</span></button>
               <button class="rp-btn" onclick="generate()"><span id="regen-btn-txt">Regenerate</span></button>
               <button class="rp-btn" onclick="saveP()"><span id="save-btn-txt">Save</span></button>
+              <button class="rp-btn" id="print-btn" onclick="nirPrint('prompt-out')" title="Print output">🖨</button>
             </div>
           </div>
           <div id="elt-meta-strip" role="status" aria-live="polite"></div>
+          <div id="wc-strip" style="font-size:11px;color:var(--muted);text-align:right;min-height:16px;padding-right:2px;"></div>
           <div id="prompt-out" class="out-txt">
             <div class="rp-empty">
   <div class="re-ico">✦</div>
@@ -4106,7 +4108,7 @@ async function callAPI(prompt,outId,btn){
     out.textContent="";
     let i=0;const c=document.createElement("span");c.className="cur";out.appendChild(c);
     const spd=text.length>700?7:12;
-    const tick=setInterval(()=>{if(i<text.length){c.before(text[i++])}else{c.remove();clearInterval(tick);}},spd);
+    const tick=setInterval(()=>{if(i<text.length){c.before(text[i++])}else{c.remove();clearInterval(tick);nirWordCount(outId,"wc-strip");}},spd);
     S.last=text;
     if(window._usageIncrement) window._usageIncrement();
     if(window.updateELTMeta) window.updateELTMeta();
@@ -5170,6 +5172,46 @@ document.addEventListener('click', function(e) {
     menu.classList.remove('open');
   }
 });
+</script>
+
+<script>
+// ── nirPrint: print only output content ──
+function nirPrint(outId) {
+  var el = document.getElementById(outId);
+  if (!el) return;
+  var text = el.textContent || '';
+  if (!text.trim() || text.includes('Configure') || text.includes('will appear')) return;
+  var win = window.open('', '_blank', 'width=800,height=600');
+  win.document.write(
+    '<html><head><title>NIR Academy Output</title>' +
+    '<style>body{font-family:Georgia,serif;font-size:14px;line-height:1.8;padding:2cm;color:#000;max-width:800px;margin:0 auto}' +
+    'pre{white-space:pre-wrap;font-family:inherit}' +
+    'h1,h2,h3{color:#333}' +
+    '@media print{body{padding:1cm}}' +
+    '</style></head><body>' +
+    '<p style="font-size:11px;color:#999;border-bottom:1px solid #eee;padding-bottom:8px;margin-bottom:20px">NIR Academy · Dr. Niki Majidi · niracademy.com</p>' +
+    '<pre>' + text.replace(/</g,'&lt;').replace(/>/g,'&gt;') + '</pre>' +
+    '</body></html>'
+  );
+  win.document.close();
+  win.focus();
+  setTimeout(function(){ win.print(); }, 300);
+}
+
+// ── nirWordCount: update word count display ──
+function nirWordCount(outId, wcId) {
+  var el = document.getElementById(outId);
+  var wc = document.getElementById(wcId);
+  if (!el || !wc) return;
+  var text = el.textContent || '';
+  if (!text.trim() || text.includes('Configure') || text.includes('will appear')) {
+    wc.textContent = '';
+    return;
+  }
+  var words = text.trim().split(/\s+/).filter(function(w){ return w.length > 0; }).length;
+  var readMin = Math.ceil(words / 200);
+  wc.textContent = words + ' words · ' + readMin + ' min read';
+}
 </script>
 </body>
 </html>
