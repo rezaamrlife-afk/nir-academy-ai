@@ -4109,11 +4109,13 @@ async function callAPI(prompt,outId,btn){
     if(res.status===401){if(out) out.textContent="Please sign in to continue.";if(btn){btn.classList.remove("loading");btn.textContent="✦  "+(btn.dataset.lbl||"Generate");}return;}
     const data=await res.json();
     const text=data.content?.map(b=>b.text||"").join("")||"Unable to generate. Please try again.";
+    if(text.includes("Unable to generate"))T("Something went wrong. Please try again.");
     out.textContent="";
     let i=0;const c=document.createElement("span");c.className="cur";out.appendChild(c);
     const spd=text.length>700?7:12;
     const tick=setInterval(()=>{if(i<text.length){c.before(text[i++])}else{c.remove();clearInterval(tick);nirWordCount(outId,outId.replace("-out","-wc"));}},spd);
     S.last=text;
+    T("Content ready ✓");
     if(window._usageIncrement) window._usageIncrement();
     if(window.updateELTMeta) window.updateELTMeta();
     if(window.showNextSteps) window.showNextSteps();
