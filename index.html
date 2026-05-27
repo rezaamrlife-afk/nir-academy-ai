@@ -2352,6 +2352,39 @@ html.light #settings-menu { background: #fff; border-color: #ddd; }
   }
 }
 
+/* ══ LIGHT MODE PHASE 1 FIX ══ */
+
+/* auth-field inputs */
+html.light .auth-field input { background: #ffffff; border-color: rgba(26,86,219,.2); color: #111111; }
+html.light .auth-field input::placeholder { color: #aaaaaa; }
+html.light .auth-field input:focus { border-color: rgba(26,86,219,.5); }
+html.light .auth-field label { color: #555555; }
+
+/* auth tabs */
+html.light .auth-tab { background: #f5f5f5; color: #333333; }
+html.light .auth-tab.active { background: rgba(26,86,219,.1); color: #1a56db; }
+
+/* user menu dropdown */
+html.light .um-dropdown { background: #ffffff; border-color: rgba(26,86,219,.2); box-shadow: 0 8px 24px rgba(0,0,0,.12); }
+html.light .um-item { color: #333333; }
+html.light .um-item:hover { background: #f5f5f5; }
+html.light .um-divider { border-color: #e0e0e0; }
+
+/* saved cards */
+html.light .saved-card { background: #ffffff; border-color: rgba(26,86,219,.17); }
+html.light .saved-card:hover { border-color: rgba(26,86,219,.35); }
+html.light .saved-card .sc-date { color: #888888; }
+
+/* profile fields */
+html.light .profile-field label { color: #555555; }
+html.light .profile-field .pf-val { background: #f5f5f5; border-color: rgba(26,86,219,.17); color: #111111; }
+
+/* AI assistant */
+html.light .ast-thinking { color: #666666; }
+
+/* dim token fix */
+html.light .rp-foot, html.light .sb-lbl, html.light .shint, html.light .rc-time, html.light .rp-empty { color: #666666; }
+
 </style>
 
 <script>
@@ -2847,6 +2880,10 @@ function dismissSessionBanner() {
         <button class="lang-btn" data-lang="zh" onclick="applyLang('zh');toggleSettingsMenu()"><span class="lf">🇨🇳</span> ZH</button>
         <button class="lang-btn" data-lang="fa" onclick="applyLang('fa');toggleSettingsMenu()"><span class="lf">🇮🇷</span> FA</button>
       </div>
+    </div>
+    <div>
+      <div class="sm-label">View</div>
+      <button class="tb-theme-btn" onclick="toggleFocus();toggleSettingsMenu()" style="width:100%" id="focus-menu-btn">⊞ Focus Mode</button>
     </div>
   </div>
 </div>
@@ -5184,7 +5221,9 @@ async function doSetNewPassword() {
 function toggleFocus() {
   var active = document.body.classList.toggle('focus-mode');
   var btn = document.getElementById('focus-btn');
+  var menuBtn = document.getElementById('focus-menu-btn');
   if (btn) btn.textContent = active ? '⊟ Exit Focus' : '⊞ Focus';
+  if (menuBtn) menuBtn.textContent = active ? '⊟ Exit Focus Mode' : '⊞ Focus Mode';
 }
 
 // ── Settings Dropdown ──
@@ -5217,7 +5256,7 @@ function nirPrint(outId) {
     'pre{white-space:pre-wrap;font-family:inherit}' +
     'h1,h2,h3{color:#333}' +
     '@media print{body{padding:1cm}}' +
-    '</style></head><body>' +
+    '\n</style></head><body>' +
     '<p style="font-size:11px;color:#999;border-bottom:1px solid #eee;padding-bottom:8px;margin-bottom:20px">NIR Academy · Dr. Niki Majidi · niracademy.com</p>' +
     '<pre>' + text.replace(/</g,'&lt;').replace(/>/g,'&gt;') + '</pre>' +
     '</body></html>'
