@@ -2,7 +2,6 @@ export const config = {
   api: { bodyParser: true },
 };
 
-// in-memory lock per instance (basic anti-overload)
 const activeRequests = new Map();
 
 export default async function handler(req, res) {
@@ -13,9 +12,6 @@ export default async function handler(req, res) {
   if (req.method === 'OPTIONS') return res.status(200).end();
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
-  // -------------------------
-  // 🔥 Simple request fingerprint (anti spam)
-  // -------------------------
   const fingerprint = req.headers['x-request-id'] || Date.now().toString();
 
   if (activeRequests.has(fingerprint)) {
@@ -23,13 +19,8 @@ export default async function handler(req, res) {
   }
 
   activeRequests.set(fingerprint, true);
-
-  // cleanup after 10s
   setTimeout(() => activeRequests.delete(fingerprint), 10000);
 
-  // -------------------------
-  // Parse body
-  // -------------------------
   let body = req.body;
   if (typeof body === 'string') {
     try { body = JSON.parse(body); } catch (_) { body = {}; }
@@ -41,9 +32,6 @@ export default async function handler(req, res) {
     return res.status(400).json({ error: 'Invalid request: messages required' });
   }
 
-  // -------------------------
-  // Auth
-  // -------------------------
   const token = req.headers.authorization?.replace('Bearer ', '');
   if (!token) {
     return res.status(401).json({ error: 'Authentication required' });
@@ -53,24 +41,18 @@ export default async function handler(req, res) {
 
   try {
     const { createClient } = await import('@supabase/supabase-js');
-
     const supabase = createClient(
       process.env.SUPABASE_URL,
       process.env.SUPABASE_SERVICE_KEY
     );
-
     const { data, error } = await supabase.auth.getUser(token);
     if (!error && data?.user) userId = data.user.id;
-
   } catch (_) {}
 
   if (!userId) {
     return res.status(401).json({ error: 'Authentication failed' });
   }
 
-  // -------------------------
-  // AI Provider
-  // -------------------------
   const provider = process.env.AI_PROVIDER || 'groq';
 
   let url, headers, payload;
@@ -82,7 +64,7 @@ export default async function handler(req, res) {
       'Authorization': `Bearer ${process.env.GROQ_API_KEY}`,
     };
     payload = {
-      model: 'llama-3.3-70b-versatile',
+      model: 'llama-3.1-8b-instant', // ✅ عوض شد
       max_tokens: 2048,
       messages,
     };
@@ -100,9 +82,6 @@ export default async function handler(req, res) {
     };
   }
 
-  // -------------------------
-  // Timeout protection (FIX 503)
-  // -------------------------
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), 20000);
 
@@ -129,7 +108,6 @@ export default async function handler(req, res) {
       });
     }
 
-    // rate limit normalization
     if (response.status === 429) {
       return res.status(503).json({
         error: 'AI busy. Please retry shortly.',
@@ -142,13 +120,9 @@ export default async function handler(req, res) {
     clearTimeout(timeout);
 
     if (err.name === 'AbortError') {
-      return res.status(504).json({
-        error: 'Request timeout',
-      });
+      return res.status(504).json({ error: 'Request timeout' });
     }
 
-    return res.status(500).json({
-      error: 'Server error',
-    });
+    return res.status(500).json({ error: 'Server error' });
   }
 }
