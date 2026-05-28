@@ -4251,13 +4251,24 @@ function buildLib(){
   const all=[...LIB,...S.saved.map((p,i)=>({c:"Saved",t:"Custom Prompt "+(i+1),p}))];
   const filtered=curFilter==="All"?all:all.filter(i=>i.c===curFilter);
   if(!filtered.length){g.innerHTML='<p style="color:var(--muted);font-size:13px;grid-column:1/-1;text-align:center;padding:3rem">No prompts in this category yet.</p>';return;}
-  g.innerHTML=filtered.map(item=>`
-    <div class="lc" onclick="loadLib(${JSON.stringify(item.p)})">
+  // Store prompts in a temporary map — avoids inline JSON in HTML attributes
+  window._libMap={};
+  g.innerHTML=filtered.map((item,idx)=>{
+    window._libMap[idx]=item.p;
+    return `<div class="lc" data-lib-idx="${idx}">
       <span class="lc-tag">${item.c}</span>
       <h4>${item.t}</h4>
       <p>${item.p.substring(0,120)}…</p>
       <button class="lc-use">Use This Prompt →</button>
-    </div>`).join("");
+    </div>`;
+  }).join("");
+  // Single event listener on the grid — handles all cards safely
+  g.onclick=function(e){
+    const card=e.target.closest('.lc');
+    if(card && card.dataset.libIdx !== undefined){
+      loadLib(window._libMap[card.dataset.libIdx]);
+    }
+  };
 }
 
 function filterLib(el){
