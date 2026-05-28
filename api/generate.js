@@ -100,8 +100,10 @@ export default async function handler(req, res) {
           const { createClient } = await import('@supabase/supabase-js');
           const sb = createClient(SUPABASE_URL, SUPABASE_SERVICE);
           const today = new Date().toISOString().split('T')[0];
+          const { data: existingRow } = await sb.from('usage_daily')
+            .select('usage_count').eq('user_id', userId).eq('date', today).maybeSingle();
           await sb.from('usage_daily').upsert(
-            { user_id: userId, date: today, usage_count: 1 },
+            { user_id: userId, date: today, usage_count: (existingRow?.usage_count || 0) + 1 },
             { onConflict: 'user_id,date', ignoreDuplicates: false }
           );
         } catch (_) {}
@@ -114,8 +116,10 @@ export default async function handler(req, res) {
         const { createClient } = await import('@supabase/supabase-js');
         const sb = createClient(SUPABASE_URL, SUPABASE_SERVICE);
         const today = new Date().toISOString().split('T')[0];
+        const { data: existingRow2 } = await sb.from('usage_daily')
+          .select('usage_count').eq('user_id', userId).eq('date', today).maybeSingle();
         await sb.from('usage_daily').upsert(
-          { user_id: userId, date: today, usage_count: 1 },
+          { user_id: userId, date: today, usage_count: (existingRow2?.usage_count || 0) + 1 },
           { onConflict: 'user_id,date', ignoreDuplicates: false }
         );
       } catch (_) {}
