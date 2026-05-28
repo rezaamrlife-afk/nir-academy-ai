@@ -30,7 +30,7 @@ const PROVIDERS = {
       'Authorization': `Bearer ${key}`,
     }),
     body: (messages) => ({
-      model:      'llama-3.1-70b-versatile',
+      model:      'llama-3.3-70b-versatile',
       max_tokens: SERVER_MAX_TOKENS,
       messages,
     }),
@@ -47,12 +47,17 @@ export const config = {
 };
 
 export default async function handler(req, res) {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  if (req.method === 'OPTIONS') return res.status(200).end();
+
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  const providerName = process.env.AI_PROVIDER || 'anthropic';
-  const provider     = PROVIDERS[providerName] || PROVIDERS.anthropic;
+  const providerName = process.env.AI_PROVIDER || 'groq';
+  const provider     = PROVIDERS[providerName] || PROVIDERS.groq;
   const apiKey       = provider.apiKey();
 
   if (!apiKey) {
@@ -102,7 +107,6 @@ export default async function handler(req, res) {
     } catch (_) {}
   }
 
-  // Parse body - handle both raw and pre-parsed
   let messages;
   try {
     const body = typeof req.body === 'string' ? JSON.parse(req.body) : req.body;
@@ -124,7 +128,7 @@ export default async function handler(req, res) {
 
     const data = await response.json();
 
-    if (response.ok && providerName === 'groq') {
+    if (response.ok) {
       const text = provider.parse(data);
       const normalized = { content: [{ type: 'text', text }] };
 
@@ -138,16 +142,6 @@ export default async function handler(req, res) {
         } catch (_) {}
       }
       return res.status(200).json(normalized);
-    }
-
-    if (response.ok && userPlan === 'explore' && SUPABASE_URL && SUPABASE_SERVICE) {
-      try {
-        const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE);
-        const today = new Date().toISOString().split('T')[0];
-        await supabase.from('usage_daily').upsert({
-          user_id: userId, date: today, usage_count: 1,
-        }, { onConflict: 'user_id,date', ignoreDuplicates: false });
-      } catch (_) {}
     }
 
     return res.status(response.status).json(data);
