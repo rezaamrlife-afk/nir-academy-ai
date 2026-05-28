@@ -3,8 +3,7 @@ import { createClient } from '@supabase/supabase-js';
 const SUPABASE_URL     = process.env.SUPABASE_URL     || process.env.NEXT_PUBLIC_SUPABASE_URL;
 const SUPABASE_SERVICE = process.env.SUPABASE_SERVICE_KEY;
 
-const SERVER_MAX_TOKENS   = 2048;
-const EXPLORE_DAILY_LIMIT = 8;
+const SERVER_MAX_TOKENS = 2048;
 
 const PROVIDERS = {
   anthropic: {
@@ -57,49 +56,17 @@ export default async function handler(req, res) {
   const authHeader = req.headers.authorization || '';
   const token = authHeader.startsWith('Bearer ') ? authHeader.slice(7) : null;
 
-  let userId   = null;
-  let userPlan = 'explore';
+  let userId = null;
 
   if (token && SUPABASE_URL && SUPABASE_SERVICE) {
     try {
       const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE);
       const { data: { user }, error } = await supabase.auth.getUser(token);
-      if (!error && user) {
-        userId   = user.id;
-        userPlan = user.user_metadata?.plan || 'explore';
-      }
+      if (!error && user) userId = user.id;
     } catch (_) {}
   }
 
   if (!userId) return res.status(401).json({ error: 'Authentication required' });
-
-  // ── Usage check ──
-  if (userPlan === 'explore' && SUPABASE_URL && SUPABASE_SERVICE) {
-    try {
-      const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE);
-      const today = new Date().toISOString().split('T')[0];
-
-      // Use aggregate count to avoid maybeSingle() error with duplicate rows
-      const { data: rows } = await supabase
-        .from('usage_daily')
-        .select('usage_count')
-        .eq('user_id', userId)
-        .eq('date', today);
-
-      const currentCount = rows && rows.length > 0
-        ? rows.reduce((sum, r) => sum + (r.usage_count || 0), 0)
-        : 0;
-
-      if (currentCount >= EXPLORE_DAILY_LIMIT) {
-        return res.status(429).json({
-          error:   'daily_limit_reached',
-          message: 'Daily limit reached. Upgrade to Nira Pro for unlimited access.',
-          usage:   currentCount,
-          limit:   EXPLORE_DAILY_LIMIT,
-        });
-      }
-    } catch (_) {}
-  }
 
   let messages;
   try {
@@ -124,23 +91,7 @@ export default async function handler(req, res) {
 
     if (response.ok) {
       const text = provider.parse(data);
-      const normalized = { content: [{ type: 'text', text }] };
-
-      // ── Increment usage: INSERT new row each time ──
-      // Row count per (user_id, date) = actual usage count
-      if (userPlan === 'explore' && SUPABASE_URL && SUPABASE_SERVICE) {
-        try {
-          const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE);
-          const today = new Date().toISOString().split('T')[0];
-          await supabase.from('usage_daily').insert({
-            user_id: userId,
-            date: today,
-            usage_count: 1,
-          });
-        } catch (_) {}
-      }
-
-      return res.status(200).json(normalized);
+      return res.status(200).json({ content: [{ type: 'text', text }] });
     }
 
     return res.status(response.status).json(data);
