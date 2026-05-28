@@ -73,7 +73,7 @@ export default async function handler(req, res) {
         ? (data.choices?.[0]?.message?.content || '')
         : (data.content?.[0]?.text || '');
       return res.status(200).json({ content: [{ type: 'text', text }] });
-    }
+    } 
 
     return res.status(aiRes.status).json(data);
 
