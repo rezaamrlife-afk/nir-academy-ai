@@ -2,87 +2,153 @@ export const config = {
   api: { bodyParser: true },
 };
 
+// in-memory lock per instance (basic anti-overload)
+const activeRequests = new Map();
+
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+
   if (req.method === 'OPTIONS') return res.status(200).end();
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
+  // -------------------------
+  // 🔥 Simple request fingerprint (anti spam)
+  // -------------------------
+  const fingerprint = req.headers['x-request-id'] || Date.now().toString();
+
+  if (activeRequests.has(fingerprint)) {
+    return res.status(429).json({ error: 'Duplicate request blocked' });
+  }
+
+  activeRequests.set(fingerprint, true);
+
+  // cleanup after 10s
+  setTimeout(() => activeRequests.delete(fingerprint), 10000);
+
+  // -------------------------
   // Parse body
+  // -------------------------
   let body = req.body;
   if (typeof body === 'string') {
     try { body = JSON.parse(body); } catch (_) { body = {}; }
   }
-  body = body || {};
-  const messages = body.messages;
-  if (!messages || !Array.isArray(messages) || messages.length === 0) {
+
+  const messages = body?.messages;
+
+  if (!Array.isArray(messages) || messages.length === 0) {
     return res.status(400).json({ error: 'Invalid request: messages required' });
   }
 
-  // Auth check
-  const authHeader = req.headers.authorization || '';
-  const token = authHeader.startsWith('Bearer ') ? authHeader.slice(7) : null;
-  if (!token) return res.status(401).json({ error: 'Authentication required' });
+  // -------------------------
+  // Auth
+  // -------------------------
+  const token = req.headers.authorization?.replace('Bearer ', '');
+  if (!token) {
+    return res.status(401).json({ error: 'Authentication required' });
+  }
 
-  // Verify token via Supabase
-  const SUPABASE_URL = process.env.SUPABASE_URL;
-  const SUPABASE_SERVICE = process.env.SUPABASE_SERVICE_KEY;
   let userId = null;
 
-  if (SUPABASE_URL && SUPABASE_SERVICE) {
-    try {
-      const { createClient } = await import('@supabase/supabase-js');
-      const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE);
-      const { data: { user }, error } = await supabase.auth.getUser(token);
-      if (!error && user) userId = user.id;
-    } catch (_) {}
+  try {
+    const { createClient } = await import('@supabase/supabase-js');
+
+    const supabase = createClient(
+      process.env.SUPABASE_URL,
+      process.env.SUPABASE_SERVICE_KEY
+    );
+
+    const { data, error } = await supabase.auth.getUser(token);
+    if (!error && data?.user) userId = data.user.id;
+
+  } catch (_) {}
+
+  if (!userId) {
+    return res.status(401).json({ error: 'Authentication failed' });
   }
 
-  if (!userId) return res.status(401).json({ error: 'Authentication required' });
+  // -------------------------
+  // AI Provider
+  // -------------------------
+  const provider = process.env.AI_PROVIDER || 'groq';
 
-  // AI call — no usage limit
-  const AI_PROVIDER = process.env.AI_PROVIDER || 'groq';
-  let aiUrl, aiHeaders, aiBody;
+  let url, headers, payload;
 
-  if (AI_PROVIDER === 'groq') {
-    const key = process.env.GROQ_API_KEY;
-    if (!key) return res.status(500).json({ error: 'API key not configured' });
-    aiUrl = 'https://api.groq.com/openai/v1/chat/completions';
-    aiHeaders = { 'Content-Type': 'application/json', 'Authorization': `Bearer ${key}` };
-    aiBody = { model: 'llama-3.3-70b-versatile', max_tokens: 2048, messages };
+  if (provider === 'groq') {
+    url = 'https://api.groq.com/openai/v1/chat/completions';
+    headers = {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${process.env.GROQ_API_KEY}`,
+    };
+    payload = {
+      model: 'llama-3.3-70b-versatile',
+      max_tokens: 2048,
+      messages,
+    };
   } else {
-    const key = process.env.ANTHROPIC_API_KEY;
-    if (!key) return res.status(500).json({ error: 'API key not configured' });
-    aiUrl = 'https://api.anthropic.com/v1/messages';
-    aiHeaders = { 'Content-Type': 'application/json', 'x-api-key': key, 'anthropic-version': '2023-06-01' };
-    aiBody = { model: 'claude-sonnet-4-20250514', max_tokens: 2048, messages };
+    url = 'https://api.anthropic.com/v1/messages';
+    headers = {
+      'Content-Type': 'application/json',
+      'x-api-key': process.env.ANTHROPIC_API_KEY,
+      'anthropic-version': '2023-06-01',
+    };
+    payload = {
+      model: 'claude-sonnet-4-20250514',
+      max_tokens: 2048,
+      messages,
+    };
   }
+
+  // -------------------------
+  // Timeout protection (FIX 503)
+  // -------------------------
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 20000);
 
   try {
-    const aiRes = await fetch(aiUrl, {
+    const response = await fetch(url, {
       method: 'POST',
-      headers: aiHeaders,
-      body: JSON.stringify(aiBody),
+      headers,
+      body: JSON.stringify(payload),
+      signal: controller.signal,
     });
 
-    const data = await aiRes.json();
+    clearTimeout(timeout);
 
-    if (aiRes.ok) {
-      const text = AI_PROVIDER === 'groq'
-        ? (data.choices?.[0]?.message?.content || '')
-        : (data.content?.[0]?.text || '');
-      return res.status(200).json({ content: [{ type: 'text', text }] });
+    const data = await response.json();
+
+    if (response.ok) {
+      const text =
+        provider === 'groq'
+          ? data?.choices?.[0]?.message?.content || ''
+          : data?.content?.[0]?.text || '';
+
+      return res.status(200).json({
+        content: [{ type: 'text', text }],
+      });
     }
 
-    // Don't pass 429 from AI provider — it shows "Daily limit" message in frontend
-    if (aiRes.status === 429) {
-      return res.status(503).json({ error: 'AI service is busy. Please wait a few seconds and try again.' });
+    // rate limit normalization
+    if (response.status === 429) {
+      return res.status(503).json({
+        error: 'AI busy. Please retry shortly.',
+      });
     }
 
-    return res.status(aiRes.status).json(data);
+    return res.status(response.status).json(data);
 
   } catch (err) {
-    return res.status(500).json({ error: 'Upstream request failed', detail: err.message });
+    clearTimeout(timeout);
+
+    if (err.name === 'AbortError') {
+      return res.status(504).json({
+        error: 'Request timeout',
+      });
+    }
+
+    return res.status(500).json({
+      error: 'Server error',
+    });
   }
 }
