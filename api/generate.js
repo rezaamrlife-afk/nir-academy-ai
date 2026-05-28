@@ -39,11 +39,7 @@ const PROVIDERS = {
 };
 
 export const config = {
-  api: {
-    bodyParser: {
-      sizeLimit: '1mb',
-    },
-  },
+  api: { bodyParser: { sizeLimit: '1mb' } },
 };
 
 export default async function handler(req, res) {
@@ -51,18 +47,12 @@ export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
   if (req.method === 'OPTIONS') return res.status(200).end();
-
-  if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Method not allowed' });
-  }
+  if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
   const providerName = process.env.AI_PROVIDER || 'groq';
   const provider     = PROVIDERS[providerName] || PROVIDERS.groq;
   const apiKey       = provider.apiKey();
-
-  if (!apiKey) {
-    return res.status(500).json({ error: 'API key not configured' });
-  }
+  if (!apiKey) return res.status(500).json({ error: 'API key not configured' });
 
   const authHeader = req.headers.authorization || '';
   const token = authHeader.startsWith('Bearer ') ? authHeader.slice(7) : null;
@@ -81,21 +71,25 @@ export default async function handler(req, res) {
     } catch (_) {}
   }
 
-  if (!userId) {
-    return res.status(401).json({ error: 'Authentication required' });
-  }
+  if (!userId) return res.status(401).json({ error: 'Authentication required' });
 
+  // ── Usage check ──
   if (userPlan === 'explore' && SUPABASE_URL && SUPABASE_SERVICE) {
     try {
       const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE);
-      const today    = new Date().toISOString().split('T')[0];
-      const { data: row } = await supabase
+      const today = new Date().toISOString().split('T')[0];
+
+      // Use aggregate count to avoid maybeSingle() error with duplicate rows
+      const { data: rows } = await supabase
         .from('usage_daily')
         .select('usage_count')
         .eq('user_id', userId)
-        .eq('date', today)
-        .maybeSingle();
-      const currentCount = row?.usage_count || 0;
+        .eq('date', today);
+
+      const currentCount = rows && rows.length > 0
+        ? rows.reduce((sum, r) => sum + (r.usage_count || 0), 0)
+        : 0;
+
       if (currentCount >= EXPLORE_DAILY_LIMIT) {
         return res.status(429).json({
           error:   'daily_limit_reached',
@@ -132,15 +126,20 @@ export default async function handler(req, res) {
       const text = provider.parse(data);
       const normalized = { content: [{ type: 'text', text }] };
 
+      // ── Increment usage: INSERT new row each time ──
+      // Row count per (user_id, date) = actual usage count
       if (userPlan === 'explore' && SUPABASE_URL && SUPABASE_SERVICE) {
         try {
           const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE);
           const today = new Date().toISOString().split('T')[0];
-          await supabase.from('usage_daily').upsert({
-            user_id: userId, date: today, usage_count: 1,
-          }, { onConflict: 'user_id,date', ignoreDuplicates: false });
+          await supabase.from('usage_daily').insert({
+            user_id: userId,
+            date: today,
+            usage_count: 1,
+          });
         } catch (_) {}
       }
+
       return res.status(200).json(normalized);
     }
 
