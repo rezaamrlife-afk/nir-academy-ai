@@ -4166,7 +4166,13 @@ async function callAPI(prompt,outId,btn){
       body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:1000,messages:[{role:"user",content:prompt}]})
     });
     if(res.status===429){showLimitMsg(outId,btn);return;}
-    if(res.status===401){if(out) out.textContent="Please sign in to continue.";if(btn){btn.classList.remove("loading");btn.textContent="✦  "+(btn.dataset.lbl||"Generate");}return;}
+    if(res.status===401){
+      // Try to refresh session before giving up
+      if(window.SB){try{await window.SB.auth.refreshSession();}catch(_){}}
+      if(out) out.textContent="Session expired. Please sign in again.";
+      if(btn){btn.classList.remove("loading");btn.textContent="✦  "+(btn.dataset.lbl||"Generate");}
+      return;
+    }
     const data=await res.json();
     const text=data.content?.map(b=>b.text||"").join("")||"Unable to generate. Please try again.";
     if(text.includes("Unable to generate"))T("Something went wrong. Please try again.");
@@ -4447,12 +4453,14 @@ async function initAuth(){
   }
   
   SB.auth.onAuthStateChange((event, session)=>{
-    if(event==='SIGNED_IN' && session){
+    if(session && session.user){
       currentUser = session.user;
       window.currentUser = currentUser;
-      if(window.fetchAndShowUsage) window.fetchAndShowUsage();
-      onLogin(session.user);
-    } else if(event==='SIGNED_OUT'){
+      if(event==='SIGNED_IN'){
+        if(window.fetchAndShowUsage) window.fetchAndShowUsage();
+        onLogin(session.user);
+      }
+    } else if(event==='SIGNED_OUT'||event==='USER_DELETED'||(!session&&event!=='INITIAL_SESSION')){
       currentUser = null;
       window.currentUser = null;
       onLogout();
