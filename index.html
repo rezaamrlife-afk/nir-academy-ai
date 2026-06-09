@@ -3306,6 +3306,10 @@ function dismissSessionBanner() {
           <div class="shdr"><div class="snum">3</div><h3>Topic</h3></div>
           <div class="sbdy"><input class="tin" type="text" id="lp-topic" placeholder="e.g. Present Perfect, Travel Vocabulary, Conditionals…"></div>
         </div>
+        <div class="sblock">
+          <div class="shdr"><div class="snum">4</div><h3>Unit Content <span style="font-weight:400;font-size:.85em;opacity:.6">(optional)</span></h3></div>
+          <div class="sbdy"><textarea id="lp-unit" class="tin" rows="5" style="resize:vertical;width:100%;font-size:.93em" placeholder="Paste text from your coursebook unit here — vocabulary lists, grammar notes, dialogue, reading text, etc. NIRA will build the lesson plan around this content."></textarea></div>
+        </div>
         <button class="btn-gen" data-lbl="Generate Lesson Plan" onclick="generateLesson()">✦ &nbsp;Generate Lesson Plan</button>
       </div>
       <div>
@@ -4048,6 +4052,8 @@ function buildLesson(){
   const sz=document.getElementById("lp-sz").value;
   const stages=Array.from(document.querySelectorAll("#lp-stages .lstage.active")).map(s=>s.dataset.s).join(", ")||"All stages";
   const focus=document.querySelector("#lp-focus .chip.active")?.dataset.v||"Grammar";
+  const unit=(document.getElementById("lp-unit")?.value||"").trim();
+  const unitSection=unit?"\n\nCOURSEBOOK UNIT CONTENT (base the lesson plan on this material):\n"+unit:"";
   return `You are a TESOL-certified lesson planner for NIR Academy by Dr. Niki Majidi — Pedagogy First. AI Enhanced. Future Ready.
 
 Create a complete, print-ready lesson plan:
@@ -4056,7 +4062,7 @@ LEVEL: ${S.lpLevel}
 TOPIC: ${topic}
 DURATION: ${dur}
 CLASS SIZE: ${sz}
-STAGES TO INCLUDE: ${stages}
+STAGES TO INCLUDE: ${stages}${unitSection}
 
 For EACH stage include:
 - Stage name and exact timing
