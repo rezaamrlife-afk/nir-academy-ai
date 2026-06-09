@@ -4328,35 +4328,7 @@ go("home");
 
 // ══ SERVICE WORKER ══
 if('serviceWorker' in navigator){
-  const swCode = `
-const CACHE='nir-academy-v2';
-self.addEventListener('install',e=>{self.skipWaiting();});
-self.addEventListener('activate',e=>{
-  e.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(k=>k!==CACHE).map(k=>caches.delete(k)))).then(()=>self.clients.claim()));
-});
-self.addEventListener('fetch',e=>{
-  if(e.request.method!=='GET'||e.request.url.includes('anthropic'))return;
-  e.respondWith(
-    caches.open(CACHE).then(cache=>
-      fetch(e.request).then(res=>{
-        if(res&&res.status===200)cache.put(e.request,res.clone());
-        return res;
-      }).catch(()=>caches.match(e.request))
-    )
-  );
-});`;
-  try{
-    const b64 = btoa(unescape(encodeURIComponent(swCode)));
-    const swUrl = 'data:application/javascript;base64,' + b64;
-    navigator.serviceWorker.register(swUrl).then(()=>{
-      
-    }).catch(()=>{
-      // SW not supported in this context — PWA install still works
-      
-    });
-  }catch(e){
-    
-  }
+  navigator.serviceWorker.register('/sw.js').catch(()=>{});
 }
 
 // ══ DEEP LINK / URL PARAM SUPPORT ══
