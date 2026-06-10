@@ -40,8 +40,9 @@
       "url": "/?page=generator",
       "icons": [
         {
-          "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 96 96'><rect width='96' height='96' fill='%23080808'/><text x='48' y='65' text-anchor='middle' font-size='50'>⚡</text></svg>",
-          "sizes": "96x96"
+          "src": "/icons/shortcut-generator.png",
+          "sizes": "96x96",
+          "type": "image/png"
         }
       ]
     },
@@ -52,8 +53,9 @@
       "url": "/?page=library",
       "icons": [
         {
-          "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 96 96'><rect width='96' height='96' fill='%23080808'/><text x='48' y='65' text-anchor='middle' font-size='50'>📚</text></svg>",
-          "sizes": "96x96"
+          "src": "/icons/shortcut-library.png",
+          "sizes": "96x96",
+          "type": "image/png"
         }
       ]
     },
@@ -64,8 +66,9 @@
       "url": "/?page=ielts",
       "icons": [
         {
-          "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 96 96'><rect width='96' height='96' fill='%23080808'/><text x='48' y='65' text-anchor='middle' font-size='50'>📘</text></svg>",
-          "sizes": "96x96"
+          "src": "/icons/shortcut-ielts.png",
+          "sizes": "96x96",
+          "type": "image/png"
         }
       ]
     }
