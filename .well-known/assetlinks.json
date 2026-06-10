@@ -1,1 +1,8 @@
-
+[{
+      "relation": ["delegate_permission/common.handle_all_urls"],
+      "target": {
+        "namespace": "android_app",
+        "package_name": "com.niracademy.ai",
+        "sha256_cert_fingerprints": ["6C:0E:F2:02:F8:BF:F8:EA:65:DA:DF:23:E7:EF:13:27:12:6B:C6:8A:DE:C6:54:AB:50:24:9E:F9:FC:C4:C3:1A"]
+      }
+    }]
