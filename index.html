@@ -23,6 +23,20 @@
 // ── Global state (defined early, before all scripts) ──
 if(typeof window.currentUser === 'undefined') window.currentUser = null;
 var currentUser = window.currentUser;
+
+function togglePw(id, btn) {
+  var inp = document.getElementById(id);
+  if (!inp) return;
+  if (inp.type === 'password') {
+    inp.type = 'text';
+    btn.textContent = '🙈';
+    btn.setAttribute('aria-label', 'Hide password');
+  } else {
+    inp.type = 'password';
+    btn.textContent = '👁';
+    btn.setAttribute('aria-label', 'Show password');
+  }
+}
 </script>
 
 <script>
@@ -2146,6 +2160,13 @@ html.light #session-banner { background: #f5f5f5; border-color: #e0e0e0; border-
   transform: scale(1.15);
   filter: drop-shadow(0 0 4px rgba(201,168,76,0.6));
 }
+
+.pw-wrap{position:relative}
+.pw-wrap input{padding-right:38px}
+.pw-toggle{position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:var(--muted);font-size:15px;padding:4px;line-height:1;transition:color .2s}
+.pw-toggle:hover{color:var(--gold)}
+[dir="rtl"] .pw-wrap input{padding-right:14px;padding-left:38px}
+[dir="rtl"] .pw-toggle{right:auto;left:10px}
 </style>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -2819,7 +2840,7 @@ function dismissSessionBanner() {
     <div class="auth-success" id="auth-success"></div>
     <div id="auth-form-login">
       <div class="auth-field"><label>Email</label><input type="email" id="login-email" placeholder="your@email.com"></div>
-      <div class="auth-field"><label>Password</label><input type="password" id="login-pass" placeholder="••••••••"></div>
+      <div class="auth-field"><label>Password</label><div class="pw-wrap"><input type="password" id="login-pass" placeholder="••••••••"><button type="button" class="pw-toggle" onclick="togglePw('login-pass',this)" aria-label="Show password">👁</button></div></div>
       <div style="text-align:right;margin:-8px 0 12px">
         <button id="forgot-pw-btn" onclick="showForgotPw()" style="background:none;border:none;color:var(--muted);font-size:11px;cursor:pointer;padding:0;text-decoration:underline">Forgot password?</button>
       </div>
@@ -2836,7 +2857,7 @@ function dismissSessionBanner() {
     <div id="auth-form-register" style="display:none">
       <div class="auth-field"><label>Full Name</label><input type="text" id="reg-name" placeholder="Dr. Jane Smith"></div>
       <div class="auth-field"><label>Email</label><input type="email" id="reg-email" placeholder="your@email.com"></div>
-      <div class="auth-field"><label>Password</label><input type="password" id="reg-pass" placeholder="Min 6 characters"></div>
+      <div class="auth-field"><label>Password</label><div class="pw-wrap"><input type="password" id="reg-pass" placeholder="Min 6 characters"><button type="button" class="pw-toggle" onclick="togglePw('reg-pass',this)" aria-label="Show password">👁</button></div></div>
       <button class="auth-submit" onclick="doRegister()">✦ &nbsp;Create Account</button>
     </div>
   </div>
@@ -5207,7 +5228,7 @@ document.addEventListener('DOMContentLoaded', function() {
       // Show a simple new-password UI
       var loginForm = document.getElementById('auth-form-login');
       if (loginForm) {
-        loginForm.innerHTML = '<div class="auth-field"><label>New Password</label><input type="password" id="new-pass" placeholder="Min 6 characters"></div>' +
+        loginForm.innerHTML = '<div class="auth-field"><label>New Password</label><div class="pw-wrap"><input type="password" id="new-pass" placeholder="Min 6 characters"><button type="button" class="pw-toggle" onclick="togglePw(&quot;new-pass&quot;,this)" aria-label="Show password">&#128065;</button></div></div>' +
           '<button class="auth-submit" onclick="doSetNewPassword()">✦ &nbsp;Update Password</button>';
         loginForm.style.display = 'block';
       }
