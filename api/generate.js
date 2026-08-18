@@ -64,7 +64,7 @@ export default async function handler(req, res) {
       'Authorization': `Bearer ${process.env.GROQ_API_KEY}`,
     };
     payload = {
-      model: 'llama-3.1-8b-instant', // ✅ عوض شد
+      model: 'openai/gpt-oss-120b', // ✅ عوض شد
       max_tokens: 2048,
       messages,
     };
