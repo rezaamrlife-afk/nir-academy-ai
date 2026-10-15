@@ -5330,5 +5330,415 @@ function nirWordCount(outId, wcId) {
   wc.textContent = words + ' words · ' + readMin + ' min read';
 }
 </script>
+
+<script>
+/**
+ * ══════════════════════════════════════════════════════════════
+ * NIRA Academy AI — Session & Request Tracking Module
+ * Version: 1.0.0
+ *
+ * HOW TO INSTALL:
+ *   Paste this entire <script> block into index.html,
+ *   just before the closing </body> tag.
+ *
+ * WHAT IT DOES:
+ *   • Records every AI request to `nira_requests`
+ *   • Tracks sessions with real active-time (no idle counted)
+ *     in `nira_sessions`
+ *   • Logs errors to `nira_errors`
+ *   • Hooks into the existing window.saveSession and
+ *     window._usageIncrement hooks already in callAPI()
+ *
+ * SECURITY:
+ *   Uses only the anon key (already in the page).
+ *   RLS ensures users can only write their own rows.
+ *   No service_role key is used or needed here.
+ * ══════════════════════════════════════════════════════════════
+ */
+
+(function() {
+  'use strict';
+
+  /* ── Config ─────────────────────────────────────────────── */
+  const INACTIVITY_TIMEOUT_MS = 30 * 60 * 1000;  // 30 min — change here
+  const HEARTBEAT_INTERVAL_MS =  2 * 60 * 1000;  //  2 min heartbeat
+  const DEBUG = false;  // set true to see console logs
+
+  /* ── Internal State ─────────────────────────────────────── */
+  let _sessionId       = null;   // bigint id from nira_sessions
+  let _sessionStart    = null;   // Date
+  let _lastActivity    = null;   // Date — updated on every real action
+  let _requestCount    = 0;
+  let _toolsUsed       = new Set();
+  let _heartbeatTimer  = null;
+  let _inactiveTimer   = null;
+  let _isSessionActive = false;
+  let _currentUser     = null;   // Supabase user object
+  let _supabase        = null;   // Supabase client reference
+
+  function log(...args) { if (DEBUG) console.log('[NIRA-Track]', ...args); }
+
+  /* ── Wait for Supabase client ───────────────────────────── */
+  function waitForSB(cb, tries = 0) {
+    // The main app exposes its client as window.SB
+    if (window.SB && window.SB.from) { _supabase = window.SB; cb(); return; }
+    if (tries > 60) { console.warn('[NIRA-Track] Supabase client not found after 30s'); return; }
+    setTimeout(() => waitForSB(cb, tries + 1), 500);
+  }
+
+  /* ── Tool Detection ─────────────────────────────────────── */
+  function detectCurrentTool() {
+    // Look at active tab/section in the UI
+    const active = document.querySelector('.tool-tab.active, .tab-btn.active, [data-tool].active');
+    if (active) {
+      const t = active.dataset.tool || active.dataset.tab || active.textContent.trim().toLowerCase();
+      if (t) return normalizeToolName(t);
+    }
+    // Fallback: check which generate button was most recently clicked
+    return window._lastToolUsed || 'general';
+  }
+
+  function normalizeToolName(raw) {
+    const map = {
+      'prompt':    'prompt_generator',
+      'lesson':    'lesson_planner',
+      'ielts':     'ielts_generator',
+      'error':     'error_correction',
+      'worksheet': 'worksheet_builder',
+      'assistant': 'ai_assistant',
+      'chat':      'ai_assistant',
+    };
+    const lower = raw.toLowerCase();
+    for (const [k, v] of Object.entries(map)) {
+      if (lower.includes(k)) return v;
+    }
+    return 'general';
+  }
+
+  /* ── Session Management ─────────────────────────────────── */
+  async function startSession() {
+    if (_isSessionActive || !_currentUser || !_supabase) return;
+
+    _sessionStart    = new Date();
+    _lastActivity    = new Date();
+    _requestCount    = 0;
+    _toolsUsed       = new Set();
+    _isSessionActive = true;
+
+    try {
+      const { data, error } = await _supabase
+        .from('nira_sessions')
+        .insert({
+          user_id:            _currentUser.id,
+          session_start:      _sessionStart.toISOString(),
+          last_activity:      _lastActivity.toISOString(),
+          is_active:          true,
+          inactivity_timeout: INACTIVITY_TIMEOUT_MS / 1000,
+        })
+        .select('id')
+        .single();
+
+      if (error) { log('startSession error:', error.message); return; }
+      _sessionId = data.id;
+      log('Session started:', _sessionId);
+
+      startHeartbeat();
+      resetInactivityTimer();
+    } catch(e) { log('startSession exception:', e); }
+  }
+
+  async function endSession(reason = 'logout') {
+    if (!_isSessionActive || !_sessionId || !_supabase) return;
+
+    stopHeartbeat();
+    clearInactivityTimer();
+    _isSessionActive = false;
+
+    const now     = new Date();
+    const endTime = (_lastActivity && _lastActivity > _sessionStart)
+                    ? _lastActivity   // don't count idle time after last action
+                    : now;
+    const durationSec = Math.max(0, Math.round((endTime - _sessionStart) / 1000));
+
+    log(`Session ending (${reason}): ${durationSec}s, ${_requestCount} requests`);
+
+    try {
+      await _supabase
+        .from('nira_sessions')
+        .update({
+          is_active:        false,
+          session_end:      endTime.toISOString(),
+          last_activity:    endTime.toISOString(),
+          duration_seconds: durationSec,
+          request_count:    _requestCount,
+          tools_used:       [..._toolsUsed],
+        })
+        .eq('id', _sessionId);
+    } catch(e) { log('endSession exception:', e); }
+
+    _sessionId    = null;
+    _sessionStart = null;
+    _lastActivity = null;
+  }
+
+  async function updateHeartbeat() {
+    if (!_isSessionActive || !_sessionId || !_supabase) return;
+    _lastActivity = new Date();
+    try {
+      await _supabase
+        .from('nira_sessions')
+        .update({
+          last_activity: _lastActivity.toISOString(),
+          request_count: _requestCount,
+          tools_used:    [..._toolsUsed],
+        })
+        .eq('id', _sessionId);
+      log('Heartbeat sent');
+    } catch(e) { log('heartbeat exception:', e); }
+  }
+
+  function startHeartbeat() {
+    stopHeartbeat();
+    _heartbeatTimer = setInterval(updateHeartbeat, HEARTBEAT_INTERVAL_MS);
+  }
+
+  function stopHeartbeat() {
+    if (_heartbeatTimer) { clearInterval(_heartbeatTimer); _heartbeatTimer = null; }
+  }
+
+  function resetInactivityTimer() {
+    clearInactivityTimer();
+    _inactiveTimer = setTimeout(() => {
+      log('Inactivity timeout — ending session');
+      endSession('inactivity');
+    }, INACTIVITY_TIMEOUT_MS);
+  }
+
+  function clearInactivityTimer() {
+    if (_inactiveTimer) { clearTimeout(_inactiveTimer); _inactiveTimer = null; }
+  }
+
+  /* ── Request Logging ────────────────────────────────────── */
+  async function logRequest(tool, success, durationMs, errorMsg) {
+    if (!_currentUser || !_supabase) return;
+
+    // Ensure session is active
+    if (!_isSessionActive) await startSession();
+
+    // Update activity markers
+    _lastActivity = new Date();
+    _requestCount++;
+    _toolsUsed.add(tool);
+    window._lastToolUsed = tool;
+    resetInactivityTimer();
+
+    try {
+      await _supabase
+        .from('nira_requests')
+        .insert({
+          user_id:     _currentUser.id,
+          tool:        tool,
+          created_at:  _lastActivity.toISOString(),
+          duration_ms: durationMs || null,
+          success:     success,
+          error_msg:   errorMsg || null,
+        });
+      log('Request logged:', tool, success);
+    } catch(e) { log('logRequest exception:', e); }
+  }
+
+  async function logError(errorType, errorMsg, tool) {
+    if (!_currentUser || !_supabase) return;
+    try {
+      await _supabase
+        .from('nira_errors')
+        .insert({
+          user_id:    _currentUser.id,
+          error_type: errorType,
+          error_msg:  errorMsg,
+          tool:       tool || detectCurrentTool(),
+        });
+      log('Error logged:', errorType);
+    } catch(e) { log('logError exception:', e); }
+  }
+
+  /* ── Hook into existing callAPI ─────────────────────────── */
+  function patchCallAPI() {
+    // The app exposes callAPI globally (or we wrap window.saveSession)
+    // Strategy A: wrap window.saveSession (already called inside callAPI on success)
+    const _origSaveSession = window.saveSession;
+    window.saveSession = function() {
+      // callAPI calls this after a successful API request
+      const tool = detectCurrentTool();
+      logRequest(tool, true, null, null);
+      if (_origSaveSession) _origSaveSession.apply(this, arguments);
+    };
+
+    // Strategy B: also intercept fetch to catch duration and errors
+    const _origFetch = window.fetch;
+    window.fetch = async function(url, opts) {
+      // Only intercept our AI API endpoint
+      if (typeof url === 'string' && url.includes('/api/generate')) {
+        const t0   = Date.now();
+        const tool = detectCurrentTool();
+        try {
+          const resp = await _origFetch.apply(this, arguments);
+          const durationMs = Date.now() - t0;
+
+          if (!resp.ok) {
+            const errorType = resp.status === 429 ? '429_limit'
+                            : resp.status === 401 ? '401_auth'
+                            : 'api';
+            logError(errorType, `HTTP ${resp.status}`, tool);
+            // Don't double-log request here; window.saveSession won't fire on failure
+            logRequest(tool, false, durationMs, `HTTP ${resp.status}`);
+          }
+          // Success case: window.saveSession fires in callAPI; no double-insert needed
+          return resp;
+        } catch(e) {
+          const durationMs = Date.now() - t0;
+          logError('network', e.message, tool);
+          logRequest(tool, false, durationMs, e.message);
+          throw e;
+        }
+      }
+      return _origFetch.apply(this, arguments);
+    };
+
+    log('callAPI hooks installed');
+  }
+
+  /* ── Auth State Hooks ────────────────────────────────────── */
+  function setupAuthHooks() {
+    // Hook into onLogin (called after successful sign-in in the app)
+    const _origOnLogin = window.onLogin;
+    window.onLogin = async function(user) {
+      log('onLogin detected, user:', user?.email);
+      _currentUser = user;
+      await startSession();
+      if (_origOnLogin) _origOnLogin.apply(this, arguments);
+    };
+
+    // Hook into signOut
+    const _origOnLogout = window.onLogout;
+    window.onLogout = async function() {
+      log('onLogout detected');
+      await endSession('logout');
+      _currentUser = null;
+      if (_origOnLogout) _origOnLogout.apply(this, arguments);
+    };
+
+    // Also subscribe to Supabase auth state changes as a safety net
+    if (_supabase) {
+      _supabase.auth.onAuthStateChange(async (event, session) => {
+        log('auth state change:', event);
+        if (event === 'SIGNED_IN' && session?.user) {
+          if (!_currentUser || _currentUser.id !== session.user.id) {
+            _currentUser = session.user;
+            if (!_isSessionActive) await startSession();
+          }
+        } else if (event === 'SIGNED_OUT') {
+          await endSession('signed_out');
+          _currentUser = null;
+        }
+      });
+    }
+
+    // Check if user is already logged in on page load
+    _supabase.auth.getSession().then(async ({ data: { session } }) => {
+      if (session?.user) {
+        log('Existing session found on load:', session.user.email);
+        _currentUser = session.user;
+        await startSession();
+      }
+    });
+  }
+
+  /* ── Page Visibility (pause idle on tab switch) ─────────── */
+  function setupVisibilityHandling() {
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) {
+        // Tab hidden — pause inactivity timer (don't count as idle)
+        clearInactivityTimer();
+        log('Tab hidden, inactivity timer paused');
+      } else {
+        // Tab visible again — check if session should resume
+        if (_isSessionActive) {
+          resetInactivityTimer();
+          log('Tab visible, inactivity timer resumed');
+        } else if (_currentUser) {
+          // Session ended while hidden; start a fresh one
+          startSession();
+        }
+      }
+    });
+  }
+
+  /* ── Unload / Close ─────────────────────────────────────── */
+  function setupUnloadHandling() {
+    // Best-effort: close session on tab close / refresh
+    // Note: async in beforeunload is unreliable; we do sync localStorage marker
+    // and rely on close_stale_sessions() SQL function for cleanup
+    window.addEventListener('beforeunload', () => {
+      if (_isSessionActive && _sessionId) {
+        // Synchronous localStorage marker for recovery
+        localStorage.setItem('nira_active_session', JSON.stringify({
+          id:       _sessionId,
+          start:    _sessionStart?.toISOString(),
+          last:     _lastActivity?.toISOString(),
+          count:    _requestCount,
+          tools:    [..._toolsUsed],
+        }));
+      }
+    });
+
+    // On next page load, close the dangling session if found
+    const dangling = (() => {
+      try { return JSON.parse(localStorage.getItem('nira_active_session')); }
+      catch { return null; }
+    })();
+
+    if (dangling?.id && _supabase) {
+      localStorage.removeItem('nira_active_session');
+      const endTime = dangling.last || new Date().toISOString();
+      const durationSec = dangling.start
+        ? Math.max(0, Math.round((new Date(endTime) - new Date(dangling.start)) / 1000))
+        : 0;
+      _supabase.from('nira_sessions').update({
+        is_active:        false,
+        session_end:      endTime,
+        duration_seconds: durationSec,
+        request_count:    dangling.count || 0,
+        tools_used:       dangling.tools || [],
+      }).eq('id', dangling.id).then(() => log('Recovered dangling session:', dangling.id));
+    }
+  }
+
+  /* ── Expose public API ──────────────────────────────────── */
+  window.NiraTrack = {
+    getSessionId:    () => _sessionId,
+    getSessionStart: () => _sessionStart,
+    isActive:        () => _isSessionActive,
+    setInactivityTimeout: (ms) => {
+      // Allow runtime change of timeout
+      INACTIVITY_TIMEOUT_MS; // read only — reassign below
+      window._niraInactivityMs = ms;
+      if (_isSessionActive) resetInactivityTimer();
+    },
+  };
+
+  /* ── Bootstrap ───────────────────────────────────────────── */
+  waitForSB(() => {
+    log('Supabase found, initialising tracking');
+    patchCallAPI();
+    setupAuthHooks();
+    setupVisibilityHandling();
+    setupUnloadHandling();
+    log('NIRA Tracking module ready ✓');
+  });
+
+})();
+
+</script>
 </body>
 </html>
