@@ -4288,7 +4288,14 @@ function renderMD(raw){
       if(/^\|\s*[-:]+[\s|:-]*\|/.test(row)){ inHead=false; return; }
       const cells = row.split('|').slice(1,-1);
       const tag = (ri===0) ? 'th' : 'td';
-      html += '<tr>' + cells.map(c=>`<${tag}>${c.trim()}</${tag}>`).join('') + '</tr>';
+      html += '<tr>' + cells.map(c=>{
+        // render inline Markdown and HTML inside cells
+        let v = c.trim()
+          .replace(/&lt;br\s*\/?&gt;/gi,'<br>')   // escaped <br> → real <br>
+          .replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>')
+          .replace(/\*([^\s*][^*]*?)\*/g,'<em>$1</em>');
+        return `<${tag}>${v}</${tag}>`;
+      }).join('') + '</tr>';
     });
     html += '</tbody></table>';
     return html;
