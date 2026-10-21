@@ -4240,8 +4240,33 @@ async function getAuthToken(){
 // ══════════════════════════════════════════════════════
 function renderMD(raw){
   if(!raw) return '';
-  // 1. Escape HTML entities first (prevent XSS from AI output)
+  // 0. Normalise HTML that AI sometimes returns → convert to plain text / Markdown
+  //    so the escape step below doesn't turn them into visible &lt;br&gt; etc.
   let s = raw
+    // <br>, <br/>, <br /> → newline
+    .replace(/<br\s*\/?>/gi, '\n')
+    // <strong>...</strong> or <b>...</b> → **...**
+    .replace(/<strong>([\s\S]*?)<\/strong>/gi, '**$1**')
+    .replace(/<b>([\s\S]*?)<\/b>/gi, '**$1**')
+    // <em>...</em> or <i>...</i> → *...*
+    .replace(/<em>([\s\S]*?)<\/em>/gi, '*$1*')
+    .replace(/<i>([\s\S]*?)<\/i>/gi, '*$1*')
+    // <p>...</p> → paragraph with surrounding newlines
+    .replace(/<p>([\s\S]*?)<\/p>/gi, '\n$1\n')
+    // <h1>–<h6> → Markdown headings
+    .replace(/<h1>([\s\S]*?)<\/h1>/gi, '\n# $1\n')
+    .replace(/<h2>([\s\S]*?)<\/h2>/gi, '\n## $1\n')
+    .replace(/<h3>([\s\S]*?)<\/h3>/gi, '\n### $1\n')
+    .replace(/<h4>([\s\S]*?)<\/h4>/gi, '\n#### $1\n')
+    // <li>...</li> → - item
+    .replace(/<li>([\s\S]*?)<\/li>/gi, '\n- $1')
+    // <ul>...</ul> and <ol>...</ol> wrappers → just newlines
+    .replace(/<\/?[uo]l>/gi, '\n')
+    // strip any remaining safe HTML tags (e.g. <span>, <div>)
+    .replace(/<[^>]+>/g, '');
+
+  // 1. Escape HTML entities first (prevent XSS from AI output)
+  s = s
     .replace(/&/g,'&amp;')
     .replace(/</g,'&lt;')
     .replace(/>/g,'&gt;');
