@@ -4362,19 +4362,19 @@ async function callAPI(prompt,outId,btn){
     const data=await res.json();
     const text=data.content?.map(b=>b.text||"").join("")||"Unable to generate. Please try again.";
     if(text.includes("Unable to generate"))T("Something went wrong. Please try again.");
-    // Show typewriter on a plain-text preview, then swap to rendered HTML
+    // Typewriter animation, then render Markdown when done
     out.classList.add('md-rendering');
-    out.innerHTML="<span class='cur'></span>";
-    let i=0;const c=document.createElement("span");c.className="cur";
-    // During animation use textNode streaming for speed
+    out.textContent="";
+    const c=document.createElement("span");c.className="cur";out.appendChild(c);
+    let i=0;
     const spd=text.length>700?5:10;
     const tick=setInterval(()=>{
       if(i<text.length){
-        c.before(document.createTextNode(text[i++]));
+        c.insertAdjacentText('beforebegin', text[i++]);
       } else {
         c.remove();
         clearInterval(tick);
-        // Replace plain-text with rendered Markdown
+        // Swap plain-text preview for rendered Markdown
         out.classList.remove('md-rendering');
         out.innerHTML = renderMD(text);
         nirWordCount(outId,outId.replace("-out","-wc"));
