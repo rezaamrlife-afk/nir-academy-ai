@@ -1732,23 +1732,23 @@ html.light {
   --bg3:      #ffffff;
   --bg4:      #D9E5EE;
   --bg5:      #ffffff;
-  --bg6:      #F0F7FC;
+  --bg6:      #EAF2F8;
 
-  /* Text */
-  --text:     #18354B;
-  --muted:    #4A6479;
-  --dim:      #7A96AA;
+  /* Text — rich, high-contrast */
+  --text:     #0B1E2D;
+  --muted:    #2D5068;
+  --dim:      #5A8099;
 
-  /* Accent — NIR gold (warm, on light bg) */
-  --gold:        #244F70;
-  --gold-l:      #3A7099;
-  --gold-dim:    rgba(36,79,112,.55);
-  --gold-glow:   rgba(36,79,112,.09);
+  /* Accent — NIR blue (deeper, bolder) */
+  --gold:        #1A3F5C;
+  --gold-l:      #2E6A96;
+  --gold-dim:    rgba(26,63,92,.60);
+  --gold-glow:   rgba(26,63,92,.10);
 
-  /* Golden highlights */
-  --gold-warm:   #B89427;
+  /* Golden highlights — warmer, richer */
+  --gold-warm:   #C9960A;
   --gold-dark:   #8A6D12;
-  --gold-badge:  #F5E3A0;
+  --gold-badge:  #FEF0C0;
 
   /* Feedback */
   --ok:          #1F7A56;
@@ -1764,23 +1764,23 @@ html.light {
 
 /* ── Light Mode: fix hardcoded white text on dark bg ── */
 html.light .ph h1,
-html.light .stitle,
-html.light .tc h3,
+html.light #home-hero h1 { color: #0B1E2D; font-weight: 800; }
+html.light .stitle { color: #0B1E2D; font-weight: 700; }
+html.light .tc h3 { color: #0B1E2D; font-weight: 700; }
 html.light .lc h4,
 html.light .ic h3,
 html.light .eo h4,
 html.light .wt h4,
-html.light .ob-step h4,
+html.light .ob-step h4 { color: #0B1E2D; font-weight: 700; }
 html.light .onboard h2,
 html.light .home-tools h2,
 html.light .hcta h2,
-html.light .roadmap h2,
+html.light .roadmap h2 { color: #0B1E2D; font-weight: 800; }
 html.light .rm h3,
-html.light .blog-card h3,
-html.light #home-hero h1,
-html.light .rc-title,
-html.light .hh-desc,
-html.light .foot-brand p { color: var(--text); }
+html.light .blog-card h3 { color: #0B1E2D; font-weight: 700; }
+html.light .rc-title { color: #0B1E2D; font-weight: 600; }
+html.light .hh-desc { color: #2D5068; }
+html.light .foot-brand p { color: #2D5068; }
 
 /* ── Light Mode: fix hardcoded inline styles in saved/history pages ── */
 html.light .out-txt { color: var(--text); }
@@ -1872,41 +1872,70 @@ html.light .foot-col a { color: #4A6479; }
 html.light .foot-copy { color: #7A96AA; border-color: #D9E5EE; }
 
 /* ── Light Mode: dashboard stats ── */
-html.light .ic-n { color: #244F70; font-weight: 700; }
+html.light .ic-n { color: #1A3F5C; font-weight: 800; font-size: 1.9rem; }
 
 /* ── Light Mode: pro sidebar block ── */
-html.light .sb-pro { background: rgba(36,79,112,.08); border-color: rgba(36,79,112,.18); }
-html.light .sb-pro .sp-t { color: #244F70; }
-html.light .sb-pro .sp-d { color: #4A6479; }
-html.light .sb-pro button { background: #244F70; color: #fff; }
-html.light .sb-pro button:hover { background: #3A7099; }
+html.light .sb-pro { background: rgba(26,63,92,.08); border-color: rgba(26,63,92,.20); }
+html.light .sb-pro .sp-t { color: #1A3F5C; }
+html.light .sb-pro .sp-d { color: #3A5A72; }
+html.light .sb-pro button { background: #1A3F5C; color: #fff; }
+html.light .sb-pro button:hover { background: #2E6A96; }
 
 /* ── Light Mode toggle icon ── */
-html.light #theme-toggle { color: #4A6479; }
-/* chips & level selectors in light */
-html.light .chip { background: #fff; border-color: #D9E5EE; color: #4A6479; }
-html.light .chip.active { background: rgba(36,79,112,.08); border-color: #244F70; color: #244F70; }
-html.light .lvl { background: #fff; border-color: #D9E5EE; color: #4A6479; }
-html.light .lvl.active { background: #244F70; color: #fff; border-color: #244F70; }
-/* sblock section headers */
-html.light .sblock { border-color: #D9E5EE; }
-html.light .shdr { background: #F0F7FC; border-bottom-color: #D9E5EE; }
-html.light .shdr h3 { color: #244F70; }
-html.light .snum { border-color: #244F70; color: #244F70; }
-/* output panel */
-html.light .rp-hdr { background: #F0F7FC; border-bottom-color: #D9E5EE; }
-html.light .rp-lbl { color: #244F70; }
-html.light .rp-btn { background: #fff; border-color: #D9E5EE; color: #244F70; }
-html.light .rp-btn:hover { background: #F0F7FC; border-color: #244F70; }
+html.light #theme-toggle { color: #3A5A72; }
 
-/* ── Light Mode: Tab 7 missing overrides (audit fix) ── */
-html.light .ast-global-btn  { color: #1B2A4A; border-color: #dde6f5; }
-html.light .ast-mode-desc   { color: #6B7FA3; }
-html.light .ast-context-label { color: #1B2A4A; }
+/* ── chips & level selectors in light ── */
+html.light .chip { background: #fff; border-color: #C8D9E6; color: #3A5A72; font-weight: 500; }
+html.light .chip:hover { border-color: #1A3F5C; color: #1A3F5C; background: #EAF2F8; }
+html.light .chip.active { background: #1A3F5C; border-color: #1A3F5C; color: #fff; font-weight: 700; }
+html.light .lvl { background: #fff; border-color: #C8D9E6; color: #3A5A72; font-weight: 600; }
+html.light .lvl.active { background: #1A3F5C; color: #fff; border-color: #1A3F5C; }
 
-/* ── Light Mode: chip hover contrast fix ── */
-html.light .chip            { color: #1B2A4A; border-color: #dde6f5; }
-html.light .chip:hover      { color: #0F1B33; border-color: #a0b0cc; }
+/* ── sblock section headers ── */
+html.light .sblock { border-color: #D9E5EE; box-shadow: 0 1px 4px rgba(26,63,92,.05); }
+html.light .shdr { background: linear-gradient(90deg, #EAF2F8, #F0F7FC); border-bottom-color: #D9E5EE; }
+html.light .shdr h3 { color: #1A3F5C; font-weight: 700; }
+html.light .snum { border-color: #1A3F5C; color: #1A3F5C; background: rgba(26,63,92,.07); }
+html.light .shint { color: #6A8FA8; }
+
+/* ── output panel ── */
+html.light .rp-hdr { background: linear-gradient(90deg,#EAF2F8,#F0F7FC); border-bottom: 1px solid #D9E5EE; padding: .85rem 1.3rem; }
+html.light .rp-lbl { color: #1A3F5C; font-weight: 700; letter-spacing: .5px; }
+html.light .rp-btn { background: #fff; border: 1px solid #C8D9E6; color: #1A3F5C; font-weight: 600; border-radius: 6px; }
+html.light .rp-btn:hover { background: #EAF2F8; border-color: #1A3F5C; }
+html.light .rp-foot { color: #6A8FA8; font-size: 11px; }
+
+/* ── out-txt headings & content in light ── */
+html.light .out-txt { color: #0B1E2D; font-size: 15px; line-height: 1.8; }
+html.light .out-txt h1,html.light .out-txt h2 { color: #0B1E2D; font-weight: 800; border-bottom: 2px solid #C8D9E6; padding-bottom: .2em; margin-bottom: .5em; }
+html.light .out-txt h3 { color: #1A3F5C; font-weight: 700; }
+html.light .out-txt h4 { color: #2E6A96; font-weight: 700; }
+html.light .out-txt strong { color: #0B1E2D; font-weight: 700; }
+html.light .out-txt p { color: #1A3550; }
+html.light .out-txt li { color: #1A3550; }
+html.light .out-txt table.md-table th { background: #1A3F5C; color: #fff; font-weight: 700; }
+html.light .out-txt table.md-table td { color: #0B1E2D; border-color: #C8D9E6; }
+html.light .out-txt table.md-table tr:nth-child(even) td { background: #EBF3F9; }
+html.light .out-txt blockquote { border-left-color: #B89427; background: #FEF8E7; color: #5A4010; font-style: italic; }
+html.light .out-txt code { background: #EBF3F9; border-color: #C8D9E6; color: #1A3F5C; font-weight: 600; }
+html.light .out-txt a { color: #1A6FA8; text-decoration: underline; }
+
+/* ── Tab 7 missing overrides ── */
+html.light .ast-global-btn  { color: #0F2638; border-color: #D9E5EE; }
+html.light .ast-mode-desc   { color: #3A5A72; }
+html.light .ast-context-label { color: #0F2638; }
+
+/* ── ph eyebrow & tags ── */
+html.light .ph-ey { color: #B89427; font-weight: 700; letter-spacing: 3px; }
+html.light .ph p { color: #2D5068; font-size: 14px; }
+html.light .ph-tag { border-color: #C8D9E6; color: #1A3F5C; background: #EBF3F9; font-weight: 600; }
+html.light .stitle .stg { color: #B89427; font-weight: 700; }
+html.light .tc p { color: #2D5068; font-weight: 500; }
+html.light .tc-cta { color: #1A3F5C; font-weight: 800; }
+html.light .sb-lbl { color: #5A8099; font-weight: 700; }
+html.light .sb-item { color: #2D5068; font-weight: 600; }
+html.light .sb-item:hover { background: #EBF3F9; color: #0B1E2D; }
+html.light .sb-item.active { color: #1A3F5C; background: rgba(26,63,92,.1); border-left-color: #1A3F5C; }
 html.light .lvl:hover       { color: #0F1B33; border-color: #2563EB; }
 
 /* ═══ NIRA ONBOARDING OVERLAY ═══ */
