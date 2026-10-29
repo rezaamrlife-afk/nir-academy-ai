@@ -1187,7 +1187,7 @@ a{text-decoration:none;color:inherit}button{cursor:pointer;font-family:'Raleway'
 .btn-gen.loading{opacity:.6;pointer-events:none}
 
 /* ══ RESULT PANEL ══ */
-.rpanel{background:var(--bg3);border:1px solid var(--gold);border-radius:var(--rl);padding:1.6rem;position:sticky;top:76px;max-height:calc(100vh - 90px);overflow-y:hidden;display:flex;flex-direction:column;gap:.9rem}
+.rpanel{background:var(--bg3);border:1px solid var(--gold);border-radius:var(--rl);padding:1.6rem;position:sticky;top:76px;max-height:calc(100vh - 90px);min-height:480px;overflow-y:hidden;display:flex;flex-direction:column;gap:.9rem}
 .rp-hdr{display:flex;align-items:center;justify-content:space-between}
 .rp-lbl{font-family:'Cinzel',serif;font-size:11px;color:var(--gold);letter-spacing:2px;text-transform:uppercase;display:flex;align-items:center;gap:6px}
 .rp-lbl::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--gold);animation:pulse 2s infinite;display:inline-block}
@@ -1456,6 +1456,8 @@ html.light .rm:hover{box-shadow:0 6px 20px rgba(0,0,0,.12);}
   .foot-inner{grid-template-columns:1fr 1fr}
   #footer{padding:2rem 1.5rem}
   .glayout{grid-template-columns:1fr}
+  .rpanel{position:static;max-height:none;min-height:420px;overflow-y:auto}
+  .out-txt{min-height:380px}
   .content,.ph{padding:1.8rem 1.5rem}
   .igrid{grid-template-columns:1fr}
   .lstages{grid-template-columns:repeat(3,1fr)}
