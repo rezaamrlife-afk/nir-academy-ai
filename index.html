@@ -1096,9 +1096,117 @@ a{text-decoration:none;color:inherit}button{cursor:pointer;font-family:'Raleway'
 #main{flex:1;min-width:0;overflow-x:hidden}
 
 /* ══ PAGES ══ */
-.page{display:none;animation:fadeIn .3s ease}
+.page{display:none;animation:pageEnter .38s cubic-bezier(.22,.68,0,1.2) both}
 .page.active{display:block}
+@keyframes pageEnter{from{opacity:0;transform:translateY(12px) scale(.99)}to{opacity:1;transform:translateY(0) scale(1)}}
 @keyframes fadeIn{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
+
+/* ══ WORLD-CLASS EFFECTS ══ */
+
+/* — Shimmer loading skeleton — */
+@keyframes shimmer{0%{background-position:-400px 0}100%{background-position:400px 0}}
+.skeleton{background:linear-gradient(90deg,var(--bg3) 25%,var(--bg4) 50%,var(--bg3) 75%);background-size:800px 100%;animation:shimmer 1.4s infinite linear;border-radius:6px;color:transparent!important}
+
+/* — Gradient text effect — */
+.grad-text{background:linear-gradient(135deg,var(--gold-l),var(--gold),var(--gold-warm,#E8C96A));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+html.light .grad-text{background:linear-gradient(135deg,#1A3F5C,#2563A8,#B07F00);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+
+/* — Glass card effect — */
+.glass{backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.10)}
+html.light .glass{background:rgba(255,255,255,.75);border:1px solid rgba(26,63,92,.12)}
+
+/* — Floating animation — */
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+.float{animation:float 3.5s ease-in-out infinite}
+.float-slow{animation:float 5s ease-in-out infinite}
+
+/* — Glow pulse on active elements — */
+@keyframes glowPulse{0%,100%{box-shadow:0 0 0 0 rgba(201,168,76,.25)}50%{box-shadow:0 0 20px 4px rgba(201,168,76,.12)}}
+html.light .btn-gen:not(.loading){animation:glowPulseBlue 3s ease-in-out infinite}
+@keyframes glowPulseBlue{0%,100%{box-shadow:0 2px 8px rgba(26,63,92,.28)}50%{box-shadow:0 4px 24px rgba(26,63,92,.45),0 2px 8px rgba(26,63,92,.28)}}
+
+/* — Scroll reveal: add .reveal class via JS — */
+.reveal{opacity:0;transform:translateY(18px);transition:opacity .55s cubic-bezier(.22,.68,0,1),transform .55s cubic-bezier(.22,.68,0,1)}
+.reveal.revealed{opacity:1;transform:none}
+.reveal-left{opacity:0;transform:translateX(-18px);transition:opacity .55s cubic-bezier(.22,.68,0,1),transform .55s cubic-bezier(.22,.68,0,1)}
+.reveal-left.revealed{opacity:1;transform:none}
+
+/* — Progress bar shimmer — */
+@keyframes progressShine{0%{left:-100%}100%{left:200%}}
+.progress-bar{position:relative;overflow:hidden;border-radius:100px}
+.progress-bar::after{content:'';position:absolute;top:0;left:-100%;width:60%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.35),transparent);animation:progressShine 1.8s infinite}
+
+/* — Typewriter cursor blink — */
+@keyframes cursorBlink{0%,100%{border-color:var(--gold)}50%{border-color:transparent}}
+.typing-cursor{border-right:2px solid var(--gold);animation:cursorBlink 1s step-end infinite}
+
+/* — Card entrance stagger — */
+@keyframes cardIn{from{opacity:0;transform:translateY(16px) scale(.97)}to{opacity:1;transform:none}}
+.tgrid .tc:nth-child(1){animation:cardIn .35s .05s both}
+.tgrid .tc:nth-child(2){animation:cardIn .35s .10s both}
+.tgrid .tc:nth-child(3){animation:cardIn .35s .15s both}
+.tgrid .tc:nth-child(4){animation:cardIn .35s .20s both}
+.tgrid .tc:nth-child(5){animation:cardIn .35s .25s both}
+.tgrid .tc:nth-child(6){animation:cardIn .35s .30s both}
+
+/* — Ripple on button click — */
+.btn-ripple{position:relative;overflow:hidden}
+.btn-ripple::after{content:'';position:absolute;border-radius:50%;background:rgba(255,255,255,.3);width:0;height:0;top:50%;left:50%;transform:translate(-50%,-50%);transition:width .45s,height .45s,opacity .45s;opacity:0}
+.btn-ripple:active::after{width:200px;height:200px;opacity:0}
+
+/* — Input focus glow animation — */
+@keyframes inputGlow{from{box-shadow:0 0 0 0 rgba(201,168,76,.25)}to{box-shadow:0 0 0 3px rgba(201,168,76,.1)}}
+.tin:focus,textarea:focus{animation:inputGlow .2s forwards}
+html.light .tin:focus,html.light textarea:focus{animation:inputGlowBlue .2s forwards}
+@keyframes inputGlowBlue{from{box-shadow:0 0 0 0 rgba(26,63,92,.25)}to{box-shadow:0 0 0 3px rgba(26,63,92,.12)}}
+
+/* — Sidebar active item indicator — */
+.sb-item.active::before{content:'';position:absolute;right:0;top:50%;transform:translateY(-50%);width:3px;height:60%;background:var(--gold);border-radius:2px 0 0 2px}
+.sb-item{position:relative}
+
+/* — Topbar logo shimmer on hover — */
+.tb-logo:hover .tb-logo-txt .tn{background:linear-gradient(135deg,var(--gold),var(--gold-l),var(--gold));background-size:200% 100%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:logoShimmer 1.2s linear infinite}
+@keyframes logoShimmer{0%{background-position:200% center}100%{background-position:-200% center}}
+
+/* — output panel: subtle scan line effect — */
+.rpanel::after{content:'';position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(201,168,76,.008) 2px,rgba(201,168,76,.008) 4px);border-radius:inherit;z-index:0;opacity:.6}
+html.light .rpanel::after{background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(26,63,92,.006) 2px,rgba(26,63,92,.006) 4px)}
+.rpanel{position:relative}
+.rpanel>*{position:relative;z-index:1}
+
+/* — Page hero: animated gradient orb — */
+.ph::after{content:'';position:absolute;width:300px;height:300px;background:radial-gradient(circle,rgba(201,168,76,.08),transparent 70%);top:-80px;right:10%;border-radius:50%;animation:orbFloat 8s ease-in-out infinite;pointer-events:none;z-index:0}
+html.light .ph::after{background:radial-gradient(circle,rgba(26,63,92,.07),transparent 70%)}
+@keyframes orbFloat{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-20px) scale(1.08)}}
+
+/* — Stat card number counter animation helper — */
+.sc-v{transition:transform .3s}
+.sc:hover .sc-v{transform:scale(1.08)}
+
+/* — Mobile nav active indicator glow — */
+.mn-item.active .mi-ico{filter:drop-shadow(0 0 6px rgba(201,168,76,.6))}
+html.light .mn-item.active .mi-ico{filter:drop-shadow(0 0 6px rgba(26,63,92,.5))}
+
+/* — Section title animated underline — */
+.stitle::after{transition:width .4s}
+
+/* — Chip hover micro-bounce — */
+.chip{transition:all .18s cubic-bezier(.34,1.56,.64,1)}
+.chip:hover{transform:translateY(-1px)}
+.chip.active{transform:none}
+
+/* — Table row hover highlight — */
+.out-txt table.md-table tr:hover td{background:rgba(201,168,76,.06);transition:background .15s}
+html.light .out-txt table.md-table tr:hover td{background:rgba(26,63,92,.05)}
+
+/* — Announcement bar subtle marquee shimmer — */
+#announce::before{content:'';position:absolute;inset:0;background:linear-gradient(90deg,transparent 0%,rgba(201,168,76,.06) 50%,transparent 100%);animation:announceShimmer 3s ease-in-out infinite}
+@keyframes announceShimmer{0%,100%{opacity:0}50%{opacity:1}}
+html.light #announce::before{background:linear-gradient(90deg,transparent 0%,rgba(255,255,255,.1) 50%,transparent 100%)}
+
+/* — Focus visible ring for accessibility — */
+button:focus-visible,a:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--gold);outline-offset:3px;border-radius:4px}
+html.light button:focus-visible,html.light a:focus-visible{outline-color:#1A3F5C}
 
 /* ══ PAGE HERO ══ */
 .ph{padding:2.8rem 2.8rem 2rem;border-bottom:1px solid var(--bdr);background:radial-gradient(ellipse 70% 90% at 0% 50%,rgba(201,168,76,.05) 0%,transparent 70%);position:relative;overflow:hidden}
@@ -1982,6 +2090,250 @@ html.light .sb-item { color: #1E4060; font-weight: 600; }
 html.light .sb-item:hover { background: #EDF4FA; color: #071929; }
 html.light .sb-item.active { color: #1A3F5C; background: linear-gradient(90deg,rgba(26,63,92,.12),rgba(26,63,92,.04)); border-left-color: #1A3F5C; border-left-width: 3px; }
 html.light .lvl:hover { color: #071929; border-color: #1A3F5C; }
+
+/* ═══════════════════════════════════════════════════
+   WORLD-CLASS EFFECTS — NIRA PREMIUM LAYER
+   Academic • Modern • International
+═══════════════════════════════════════════════════ */
+
+/* ── 1. Global scroll reveal — elements fade in on scroll ── */
+@keyframes revealUp {
+  from { opacity: 0; transform: translateY(22px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.reveal {
+  opacity: 0;
+  animation: revealUp .55s cubic-bezier(.22,1,.36,1) forwards;
+}
+.reveal-d1 { animation-delay: .08s; }
+.reveal-d2 { animation-delay: .16s; }
+.reveal-d3 { animation-delay: .24s; }
+.reveal-d4 { animation-delay: .32s; }
+
+/* ── 2. Glass morphism — output panel & cards ── */
+html.light .rpanel {
+  background: rgba(255,255,255,0.92);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(200,221,240,0.7);
+  box-shadow:
+    0 4px 6px -1px rgba(26,63,92,.06),
+    0 10px 24px -4px rgba(26,63,92,.10),
+    0 0 0 1px rgba(255,255,255,0.5) inset;
+}
+html.light .sblock {
+  background: rgba(255,255,255,0.88);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  box-shadow:
+    0 2px 4px rgba(26,63,92,.05),
+    0 8px 20px rgba(26,63,92,.07),
+    0 0 0 1px rgba(255,255,255,0.6) inset;
+  border-radius: 14px;
+  overflow: hidden;
+}
+
+/* ── 3. Premium card hover — lift + glow ── */
+html.light .tc {
+  box-shadow: 0 2px 8px rgba(26,63,92,.07), 0 1px 2px rgba(26,63,92,.05);
+  transition: box-shadow .28s cubic-bezier(.22,1,.36,1), transform .28s cubic-bezier(.22,1,.36,1), border-color .2s;
+}
+html.light .tc:hover {
+  box-shadow:
+    0 8px 30px rgba(26,63,92,.15),
+    0 2px 8px rgba(26,63,92,.08),
+    0 0 0 1px rgba(26,63,92,.08) inset;
+  transform: translateY(-3px) scale(1.008);
+  border-color: rgba(26,63,92,.25);
+}
+html.light .tc::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(135deg, rgba(26,63,92,.04) 0%, transparent 60%);
+  opacity: 0; transition: opacity .3s;
+  pointer-events: none; border-radius: inherit;
+}
+html.light .tc:hover::before { opacity: 1; }
+
+/* ── 4. Frosted page hero ── */
+html.light .ph {
+  background:
+    radial-gradient(ellipse 80% 100% at -5% 50%, rgba(37,99,168,.06) 0%, transparent 65%),
+    radial-gradient(ellipse 50% 80% at 105% 20%, rgba(176,127,0,.05) 0%, transparent 60%),
+    #EDF4FA;
+  border-bottom: 1px solid rgba(200,221,240,.8);
+}
+html.light .ph::before {
+  background-image:
+    linear-gradient(rgba(26,63,92,.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(26,63,92,.025) 1px, transparent 1px);
+  background-size: 40px 40px;
+  mask-image: radial-gradient(ellipse 70% 90% at 0% 50%, black 0%, transparent 80%);
+}
+
+/* ── 5. Gradient text on headings ── */
+html.light .ph h1 {
+  background: linear-gradient(135deg, #071929 0%, #1A3F5C 60%, #2563A8 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ── 6. Section header — accent bar ── */
+html.light .shdr {
+  background: linear-gradient(90deg, #DAEAF5 0%, #EDF4FA 100%);
+  border-bottom: 1px solid #C8DDF0;
+  border-left: 3px solid #1A3F5C;
+}
+
+/* ── 7. Step number — filled pill ── */
+html.light .snum {
+  background: linear-gradient(135deg, #1A3F5C, #2563A8);
+  color: #fff;
+  border-color: transparent;
+  box-shadow: 0 2px 8px rgba(26,63,92,.30);
+}
+
+/* ── 8. Generate button — premium pulse + gradient ── */
+html.light .btn-gen {
+  background: linear-gradient(135deg, #0F2D45 0%, #1A3F5C 40%, #2563A8 100%);
+  background-size: 200% 100%;
+  color: #fff;
+  border: none;
+  box-shadow:
+    0 4px 18px rgba(26,63,92,.32),
+    0 1px 4px rgba(26,63,92,.20),
+    0 0 0 1px rgba(255,255,255,.08) inset;
+  letter-spacing: 1.8px;
+  font-weight: 800;
+  border-radius: 10px;
+  transition: all .3s cubic-bezier(.22,1,.36,1);
+}
+html.light .btn-gen:hover:not(.loading) {
+  background-position: 100% 0;
+  box-shadow:
+    0 8px 32px rgba(26,63,92,.42),
+    0 2px 8px rgba(26,63,92,.25);
+  transform: translateY(-2px) scale(1.01);
+}
+html.light .btn-gen:active { transform: translateY(0) scale(.99); }
+html.light .btn-gen:not(.loading) {
+  animation: glowPulseBlue 3.5s ease-in-out infinite;
+}
+
+/* ── 9. Output text — subtle left gradient accent ── */
+html.light .out-txt {
+  border-left: 3px solid rgba(26,63,92,.18);
+  padding-left: 16px;
+  background:
+    linear-gradient(90deg, rgba(26,63,92,.02) 0%, transparent 80px),
+    #ffffff;
+}
+
+/* ── 10. Chip active — pill with shine ── */
+html.light .chip.active {
+  background: linear-gradient(135deg, #1A3F5C 0%, #2563A8 100%);
+  box-shadow: 0 2px 10px rgba(26,63,92,.30);
+  position: relative; overflow: hidden;
+}
+html.light .chip.active::after {
+  content: '';
+  position: absolute;
+  top: 0; left: -60%;
+  width: 40%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,.18), transparent);
+  animation: chipShine 2.5s ease-in-out infinite;
+}
+@keyframes chipShine {
+  0% { left: -60%; }
+  100% { left: 120%; }
+}
+
+/* ── 11. Level pill active — similar treatment ── */
+html.light .lvl.active {
+  background: linear-gradient(135deg, #1A3F5C 0%, #2563A8 100%);
+  box-shadow: 0 2px 10px rgba(26,63,92,.28);
+}
+
+/* ── 12. Mobile nav bar — glass ── */
+html.light #mob-nav {
+  background: rgba(255,255,255,0.95);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-top: 1px solid rgba(200,221,240,.8);
+  box-shadow: 0 -4px 20px rgba(26,63,92,.08);
+}
+html.light .mn-item .mi-lbl { color: #4A7292; }
+html.light .mn-item.active .mi-lbl { color: #1A3F5C; font-weight: 700; }
+html.light .mn-item.active .mi-ico {
+  filter: drop-shadow(0 0 6px rgba(26,63,92,.45));
+}
+
+/* ── 13. Scrollbar — light ── */
+html.light ::-webkit-scrollbar { width: 5px; }
+html.light ::-webkit-scrollbar-track { background: #EDF4FA; }
+html.light ::-webkit-scrollbar-thumb { background: rgba(26,63,92,.25); border-radius: 3px; }
+html.light ::-webkit-scrollbar-thumb:hover { background: rgba(26,63,92,.45); }
+
+/* ── 14. Topbar — subtle glass scroll effect ── */
+html.light #topbar {
+  background: rgba(255,255,255,0.96);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+/* ── 15. Table — premium stripe + hover row ── */
+html.light .out-txt table.md-table tbody tr {
+  transition: background .15s;
+}
+html.light .out-txt table.md-table tbody tr:hover td {
+  background: rgba(26,63,92,.04) !important;
+}
+html.light .out-txt table.md-table {
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 2px 12px rgba(26,63,92,.08);
+  border: 1px solid #C8DDF0;
+}
+
+/* ── 16. Announce bar — animated gradient ── */
+html.light #announce {
+  background: linear-gradient(90deg, #0F2D45, #1A3F5C, #2563A8, #1A3F5C, #0F2D45);
+  background-size: 300% 100%;
+  animation: announceFlow 8s ease-in-out infinite;
+}
+@keyframes announceFlow {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+/* ── 17. Home hero — richer gradient ── */
+html.light #home-hero {
+  background:
+    radial-gradient(ellipse 60% 70% at 100% 0%, rgba(37,99,168,.07) 0%, transparent 60%),
+    radial-gradient(ellipse 80% 60% at 0% 100%, rgba(176,127,0,.05) 0%, transparent 60%),
+    #EDF4FA;
+}
+
+/* ── 18. Sidebar — subtle left glow on active ── */
+html.light .sb-item.active {
+  box-shadow: inset 3px 0 0 #1A3F5C;
+  border-left: none !important;
+}
+
+/* ── 19. Dashboard stat card — deep accent ── */
+html.light .ic:hover {
+  border-color: rgba(26,63,92,.30);
+  box-shadow: 0 8px 28px rgba(26,63,92,.14);
+  transform: translateY(-3px);
+}
+
+/* ── 20. Focus ring — accessible + beautiful ── */
+html.light *:focus-visible {
+  outline: 2px solid #1A3F5C;
+  outline-offset: 3px;
+  border-radius: 4px;
+}
 
 /* ═══ NIRA ONBOARDING OVERLAY ═══ */
 .nira-ob-overlay {
