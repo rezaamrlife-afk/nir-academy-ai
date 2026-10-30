@@ -2518,7 +2518,51 @@ html.light .tc-cta {
   font-size: 12px;
   letter-spacing: .5px;
 }
-html.light .tc-ico { filter: saturate(1.2); }
+/* ── Tool card icons — premium colored ── */
+html.light .tc-ico {
+  width: 52px; height: 52px;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: 14px;
+  background: linear-gradient(135deg, rgba(26,63,92,.08), rgba(37,99,168,.12));
+  border: 1px solid rgba(26,63,92,.12);
+  box-shadow: 0 2px 8px rgba(26,63,92,.10), inset 0 1px 0 rgba(255,255,255,.7);
+  color: #1A3F5C;
+  transition: all .25s ease;
+  margin-bottom: 2px;
+}
+html.light .tc:hover .tc-ico {
+  background: linear-gradient(135deg, #1A3F5C, #2563A8);
+  border-color: transparent;
+  color: #ffffff;
+  box-shadow: 0 4px 16px rgba(26,63,92,.28);
+  transform: scale(1.06);
+}
+html.light .tc-ico svg { width: 26px; height: 26px; stroke-width: 1.7; }
+
+/* ── Sidebar icons — refined ── */
+html.light .sb-item .si {
+  display: flex; align-items: center; justify-content: center;
+  width: 26px; height: 26px;
+  border-radius: 7px;
+  background: rgba(26,63,92,.07);
+  color: #2563A8;
+  transition: all .2s ease;
+  flex-shrink: 0;
+}
+html.light .sb-item:hover .si {
+  background: rgba(26,63,92,.13);
+  color: #1A3F5C;
+}
+html.light .sb-item.active .si {
+  background: linear-gradient(135deg, #1A3F5C, #2563A8);
+  color: #ffffff;
+  box-shadow: 0 2px 6px rgba(26,63,92,.30);
+}
+
+/* ── Mobile nav icons — SVG colored ── */
+html.light .mn-item .mi-ico svg { stroke: #4A7292; }
+html.light .mn-item:hover .mi-ico svg { stroke: #1A3F5C; }
+html.light .mn-item.active .mi-ico svg { stroke: #1A3F5C; }
 
 /* ── Sidebar labels richer ── */
 html.light .sb-lbl {
@@ -3081,10 +3125,15 @@ html.light #session-banner { background: #EEF4FF; border-color: #dde6f5; border-
   }
 }
 .mn-item .mi-ico {
-  opacity: 0.5;
+  opacity: 0.55;
+  display: flex; align-items: center; justify-content: center;
   transition: transform .2s ease, opacity .2s ease, filter .2s ease;
 }
-
+.mn-item .mi-ico svg {
+  width: 20px; height: 20px;
+  stroke: currentColor; fill: none;
+  stroke-width: 1.75; stroke-linecap: round; stroke-linejoin: round;
+}
 .mn-item.active .mi-ico {
   opacity: 1;
   transform: scale(1.15);
@@ -3878,30 +3927,30 @@ function dismissSessionBanner() {
 <aside id="sidebar">
   <div class="sb-sec">
     <span class="sb-lbl" id="sb-lbl-main">Main</span>
-    <div class="sb-item active" id="sb-home" onclick="go('home')"><span class="si"><i data-lucide="home"></i></span> <span id="sb-txt-home">Home</span></div>
-    <div class="sb-item" id="sb-dashboard" onclick="go('dashboard')"><span class="si"><i data-lucide="layout-dashboard"></i></span> <span id="sb-txt-dashboard">Dashboard</span> <span class="sb-badge">NEW</span></div>
+    <div class="sb-item active" id="sb-home" onclick="go('home')"><span class="si"><i data-lucide="house"></i></span> <span id="sb-txt-home">Home</span></div>
+    <div class="sb-item" id="sb-dashboard" onclick="go('dashboard')"><span class="si"><i data-lucide="chart-no-axes-combined"></i></span> <span id="sb-txt-dashboard">Dashboard</span> <span class="sb-badge">NEW</span></div>
   </div>
   <div class="sb-sec">
     <span class="sb-lbl" id="sb-lbl-tools">AI Tools</span>
-    <div class="sb-item" id="sb-generator" onclick="go('generator')" title="Build structured, pedagogically-sound AI prompts for any ELT task — grammar, vocabulary, skills, and exams. 5-step guided process."><span class="si"><i data-lucide="zap"></i></span> <span id="sb-txt-generator">Prompt Generator</span></div>
-    <div class="sb-item" id="sb-lesson" onclick="go('lesson')" title="Generate complete TESOL-aligned lesson plans with PPP/TBL stages, clear aims, timed activities, and materials — ready to teach."><span class="si"><i data-lucide="clipboard-list"></i></span> <span id="sb-txt-lesson">Lesson Planner</span> <span class="sb-new">NEW</span></div>
-    <div class="sb-item" id="sb-ielts" onclick="go('ielts')" title="Create authentic IELTS-style tasks at target band levels — Task 1, Task 2, Reading, Listening, and Speaking with full model answers."><span class="si"><i data-lucide="book-open"></i></span> <span id="sb-txt-ielts">IELTS Generator</span> <span class="sb-new">NEW</span></div>
-    <div class="sb-item" id="sb-error" onclick="go('error')" title="Paste student writing and receive detailed corrective feedback: grammar, vocabulary, coherence, CEFR level, and metalinguistic notes."><span class="si"><i data-lucide="check-circle"></i></span> <span id="sb-txt-error">Error Correction</span> <span class="sb-new">NEW</span></div>
-    <div class="sb-item" id="sb-worksheet" onclick="go('worksheet')" title="Build print-ready classroom worksheets with grammar, vocabulary, reading, and integrated skills exercises — one click, zero prep."><span class="si"><i data-lucide="file-text"></i></span> <span id="sb-txt-worksheet">Worksheet Builder</span> <span class="sb-new">NEW</span></div>
-    <div class="sb-item" id="sb-assistant" onclick="go('assistant')" title="Your personal AI teaching companion — lesson delivery, classroom management, IELTS prep, student support, and more across 13 specialised modes."><span class="si"><i data-lucide="brain-circuit"></i></span> <span id="sb-txt-assistant">AI Assistant</span> <span class="sb-badge">NEW</span></div>
+    <div class="sb-item" id="sb-generator" onclick="go('generator')" title="Build structured, pedagogically-sound AI prompts for any ELT task — grammar, vocabulary, skills, and exams. 5-step guided process."><span class="si"><i data-lucide="wand-sparkles"></i></span> <span id="sb-txt-generator">Prompt Generator</span></div>
+    <div class="sb-item" id="sb-lesson" onclick="go('lesson')" title="Generate complete TESOL-aligned lesson plans with PPP/TBL stages, clear aims, timed activities, and materials — ready to teach."><span class="si"><i data-lucide="calendar-days"></i></span> <span id="sb-txt-lesson">Lesson Planner</span> <span class="sb-new">NEW</span></div>
+    <div class="sb-item" id="sb-ielts" onclick="go('ielts')" title="Create authentic IELTS-style tasks at target band levels — Task 1, Task 2, Reading, Listening, and Speaking with full model answers."><span class="si"><i data-lucide="graduation-cap"></i></span> <span id="sb-txt-ielts">IELTS Generator</span> <span class="sb-new">NEW</span></div>
+    <div class="sb-item" id="sb-error" onclick="go('error')" title="Paste student writing and receive detailed corrective feedback: grammar, vocabulary, coherence, CEFR level, and metalinguistic notes."><span class="si"><i data-lucide="scan-text"></i></span> <span id="sb-txt-error">Error Correction</span> <span class="sb-new">NEW</span></div>
+    <div class="sb-item" id="sb-worksheet" onclick="go('worksheet')" title="Build print-ready classroom worksheets with grammar, vocabulary, reading, and integrated skills exercises — one click, zero prep."><span class="si"><i data-lucide="layout-template"></i></span> <span id="sb-txt-worksheet">Worksheet Builder</span> <span class="sb-new">NEW</span></div>
+    <div class="sb-item" id="sb-assistant" onclick="go('assistant')" title="Your personal AI teaching companion — lesson delivery, classroom management, IELTS prep, student support, and more across 13 specialised modes."><span class="si"><i data-lucide="bot-message-square"></i></span> <span id="sb-txt-assistant">AI Assistant</span> <span class="sb-badge">NEW</span></div>
   </div>
   <div class="sb-sec">
     <span class="sb-lbl" id="sb-lbl-resources">Resources</span>
-    <div class="sb-item" id="sb-library" onclick="go('library')" title="30+ curated ELT prompts ready to use across all skill areas — tested, TESOL-aligned, and organised by topic and level."><span class="si"><i data-lucide="library"></i></span> <span id="sb-txt-library"><span id="hero-cta3"><span id="ft-lib-lnk">Prompt Library</span></span></span></div>
-    <div class="sb-item" id="sb-insights" onclick="go('insights')"><span class="si"><i data-lucide="lightbulb"></i></span> <span id="sb-txt-insights">Insights &amp; Blog</span></div>
+    <div class="sb-item" id="sb-library" onclick="go('library')" title="30+ curated ELT prompts ready to use across all skill areas — tested, TESOL-aligned, and organised by topic and level."><span class="si"><i data-lucide="book-marked"></i></span> <span id="sb-txt-library"><span id="hero-cta3"><span id="ft-lib-lnk">Prompt Library</span></span></span></div>
+    <div class="sb-item" id="sb-insights" onclick="go('insights')"><span class="si"><i data-lucide="newspaper"></i></span> <span id="sb-txt-insights">Insights &amp; Blog</span></div>
   </div>
   <div class="sb-div"></div>
   <div class="sb-sec" id="sb-account-sec" style="display:none">
     <span class="sb-lbl" id="sb-lbl-account">Account</span>
-    <div class="sb-item" id="sb-profile" style="display:none" onclick="go('profile')"><span class="si"><i data-lucide="user"></i></span> <span id="sb-txt-profile">My Profile</span></div>
-    <div class="sb-item" id="sb-saved" style="display:none" onclick="go('saved')"><span class="si"><i data-lucide="bookmark"></i></span> <span id="sb-txt-saved">Saved Prompts</span></div>
-    <div class="sb-item" id="sb-history" style="display:none" onclick="go('history')"><span class="si"><i data-lucide="clock"></i></span> <span id="sb-txt-history">History</span></div>
-    <div class="sb-item" id="sb-analytics" style="display:none" onclick="go('analytics')"><span class="si"><i data-lucide="bar-chart-2"></i></span> <span id="sb-txt-analytics">Analytics</span></div>
+    <div class="sb-item" id="sb-profile" style="display:none" onclick="go('profile')"><span class="si"><i data-lucide="circle-user-round"></i></span> <span id="sb-txt-profile">My Profile</span></div>
+    <div class="sb-item" id="sb-saved" style="display:none" onclick="go('saved')"><span class="si"><i data-lucide="bookmark-check"></i></span> <span id="sb-txt-saved">Saved Prompts</span></div>
+    <div class="sb-item" id="sb-history" style="display:none" onclick="go('history')"><span class="si"><i data-lucide="history"></i></span> <span id="sb-txt-history">History</span></div>
+    <div class="sb-item" id="sb-analytics" style="display:none" onclick="go('analytics')"><span class="si"><i data-lucide="chart-column-increasing"></i></span> <span id="sb-txt-analytics">Analytics</span></div>
   </div>
   
 <div class="sb-div"></div>
@@ -3980,12 +4029,12 @@ function dismissSessionBanner() {
     <h2 id="tools-title">Your AI Teaching Toolkit</h2>
     <p class="ht-s" id="tools-sub">Six specialised tools. One platform. Zero overwhelm.</p>
     <div class="tgrid">
-      <div class="tc" onclick="go('generator')" title="Build structured, pedagogically-sound AI prompts for any ELT task — grammar, vocabulary, skills, and exams. 5-step guided process."><span class="tc-ico"><i data-lucide="zap"></i></span><span class="tc-bdg core">CORE</span><h3>Prompt Generator</h3><span style="display:block;font-size:10.5px;color:var(--dim);margin:2px 0 4px;font-style:italic">Build structured, pedagogically-sound prompts — ready for Nira AI or any assistant.</span><p id="tc-gen-d">Build pedagogically-structured ELT prompts in 5 steps — ready for Nira AI or any external assistant.</p><button class="tc-cta"><span class="tc-open">Open Tool →</span></button></div>
-      <div class="tc" onclick="go('lesson')" title="Generate complete TESOL-aligned lesson plans with PPP/TBL stages, clear aims, timed activities, and materials — ready to teach."><span class="tc-ico"><i data-lucide="clipboard-list"></i></span><span class="tc-bdg new">NEW</span><h3>Lesson Planner</h3><span style="display:block;font-size:10.5px;color:var(--dim);margin:2px 0 4px;font-style:italic">TESOL-aligned lesson plans with PPP/TBL stages, timings, and materials.</span><p id="tc-les-d">Generate complete TESOL-aligned lesson plans with all stages included.</p><button class="tc-cta"><span class="tc-open">Open Tool →</span></button></div>
-      <div class="tc" onclick="go('ielts')" title="Create authentic IELTS-style tasks at target band levels — Task 1, Task 2, Reading, Listening, and Speaking with full model answers."><span class="tc-ico"><i data-lucide="book-open"></i></span><span class="tc-bdg new">NEW</span><h3>IELTS Generator</h3><span style="display:block;font-size:10.5px;color:var(--dim);margin:2px 0 4px;font-style:italic">Band-targeted IELTS tasks: Task 1, Task 2, Reading, Listening & Speaking.</span><p id="tc-iel-d">Task 1, Task 2, Reading passages and Speaking at target band levels.</p><button class="tc-cta"><span class="tc-open">Open Tool →</span></button></div>
-      <div class="tc" onclick="go('error')" title="Paste student writing and receive detailed corrective feedback: grammar, vocabulary, coherence, CEFR level, and metalinguistic notes."><span class="tc-ico"><i data-lucide="check-circle"></i></span><span class="tc-bdg new">NEW</span><h3>Error Correction</h3><span style="display:block;font-size:10.5px;color:var(--dim);margin:2px 0 4px;font-style:italic">Detailed corrective feedback with CEFR level, grammar, vocabulary & coherence notes.</span><p id="tc-err-d">Detailed linguistic feedback on student writing with metalinguistic notes.</p><button class="tc-cta"><span class="tc-open">Open Tool →</span></button></div>
-      <div class="tc" onclick="go('worksheet')" title="Build print-ready classroom worksheets with grammar, vocabulary, reading, and integrated skills exercises — one click, zero prep."><span class="tc-ico"><i data-lucide="file-text"></i></span><span class="tc-bdg new">NEW</span><h3>Worksheet Builder</h3><span style="display:block;font-size:10.5px;color:var(--dim);margin:2px 0 4px;font-style:italic">Print-ready classroom worksheets with grammar, vocabulary & integrated skills.</span><p id="tc-ws-d">Print-ready worksheets with grammar, vocabulary and integrated skills.</p><button class="tc-cta"><span class="tc-open">Open Tool →</span></button></div>
-      <div class="tc" onclick="go('library')" title="30+ curated ELT prompts ready to use across all skill areas — tested, TESOL-aligned, and organised by topic and level."><span class="tc-ico"><i data-lucide="library"></i></span><span class="tc-bdg free">FREE</span><h3>Prompt Library</h3><span style="display:block;font-size:10.5px;color:var(--dim);margin:2px 0 4px;font-style:italic">30+ curated ELT prompts — tested, TESOL-aligned, organised by topic and level.</span><p id="tc-lib-d">Curated bank of 30+ ready-to-use ELT prompts across all skill areas.</p><button class="tc-cta"><span class="tc-browse">Browse Library →</span></button></div>
+      <div class="tc" onclick="go('generator')" title="Build structured, pedagogically-sound AI prompts for any ELT task — grammar, vocabulary, skills, and exams. 5-step guided process."><span class="tc-ico"><i data-lucide="wand-sparkles"></i></span><span class="tc-bdg core">CORE</span><h3>Prompt Generator</h3><span style="display:block;font-size:10.5px;color:var(--dim);margin:2px 0 4px;font-style:italic">Build structured, pedagogically-sound prompts — ready for Nira AI or any assistant.</span><p id="tc-gen-d">Build pedagogically-structured ELT prompts in 5 steps — ready for Nira AI or any external assistant.</p><button class="tc-cta"><span class="tc-open">Open Tool →</span></button></div>
+      <div class="tc" onclick="go('lesson')" title="Generate complete TESOL-aligned lesson plans with PPP/TBL stages, clear aims, timed activities, and materials — ready to teach."><span class="tc-ico"><i data-lucide="calendar-days"></i></span><span class="tc-bdg new">NEW</span><h3>Lesson Planner</h3><span style="display:block;font-size:10.5px;color:var(--dim);margin:2px 0 4px;font-style:italic">TESOL-aligned lesson plans with PPP/TBL stages, timings, and materials.</span><p id="tc-les-d">Generate complete TESOL-aligned lesson plans with all stages included.</p><button class="tc-cta"><span class="tc-open">Open Tool →</span></button></div>
+      <div class="tc" onclick="go('ielts')" title="Create authentic IELTS-style tasks at target band levels — Task 1, Task 2, Reading, Listening, and Speaking with full model answers."><span class="tc-ico"><i data-lucide="graduation-cap"></i></span><span class="tc-bdg new">NEW</span><h3>IELTS Generator</h3><span style="display:block;font-size:10.5px;color:var(--dim);margin:2px 0 4px;font-style:italic">Band-targeted IELTS tasks: Task 1, Task 2, Reading, Listening & Speaking.</span><p id="tc-iel-d">Task 1, Task 2, Reading passages and Speaking at target band levels.</p><button class="tc-cta"><span class="tc-open">Open Tool →</span></button></div>
+      <div class="tc" onclick="go('error')" title="Paste student writing and receive detailed corrective feedback: grammar, vocabulary, coherence, CEFR level, and metalinguistic notes."><span class="tc-ico"><i data-lucide="scan-text"></i></span><span class="tc-bdg new">NEW</span><h3>Error Correction</h3><span style="display:block;font-size:10.5px;color:var(--dim);margin:2px 0 4px;font-style:italic">Detailed corrective feedback with CEFR level, grammar, vocabulary & coherence notes.</span><p id="tc-err-d">Detailed linguistic feedback on student writing with metalinguistic notes.</p><button class="tc-cta"><span class="tc-open">Open Tool →</span></button></div>
+      <div class="tc" onclick="go('worksheet')" title="Build print-ready classroom worksheets with grammar, vocabulary, reading, and integrated skills exercises — one click, zero prep."><span class="tc-ico"><i data-lucide="layout-template"></i></span><span class="tc-bdg new">NEW</span><h3>Worksheet Builder</h3><span style="display:block;font-size:10.5px;color:var(--dim);margin:2px 0 4px;font-style:italic">Print-ready classroom worksheets with grammar, vocabulary & integrated skills.</span><p id="tc-ws-d">Print-ready worksheets with grammar, vocabulary and integrated skills.</p><button class="tc-cta"><span class="tc-open">Open Tool →</span></button></div>
+      <div class="tc" onclick="go('library')" title="30+ curated ELT prompts ready to use across all skill areas — tested, TESOL-aligned, and organised by topic and level."><span class="tc-ico"><i data-lucide="book-marked"></i></span><span class="tc-bdg free">FREE</span><h3>Prompt Library</h3><span style="display:block;font-size:10.5px;color:var(--dim);margin:2px 0 4px;font-style:italic">30+ curated ELT prompts — tested, TESOL-aligned, organised by topic and level.</span><p id="tc-lib-d">Curated bank of 30+ ready-to-use ELT prompts across all skill areas.</p><button class="tc-cta"><span class="tc-browse">Browse Library →</span></button></div>
     </div>
   </section>
 
@@ -4090,10 +4139,10 @@ function dismissSessionBanner() {
     <div class="stitle" style="margin-top:1.5rem"><span class="stg">All Tools</span></div>
     <div class="tgrid">
       <div class="tc" onclick="go('generator')" title="Build structured, pedagogically-sound AI prompts for any ELT task — grammar, vocabulary, skills, and exams. 5-step guided process."><span class="tc-ico"><i data-lucide="zap"></i></span><h3>Prompt Generator</h3><p>Structured AI prompts for any ELT task.</p><button class="tc-cta">Launch →</button></div>
-      <div class="tc" onclick="go('lesson')" title="Generate complete TESOL-aligned lesson plans with PPP/TBL stages, clear aims, timed activities, and materials — ready to teach."><span class="tc-ico"><i data-lucide="clipboard-list"></i></span><span class="tc-bdg new">NEW</span><h3>Lesson Planner</h3><p>TESOL-aligned lesson plans in seconds.</p><button class="tc-cta">Launch →</button></div>
-      <div class="tc" onclick="go('ielts')" title="Create authentic IELTS-style tasks at target band levels — Task 1, Task 2, Reading, Listening, and Speaking with full model answers."><span class="tc-ico"><i data-lucide="book-open"></i></span><span class="tc-bdg new">NEW</span><h3>IELTS Generator</h3><p>Task 1 &amp; 2 at target band level.</p><button class="tc-cta">Launch →</button></div>
-      <div class="tc" onclick="go('error')" title="Paste student writing and receive detailed corrective feedback: grammar, vocabulary, coherence, CEFR level, and metalinguistic notes."><span class="tc-ico"><i data-lucide="check-circle"></i></span><span class="tc-bdg new">NEW</span><h3>Error Correction</h3><p>Linguistic feedback on student writing.</p><button class="tc-cta">Launch →</button></div>
-      <div class="tc" onclick="go('worksheet')" title="Build print-ready classroom worksheets with grammar, vocabulary, reading, and integrated skills exercises — one click, zero prep."><span class="tc-ico"><i data-lucide="file-text"></i></span><span class="tc-bdg new">NEW</span><h3>Worksheet Builder</h3><p>Print-ready classroom worksheets.</p><button class="tc-cta">Launch →</button></div>
+      <div class="tc" onclick="go('lesson')" title="Generate complete TESOL-aligned lesson plans with PPP/TBL stages, clear aims, timed activities, and materials — ready to teach."><span class="tc-ico"><i data-lucide="calendar-days"></i></span><span class="tc-bdg new">NEW</span><h3>Lesson Planner</h3><p>TESOL-aligned lesson plans in seconds.</p><button class="tc-cta">Launch →</button></div>
+      <div class="tc" onclick="go('ielts')" title="Create authentic IELTS-style tasks at target band levels — Task 1, Task 2, Reading, Listening, and Speaking with full model answers."><span class="tc-ico"><i data-lucide="graduation-cap"></i></span><span class="tc-bdg new">NEW</span><h3>IELTS Generator</h3><p>Task 1 &amp; 2 at target band level.</p><button class="tc-cta">Launch →</button></div>
+      <div class="tc" onclick="go('error')" title="Paste student writing and receive detailed corrective feedback: grammar, vocabulary, coherence, CEFR level, and metalinguistic notes."><span class="tc-ico"><i data-lucide="scan-text"></i></span><span class="tc-bdg new">NEW</span><h3>Error Correction</h3><p>Linguistic feedback on student writing.</p><button class="tc-cta">Launch →</button></div>
+      <div class="tc" onclick="go('worksheet')" title="Build print-ready classroom worksheets with grammar, vocabulary, reading, and integrated skills exercises — one click, zero prep."><span class="tc-ico"><i data-lucide="layout-template"></i></span><span class="tc-bdg new">NEW</span><h3>Worksheet Builder</h3><p>Print-ready classroom worksheets.</p><button class="tc-cta">Launch →</button></div>
       <div class="tc" onclick="go('library')" title="30+ curated ELT prompts ready to use across all skill areas — tested, TESOL-aligned, and organised by topic and level."><span class="tc-ico"><i data-lucide="library"></i></span><h3>Prompt Library</h3><p>30+ curated ready-to-use prompts.</p><button class="tc-cta">Browse →</button></div>
       <div class="tc" onclick="go('assistant')" title="Your personal AI teaching companion — lesson delivery, classroom management, IELTS prep, student support, and more across 13 specialised modes."><span class="tc-ico"><i data-lucide="brain-circuit"></i></span><span class="tc-bdg new">NEW</span><h3>AI Assistant</h3><p>Pedagogical AI across 13 teaching modes.</p><button class="tc-cta">Launch →</button></div>
     </div>
@@ -4780,11 +4829,11 @@ function dismissSessionBanner() {
 <!-- MOBILE BOTTOM NAV -->
 <nav id="mob-nav">
   <div class="mn-grid">
-    <button class="mn-item active" id="mn-home" onclick="go('home')"><span class="mi-ico">🏠</span><span class="mi-lbl">Home</span></button>
-    <button class="mn-item" id="mn-generator" onclick="go('generator')"><span class="mi-ico">⚡</span><span class="mi-lbl">Generator</span></button>
-    <button class="mn-item" id="mn-lesson" onclick="go('lesson')"><span class="mi-ico">🛠️</span><span class="mi-lbl">Tools</span></button>
-    <button class="mn-item" id="mn-library" onclick="go('library')"><span class="mi-ico">📚</span><span class="mi-lbl">Library</span></button>
-    <button class="mn-item" id="mn-dashboard" onclick="go('dashboard')"><span class="mi-ico">📊</span><span class="mi-lbl">Dashboard</span></button>
+    <button class="mn-item active" id="mn-home" onclick="go('home')"><span class="mi-ico"><i data-lucide="house"></i></span><span class="mi-lbl">Home</span></button>
+    <button class="mn-item" id="mn-generator" onclick="go('generator')"><span class="mi-ico"><i data-lucide="wand-sparkles"></i></span><span class="mi-lbl">Generator</span></button>
+    <button class="mn-item" id="mn-lesson" onclick="go('lesson')"><span class="mi-ico"><i data-lucide="calendar-days"></i></span><span class="mi-lbl">Tools</span></button>
+    <button class="mn-item" id="mn-library" onclick="go('library')"><span class="mi-ico"><i data-lucide="book-marked"></i></span><span class="mi-lbl">Library</span></button>
+    <button class="mn-item" id="mn-dashboard" onclick="go('dashboard')"><span class="mi-ico"><i data-lucide="chart-no-axes-combined"></i></span><span class="mi-lbl">Dashboard</span></button>
   </div>
 </nav>
 
