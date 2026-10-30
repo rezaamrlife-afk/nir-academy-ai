@@ -1930,8 +1930,22 @@ html.light .sb-item:hover { background: #EDF4FA; color: #071929; }
 html.light .sb-item.active { background: linear-gradient(90deg, rgba(26,63,92,.12), rgba(26,63,92,.04)); color: #1A3F5C; border-left-color: #1A3F5C; border-left-width: 3px; border-radius: 0; }
 
 /* ── Light Mode: body & global ── */
-html.light body { background: #EDF4FA; }
-html.light #shell { background: #EDF4FA; }
+/* ── Light mode base ── */
+html.light body {
+  background: #EDF4FA;
+  background-image:
+    radial-gradient(ellipse 80% 50% at 20% 0%, rgba(37,99,168,.06) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 40% at 90% 80%, rgba(176,127,0,.04) 0%, transparent 55%);
+  background-attachment: fixed;
+}
+html.light #shell {
+  background: transparent;
+}
+/* light main area — very subtle noise texture feel */
+html.light #main {
+  background:
+    radial-gradient(ellipse 100% 60% at 50% 0%, rgba(26,63,92,.03) 0%, transparent 70%);
+}
 
 /* ── Light Mode: announce bar ── */
 html.light #announce { background: linear-gradient(90deg,#1A3F5C,#2563A8); color: #fff; border-bottom-color: #1A3F5C; }
@@ -2173,10 +2187,37 @@ html.light .ph::before {
 
 /* ── 5. Gradient text on headings ── */
 html.light .ph h1 {
-  background: linear-gradient(135deg, #071929 0%, #1A3F5C 60%, #2563A8 100%);
+  background: linear-gradient(135deg, #071929 0%, #1A3F5C 55%, #1E6FAF 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+  color: transparent !important; /* override the earlier rule */
+  font-weight: 900 !important;
+}
+/* home hero h1 — two-line treatment matching screenshot */
+html.light #home-hero h1 {
+  color: transparent !important;
+  -webkit-text-fill-color: transparent !important;
+  background: linear-gradient(160deg, #071929 0%, #1A3F5C 50%, #1E6FAF 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  font-weight: 900 !important;
+  line-height: 1.12;
+}
+/* the gold span inside hero h1 */
+html.light #home-hero h1 .hh-gold,
+html.light #home-hero .hh-gold {
+  background: linear-gradient(90deg, #8A5F00, #B07F00, #D4A017, #B07F00, #8A5F00);
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: goldShimmer 4s ease-in-out infinite;
+  display: block;
+}
+@keyframes goldShimmer {
+  0%, 100% { background-position: 0% center; }
+  50%       { background-position: 100% center; }
 }
 
 /* ── 6. Section header — accent bar ── */
@@ -2333,6 +2374,393 @@ html.light *:focus-visible {
   outline: 2px solid #1A3F5C;
   outline-offset: 3px;
   border-radius: 4px;
+}
+
+/* ═══════════════════════════════════════════════════
+   NIRA WORLD-CLASS UPGRADE — TEXT & BACKGROUND LAYER
+   Rich typography · Layered backgrounds · Premium feel
+═══════════════════════════════════════════════════ */
+
+/* ── Hero section — deep layered background ── */
+html.light #home-hero {
+  background:
+    radial-gradient(ellipse 55% 40% at 100% 0%,   rgba(37,99,168,.09) 0%, transparent 55%),
+    radial-gradient(ellipse 45% 35% at 0%  100%,  rgba(176,127,0,.06) 0%, transparent 55%),
+    radial-gradient(ellipse 70% 50% at 50%  0%,   rgba(26,63,92,.05)  0%, transparent 65%),
+    linear-gradient(180deg, #E8F2FA 0%, #EDF4FA 60%, #F2F7FB 100%);
+  border-bottom: 1px solid rgba(200,221,240,.9);
+}
+/* hero grid overlay — finer, more elegant */
+html.light .hh-grid {
+  background-image:
+    linear-gradient(rgba(26,63,92,.022) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(26,63,92,.022) 1px, transparent 1px);
+  background-size: 44px 44px;
+  mask-image: radial-gradient(ellipse 85% 60% at 50% 0%, black 0%, transparent 78%);
+}
+/* hero logo — brighter glow in light */
+html.light .hh-logo {
+  filter:
+    drop-shadow(0 6px 30px rgba(26,63,92,.18))
+    drop-shadow(0 0 60px rgba(176,127,0,.12));
+}
+/* hero logo glow ring */
+html.light .hh-logo-wrap::after {
+  background: radial-gradient(circle, rgba(26,63,92,.08) 0%, transparent 70%);
+}
+
+/* ── Hero headline — ultra rich ── */
+html.light #home-hero h1 {
+  background: linear-gradient(150deg, #071929 0%, #0F2D48 30%, #1A3F5C 65%, #2563A8 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-weight: 900 !important;
+  font-size: clamp(1.9rem, 5vw, 3.2rem) !important;
+  line-height: 1.1 !important;
+  letter-spacing: -.5px;
+}
+html.light #home-hero h1 .hh-gold,
+html.light #home-hero .hh-gold {
+  background: linear-gradient(90deg, #7A5000, #A87200, #D4A017, #C8920A, #7A5000);
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: goldShimmer 4s ease-in-out infinite;
+}
+/* hero pill */
+html.light .hh-pill {
+  background: rgba(26,63,92,.07);
+  border-color: rgba(26,63,92,.22);
+  color: #1A3F5C;
+  font-weight: 700;
+  letter-spacing: 2px;
+}
+/* hero tag & sub */
+html.light .hh-tag {
+  color: #1A3F5C;
+  font-weight: 700;
+  font-size: 14px;
+  letter-spacing: .5px;
+}
+html.light .hh-sub {
+  color: #4A7292;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 12px;
+}
+/* hero description — richer */
+html.light .hh-desc {
+  color: #0D2235;
+  font-weight: 500;
+  font-size: 15px;
+  line-height: 1.8;
+}
+/* hero by-line */
+html.light .hh-by { color: #4A7292; font-size: 12px; }
+html.light .hh-by strong { color: #1A3F5C; font-weight: 800; }
+html.light .hh-by a { color: #2563A8; border-bottom-color: rgba(37,99,168,.3); }
+
+/* ── Feat strip — premium ── */
+html.light .fstrip {
+  background: #ffffff;
+  border-top: 1px solid #C8DDF0;
+  border-bottom: 1px solid #C8DDF0;
+  gap: 0;
+}
+html.light .fc {
+  background: #ffffff;
+  border-right: 1px solid #E4EEF7;
+  transition: background .2s;
+}
+html.light .fc:hover { background: #EDF4FA; }
+html.light .fi { font-size: 22px; }
+html.light .fc p { color: #1E4060; font-weight: 700; font-size: 12px; letter-spacing: .3px; }
+
+/* ── Home tools section ── */
+html.light .home-tools {
+  background:
+    radial-gradient(ellipse 60% 50% at 100% 50%, rgba(26,63,92,.04) 0%, transparent 60%),
+    transparent;
+}
+html.light .home-tools h2,
+html.light .onboard h2,
+html.light .hcta h2,
+html.light .roadmap h2 {
+  background: linear-gradient(135deg, #071929, #1A3F5C);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-weight: 900 !important;
+}
+
+/* ── Section title line ── */
+html.light .stitle {
+  color: #071929;
+  font-weight: 800;
+  font-size: 1.05rem;
+}
+html.light .stitle::after {
+  background: linear-gradient(90deg, #C8DDF0, transparent);
+}
+
+/* ── Tool cards — richer text ── */
+html.light .tc h3 {
+  color: #071929;
+  font-weight: 800;
+  font-size: 15px;
+}
+html.light .tc p { color: #1E4060; font-weight: 500; line-height: 1.6; }
+html.light .tc-cta {
+  color: #1A3F5C;
+  font-weight: 800;
+  font-size: 12px;
+  letter-spacing: .5px;
+}
+html.light .tc-ico { filter: saturate(1.2); }
+
+/* ── Sidebar labels richer ── */
+html.light .sb-lbl {
+  color: #2D6080;
+  font-weight: 800;
+  font-size: 10.5px;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+}
+html.light .sb-item {
+  color: #0D2235;
+  font-weight: 600;
+  font-size: 13.5px;
+}
+html.light .sb-item.active {
+  color: #1A3F5C;
+  font-weight: 800;
+  background: linear-gradient(90deg, rgba(26,63,92,.11), rgba(26,63,92,.03));
+  box-shadow: inset 3px 0 0 #1A3F5C;
+  border-left: none !important;
+}
+html.light .sb-item:hover { background: #E4F0F9; color: #071929; }
+
+/* ── Nav links — bolder ── */
+html.light .tb-nav a {
+  color: #1A3F5C;
+  font-weight: 700;
+  letter-spacing: .8px;
+}
+html.light .tb-nav a:hover,
+html.light .tb-nav a.active {
+  color: #071929;
+  border-bottom-color: #1A3F5C;
+}
+
+/* ── Page hero (tool pages) — more depth ── */
+html.light .ph {
+  background:
+    radial-gradient(ellipse 75% 90% at -5% 50%,  rgba(37,99,168,.07) 0%, transparent 65%),
+    radial-gradient(ellipse 40% 60% at 105% 20%,  rgba(176,127,0,.05) 0%, transparent 55%),
+    linear-gradient(180deg, #E9F3FA 0%, #EDF4FA 100%);
+  border-bottom: 1px solid rgba(200,221,240,.9);
+}
+html.light .ph::before {
+  background-image:
+    linear-gradient(rgba(26,63,92,.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(26,63,92,.02) 1px, transparent 1px);
+  background-size: 38px 38px;
+  mask-image: radial-gradient(ellipse 65% 85% at 0% 50%, black 0%, transparent 80%);
+}
+/* page hero h1 */
+html.light .ph h1 {
+  background: linear-gradient(135deg, #071929 0%, #1A3F5C 55%, #2563A8 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-weight: 900 !important;
+  font-size: clamp(1.3rem, 2.5vw, 1.85rem) !important;
+}
+html.light .ph h1 span { -webkit-text-fill-color: transparent; color: transparent; }
+html.light .ph-ey {
+  color: #B07F00;
+  font-weight: 800;
+  letter-spacing: 3.5px;
+  font-size: 10.5px;
+}
+html.light .ph p {
+  color: #1A3A58;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.75;
+}
+
+/* ── Dashboard stat cards ── */
+html.light .sc {
+  background: #ffffff;
+  border: 1px solid #C8DDF0;
+  box-shadow: 0 2px 10px rgba(26,63,92,.07);
+  transition: all .25s;
+}
+html.light .sc:hover {
+  border-color: rgba(26,63,92,.25);
+  box-shadow: 0 6px 22px rgba(26,63,92,.13);
+  transform: translateY(-2px);
+}
+html.light .sc-v {
+  background: linear-gradient(135deg, #1A3F5C, #2563A8);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-size: 2rem;
+  font-weight: 900;
+}
+html.light .sc-l { color: #1E4060; font-weight: 700; font-size: 12px; }
+html.light .sc-s { color: #4A7292; font-size: 11.5px; font-weight: 500; }
+
+/* ── IELTS stat cards ── */
+html.light .ic {
+  background: linear-gradient(135deg, #ffffff 0%, #F5FAFD 100%);
+  border: 1px solid #C8DDF0;
+  box-shadow: 0 2px 10px rgba(26,63,92,.06);
+}
+html.light .ic h3 {
+  color: #071929 !important;
+  font-weight: 800;
+  font-size: 14px;
+}
+html.light .ic p { color: #1E4060 !important; font-weight: 500; }
+html.light .ic-n {
+  background: linear-gradient(135deg, #1A3F5C, #2563A8);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-size: 2.1rem;
+  font-weight: 900;
+}
+
+/* ── IELTS chips active ── */
+html.light .lf.active {
+  background: linear-gradient(135deg, #1A3F5C, #2563A8);
+  color: #fff;
+  border-color: #1A3F5C;
+  box-shadow: 0 2px 10px rgba(26,63,92,.28);
+}
+
+/* ── Level pills — Cinzel, richer ── */
+html.light .lvl { color: #1A3F5C; font-weight: 700; }
+
+/* ── Output panel header label ── */
+html.light .rp-lbl {
+  background: linear-gradient(135deg, #071929, #1A3F5C);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-weight: 900;
+  font-size: 11.5px;
+  letter-spacing: 1.2px;
+}
+
+/* ── Output content — maximum richness ── */
+html.light .out-txt {
+  color: #071929;
+  font-size: 15.5px;
+  line-height: 1.88;
+  border-left: 3px solid rgba(26,63,92,.20);
+}
+html.light .out-txt h1 {
+  background: linear-gradient(135deg, #071929, #1A3F5C);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-size: 1.45em;
+  font-weight: 900;
+  border-bottom: 2px solid #C8DDF0;
+  padding-bottom: .25em;
+  margin-bottom: .6em;
+}
+html.light .out-txt h2 {
+  color: #071929 !important;
+  font-weight: 900;
+  font-size: 1.15em;
+  border-bottom: 1.5px solid #DAEAF5;
+  padding-bottom: .2em;
+}
+html.light .out-txt h3 { color: #1A3F5C !important; font-weight: 800; font-size: 1.03em; }
+html.light .out-txt h4 { color: #2563A8 !important; font-weight: 700; }
+html.light .out-txt strong { color: #071929 !important; font-weight: 800; }
+html.light .out-txt p { color: #0A1E30; }
+html.light .out-txt li { color: #0A1E30; }
+html.light .out-txt li::marker { color: #1A3F5C; font-weight: 800; }
+html.light .out-txt blockquote {
+  border-left: 4px solid #B07F00;
+  background: linear-gradient(90deg, rgba(176,127,0,.07), transparent 60%);
+  color: #3A2800;
+  font-style: italic;
+  padding: .8rem 1.1rem;
+  border-radius: 0 8px 8px 0;
+}
+html.light .out-txt code {
+  background: #E0EEF8;
+  color: #1A3F5C;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: 5px;
+  font-size: .9em;
+}
+
+/* ── Main content area — floating sections ── */
+html.light .content {
+  background:
+    radial-gradient(ellipse 80% 40% at 50% 100%, rgba(26,63,92,.02) 0%, transparent 70%),
+    transparent;
+}
+
+/* ── Onboarding cards ── */
+html.light .ob-step h4 { color: #071929 !important; font-weight: 800; }
+html.light .ob-step p  { color: #1E4060 !important; font-weight: 500; }
+html.light .rm h3      { color: #071929 !important; font-weight: 700; }
+html.light .rm p       { color: #1E4060 !important; }
+
+/* ── Blog / insight cards ── */
+html.light .blog-card h3 { color: #071929 !important; font-weight: 800; font-size: 15px; }
+html.light .blog-card p  { color: #1E4060 !important; font-weight: 500; }
+
+/* ── Footer — elegant dark ── */
+html.light footer {
+  background: linear-gradient(180deg, #0A1E30 0%, #071420 100%);
+  border-top: 1px solid #1A3F5C;
+}
+html.light .foot-col h5 { color: #E8F2FA; font-weight: 800; }
+html.light .foot-col a  { color: #7AAAC8; transition: color .15s; }
+html.light .foot-col a:hover { color: #C8DDF0; }
+html.light .foot-brand p { color: #7AAAC8; }
+html.light .foot-copy   { color: #3A6080; border-color: #1A3F5C; }
+
+/* ── Mobile output — full presence ── */
+@media (max-width: 600px) {
+  html.light .rpanel {
+    border-radius: 14px;
+    box-shadow: 0 4px 24px rgba(26,63,92,.12);
+  }
+  html.light .out-txt {
+    font-size: 15px;
+    padding: 1.1rem 1.2rem;
+    min-height: 460px;
+  }
+  html.light .btn-gen {
+    font-size: 14px;
+    padding: 15px;
+    letter-spacing: 1.5px;
+    border-radius: 12px;
+  }
+  html.light #home-hero h1 {
+    font-size: clamp(1.65rem, 7vw, 2.2rem) !important;
+    letter-spacing: -.3px;
+  }
+  html.light .ph h1 {
+    font-size: clamp(1.2rem, 5vw, 1.5rem) !important;
+  }
+  html.light .sc-v, html.light .ic-n {
+    font-size: 1.8rem;
+  }
 }
 
 /* ═══ NIRA ONBOARDING OVERLAY ═══ */
