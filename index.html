@@ -8142,5 +8142,178 @@ button, .btn, a.btn { min-height: 40px; }
   }
 }
 </style>
+<style id="nir-premium-black-gold-theme-v1">
+/* Brand palette refinement: premium black/gold dark mode + warm white/gold light mode.
+   CSS-only. Existing HTML, JavaScript, APIs, Supabase and app workflows remain untouched. */
+:root {
+  --gold: #D4AF37 !important;
+  --gold-l: #E6C65C !important;
+  --gold-dim: rgba(212,175,55,.72) !important;
+  --gold-glow: rgba(212,175,55,.12) !important;
+  --bg: #0B0B0B !important;
+  --bg2: #101010 !important;
+  --bg3: #151515 !important;
+  --bg4: #202020 !important;
+  --bg5: #292929 !important;
+  --bg6: #333333 !important;
+  --text: #F2F0EA !important;
+  --muted: #A6A6A6 !important;
+  --dim: #858585 !important;
+  --bdr: rgba(212,175,55,.14) !important;
+  --bdr2: rgba(212,175,55,.22) !important;
+  --bdr3: rgba(212,175,55,.42) !important;
+  color-scheme: dark;
+}
+html:not(.light) body { background:#0B0B0B !important; color:#F2F0EA !important; }
+html:not(.light) #topbar { background:rgba(11,11,11,.94) !important; border-color:rgba(212,175,55,.16) !important; }
+html:not(.light) #sidebar { background:#101010 !important; border-color:rgba(212,175,55,.14) !important; }
+html:not(.light) .sb-item { color:#B7B2A5 !important; }
+html:not(.light) .sb-item:hover, html:not(.light) .sb-item.active { color:#E6C65C !important; background:rgba(212,175,55,.10) !important; border-color:rgba(212,175,55,.24) !important; }
+html:not(.light) .sb-item .si, html:not(.light) .sb-item.active .si { color:#D4AF37 !important; }
+html:not(.light) .sb-lbl { color:#9A927E !important; }
+html:not(.light) .ph { background:linear-gradient(115deg,rgba(212,175,55,.09),transparent 60%) !important; }
+html:not(.light) .ph-ey, html:not(.light) .ph h1 span, html:not(.light) .stitle .stg { color:#E6C65C !important; }
+html:not(.light) .ph h1, html:not(.light) .stitle,
+html:not(.light) .home-tools h2, html:not(.light) .onboard h2,
+html:not(.light) .hcta h2, html:not(.light) .roadmap h2 { color:#F2F0EA !important; }
+html:not(.light) .sc, html:not(.light) .tc, html:not(.light) .ob-step,
+html:not(.light) .rm, html:not(.light) .recent-card, html:not(.light) .qa,
+html:not(.light) .stat-card { background:#151515 !important; border-color:rgba(212,175,55,.15) !important; }
+html:not(.light) .sc:hover, html:not(.light) .tc:hover,
+html:not(.light) .ob-step:hover, html:not(.light) .rm:hover { border-color:rgba(212,175,55,.42) !important; }
+html:not(.light) .sc-v, html:not(.light) .ft, html:not(.light) .ob-num,
+html:not(.light) .hh-gold, html:not(.light) .tb-nav a.active { color:#E6C65C !important; }
+html:not(.light) .fc { background:#101010 !important; }
+html:not(.light) #home-hero { background:radial-gradient(ellipse 60% 55% at 50% 0%,rgba(212,175,55,.12),transparent 75%),linear-gradient(180deg,#151515,#0B0B0B) !important; border-color:rgba(212,175,55,.16) !important; }
+html:not(.light) #home-hero h1 { color:#F2F0EA !important; }
+html:not(.light) #home-hero .hh-gold { color:#E6C65C !important; }
+html:not(.light) .hh-pill, html:not(.light) .ob-num { color:#E6C65C !important; background:rgba(212,175,55,.10) !important; border-color:rgba(212,175,55,.25) !important; }
+html:not(.light) .dash-welcome { background:linear-gradient(120deg,rgba(212,175,55,.12),#151515 72%) !important; border-color:rgba(212,175,55,.22) !important; }
+html:not(.light) .tin, html:not(.light) textarea, html:not(.light) select,
+html:not(.light) input:not([type="checkbox"]):not([type="radio"]):not([type="range"]) { background:#101010 !important; color:#F2F0EA !important; border-color:rgba(212,175,55,.20) !important; }
+html:not(.light) .tin:focus, html:not(.light) textarea:focus, html:not(.light) select:focus,
+html:not(.light) input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):focus { border-color:#D4AF37 !important; box-shadow:0 0 0 4px rgba(212,175,55,.13) !important; }
+html:not(.light) label, html:not(.light) .flabel, html:not(.light) .lbl { color:#D0C8B4 !important; }
+html:not(.light) .sblock, html:not(.light) .ast-mode-btn { background:#151515 !important; border-color:rgba(212,175,55,.16) !important; }
+html:not(.light) .shdr { background:#202020 !important; }
+html:not(.light) .rpanel { background:linear-gradient(160deg,#1A1A1A,#101010) !important; border-color:rgba(212,175,55,.18) !important; }
+html:not(.light) .btn-gen, html:not(.light) .btn-primary, html:not(.light) .btn-submit,
+html:not(.light) .rp-btn.primary, html:not(.light) .tb-solid { background:linear-gradient(135deg,#E6C65C,#B99124) !important; border-color:#D4AF37 !important; color:#171410 !important; box-shadow:0 8px 20px rgba(212,175,55,.16) !important; }
+html:not(.light) .rp-btn, html:not(.light) .btn-secondary, html:not(.light) .btn-outline,
+html:not(.light) .tb-ghost { color:#E6DDBF !important; background:#202020 !important; border-color:rgba(212,175,55,.22) !important; }
+html:not(.light) .rp-btn:hover, html:not(.light) .btn-secondary:hover,
+html:not(.light) .btn-outline:hover, html:not(.light) .ast-mode-btn.active { background:rgba(212,175,55,.12) !important; border-color:rgba(212,175,55,.42) !important; }
+html:not(.light) .auth-modal { background:#151515 !important; border-color:rgba(212,175,55,.22) !important; }
+html:not(.light) #footer { background:#080808 !important; border-color:rgba(212,175,55,.16) !important; }
+html:not(.light) .foot-col h4 { color:#E6C65C !important; }
+html:not(.light) .foot-col a:hover { color:#E6C65C !important; }
+
+/* Light mode: warm white, charcoal text and readable muted gold. */
+html.light {
+  --gold:#A68124 !important;
+  --gold-l:#B9912E !important;
+  --gold-dim:rgba(166,129,36,.72) !important;
+  --gold-glow:rgba(166,129,36,.09) !important;
+  --bg:#F7F7F5 !important;
+  --bg2:#FFFFFF !important;
+  --bg3:#FFFFFF !important;
+  --bg4:#F2F0EA !important;
+  --bg5:#EAE7DF !important;
+  --bg6:#DED9CD !important;
+  --text:#25221B !important;
+  --muted:#706B61 !important;
+  --dim:#898378 !important;
+  --bdr:rgba(74,62,35,.10) !important;
+  --bdr2:rgba(74,62,35,.16) !important;
+  --bdr3:rgba(166,129,36,.34) !important;
+  color-scheme:light;
+}
+html.light body { background:#F7F7F5 !important; color:#25221B !important; }
+html.light #announce { background:#F7F1DF !important; color:#755A19 !important; border-color:#E8DDBB !important; }
+html.light #announce a, html.light .tb-nav a:hover, html.light .tb-nav a.active { color:#8A681B !important; }
+html.light #topbar { background:rgba(255,255,255,.94) !important; border-color:#EAE7DF !important; }
+html.light .tb-logo-txt .tn, html.light .ph h1, html.light .stitle,
+html.light .dw-text h2, html.light .tc h3, html.light .ob-step h3,
+html.light .ob-step h4, html.light .rm h3 { color:#25221B !important; }
+html.light .tb-ghost { color:#8A681B !important; background:#FBF8EF !important; border-color:#E8DDBB !important; }
+html.light .tb-solid { background:linear-gradient(135deg,#D4AF37,#B9912E) !important; color:#171410 !important; }
+html.light #sidebar { background:#FFFFFF !important; border-color:#EAE7DF !important; }
+html.light .sb-lbl { color:#898378 !important; }
+html.light .sb-item { color:#625D53 !important; }
+html.light .sb-item:hover, html.light .sb-item.active { color:#795D1A !important; background:#FBF8EF !important; border-color:#E8DDBB !important; }
+html.light .sb-item .si, html.light .sb-item.active .si,
+html.light .ph-ey, html.light .ph h1 span, html.light .sc-v,
+html.light .ft, html.light .hh-gold { color:#A68124 !important; }
+html.light .ph { background:linear-gradient(115deg,rgba(212,175,55,.10),transparent 62%) !important; border-color:#EAE7DF !important; }
+html.light .ph p, html.light .sc-s, html.light .tc p, html.light .tc .tc-desc,
+html.light .ob-step p, html.light .rm ul, html.light .dw-text p { color:#706B61 !important; }
+html.light .sc, html.light .tc, html.light .ob-step, html.light .rm,
+html.light .recent-card, html.light .qa, html.light .stat-card,
+html.light .rpanel, html.light .auth-modal { background:#FFFFFF !important; border-color:#EAE7DF !important; }
+html.light .sc:hover, html.light .tc:hover, html.light .ob-step:hover,
+html.light .rm:hover { border-color:rgba(166,129,36,.36) !important; }
+html.light #home-hero { background:radial-gradient(ellipse 60% 55% at 50% 0%,rgba(212,175,55,.13),transparent 75%),linear-gradient(180deg,#FBF8EF,#F7F7F5) !important; border-color:#EAE2CC !important; }
+html.light #home-hero h1 { color:#25221B !important; }
+html.light #home-hero .hh-gold { color:#A68124 !important; }
+html.light .hh-pill, html.light .ob-num { color:#795D1A !important; background:#FBF8EF !important; border-color:#E8DDBB !important; }
+html.light .fc { background:#FFFFFF !important; }
+html.light .fd { color:#706B61 !important; }
+html.light .onboard { background:#FBFAF7 !important; border-color:#EAE7DF !important; }
+html.light .dash-welcome { background:linear-gradient(120deg,#FBF8EF,#FFFFFF 72%) !important; border-color:#E8DDBB !important; }
+html.light .tin, html.light textarea, html.light select,
+html.light input:not([type="checkbox"]):not([type="radio"]):not([type="range"]) { background:#FFFFFF !important; color:#25221B !important; border-color:#DED9CD !important; }
+html.light .tin:focus, html.light textarea:focus, html.light select:focus,
+html.light input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):focus { border-color:#B9912E !important; box-shadow:0 0 0 4px rgba(166,129,36,.10) !important; }
+html.light label, html.light .flabel, html.light .lbl { color:#514B40 !important; }
+html.light ::placeholder { color:#938D81 !important; }
+html.light .sblock, html.light .ast-mode-btn { background:#FFFFFF !important; border-color:#EAE7DF !important; }
+html.light .shdr { background:#F5F2EA !important; border-color:#EAE7DF !important; }
+html.light .out-txt { color:#25221B !important; }
+html.light .btn-gen, html.light .btn-primary, html.light .btn-submit,
+html.light .rp-btn.primary { background:linear-gradient(135deg,#D4AF37,#B9912E) !important; border-color:#B9912E !important; color:#171410 !important; box-shadow:0 7px 18px rgba(166,129,36,.14) !important; }
+html.light .rp-btn, html.light .btn-secondary, html.light .btn-outline { color:#5E574A !important; background:#F8F7F3 !important; border-color:#DED9CD !important; }
+html.light .rp-btn:hover, html.light .btn-secondary:hover, html.light .btn-outline:hover,
+html.light .ast-mode-btn:hover, html.light .ast-mode-btn.active { background:#FBF8EF !important; border-color:#DCC98F !important; }
+html.light #footer { background:#F0EEE8 !important; border-color:#E3DFD4 !important; }
+html.light .foot-col h4 { color:#514323 !important; }
+html.light .foot-col a, html.light .foot-brand p, html.light .foot-copy { color:#706B61 !important; }
+html.light .foot-col a:hover { color:#8A681B !important; }
+
+/* Keep typography legible at all breakpoints. */
+html, body { -webkit-text-size-adjust:100%; }
+@media (max-width:768px) {
+  html { font-size:16px !important; }
+  body { font-size:16px !important; }
+}
+</style>
+<style id="nir-light-sidebar-gold-hover-fix">
+/* Keep sidebar icon hover/active accents aligned with the NIR gold brand in Light Mode. */
+html.light #sidebar .sb-item:hover,
+html.light #sidebar .sb-item:focus-visible,
+html.light #sidebar .sb-item.active {
+  color: #795D1A !important;
+  background: #FBF8EF !important;
+  border-color: #E8DDBB !important;
+}
+html.light #sidebar .sb-item:hover .si,
+html.light #sidebar .sb-item:focus-visible .si,
+html.light #sidebar .sb-item.active .si,
+html.light #sidebar .sb-item:hover .si i,
+html.light #sidebar .sb-item:focus-visible .si i,
+html.light #sidebar .sb-item.active .si i {
+  color: #A68124 !important;
+}
+html.light #sidebar .sb-item:hover .si svg,
+html.light #sidebar .sb-item:focus-visible .si svg,
+html.light #sidebar .sb-item.active .si svg {
+  color: #A68124 !important;
+  stroke: #A68124 !important;
+}
+html.light #sidebar .sb-item:hover .si svg *,
+html.light #sidebar .sb-item:focus-visible .si svg *,
+html.light #sidebar .sb-item.active .si svg * {
+  stroke: #A68124 !important;
+}
+</style>
 </body>
 </html>
