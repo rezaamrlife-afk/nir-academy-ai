@@ -4739,10 +4739,10 @@ function dismissSessionBanner() {
     </div>
     <div class="stitle"><span class="stg">Target Band</span></div>
     <div class="bpills" id="band-pills">
-      <div class="bp" data-v="Band 5.0–5.5" onclick="SB(this)">5.0–5.5</div>
-      <div class="bp active" data-v="Band 6.0–6.5" onclick="SB(this)">6.0–6.5</div>
-      <div class="bp" data-v="Band 7.0–7.5" onclick="SB(this)">7.0–7.5</div>
-      <div class="bp" data-v="Band 8.0+" onclick="SB(this)">8.0+</div>
+      <div class="bp" data-v="Band 5.0–5.5" onclick="selectBand(this)">5.0–5.5</div>
+      <div class="bp active" data-v="Band 6.0–6.5" onclick="selectBand(this)">6.0–6.5</div>
+      <div class="bp" data-v="Band 7.0–7.5" onclick="selectBand(this)">7.0–7.5</div>
+      <div class="bp" data-v="Band 8.0+" onclick="selectBand(this)">8.0+</div>
     </div>
     <div class="glayout">
       <div>
@@ -5397,7 +5397,7 @@ function SP(el,id){
   if(id==="ec-level")S.ecLevel=el.dataset.v;
   if(id==="ws-level")S.wsLevel=el.dataset.v;
 }
-function SB(el){
+function selectBand(el){
   document.querySelectorAll("#band-pills .bp").forEach(p=>p.classList.remove("active"));
   el.classList.add("active");S.ieltBand=el.dataset.v;
 }
