@@ -3257,6 +3257,139 @@ html.light .tc h3 {
 }
 
 /* ═══════════════════════════════════════════════════════
+   GLOBAL TYPOGRAPHY & VISUAL UPGRADE — ALL PAGES
+   Covers: output, hero, cards, sidebar, forms, tables
+   ═══════════════════════════════════════════════════════ */
+
+/* ── BASE body ── */
+body { font-size: 15.5px; line-height: 1.75; letter-spacing: -.01em; }
+
+/* ── OUTPUT PANEL (dark) ── */
+.out-txt {
+  font-size: 15.5px !important;
+  line-height: 2.0 !important;
+  letter-spacing: -.01em;
+  padding: 1.2rem 1.4rem !important;
+  border-left: 3px solid var(--bdr2);
+}
+.out-txt h1, .out-txt h2, .out-txt h3, .out-txt h4 {
+  font-family: 'DM Serif Display', Georgia, serif !important;
+  font-weight: 400 !important;
+  letter-spacing: -.02em;
+  line-height: 1.25;
+  margin: 1.4em 0 .5em !important;
+}
+.out-txt h1 { font-size: 1.55em !important; color: var(--gold); }
+.out-txt h2 { font-size: 1.3em !important; color: var(--gold); padding-bottom: .2em; border-bottom: 1px solid var(--bdr2); }
+.out-txt h3 { font-size: 1.12em !important; color: var(--gold-l, var(--gold)); }
+.out-txt h4 { font-size: 1em !important; color: var(--muted); }
+.out-txt p { margin: .65em 0 !important; }
+.out-txt li { margin: .38em 0 !important; line-height: 1.85; }
+.out-txt ul, .out-txt ol { padding-left: 1.6em !important; margin: .6em 0 !important; }
+.out-txt strong { font-weight: 700; letter-spacing: -.01em; }
+.out-txt blockquote {
+  border-left: 3px solid var(--gold);
+  margin: 1em 0 !important;
+  padding: .7rem 1rem !important;
+  font-size: .97em;
+  font-style: italic;
+  border-radius: 0 8px 8px 0;
+}
+.out-txt code { font-size: .87em; padding: 2px 6px !important; border-radius: 5px; }
+.out-txt pre { border-radius: 10px !important; padding: 14px 16px !important; font-size: .9em; }
+.out-txt table.md-table { font-size: .95em !important; border-radius: 8px; overflow: hidden; }
+.out-txt table.md-table th { font-size: .88em !important; padding: 9px 13px !important; letter-spacing: .4px; }
+.out-txt table.md-table td { padding: 9px 13px !important; font-size: .93em !important; }
+
+/* ── OUTPUT PANEL — light mode override ── */
+html.light .out-txt {
+  font-size: 15.5px !important;
+  line-height: 2.0 !important;
+  color: #071929 !important;
+  background: #ffffff !important;
+  border-left: 3px solid rgba(26,63,92,.25) !important;
+  padding: 1.3rem 1.5rem !important;
+}
+html.light .out-txt h1 { color: #071929 !important; font-size: 1.55em !important; border-bottom: 2px solid #1A3F5C !important; padding-bottom: .3em; }
+html.light .out-txt h2 { color: #0F2D48 !important; font-size: 1.3em !important; border-bottom: 1px solid #C8DDF0 !important; padding-bottom: .2em; }
+html.light .out-txt h3 { color: #1A3F5C !important; font-size: 1.12em !important; }
+html.light .out-txt h4 { color: #2563A8 !important; }
+html.light .out-txt p { color: #0D2235 !important; line-height: 2.0 !important; }
+html.light .out-txt li { color: #0D2235 !important; line-height: 1.9 !important; }
+html.light .out-txt li::marker { color: #1A3F5C; font-weight: 800; }
+html.light .out-txt strong { color: #071929 !important; font-weight: 800; }
+html.light .out-txt em { color: #1A3F5C; }
+html.light .out-txt blockquote { border-left: 3px solid #B07F00 !important; background: #FEF8E7; color: #3D2800; font-style: italic; }
+html.light .out-txt code { background: rgba(26,63,92,.08) !important; border-color: rgba(26,63,92,.18) !important; color: #0F2D48; }
+html.light .out-txt pre { background: #F0F6FC !important; border-color: #C8DDF0 !important; }
+html.light .out-txt table.md-table th { background: linear-gradient(135deg,#0F2D48,#1A3F5C) !important; color: #fff !important; letter-spacing: .5px; }
+html.light .out-txt table.md-table td { color: #071929 !important; border-color: #C8DDF0 !important; }
+html.light .out-txt table.md-table tr:nth-child(even) td { background: #EAF2FA !important; }
+
+/* ── HERO H1 (dark) ── */
+#home-hero h1 { letter-spacing: -.03em !important; line-height: 1.08 !important; }
+
+/* ── HERO description ── */
+.hh-desc { font-size: 16px !important; line-height: 1.85 !important; }
+html.light .hh-desc { font-size: 16px !important; color: #0D2235 !important; }
+
+/* ── TOOL CARDS ── */
+.tc { transition: transform .22s ease, box-shadow .22s ease; }
+.tc p { font-size: 13px !important; line-height: 1.75 !important; }
+html.light .tc h3 { font-size: 17px !important; letter-spacing: -.02em; }
+html.light .tc p { color: #2D5070 !important; font-size: 13px !important; }
+
+/* ── SIDEBAR items ── */
+.sb-item { font-size: 13.5px; line-height: 1; letter-spacing: -.01em; }
+.sb-lbl { font-size: 10px !important; letter-spacing: 1.8px !important; }
+
+/* ── STEP / section headers in tools ── */
+.shdr h3 { font-size: 15px !important; letter-spacing: -.01em; }
+
+/* ── FORM labels & hints ── */
+.shint { font-size: 11.5px !important; }
+.ttag { font-size: 11.5px !important; }
+
+/* ── INPUTS & TEXTAREA ── */
+.tin { font-size: 14.5px !important; line-height: 1.6 !important; padding: 10px 14px !important; border-radius: 8px !important; }
+.etarea { font-size: 14px !important; line-height: 1.85 !important; padding: 1rem 1.2rem !important; }
+.sg select { font-size: 14px !important; padding: 9px 28px 9px 12px !important; border-radius: 8px !important; }
+
+/* ── CHIP level selector ── */
+.lvl { font-size: 11.5px !important; padding: 7px 18px !important; }
+.lvl.active { font-size: 11.5px !important; }
+
+/* ── ANNOUNCE bar ── */
+#announce { font-size: 11.5px !important; letter-spacing: 1.5px !important; }
+
+/* ── PAGE HERO (tool pages) description ── */
+.ph p { font-size: 14px !important; line-height: 1.85 !important; }
+.ph h1 { font-size: clamp(1.5rem, 3vw, 2.1rem) !important; }
+
+/* ── BLOG cards ── */
+.blog-card h3 { font-size: 16.5px !important; line-height: 1.35 !important; }
+.blog-card p { font-size: 13px !important; line-height: 1.75 !important; }
+
+/* ── ONBOARDING ── */
+.onboard h2 { font-size: clamp(1.35rem,3vw,1.8rem) !important; }
+.ob-desc { font-size: 14px !important; line-height: 1.8 !important; }
+
+/* ── MOBILE refinements ── */
+@media (max-width: 600px) {
+  body { font-size: 15px; }
+  .out-txt { font-size: 15px !important; line-height: 1.9 !important; padding: .9rem 1rem !important; }
+  html.light .out-txt { padding: .9rem 1rem !important; }
+  .out-txt h1 { font-size: 1.4em !important; }
+  .out-txt h2 { font-size: 1.22em !important; }
+  .hh-desc { font-size: 15px !important; }
+  .tin { font-size: 16px !important; } /* prevent iOS zoom */
+  .etarea { font-size: 16px !important; } /* prevent iOS zoom */
+  .sg select { font-size: 16px !important; } /* prevent iOS zoom */
+  .ph h1 { font-size: clamp(1.3rem,6vw,1.7rem) !important; }
+  .sb-item { font-size: 13px !important; }
+}
+
+/* ═══════════════════════════════════════════════════════
    1. SKELETON LOADING
    ═══════════════════════════════════════════════════════ */
 @keyframes skeletonShimmer {
