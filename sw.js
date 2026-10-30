@@ -1,4 +1,4 @@
-const CACHE = 'nir-academy-v7';
+const CACHE = 'nir-academy-v8';
 const OFFLINE_URLS = ['/'];
 
 self.addEventListener('install', e => {
