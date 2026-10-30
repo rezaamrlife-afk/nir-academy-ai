@@ -3255,6 +3255,120 @@ html.light .tc h3 {
   .btn-gen { font-size: 14px; letter-spacing: 1.4px; }
   .sb-item { font-size: 13px; }
 }
+
+/* ═══════════════════════════════════════════════════════
+   1. SKELETON LOADING
+   ═══════════════════════════════════════════════════════ */
+@keyframes skeletonShimmer {
+  0%   { background-position: -400px 0; }
+  100% { background-position: 400px 0; }
+}
+.skeleton-line {
+  height: 14px; border-radius: 6px; margin: 10px 0;
+  background: linear-gradient(90deg,
+    rgba(255,255,255,.04) 25%,
+    rgba(255,255,255,.10) 50%,
+    rgba(255,255,255,.04) 75%);
+  background-size: 800px 100%;
+  animation: skeletonShimmer 1.6s ease-in-out infinite;
+}
+html.light .skeleton-line {
+  background: linear-gradient(90deg,
+    rgba(26,63,92,.05) 25%,
+    rgba(26,63,92,.13) 50%,
+    rgba(26,63,92,.05) 75%);
+  background-size: 800px 100%;
+  animation: skeletonShimmer 1.6s ease-in-out infinite;
+}
+.skeleton-line:nth-child(1) { width: 92%; }
+.skeleton-line:nth-child(2) { width: 78%; }
+.skeleton-line:nth-child(3) { width: 85%; }
+.skeleton-line:nth-child(4) { width: 60%; }
+.skeleton-line:nth-child(5) { width: 88%; }
+.skeleton-line:nth-child(6) { width: 72%; }
+
+/* ═══════════════════════════════════════════════════════
+   2. TOAST NOTIFICATIONS
+   ═══════════════════════════════════════════════════════ */
+#nir-toast-container {
+  position: fixed; bottom: 90px; right: 20px; z-index: 9999;
+  display: flex; flex-direction: column; gap: 8px;
+  pointer-events: none;
+}
+@media (max-width: 600px) {
+  #nir-toast-container { bottom: 80px; right: 12px; left: 12px; }
+}
+.nir-toast {
+  display: flex; align-items: center; gap: 10px;
+  padding: 11px 16px; border-radius: 10px;
+  font-size: 13px; font-weight: 600; letter-spacing: .1px;
+  backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+  box-shadow: 0 4px 20px rgba(0,0,0,.25), 0 1px 4px rgba(0,0,0,.15);
+  pointer-events: auto; cursor: default; max-width: 320px;
+  transform: translateX(120%); opacity: 0;
+  transition: transform .32s cubic-bezier(.34,1.56,.64,1), opacity .28s ease;
+  background: rgba(30,40,55,.88); color: #e8f0fa;
+  border: 1px solid rgba(255,255,255,.08);
+}
+@media (max-width: 600px) {
+  .nir-toast { max-width: 100%; transform: translateY(80px); }
+}
+.nir-toast.show {
+  transform: translateX(0);
+  opacity: 1;
+}
+@media (max-width: 600px) {
+  .nir-toast.show { transform: translateY(0); }
+}
+.nir-toast.toast-success { border-left: 3px solid #34d399; }
+.nir-toast.toast-error   { border-left: 3px solid #f87171; background: rgba(50,20,20,.9); }
+.nir-toast.toast-info    { border-left: 3px solid #60a5fa; }
+.nir-toast.toast-copy    { border-left: 3px solid #a78bfa; }
+html.light .nir-toast {
+  background: rgba(255,255,255,.92); color: #071929;
+  border-color: rgba(26,63,92,.12);
+  box-shadow: 0 4px 24px rgba(26,63,92,.15), 0 1px 4px rgba(26,63,92,.10);
+}
+html.light .nir-toast.toast-success { border-left: 3px solid #059669; }
+html.light .nir-toast.toast-error   { border-left: 3px solid #dc2626; background: rgba(255,240,240,.95); }
+html.light .nir-toast.toast-info    { border-left: 3px solid #1A3F5C; }
+html.light .nir-toast.toast-copy    { border-left: 3px solid #7c3aed; }
+.nir-toast .t-ico { font-size: 15px; flex-shrink: 0; }
+
+/* ═══════════════════════════════════════════════════════
+   3. PAGE TRANSITIONS
+   ═══════════════════════════════════════════════════════ */
+.page { opacity: 0; transform: translateY(8px);
+  transition: opacity .22s ease, transform .22s ease; pointer-events: none; }
+.page.active { opacity: 1; transform: translateY(0); pointer-events: auto; }
+
+/* ═══════════════════════════════════════════════════════
+   6. GENERATE BUTTON — progress bar inside
+   ═══════════════════════════════════════════════════════ */
+.btn-gen { position: relative; overflow: hidden; }
+.btn-gen .btn-progress {
+  position: absolute; bottom: 0; left: 0; height: 3px;
+  background: rgba(255,255,255,.5); border-radius: 0 2px 2px 0;
+  width: 0%; transition: width .4s ease;
+}
+html.light .btn-gen .btn-progress { background: rgba(255,255,255,.7); }
+.btn-gen.loading .btn-progress { animation: btnProgressAnim 2.2s ease-in-out infinite; }
+@keyframes btnProgressAnim {
+  0%   { width: 0%;   left: 0; }
+  50%  { width: 75%;  left: 0; }
+  85%  { width: 92%;  left: 0; }
+  100% { width: 92%;  left: 0; }
+}
+
+/* ═══════════════════════════════════════════════════════
+   COPY BUTTON — micro-animation
+   ═══════════════════════════════════════════════════════ */
+.rp-btn.copied {
+  color: #34d399 !important;
+  transform: scale(1.08);
+  transition: color .2s, transform .2s;
+}
+html.light .rp-btn.copied { color: #059669 !important; }
 </style>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -3870,6 +3984,7 @@ function dismissSessionBanner() {
 </script>
 </head>
 <body>
+<div id="nir-toast-container"></div>
 
 <!-- ═══════════ NIRA ONBOARDING ═══════════ -->
 <div id="nira-onboard" class="nira-ob-overlay" role="dialog" aria-modal="true" aria-label="Welcome to NIR Academy">
@@ -4354,7 +4469,7 @@ function dismissSessionBanner() {
             </div>
           </div>
         </div>
-        <button class="btn-gen" id="gen-btn" data-lbl="Generate My Prompt" onclick="generate()">✦ &nbsp;Generate My Prompt</button>
+        <button class="btn-gen" id="gen-btn" data-lbl="Generate My Prompt" onclick="generate()">✦ &nbsp;Generate My Prompt<span class="btn-progress"></span></button>
       </div>
       <!-- RESULT -->
       <div>
@@ -4445,7 +4560,7 @@ function dismissSessionBanner() {
           <div class="shdr"><div class="snum">4</div><h3>Unit Content <span style="font-weight:400;font-size:.85em;opacity:.6">(optional)</span></h3></div>
           <div class="sbdy"><textarea id="lp-unit" class="tin" rows="5" style="resize:vertical;width:100%;font-size:.93em" placeholder="Paste text from your coursebook unit here — vocabulary lists, grammar notes, dialogue, reading text, etc. NIRA will build the lesson plan around this content."></textarea></div>
         </div>
-        <button class="btn-gen" data-lbl="Generate Lesson Plan" onclick="generateLesson()">✦ &nbsp;Generate Lesson Plan</button>
+        <button class="btn-gen" data-lbl="Generate Lesson Plan" onclick="generateLesson()">✦ &nbsp;Generate Lesson Plan<span class="btn-progress"></span></button>
       </div>
       <div>
         <div class="rpanel">
@@ -4513,7 +4628,7 @@ function dismissSessionBanner() {
             </div>
           </div>
         </div>
-        <button class="btn-gen" data-lbl="Generate IELTS Task" onclick="generateIELTS()">✦ &nbsp;Generate IELTS Task</button>
+        <button class="btn-gen" data-lbl="Generate IELTS Task" onclick="generateIELTS()">✦ &nbsp;Generate IELTS Task<span class="btn-progress"></span></button>
       </div>
       <div>
         <div class="rpanel">
@@ -4563,7 +4678,7 @@ function dismissSessionBanner() {
           <div class="shdr"><div class="snum">2</div><h3>Paste Student Writing</h3></div>
           <div class="sbdy"><textarea class="etarea" id="ec-text" placeholder="Paste the student's writing here. e.g. 'Yesterday I go to the market and buyed some vegetable. It was very crowd and I feeling tired after…'"></textarea></div>
         </div>
-        <button class="btn-gen" data-lbl="Analyse & Correct" onclick="generateError()">✦ &nbsp;Analyse &amp; Correct</button>
+        <button class="btn-gen" data-lbl="Analyse &amp; Correct" onclick="generateError()">✦ &nbsp;Analyse &amp; Correct<span class="btn-progress"></span></button>
       </div>
       <div>
         <div class="rpanel">
@@ -4631,7 +4746,7 @@ function dismissSessionBanner() {
             </div>
           </div>
         </div>
-        <button class="btn-gen" data-lbl="Build Worksheet" onclick="generateWorksheet()">✦ &nbsp;Build Worksheet</button>
+        <button class="btn-gen" data-lbl="Build Worksheet" onclick="generateWorksheet()">✦ &nbsp;Build Worksheet<span class="btn-progress"></span></button>
       </div>
       <div>
         <div class="rpanel">
@@ -6991,6 +7106,195 @@ function nirWordCount(outId, wcId) {
 
 })();
 
+</script>
+
+<!-- ═══════════════════════════════════════════════════════
+     NIRA UX UPGRADE: Toast · Skeleton · Transitions · Haptic
+     ═══════════════════════════════════════════════════════ -->
+<script>
+(function(){
+'use strict';
+
+/* ─────────────────────────────────────────────
+   2. TOAST SYSTEM
+   ───────────────────────────────────────────── */
+var _toastTimer = {};
+var _toastCount = 0;
+
+window.nirToast = function(msg, type, duration) {
+  type = type || 'info';
+  duration = duration || 3200;
+  var container = document.getElementById('nir-toast-container');
+  if (!container) return;
+
+  var id = 'toast-' + (++_toastCount);
+  var icons = { success: '✓', error: '✕', info: 'ℹ', copy: '⎘' };
+  var toast = document.createElement('div');
+  toast.className = 'nir-toast toast-' + type;
+  toast.id = id;
+  toast.innerHTML = '<span class="t-ico">' + (icons[type]||'ℹ') + '</span><span>' + msg + '</span>';
+  container.appendChild(toast);
+
+  // Animate in
+  requestAnimationFrame(function(){
+    requestAnimationFrame(function(){ toast.classList.add('show'); });
+  });
+
+  // Auto dismiss
+  _toastTimer[id] = setTimeout(function(){
+    toast.classList.remove('show');
+    setTimeout(function(){ if(toast.parentNode) toast.parentNode.removeChild(toast); }, 400);
+  }, duration);
+
+  // Click to dismiss
+  toast.addEventListener('click', function(){
+    clearTimeout(_toastTimer[id]);
+    toast.classList.remove('show');
+    setTimeout(function(){ if(toast.parentNode) toast.parentNode.removeChild(toast); }, 350);
+  });
+};
+
+// Override existing T() status function to also show toasts for key events
+var _origT = window.T;
+window.T = function(msg) {
+  if (_origT) _origT(msg);
+  if (!msg) return;
+  var lower = (msg||'').toLowerCase();
+  if (lower.includes('copied'))   nirToast(msg, 'copy', 2400);
+  else if (lower.includes('saved'))    nirToast(msg, 'success', 2600);
+  else if (lower.includes('ready') || lower.includes('✓')) nirToast(msg, 'success', 2800);
+  else if (lower.includes('error') || lower.includes('fail') || lower.includes('wrong')) nirToast(msg, 'error', 4000);
+  else if (lower.includes('limit') || lower.includes('expired')) nirToast(msg, 'error', 5000);
+};
+
+/* ─────────────────────────────────────────────
+   1. SKELETON LOADING — inject before API call
+   ───────────────────────────────────────────── */
+window.nirShowSkeleton = function(outId) {
+  var out = document.getElementById(outId);
+  if (!out) return;
+  var html = '';
+  var widths = [92, 78, 85, 60, 88, 72, 80, 55];
+  for (var i = 0; i < 8; i++) {
+    html += '<div class="skeleton-line" style="width:' + widths[i] + '%"></div>';
+  }
+  out.innerHTML = html;
+};
+
+window.nirHideSkeleton = function(outId) {
+  var out = document.getElementById(outId);
+  if (!out) return;
+  out.querySelectorAll('.skeleton-line').forEach(function(el){ el.remove(); });
+};
+
+/* Patch callAPI to show skeleton */
+var _origCallAPI = window.callAPI;
+if (typeof _origCallAPI === 'function') {
+  window.callAPI = function(prompt, outId, btn) {
+    nirShowSkeleton(outId);
+    return _origCallAPI.apply(this, arguments);
+  };
+}
+
+/* ─────────────────────────────────────────────
+   3. SMOOTH PAGE TRANSITIONS
+   ───────────────────────────────────────────── */
+var _origGo = window.go;
+if (typeof _origGo === 'function') {
+  window.go = function(id) {
+    // Fade out current active page
+    var current = document.querySelector('.page.active');
+    if (current && current.id !== 'page-' + id) {
+      current.style.transition = 'opacity .15s ease, transform .15s ease';
+      current.style.opacity = '0';
+      current.style.transform = 'translateY(-4px)';
+    }
+    setTimeout(function(){
+      _origGo.call(window, id);
+      // New page fades in via CSS .page.active transition
+    }, current ? 120 : 0);
+  };
+}
+
+/* ─────────────────────────────────────────────
+   4. PULL-TO-REFRESH on output panels (mobile)
+   ───────────────────────────────────────────── */
+(function(){
+  var startY = 0, pulling = false, threshold = 72;
+
+  document.addEventListener('touchstart', function(e){
+    startY = e.touches[0].clientY;
+    pulling = false;
+  }, { passive: true });
+
+  document.addEventListener('touchmove', function(e){
+    var dy = e.touches[0].clientY - startY;
+    var target = e.target.closest('.out-txt');
+    if (!target) return;
+    // Only trigger pull if scrolled to top
+    if (target.scrollTop === 0 && dy > 10) {
+      pulling = true;
+      if (dy < threshold) {
+        target.style.transform = 'translateY(' + Math.min(dy * 0.35, 28) + 'px)';
+        target.style.transition = 'none';
+      }
+    }
+  }, { passive: true });
+
+  document.addEventListener('touchend', function(e){
+    var target = e.target.closest('.out-txt');
+    if (!target) return;
+    target.style.transition = 'transform .3s cubic-bezier(.34,1.56,.64,1)';
+    target.style.transform = '';
+    if (pulling) {
+      var dy = e.changedTouches[0].clientY - startY;
+      if (dy > threshold) {
+        nirToast('Pull to refresh not available — use Regenerate ↑', 'info', 2200);
+      }
+    }
+    pulling = false;
+  }, { passive: true });
+})();
+
+/* ─────────────────────────────────────────────
+   5. HAPTIC FEEDBACK on Generate buttons (mobile)
+   ───────────────────────────────────────────── */
+document.addEventListener('click', function(e){
+  var btn = e.target.closest('.btn-gen');
+  if (!btn) return;
+  if (navigator.vibrate) {
+    navigator.vibrate([12, 40, 8]); // subtle double-tap pattern
+  }
+});
+
+/* ─────────────────────────────────────────────
+   COPY BUTTON — micro-animation
+   ───────────────────────────────────────────── */
+var _origCopyOut = window.copyOut;
+if (typeof _origCopyOut === 'function') {
+  window.copyOut = function(id) {
+    var t = document.getElementById(id);
+    if (!t || !t.textContent.trim()) return;
+    var text = t.textContent;
+    if (text.includes('Configure') || text.includes('will appear')) return;
+    navigator.clipboard.writeText(text).then(function(){
+      nirToast('Copied to clipboard', 'copy', 2200);
+      // Find the copy button that triggered this
+      var btns = document.querySelectorAll('.rp-btn');
+      btns.forEach(function(b){
+        var oc = b.getAttribute('onclick') || '';
+        if (oc.includes("copyOut('" + id + "')")) {
+          var orig = b.textContent;
+          b.classList.add('copied');
+          b.textContent = '✓ Copied';
+          setTimeout(function(){ b.classList.remove('copied'); b.textContent = orig; }, 1800);
+        }
+      });
+    });
+  };
+}
+
+})();
 </script>
 </body>
 </html>
