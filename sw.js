@@ -1,4 +1,5 @@
-const CACHE = 'nir-academy-v12';
+
+const CACHE = 'nir-academy-v13';
 const OFFLINE_URLS = ['/'];
 
 self.addEventListener('install', e => {
@@ -11,7 +12,13 @@ self.addEventListener('install', e => {
 self.addEventListener('activate', e => {
   e.waitUntil(
     caches.keys()
-      .then(keys => Promise.all(keys.filter(k => k !== CACHE).map(k => caches.delete(k))))
+      .then(keys =>
+        Promise.all(
+          keys
+            .filter(k => k !== CACHE)
+            .map(k => caches.delete(k))
+        )
+      )
       .then(() => self.clients.claim())
   );
 });
@@ -26,7 +33,9 @@ self.addEventListener('fetch', e => {
     caches.open(CACHE).then(cache =>
       fetch(e.request)
         .then(res => {
-          if (res && res.status === 200) cache.put(e.request, res.clone());
+          if (res && res.status === 200) {
+            cache.put(e.request, res.clone());
+          }
           return res;
         })
         .catch(() => caches.match(e.request))
