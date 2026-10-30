@@ -3760,8 +3760,12 @@ html.light .um-divider { border-color: #dde6f5; }
 
 /* saved cards */
 html.light .saved-card { background: #ffffff; border-color: #dde6f5; }
-html.light .saved-card:hover { border-color: #2563EB; }
-html.light .saved-card .sc-date { color: #a0b0cc; }
+html.light .saved-card:hover { border-color: #2563A8; }
+html.light .saved-card .sc-date { color: #7A90B0; }
+html.light .saved-card .sc-preview { color: #2D3F55; }
+html.light .sc-btn { background: #F0F4FA; border-color: #D0DCF0; color: #2D3F55; }
+html.light .sc-btn:hover { background: #1A3F5C; color: #ffffff; border-color: #1A3F5C; }
+html.light .sc-btn.del:hover { background: #dc2626; color: #ffffff; border-color: #dc2626; }
 
 /* profile fields */
 html.light .profile-field label { color: #6B7FA3; }
@@ -6211,16 +6215,19 @@ function renderSavedPrompts(prompts){
     grid.innerHTML = '<p style="color:#464646;font-size:13px;grid-column:1/-1;text-align:center;padding:3rem">No saved prompts yet. Generate a prompt and click Save!</p>';
     return;
   }
+  // Store content in a map keyed by id to avoid HTML injection via onclick attributes
+  if(!window._spMap) window._spMap = {};
   grid.innerHTML = prompts.map(p=>{
+    window._spMap[p.id] = p.content;
     const date = new Date(p.created_at).toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'});
-    const preview = p.content.substring(0,150);
+    const preview = p.content.replace(/</g,'&lt;').replace(/>/g,'&gt;').substring(0,150);
     return `<div class="saved-card">
       <div class="sc-date">${date}</div>
       <span class="sc-tool">${p.tool}</span>
       <div class="sc-preview">${preview}…</div>
       <div class="saved-card-actions">
-        <button class="sc-btn" onclick="navigator.clipboard.writeText(${JSON.stringify(p.content)}).then(()=>T('Copied!'))">Copy</button>
-        <button class="sc-btn" onclick="loadIntoGenerator(${JSON.stringify(p.content)})">Use</button>
+        <button class="sc-btn" onclick="navigator.clipboard.writeText(window._spMap['${p.id}']).then(()=>T('Copied to clipboard ✓'))">Copy</button>
+        <button class="sc-btn" onclick="loadIntoGenerator(window._spMap['${p.id}'])">Use</button>
         <button class="sc-btn del" onclick="deletePrompt('${p.id}')">Delete</button>
       </div>
     </div>`;
