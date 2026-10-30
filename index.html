@@ -5829,9 +5829,16 @@ function loadLib(text){
 
 // ══ TOAST ══
 function T(msg){
-  const t=document.getElementById("toast");
-  t.textContent="✦ "+msg;t.classList.add("show");
-  setTimeout(()=>t.classList.remove("show"),2600);
+  // Route all toasts to nirToast if available; suppress old #toast element
+  var oldT=document.getElementById("toast");
+  if(oldT){oldT.classList.remove("show");oldT.style.display="none";}
+  if(!msg)return;
+  if(window.nirToast){
+    var lower=msg.toLowerCase();
+    var type=lower.includes('copied')?'copy':lower.includes('✓')||lower.includes('saved')||lower.includes('ready')?'success':lower.includes('error')||lower.includes('fail')||lower.includes('wrong')||lower.includes('limit')||lower.includes('expired')?'error':'info';
+    var dur=type==='error'?4500:type==='copy'?2200:2800;
+    window.nirToast(msg,type,dur);
+  }
 }
 
 // ══ PWA ══
@@ -7287,18 +7294,7 @@ window.nirToast = function(msg, type, duration) {
   });
 };
 
-// Override existing T() status function to also show toasts for key events
-var _origT = window.T;
-window.T = function(msg) {
-  if (_origT) _origT(msg);
-  if (!msg) return;
-  var lower = (msg||'').toLowerCase();
-  if (lower.includes('copied'))   nirToast(msg, 'copy', 2400);
-  else if (lower.includes('saved'))    nirToast(msg, 'success', 2600);
-  else if (lower.includes('ready') || lower.includes('✓')) nirToast(msg, 'success', 2800);
-  else if (lower.includes('error') || lower.includes('fail') || lower.includes('wrong')) nirToast(msg, 'error', 4000);
-  else if (lower.includes('limit') || lower.includes('expired')) nirToast(msg, 'error', 5000);
-};
+// T() is already patched at definition to use nirToast — no override needed here
 
 /* ─────────────────────────────────────────────
    1. SKELETON LOADING — inject before API call
