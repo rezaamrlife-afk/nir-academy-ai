@@ -5038,10 +5038,10 @@ function dismissSessionBanner() {
     </div>
 
     <div class="stitle" style="margin-top:1.5rem"><span class="stg">Most Used Tools</span></div>
-    <div class="tgrid">
-      <div class="tc" onclick="go('generator')" title="Build structured, pedagogically-sound AI prompts for any ELT task — grammar, vocabulary, skills, and exams. 5-step guided process."><span class="tc-ico"><i data-lucide="zap"></i></span><h3>Prompt Generator</h3><p>Your most powerful ELT tool.</p><button class="tc-cta">Open →</button></div>
-      <div class="tc" onclick="go('lesson')" title="Generate complete TESOL-aligned lesson plans with PPP/TBL stages, clear aims, timed activities, and materials — ready to teach."><span class="tc-ico"><i data-lucide="clipboard-list"></i></span><h3>Lesson Planner</h3><p>TESOL-aligned lesson plans.</p><button class="tc-cta">Open →</button></div>
-      <div class="tc" onclick="go('ielts')" title="Create authentic IELTS-style tasks at target band levels — Task 1, Task 2, Reading, Listening, and Speaking with full model answers."><span class="tc-ico"><i data-lucide="book-open"></i></span><h3>IELTS Generator</h3><p>Band-targeted IELTS tasks.</p><button class="tc-cta">Open →</button></div>
+    <div class="tgrid" id="an-tool-grid">
+      <div class="tc" onclick="go('generator')"><span class="tc-ico"><i data-lucide="wand-sparkles"></i></span><h3>Prompt Generator</h3><p>Loading usage data…</p><button class="tc-cta">Open →</button></div>
+      <div class="tc" onclick="go('lesson')"><span class="tc-ico"><i data-lucide="calendar-days"></i></span><h3>Lesson Planner</h3><p>Loading usage data…</p><button class="tc-cta">Open →</button></div>
+      <div class="tc" onclick="go('ielts')"><span class="tc-ico"><i data-lucide="graduation-cap"></i></span><h3>IELTS Generator</h3><p>Loading usage data…</p><button class="tc-cta">Open →</button></div>
     </div>
 
     <div class="stitle" style="margin-top:1.5rem"><span class="stg">Upgrade to Pro</span></div>
@@ -6028,21 +6028,60 @@ function onLogin(user){
 
 async function updateAnalytics(user){
   if(!user) return;
-  // Count saved prompts for analytics
-  const {count} = await SB.from('saved_prompts').select('*',{count:'exact',head:true}).eq('user_id',user.id);
-  const el = document.getElementById('an-saved');
-  if(el) el.textContent = count || 0;
-  const el2 = document.getElementById('an-total');
-  if(el2) el2.textContent = count || 0;
+  // Fetch saved prompts count
+  const {count: savedCount} = await SB.from('saved_prompts').select('*',{count:'exact',head:true}).eq('user_id',user.id);
+  const elSaved = document.getElementById('an-saved');
+  if(elSaved) elSaved.textContent = savedCount || 0;
   // Update profile saved count
   const el_ps = document.getElementById('ps-saved');
-  if(el_ps) el_ps.textContent = count || 0;
+  if(el_ps) el_ps.textContent = savedCount || 0;
+  // Fetch total requests count from nira_requests
+  const {count: totalCount} = await SB.from('nira_requests').select('*',{count:'exact',head:true}).eq('user_id',user.id);
+  const elTotal = document.getElementById('an-total');
+  if(elTotal) elTotal.textContent = totalCount || 0;
   // Days since joined
   const joined = new Date(user.created_at);
   const now = new Date();
   const days = Math.floor((now - joined) / (1000*60*60*24));
   const el3 = document.getElementById('an-days');
   if(el3) el3.textContent = days || 1;
+  // Update most-used tools from nira_requests
+  updateMostUsedTools(user);
+}
+
+async function updateMostUsedTools(user){
+  const toolGrid = document.getElementById('an-tool-grid');
+  if(!toolGrid) return;
+  const {data} = await SB.from('nira_requests').select('tool').eq('user_id',user.id);
+  if(!data || !data.length) return;
+  // Count per tool
+  const counts = {};
+  data.forEach(r=>{ const t=r.tool||'general'; counts[t]=(counts[t]||0)+1; });
+  const sorted = Object.entries(counts).sort((a,b)=>b[1]-a[1]).slice(0,3);
+  const toolMeta = {
+    'prompt_generator': {icon:'wand-sparkles', label:'Prompt Generator', page:'generator', color:'#7C3AED'},
+    'lesson_planner':   {icon:'calendar-days',  label:'Lesson Planner',   page:'lesson',    color:'#0891B2'},
+    'ielts_generator':  {icon:'graduation-cap', label:'IELTS Generator',  page:'ielts',     color:'#D97706'},
+    'error_correction': {icon:'scan-text',       label:'Error Correction', page:'error',     color:'#DC2626'},
+    'worksheet_builder':{icon:'layout-template', label:'Worksheet Builder',page:'worksheet', color:'#059669'},
+    'ai_assistant':     {icon:'bot-message-square',label:'AI Assistant',   page:'assistant', color:'#2563EB'},
+    'general':          {icon:'zap',             label:'General',          page:'home',      color:'#6B7280'},
+  };
+  const total = data.length;
+  toolGrid.innerHTML = sorted.map(([tool, cnt])=>{
+    const m = toolMeta[tool] || {icon:'zap', label:tool.replace(/_/g,' ').replace(/\b\w/g,c=>c.toUpperCase()), page:'home', color:'#6B7280'};
+    const pct = Math.round(cnt/total*100);
+    return `<div class="tc" onclick="go('${m.page}')" style="position:relative">
+      <span class="tc-ico"><i data-lucide="${m.icon}" style="color:${m.color}"></i></span>
+      <h3>${m.label}</h3>
+      <p style="margin-bottom:.5rem">${cnt} use${cnt!==1?'s':''} · ${pct}% of total</p>
+      <div style="height:4px;background:var(--bdr);border-radius:2px;overflow:hidden">
+        <div style="height:100%;width:${pct}%;background:${m.color};border-radius:2px;transition:width .6s ease"></div>
+      </div>
+      <button class="tc-cta" style="margin-top:.75rem">Open →</button>
+    </div>`;
+  }).join('');
+  if(window.lucide) lucide.createIcons();
 }
 
 function onLogout(){
