@@ -8595,6 +8595,54 @@ if(window.lucide){ lucide.createIcons(); } else { setTimeout(function(){ if(wind
     font-size: 0.88em;
   }
 }
+
+/* ══════════════════════════════════════════════════════════
+   PHASE 3 — Navigation & Layout (mobile only)
+   All rules inside @media max-width queries.
+   No color, font-family, or desktop changes.
+   ══════════════════════════════════════════════════════════ */
+
+/* ── 3a. Bottom nav active icon: gold color consistent with theme ── */
+@media (max-width: 960px) {
+  .mn-item.active .mi-lbl {
+    color: var(--gold) !important;
+  }
+  .mn-item.active .mi-ico svg {
+    stroke: var(--gold);
+  }
+  /* Inactive icon: slightly more visible */
+  .mn-item .mi-ico {
+    opacity: 0.6;
+  }
+}
+
+/* ── 3b. Sidebar items: ensure 48px tap area on mobile ── */
+@media (max-width: 960px) {
+  .sb-item {
+    min-height: 48px;
+    padding: 0.7rem 1.2rem;
+  }
+  /* Sidebar scroll: momentum scrolling on iOS */
+  #sidebar {
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
+  }
+}
+
+/* ── 3c. Bottom nav: ensure content doesn't hide behind nav ── */
+@media (max-width: 960px) {
+  #shell {
+    padding-bottom: calc(70px + var(--safe-bottom, 0px));
+  }
+}
+
+/* ── 3d. Sidebar overlay: smoother close on mobile ── */
+@media (max-width: 960px) {
+  #sb-backdrop {
+    transition: opacity 0.2s ease;
+  }
+}
 </style>
 
 <script>
