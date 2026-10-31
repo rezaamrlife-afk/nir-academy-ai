@@ -8704,6 +8704,71 @@ if(window.lucide){ lucide.createIcons(); } else { setTimeout(function(){ if(wind
     min-height: 120px;
   }
 }
+
+/* ══════════════════════════════════════════════════════════
+   PHASE 5 — Micro-interactions & Polish (mobile only)
+   All rules inside @media max-width queries.
+   No color, font-family, or desktop changes.
+   ══════════════════════════════════════════════════════════ */
+
+/* ── 5a. Tactile press feedback: .rp-btn ── */
+@media (max-width: 960px) {
+  .rp-btn:active {
+    transform: scale(0.96);
+    opacity: 0.85;
+    transition: transform 0.08s ease, opacity 0.08s ease;
+  }
+}
+
+/* ── 5b. Tactile press feedback: .chip ── */
+@media (max-width: 960px) {
+  .chip:active {
+    transform: scale(0.95);
+    opacity: 0.8;
+    transition: transform 0.08s ease, opacity 0.08s ease;
+  }
+}
+
+/* ── 5c. Tactile press feedback: .lvl (CEFR pills) ── */
+@media (max-width: 960px) {
+  .lvl:active {
+    transform: scale(0.95);
+    opacity: 0.8;
+    transition: transform 0.08s ease, opacity 0.08s ease;
+  }
+}
+
+/* ── 5d. Tactile press feedback: .ttag (topic suggestion tags) ── */
+@media (max-width: 960px) {
+  .ttag:active {
+    transform: scale(0.95);
+    opacity: 0.8;
+    transition: transform 0.08s ease, opacity 0.08s ease;
+  }
+}
+
+/* ── 5e. Tactile press feedback: .sb-item (sidebar items) ── */
+@media (max-width: 960px) {
+  .sb-item:active {
+    opacity: 0.7;
+    transition: opacity 0.08s ease;
+  }
+}
+
+/* ── 5f. Tactile press feedback: .mn-item (bottom nav items) ── */
+@media (max-width: 960px) {
+  .mn-item:active {
+    opacity: 0.65;
+    transition: opacity 0.08s ease;
+  }
+}
+
+/* ── 5g. Toast: safe-area bottom offset on notched phones ── */
+@media (max-width: 600px) {
+  #nir-toast-container {
+    bottom: calc(80px + var(--safe-bottom, env(safe-area-inset-bottom, 0px)));
+  }
+}
 </style>
 
 <script>
