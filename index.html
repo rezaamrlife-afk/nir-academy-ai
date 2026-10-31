@@ -8424,5 +8424,229 @@ html.light #sidebar .sb-item.active .si svg * {
 // Re-run lucide icons after dynamic content (with retry if CDN slow)
 if(window.lucide){ lucide.createIcons(); } else { setTimeout(function(){ if(window.lucide) lucide.createIcons(); },800); }
 </script>
+
+<!-- ═══════════════════════════════════════════════════════
+     MOBILE IMPROVEMENTS v1
+     1. Touch targets ≥44px for rp-btn
+     2. Native Share (Web Share API + clipboard fallback)
+     3. Draft autosave/restore via localStorage
+     ═══════════════════════════════════════════════════════ -->
+
+<style>
+/* ── 1. Touch Targets: rp-btn ≥ 44×44px on mobile ── */
+@media (max-width: 960px) {
+  .rp-btn {
+    min-height: 44px;
+    min-width: 44px;
+    padding: 10px 16px;
+    font-size: 13px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+  }
+  /* Print button (icon-only) needs equal width */
+  .rp-btn[title="Print"] {
+    min-width: 44px;
+    padding: 10px;
+  }
+  /* Hamburger: bring up to 44px */
+  .hamburger {
+    min-width: 44px !important;
+    min-height: 44px !important;
+  }
+  /* Bottom nav items ≥ 44px tap area */
+  .mn-item {
+    min-height: 44px;
+  }
+  /* rp-acts: wrap neatly on small screens */
+  .rp-acts {
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+}
+</style>
+
+<script>
+// ══════════════════════════════════════════════════════════
+// 2. NATIVE SHARE — Web Share API with clipboard fallback
+// ══════════════════════════════════════════════════════════
+(function(){
+
+  // Inject Share button into every output panel header
+  function injectShareButtons(){
+    var panels = [
+      { outId: 'prompt-out',  actsId: null,  btnId: 'share-btn-prompt' },
+      { outId: 'lp-out',      actsId: null,  btnId: 'share-btn-lp'     },
+      { outId: 'ielts-out',   actsId: null,  btnId: 'share-btn-ielts'  },
+      { outId: 'ec-out',      actsId: null,  btnId: 'share-btn-ec'     },
+      { outId: 'ws-out',      actsId: null,  btnId: 'share-btn-ws'     },
+    ];
+
+    panels.forEach(function(p){
+      // Find the rp-acts container that holds the Copy button for this outId
+      var copyBtn = document.querySelector('[onclick*="copyOut(\'' + p.outId + '\')"]');
+      if(!copyBtn) return;
+      var acts = copyBtn.closest('.rp-acts');
+      if(!acts) return;
+      // Avoid double-injection
+      if(acts.querySelector('[data-share-out="' + p.outId + '"]')) return;
+
+      var btn = document.createElement('button');
+      btn.className = 'rp-btn';
+      btn.setAttribute('data-share-out', p.outId);
+      btn.setAttribute('title', 'Share');
+      btn.setAttribute('aria-label', 'Share output');
+      btn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:3px"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>Share';
+      btn.onclick = function(){ nirShare(p.outId); };
+      acts.appendChild(btn);
+    });
+  }
+
+  // Share function: Web Share API → clipboard fallback
+  window.nirShare = function(outId){
+    var el = document.getElementById(outId);
+    if(!el) return;
+    var text = el.textContent.trim();
+    if(!text || text.includes('Configure') || text.includes('will appear here')) {
+      if(window.nirToast) nirToast('Nothing to share yet — generate first', 'info', 2500);
+      return;
+    }
+    // Truncate for title
+    var title = 'NIR Academy — ' + text.substring(0, 60).replace(/\n/g,' ').trim() + '…';
+
+    if(navigator.share){
+      navigator.share({ title: 'NIR Academy', text: text })
+        .then(function(){ if(window.nirToast) nirToast('Shared ✓', 'success', 1800); })
+        .catch(function(e){ if(e.name !== 'AbortError') _shareClipboardFallback(text); });
+    } else {
+      _shareClipboardFallback(text);
+    }
+  };
+
+  function _shareClipboardFallback(text){
+    navigator.clipboard.writeText(text).then(function(){
+      if(window.nirToast) nirToast('Copied to clipboard ✓', 'copy', 2200);
+    }).catch(function(){
+      if(window.nirToast) nirToast('Share not available on this device', 'info', 2500);
+    });
+  }
+
+  // Inject after DOM ready
+  if(document.readyState === 'loading'){
+    document.addEventListener('DOMContentLoaded', injectShareButtons);
+  } else {
+    injectShareButtons();
+  }
+
+})();
+
+// ══════════════════════════════════════════════════════════
+// 3. DRAFT AUTOSAVE & RESTORE — localStorage per tool
+// Saves: topic/text inputs + chip/pill selections
+// Restores on next visit (within 7 days)
+// ══════════════════════════════════════════════════════════
+(function(){
+  var DRAFT_KEY = 'nira_drafts_v1';
+  var DRAFT_TTL = 7 * 24 * 60 * 60 * 1000; // 7 days
+
+  // ── Read/Write helpers ──
+  function loadDrafts(){
+    try { return JSON.parse(localStorage.getItem(DRAFT_KEY)) || {}; } catch(_){ return {}; }
+  }
+  function saveDrafts(d){
+    try { localStorage.setItem(DRAFT_KEY, JSON.stringify(d)); } catch(_){}
+  }
+  function setDraftField(tool, field, value){
+    var d = loadDrafts();
+    if(!d[tool]) d[tool] = { ts: Date.now() };
+    d[tool][field] = value;
+    d[tool].ts = Date.now();
+    saveDrafts(d);
+  }
+  function getDraft(tool){
+    var d = loadDrafts();
+    var t = d[tool];
+    if(!t) return null;
+    if(Date.now() - t.ts > DRAFT_TTL){ delete d[tool]; saveDrafts(d); return null; }
+    return t;
+  }
+
+  // ── Wire input → save ──
+  function wireInput(id, tool, field){
+    var el = document.getElementById(id);
+    if(!el) return;
+    el.addEventListener('input', function(){ setDraftField(tool, field, this.value); });
+  }
+
+  // Prompt Generator
+  wireInput('topic-in',    'generator', 'topic');
+  // Lesson Planner
+  wireInput('lp-topic',    'lesson',    'topic');
+  // IELTS Generator
+  wireInput('ielts-topic', 'ielts',     'topic');
+  // Worksheet Builder
+  wireInput('ws-topic',    'worksheet', 'topic');
+  // Error Correction (textarea)
+  wireInput('ec-text',     'error',     'text');
+
+  // ── Restore drafts on load ──
+  function restoreDraft(tool, fieldMap){
+    var d = getDraft(tool);
+    if(!d) return;
+    Object.keys(fieldMap).forEach(function(field){
+      var id  = fieldMap[field];
+      var val = d[field];
+      if(!val) return;
+      var el = document.getElementById(id);
+      if(!el) return;
+      el.value = val;
+      // Sync S state
+      if(tool === 'generator' && field === 'topic'){ S.topic = val; }
+      if(tool === 'lesson'    && field === 'topic'){ S.topic = val; }
+      if(tool === 'ielts'     && field === 'topic'){ S.topic = val; }
+      if(tool === 'worksheet' && field === 'topic'){ S.topic = val; }
+      if(tool === 'error'     && field === 'text' ){ /* ec-text is self-contained */ }
+    });
+  }
+
+  function restoreAll(){
+    restoreDraft('generator', { topic: 'topic-in'    });
+    restoreDraft('lesson',    { topic: 'lp-topic'    });
+    restoreDraft('ielts',     { topic: 'ielts-topic' });
+    restoreDraft('worksheet', { topic: 'ws-topic'    });
+    restoreDraft('error',     { text:  'ec-text'     });
+  }
+
+  // Restore after DOM ready (inputs exist)
+  if(document.readyState === 'loading'){
+    document.addEventListener('DOMContentLoaded', restoreAll);
+  } else {
+    restoreAll();
+  }
+
+  // ── Show restore toast only when a real draft exists ──
+  (function(){
+    var d = loadDrafts();
+    var tools = Object.keys(d);
+    if(!tools.length) return;
+    // Show once per session
+    var shown = sessionStorage.getItem('nira_draft_toast');
+    if(shown) return;
+    sessionStorage.setItem('nira_draft_toast', '1');
+    setTimeout(function(){
+      if(window.nirToast) nirToast('✦ Draft restored from your last session', 'info', 3000);
+    }, 1800);
+  })();
+
+  // ── Expose clearDraft() for future use (e.g. after successful save) ──
+  window.nirClearDraft = function(tool){
+    var d = loadDrafts();
+    if(tool){ delete d[tool]; } else { Object.keys(d).forEach(function(k){ delete d[k]; }); }
+    saveDrafts(d);
+  };
+
+})();
+</script>
 </body>
 </html>
