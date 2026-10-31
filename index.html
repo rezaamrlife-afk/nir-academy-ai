@@ -8510,6 +8510,91 @@ if(window.lucide){ lucide.createIcons(); } else { setTimeout(function(){ if(wind
     min-height: 44px;
   }
 }
+
+/* ══════════════════════════════════════════════════════════
+   PHASE 2 — Typography & Spacing (mobile only)
+   All rules inside @media max-width queries.
+   No color, font-family, or desktop changes.
+   ══════════════════════════════════════════════════════════ */
+
+/* ── 2a. CEFR level pills: bigger tap area on mobile ── */
+@media (max-width: 960px) {
+  .lvl {
+    min-height: 40px;
+    padding: 8px 18px;
+    font-size: 12px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .lpills {
+    gap: 8px;
+  }
+}
+
+/* ── 2b. Step block header & body: breathing room on mobile ── */
+@media (max-width: 960px) {
+  .shdr {
+    padding: 0.75rem 1rem;
+    gap: 8px;
+  }
+  .shdr h3 {
+    font-size: 15px;
+  }
+  .sbdy {
+    padding: 0.9rem 1rem;
+  }
+  .cgrid {
+    gap: 8px;
+  }
+  .sblock {
+    margin-bottom: 0.9rem;
+  }
+}
+
+/* ── 2c. Page header description: 12px → 14px on mobile ── */
+@media (max-width: 700px) {
+  .ph p {
+    font-size: 14px !important;
+    line-height: 1.75 !important;
+  }
+  .ph-ey {
+    font-size: 10px;
+    letter-spacing: 2.5px;
+  }
+}
+
+/* ── 2d. Home section headings: tighten on mobile ── */
+@media (max-width: 700px) {
+  .home-tools h2,
+  .onboard h2,
+  .roadmap h2,
+  .hcta h2 {
+    font-size: 1.2rem;
+    line-height: 1.3;
+  }
+  .home-tools,
+  .onboard,
+  .roadmap,
+  .hcta {
+    padding-top: 1.8rem;
+    padding-bottom: 1.8rem;
+  }
+}
+
+/* ── 2e. Output text: better line-height on small screens ── */
+@media (max-width: 600px) {
+  .out-txt {
+    font-size: 15px !important;
+    line-height: 1.85 !important;
+    padding: 0.9rem 1rem !important;
+  }
+  .out-txt table.md-table th,
+  .out-txt table.md-table td {
+    padding: 6px 9px;
+    font-size: 0.88em;
+  }
+}
 </style>
 
 <script>
