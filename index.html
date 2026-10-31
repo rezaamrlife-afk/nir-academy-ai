@@ -4181,8 +4181,8 @@ function dismissSessionBanner() {
     <h2 id="auth-title">Welcome Back</h2>
     <p class="am-sub auth-modal-sub">NIR Academy · AI-Powered ELT Platform</p>
     <div class="auth-tabs">
-      <button class="auth-tab active auth-tab-signin" onclick="switchTab('login')">Sign In</button>
-      <button class="auth-tab auth-tab-signup" onclick="switchTab('register')">Sign Up</button>
+      <button class="auth-tab active auth-tab-signin" onclick="switchTab('login',this)">Sign In</button>
+      <button class="auth-tab auth-tab-signup" onclick="switchTab('register',this)">Sign Up</button>
     </div>
     <div class="auth-error" id="auth-error"></div>
     <div class="auth-success" id="auth-success"></div>
@@ -5250,40 +5250,7 @@ function go(id){
   if(id==='saved')   loadSavedPrompts();
 }
 
-// ── Auth Modal UI (no Supabase dependency) ──
-function openAuth(){
-  const o = document.getElementById('auth-overlay');
-  if(o){
-    o.style.display = 'flex';   // force show
-    o.classList.add('show');
-    document.body.style.overflow = 'hidden';
-  }
-}
-function closeAuth(){
-  const o = document.getElementById('auth-overlay');
-  if(o){
-    o.classList.remove('show');
-    o.style.display = '';       // reset to CSS default (none)
-    document.body.style.overflow = '';
-  }
-  if(typeof clearAuthMessages === 'function') clearAuthMessages();
-}
-function switchTab(tab){
-  const login = document.getElementById('auth-form-login');
-  const reg   = document.getElementById('auth-form-register');
-  const t1    = document.querySelector('.auth-tab-signin');
-  const t2    = document.querySelector('.auth-tab-signup');
-  if(!login || !reg) return;
-  if(tab === 'login'){
-    login.style.display = 'block'; reg.style.display = 'none';
-    if(t1) t1.classList.add('active');
-    if(t2) t2.classList.remove('active');
-  } else {
-    login.style.display = 'none'; reg.style.display = 'block';
-    if(t2) t2.classList.add('active');
-    if(t1) t1.classList.remove('active');
-  }
-}
+// ── Auth Modal UI — definitions below (single canonical set) ──
 // ── Password Recovery ──
 function showForgotPw() {
   document.getElementById('auth-form-login').style.display   = 'none';
@@ -5334,24 +5301,7 @@ async function doForgotPw() {
   }
 }
 
-function showAuthError(msg){
-  const el = document.getElementById('auth-error');
-  if(el){ el.textContent = msg; el.style.display = 'block'; }
-  const s = document.getElementById('auth-success');
-  if(s) s.style.display = 'none';
-}
-function showAuthSuccess(msg){
-  const el = document.getElementById('auth-success');
-  if(el){ el.textContent = msg; el.style.display = 'block'; }
-  const e = document.getElementById('auth-error');
-  if(e) e.style.display = 'none';
-}
-function clearAuthMessages(){
-  const e = document.getElementById('auth-error');
-  const s = document.getElementById('auth-success');
-  if(e){ e.textContent = ''; e.style.display = 'none'; }
-  if(s){ s.textContent = ''; s.style.display = 'none'; }
-}
+// showAuthError / showAuthSuccess / clearAuthMessages — defined below with canonical .show-class approach
 
 
 function toggleSB(){
@@ -5854,18 +5804,18 @@ function T(msg){
 // ══ PWA ══
 window.addEventListener("beforeinstallprompt",e=>{
   e.preventDefault();S.deferredPrompt=e;
-  setTimeout(()=>document.getElementById("pwa-banner").classList.add("show"),3000);
+  setTimeout(()=>{ const b=document.getElementById("pwa-banner"); if(b) b.classList.add("show"); },3000);
 });
 function installPWA(){
   if(S.deferredPrompt){
     S.deferredPrompt.prompt();
-    S.deferredPrompt.userChoice.then(()=>{S.deferredPrompt=null;document.getElementById("pwa-banner").classList.remove("show");});
+    S.deferredPrompt.userChoice.then(()=>{ S.deferredPrompt=null; const b=document.getElementById("pwa-banner"); if(b) b.classList.remove("show"); });
   }
 }
-window.addEventListener("appinstalled",()=>{document.getElementById("pwa-banner").classList.remove("show");T("NIR Academy installed successfully!");});
+window.addEventListener("appinstalled",()=>{ const b=document.getElementById("pwa-banner"); if(b) b.classList.remove("show"); T("NIR Academy installed successfully!"); });
 
 // ══ TOPIC INPUT ══
-document.getElementById("topic-in").addEventListener("input",function(){S.topic=this.value;});
+(function(){ var el=document.getElementById("topic-in"); if(el) el.addEventListener("input",function(){S.topic=this.value;}); })();
 
 // ══ INIT ══
 buildLib();
@@ -6081,7 +6031,7 @@ async function updateMostUsedTools(user){
       <button class="tc-cta" style="margin-top:.75rem">Open →</button>
     </div>`;
   }).join('');
-  if(window.lucide) lucide.createIcons();
+  nirLucide();
 }
 
 function onLogout(){
@@ -6094,38 +6044,53 @@ function onLogout(){
   T('Signed out successfully');
 }
 
-// ══ AUTH FUNCTIONS ══
+// ══ AUTH FUNCTIONS (canonical — single definition) ══
 function openAuth(){
-  document.getElementById('auth-overlay').classList.add('show');
+  const o = document.getElementById('auth-overlay');
+  if(!o) return;
+  o.classList.add('show');          // CSS: #auth-overlay.show { display:flex }
   document.body.style.overflow = 'hidden';
 }
 
 function closeAuth(){
-  document.getElementById('auth-overlay').classList.remove('show');
+  const o = document.getElementById('auth-overlay');
+  if(!o) return;
+  o.classList.remove('show');
   document.body.style.overflow = '';
   clearAuthMessages();
 }
 
-function switchTab(tab){
+function switchTab(tab, triggerEl){
+  // Use explicit triggerEl when passed (from onclick="switchTab('login',this)")
+  // Fall back to querySelector for safety
   document.querySelectorAll('.auth-tab').forEach(t=>t.classList.remove('active'));
-  event.target.classList.add('active');
-  document.getElementById('auth-form-login').style.display = tab==='login'?'block':'none';
-  document.getElementById('auth-form-register').style.display = tab==='register'?'block':'none';
-  document.getElementById('auth-title').textContent = tab==='login'?'Welcome Back':'Create Account';
+  if(triggerEl) triggerEl.classList.add('active');
+  const login = document.getElementById('auth-form-login');
+  const reg   = document.getElementById('auth-form-register');
+  const title = document.getElementById('auth-title');
+  if(login) login.style.display = tab==='login'?'block':'none';
+  if(reg)   reg.style.display   = tab==='register'?'block':'none';
+  if(title) title.textContent   = tab==='login'?'Welcome Back':'Create Account';
   clearAuthMessages();
 }
 
 function showAuthError(msg){
   const el = document.getElementById('auth-error');
-  el.textContent = msg; el.classList.add('show');
+  const s  = document.getElementById('auth-success');
+  if(el){ el.textContent = msg; el.classList.add('show'); }
+  if(s)  s.classList.remove('show');
 }
 function showAuthSuccess(msg){
   const el = document.getElementById('auth-success');
-  el.textContent = msg; el.classList.add('show');
+  const e  = document.getElementById('auth-error');
+  if(el){ el.textContent = msg; el.classList.add('show'); }
+  if(e)  e.classList.remove('show');
 }
 function clearAuthMessages(){
-  document.getElementById('auth-error').classList.remove('show');
-  document.getElementById('auth-success').classList.remove('show');
+  const e = document.getElementById('auth-error');
+  const s = document.getElementById('auth-success');
+  if(e){ e.textContent=''; e.classList.remove('show'); }
+  if(s){ s.textContent=''; s.classList.remove('show'); }
 }
 
 async function doLogin(){
@@ -6238,6 +6203,11 @@ async function savePromptToDB(text, tool){
 }
 
 async function loadSavedPrompts(){
+  // Refresh from live session in case currentUser cache is stale
+  if(!currentUser && SB){
+    const { data: sd } = await SB.auth.getUser();
+    if(sd && sd.user) currentUser = sd.user;
+  }
   if(!currentUser) return;
   const { data, error } = await SB.from('saved_prompts')
     .select('*')
@@ -6256,13 +6226,14 @@ function renderSavedPrompts(prompts){
   }
   // Store content in a map keyed by id to avoid HTML injection via onclick attributes
   if(!window._spMap) window._spMap = {};
+  const esc = s => String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
   grid.innerHTML = prompts.map(p=>{
     window._spMap[p.id] = p.content;
     const date = new Date(p.created_at).toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'});
     const preview = p.content.replace(/</g,'&lt;').replace(/>/g,'&gt;').substring(0,150);
     return `<div class="saved-card">
       <div class="sc-date">${date}</div>
-      <span class="sc-tool">${p.tool}</span>
+      <span class="sc-tool">${esc(p.tool)}</span>
       <div class="sc-preview">${preview}…</div>
       <div class="saved-card-actions">
         <button class="sc-btn" onclick="navigator.clipboard.writeText(window._spMap['${p.id}']).then(()=>T('Copied to clipboard ✓'))">Copy</button>
@@ -6282,17 +6253,24 @@ async function deletePrompt(id){
 async function loadHistory(){
   const grid = document.getElementById('history-grid');
   if(!grid) return;
-  const user = SB && SB.auth && (await SB.auth.getUser()).data.user;
+  let user = null;
+  try {
+    const res = SB && SB.auth ? await SB.auth.getUser() : null;
+    user = res && res.data && res.data.user ? res.data.user : null;
+  } catch(e){ user = null; }
   if(!user){
     grid.innerHTML = '<p style="grid-column:1/-1;text-align:center;padding:3rem;font-size:13px;color:var(--muted)">Please sign in to view your history.</p>';
     return;
   }
   grid.innerHTML = '<p style="grid-column:1/-1;text-align:center;padding:2rem;font-size:12px;color:var(--muted)">Loading…</p>';
-  const { data, error } = await SB.from('nira_requests')
-    .select('*')
-    .eq('user_id', user.id)
-    .order('created_at', { ascending: false })
-    .limit(50);
+  let data, error;
+  try {
+    ({ data, error } = await SB.from('nira_requests')
+      .select('*')
+      .eq('user_id', user.id)
+      .order('created_at', { ascending: false })
+      .limit(50));
+  } catch(e){ error = e; }
   if(error || !data || !data.length){
     grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:3rem">'
       + '<div style="margin-bottom:1rem;opacity:.5"><svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>'
@@ -6335,7 +6313,7 @@ async function loadHistory(){
       </div>
     </div>`;
   }).join('');
-  if(window.lucide) lucide.createIcons();
+  nirLucide();
 }
 
 function loadIntoGenerator(text){
@@ -6590,6 +6568,7 @@ function astGlobal(feature) {
 // ── SEND MESSAGE ──
 async function astSend() {
   if (!window.A.mode) return;
+  window._lastToolUsed = 'ai_assistant';
   var input = document.getElementById('ast-input');
   var sendBtn = document.getElementById('ast-send');
   var thinking = document.getElementById('ast-thinking');
@@ -7371,6 +7350,12 @@ function nirWordCount(outId, wcId) {
    ───────────────────────────────────────────── */
 var _toastTimer = {};
 var _toastCount = 0;
+
+// Helper: call lucide.createIcons() — retry once if CDN not yet loaded
+function nirLucide(){
+  if(window.lucide){ lucide.createIcons(); return; }
+  setTimeout(function(){ if(window.lucide) lucide.createIcons(); }, 800);
+}
 
 window.nirToast = function(msg, type, duration) {
   type = type || 'info';
@@ -8436,8 +8421,8 @@ html.light #sidebar .sb-item.active .si svg * {
 </style>
 
 <script>
-// Re-run lucide icons after dynamic content
-if(window.lucide) lucide.createIcons();
+// Re-run lucide icons after dynamic content (with retry if CDN slow)
+if(window.lucide){ lucide.createIcons(); } else { setTimeout(function(){ if(window.lucide) lucide.createIcons(); },800); }
 </script>
 </body>
 </html>
