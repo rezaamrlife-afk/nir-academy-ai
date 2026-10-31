@@ -8643,6 +8643,67 @@ if(window.lucide){ lucide.createIcons(); } else { setTimeout(function(){ if(wind
     transition: opacity 0.2s ease;
   }
 }
+
+/* ══════════════════════════════════════════════════════════
+   PHASE 4 — Forms & Inputs (mobile only)
+   All rules inside @media max-width queries.
+   No color, font-family, or desktop changes.
+   ══════════════════════════════════════════════════════════ */
+
+/* ── 4a. Topic suggestion tags: bigger tap area on mobile ── */
+@media (max-width: 960px) {
+  .ttag {
+    min-height: 36px;
+    padding: 6px 12px;
+    font-size: 12px;
+    display: inline-flex;
+    align-items: center;
+  }
+  .ttags {
+    gap: 7px;
+    margin-top: 10px;
+  }
+}
+
+/* ── 4b. Auth modal inputs & submit: comfortable on mobile ── */
+@media (max-width: 960px) {
+  .auth-field input {
+    min-height: 48px;
+    padding: 12px 14px;
+    font-size: 16px; /* prevent iOS zoom */
+  }
+  .auth-submit {
+    min-height: 48px;
+    padding: 14px;
+  }
+}
+
+/* ── 4c. Select labels: readable on small screens ── */
+@media (max-width: 960px) {
+  .sg label {
+    font-size: 12px;
+    letter-spacing: 1.5px;
+    margin-bottom: 6px;
+  }
+}
+
+/* ── 4d. Step hint text: breathing room below header ── */
+@media (max-width: 600px) {
+  .shint {
+    font-size: 11px;
+    margin-top: 2px;
+    flex-basis: 100%;
+    margin-left: 0;
+    order: 3;
+  }
+}
+
+/* ── 4e. Error correction textarea: more height on mobile ── */
+@media (max-width: 600px) {
+  .etarea {
+    min-height: 120px;
+  }
+}
 </style>
 
 <script>
