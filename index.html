@@ -8433,7 +8433,13 @@ if(window.lucide){ lucide.createIcons(); } else { setTimeout(function(){ if(wind
      ═══════════════════════════════════════════════════════ -->
 
 <style>
-/* ── 1. Touch Targets: rp-btn ≥ 44×44px on mobile ── */
+/* ══════════════════════════════════════════════════════════
+   PHASE 1 — Premium Mobile Touch Targets & Icons
+   All rules scoped inside mobile media queries only.
+   Desktop (>960px) is UNTOUCHED.
+   ══════════════════════════════════════════════════════════ */
+
+/* ── 1a. Output panel action buttons ≥ 44px ── */
 @media (max-width: 960px) {
   .rp-btn {
     min-height: 44px;
@@ -8445,17 +8451,17 @@ if(window.lucide){ lucide.createIcons(); } else { setTimeout(function(){ if(wind
     justify-content: center;
     gap: 5px;
   }
-  /* Print button (icon-only) needs equal width */
+  /* Print button (icon-only): square touch area */
   .rp-btn[title="Print"] {
     min-width: 44px;
     padding: 10px;
   }
-  /* Hamburger: bring up to 44px */
+  /* Hamburger: full 44px tap area */
   .hamburger {
     min-width: 44px !important;
     min-height: 44px !important;
   }
-  /* Bottom nav items ≥ 44px tap area */
+  /* Bottom nav: already 54px in main block, guard stays */
   .mn-item {
     min-height: 44px;
   }
@@ -8463,6 +8469,45 @@ if(window.lucide){ lucide.createIcons(); } else { setTimeout(function(){ if(wind
   .rp-acts {
     flex-wrap: wrap;
     gap: 6px;
+  }
+  /* Icons inside output-panel buttons: readable at thumb size */
+  .rp-btn svg, .rp-btn i {
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+  }
+}
+
+/* ── 1b. Auth tabs: too short on mobile (~30px) → 44px ── */
+@media (max-width: 960px) {
+  .auth-tab {
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+/* ── 1c. Chips: expand tap area on mobile ── */
+@media (max-width: 960px) {
+  .chip {
+    min-height: 40px;
+    padding: 8px 14px;
+    font-size: 12px;
+  }
+}
+
+/* ── 1d. Topbar Sign In button: ≥44px at ≤700px ── */
+@media (max-width: 700px) {
+  .tb-solid {
+    min-height: 44px;
+    padding: 10px 13px;
+    font-size: 11px;
+  }
+  /* Theme toggle: round up to 44px */
+  #theme-toggle, .tb-theme-btn {
+    min-width: 44px;
+    min-height: 44px;
   }
 }
 </style>
