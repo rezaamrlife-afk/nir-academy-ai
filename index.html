@@ -1267,6 +1267,7 @@ html.light button:focus-visible,html.light a:focus-visible{outline-color:#1A3F5C
 /* ══ CHIPS ══ */
 .cgrid{display:flex;flex-wrap:wrap;gap:6px}
 .chip{background:var(--bg5);border:1px solid var(--bdr);border-radius:var(--r);padding:6px 12px;font-size:11px;color:#bbb;cursor:pointer;transition:all .14s;user-select:none;display:flex;align-items:center;gap:5px;font-weight:500}
+.chip svg{width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:1.75;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0}
 .chip:hover{border-color:var(--bdr2);color:#ddd}
 .chip.active{background:rgba(201,168,76,.1);border-color:var(--gold);color:var(--gold);font-weight:600}
 
@@ -1385,7 +1386,8 @@ html.light .ast-bubble table.md-table th,.ast-bubble table.md-table td{border-co
 .lstage{background:var(--bg4);border:1px solid var(--bdr);border-radius:var(--rl);padding:.9rem .7rem;text-align:center;cursor:pointer;transition:all .2s}
 .lstage:hover{border-color:var(--bdr2)}
 .lstage.active{border-color:var(--gold);background:rgba(201,168,76,.07)}
-.ls-ico{font-size:18px;margin-bottom:.25rem}
+.ls-ico{width:28px;height:28px;display:flex;align-items:center;justify-content:center;margin-bottom:.35rem}
+.ls-ico svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:1.75;stroke-linecap:round;stroke-linejoin:round}
 .ls-n{font-size:9.5px;color:var(--gold);font-weight:700;letter-spacing:.5px;text-transform:uppercase}
 .ls-t{font-size:10px;color:var(--muted);margin-top:2px}
 
@@ -4219,7 +4221,7 @@ function dismissSessionBanner() {
   <div class="um-dropdown" id="um-dropdown">
     <div class="um-item" onclick="go('profile');toggleUserMenu()"><span class="ui-ico">👤</span> My Profile</div>
     <div class="um-item" onclick="go('saved');toggleUserMenu()"><span class="ui-ico">🔖</span> Saved Prompts</div>
-    <div class="um-item" onclick="go('dashboard');toggleUserMenu()"><span class="ui-ico">📊</span> Dashboard</div>
+    <div class="um-item" onclick="go('dashboard');toggleUserMenu()"><span class="ui-ico"><i data-lucide="chart-no-axes-combined"></i></span> Dashboard</div>
     <div class="um-div"></div>
     <div class="um-item danger" onclick="doLogout()"><span class="ui-ico">🚪</span> Sign Out</div>
   </div>
@@ -4371,11 +4373,11 @@ function dismissSessionBanner() {
       </div>
     </div>
     <div class="fstrip">
-      <div class="fc"><span class="fi">⚡</span><div class="ft" id="feat1t">6 AI Tools</div><div class="fd" id="feat1d">Purpose-built for ELT</div></div>
-      <div class="fc"><span class="fi">📊</span><div class="ft" id="feat2t">CEFR Aligned</div><div class="fd" id="feat2d">A1 – C1 &amp; IELTS</div></div>
-      <div class="fc"><span class="fi">🎯</span><div class="ft" id="feat3t">Pedagogy First</div><div class="fd" id="feat3d">Evidence-based design</div></div>
-      <div class="fc"><span class="fi">🌍</span><div class="ft" id="feat4t">ELT Focused</div><div class="fd" id="feat4d">TESOL-trained approach</div></div>
-      <div class="fc"><span class="fi">📚</span><div class="ft" id="feat5t">Prompt Library</div><div class="fd" id="feat5d">Ready-made &amp; curated</div></div>
+      <div class="fc"><span class="fi"><i data-lucide="zap"></i></span><div class="ft" id="feat1t">6 AI Tools</div><div class="fd" id="feat1d">Purpose-built for ELT</div></div>
+      <div class="fc"><span class="fi"><i data-lucide="bar-chart-2"></i></span><div class="ft" id="feat2t">CEFR Aligned</div><div class="fd" id="feat2d">A1 – C1 &amp; IELTS</div></div>
+      <div class="fc"><span class="fi"><i data-lucide="target"></i></span><div class="ft" id="feat3t">Pedagogy First</div><div class="fd" id="feat3d">Evidence-based design</div></div>
+      <div class="fc"><span class="fi"><i data-lucide="globe-2"></i></span><div class="ft" id="feat4t">ELT Focused</div><div class="fd" id="feat4d">TESOL-trained approach</div></div>
+      <div class="fc"><span class="fi"><i data-lucide="library"></i></span><div class="ft" id="feat5t">Prompt Library</div><div class="fd" id="feat5d">Ready-made &amp; curated</div></div>
     </div>
   </section>
 
@@ -4479,10 +4481,10 @@ function dismissSessionBanner() {
 
     <!-- STATS -->
     <div class="sgrid">
-      <div class="sc"><div class="sc-ico">⚡</div><div class="sc-v">6</div><div class="sc-l" id="stat1-l">AI Tools Available</div><div class="sc-s" id="stat1-s">Full platform access</div></div>
-      <div class="sc"><div class="sc-ico">📚</div><div class="sc-v">30+</div><div class="sc-l" id="stat2-l">Library Prompts</div><div class="sc-s" id="stat2-s">Curated by Dr. Niki Majidi</div></div>
-      <div class="sc"><div class="sc-ico">🌍</div><div class="sc-v">A1–C1</div><div class="sc-l" id="stat3-l">CEFR Coverage</div><div class="sc-s" id="stat3-s">+ IELTS band targeting</div></div>
-      <div class="sc"><div class="sc-ico">🎯</div><div class="sc-v">100%</div><div class="sc-l" id="stat4-l">ELT Focused</div><div class="sc-s" id="stat4-s">Pedagogy-first design</div></div>
+      <div class="sc"><div class="sc-ico"><i data-lucide="zap"></i></div><div class="sc-v">6</div><div class="sc-l" id="stat1-l">AI Tools Available</div><div class="sc-s" id="stat1-s">Full platform access</div></div>
+      <div class="sc"><div class="sc-ico"><i data-lucide="library"></i></div><div class="sc-v">30+</div><div class="sc-l" id="stat2-l">Library Prompts</div><div class="sc-s" id="stat2-s">Curated by Dr. Niki Majidi</div></div>
+      <div class="sc"><div class="sc-ico"><i data-lucide="globe-2"></i></div><div class="sc-v">A1–C1</div><div class="sc-l" id="stat3-l">CEFR Coverage</div><div class="sc-s" id="stat3-s">+ IELTS band targeting</div></div>
+      <div class="sc"><div class="sc-ico"><i data-lucide="target"></i></div><div class="sc-v">100%</div><div class="sc-l" id="stat4-l">ELT Focused</div><div class="sc-s" id="stat4-s">Pedagogy-first design</div></div>
     </div>
 
     <!-- QUICK ACTIONS -->
@@ -4518,7 +4520,7 @@ function dismissSessionBanner() {
     <div class="stitle" style="margin-top:1.5rem"><span class="stg">Platform Status</span></div>
     <div class="sgrid">
       <div class="sc" style="opacity:.45"><div class="sc-ico">👤</div><div class="sc-v">—</div><div class="sc-l">User Accounts</div><div class="sc-s">Supabase auth · Planned</div></div>
-      <div class="sc" style="opacity:.45"><div class="sc-ico">🔖</div><div class="sc-v">—</div><div class="sc-l">Saved Prompts</div><div class="sc-s">Login required · Coming soon</div></div>
+      <div class="sc" style="opacity:.45"><div class="sc-ico"><i data-lucide="bookmark"></i></div><div class="sc-v">—</div><div class="sc-l">Saved Prompts</div><div class="sc-s">Login required · Coming soon</div></div>
       <div class="sc" style="opacity:.45"><div class="sc-ico">💎</div><div class="sc-v">FREE</div><div class="sc-l">Current Plan</div><div class="sc-s">Pro plan launching soon</div></div>
       <div class="sc" style="opacity:.45"><div class="sc-ico">📱</div><div class="sc-v">PWA</div><div class="sc-l">Mobile App</div><div class="sc-s">Install as app · Available</div></div>
     </div>
@@ -4546,11 +4548,11 @@ function dismissSessionBanner() {
             <div class="cgrid" id="mode-chips">
               <div class="chip active" data-v="experienced EFL/ESL Teacher" onclick="SC(this,'mode-chips')">👩‍🏫 Teacher</div>
               <div class="chip" data-v="IELTS Examiner and Trainer" onclick="SC(this,'mode-chips')">📘 IELTS</div>
-              <div class="chip" data-v="Academic Writing Tutor" onclick="SC(this,'mode-chips')">✍️ Writing</div>
-              <div class="chip" data-v="English Speaking Coach" onclick="SC(this,'mode-chips')">🗣️ Speaking</div>
-              <div class="chip" data-v="Reading Skills Instructor" onclick="SC(this,'mode-chips')">📖 Reading</div>
+              <div class="chip" data-v="Academic Writing Tutor" onclick="SC(this,'mode-chips')"><i data-lucide="pen-line"></i> Writing</div>
+              <div class="chip" data-v="English Speaking Coach" onclick="SC(this,'mode-chips')"><i data-lucide="mic-2"></i> Speaking</div>
+              <div class="chip" data-v="Reading Skills Instructor" onclick="SC(this,'mode-chips')"><i data-lucide="book-open"></i> Reading</div>
               <div class="chip" data-v="TESOL-certified Lesson Planner" onclick="SC(this,'mode-chips')">🧑‍🏫 Lesson Plan</div>
-              <div class="chip" data-v="Student Language Tutor" onclick="SC(this,'mode-chips')">🎓 Student</div>
+              <div class="chip" data-v="Student Language Tutor" onclick="SC(this,'mode-chips')"><i data-lucide="graduation-cap"></i> Student</div>
             </div>
           </div>
         </div>
@@ -4558,15 +4560,15 @@ function dismissSessionBanner() {
           <div class="shdr"><div class="snum">2</div><h3 id="step2-lbl">Choose Goal</h3><span class="shint" id="step2-hint">What to generate</span></div>
           <div class="sbdy">
             <div class="cgrid" id="goal-chips">
-              <div class="chip active" data-v="Create a detailed lesson plan" onclick="SC(this,'goal-chips')">📋 Lesson Plan</div>
+              <div class="chip active" data-v="Create a detailed lesson plan" onclick="SC(this,'goal-chips')"><i data-lucide="calendar-days"></i> Lesson Plan</div>
               <div class="chip" data-v="Generate an engaging classroom activity" onclick="SC(this,'goal-chips')">🎮 Activity</div>
               <div class="chip" data-v="Design a printable worksheet" onclick="SC(this,'goal-chips')">📄 Worksheet</div>
-              <div class="chip" data-v="Build a test or quiz" onclick="SC(this,'goal-chips')">📝 Test / Quiz</div>
-              <div class="chip" data-v="Correct student errors with detailed feedback" onclick="SC(this,'goal-chips')">✅ Error Fix</div>
-              <div class="chip" data-v="Generate an academic writing task" onclick="SC(this,'goal-chips')">✍️ Writing Task</div>
-              <div class="chip" data-v="Create speaking discussion questions" onclick="SC(this,'goal-chips')">💬 Speaking</div>
-              <div class="chip" data-v="Design a vocabulary practice set" onclick="SC(this,'goal-chips')">🔤 Vocabulary</div>
-              <div class="chip" data-v="Create a reading comprehension passage" onclick="SC(this,'goal-chips')">📖 Reading</div>
+              <div class="chip" data-v="Build a test or quiz" onclick="SC(this,'goal-chips')"><i data-lucide="clipboard-list"></i> Test / Quiz</div>
+              <div class="chip" data-v="Correct student errors with detailed feedback" onclick="SC(this,'goal-chips')"><i data-lucide="spell-check"></i> Error Fix</div>
+              <div class="chip" data-v="Generate an academic writing task" onclick="SC(this,'goal-chips')"><i data-lucide="pen-line"></i> Writing Task</div>
+              <div class="chip" data-v="Create speaking discussion questions" onclick="SC(this,'goal-chips')"><i data-lucide="mic-2"></i> Speaking</div>
+              <div class="chip" data-v="Design a vocabulary practice set" onclick="SC(this,'goal-chips')"><i data-lucide="book-a"></i> Vocabulary</div>
+              <div class="chip" data-v="Create a reading comprehension passage" onclick="SC(this,'goal-chips')"><i data-lucide="book-open"></i> Reading</div>
               <div class="chip" data-v="Generate an IELTS-style exam task" onclick="SC(this,'goal-chips')">🏅 IELTS</div>
             </div>
           </div>
@@ -4657,11 +4659,11 @@ function dismissSessionBanner() {
   <div class="content" style="max-width:none">
     <div class="stitle"><span class="stg">Lesson Stages — click to toggle</span></div>
     <div class="lstages" id="lp-stages">
-      <div class="lstage active" data-s="Warm-Up (5–10 min)" onclick="this.classList.toggle('active')"><div class="ls-ico">🔥</div><div class="ls-n">Warm-Up</div><div class="ls-t">5–10 min</div></div>
-      <div class="lstage active" data-s="Presentation (10–15 min)" onclick="this.classList.toggle('active')"><div class="ls-ico">📊</div><div class="ls-n">Presentation</div><div class="ls-t">10–15 min</div></div>
-      <div class="lstage active" data-s="Controlled Practice (10–15 min)" onclick="this.classList.toggle('active')"><div class="ls-ico">🎯</div><div class="ls-n">Practice</div><div class="ls-t">10–15 min</div></div>
-      <div class="lstage active" data-s="Freer Production (10–15 min)" onclick="this.classList.toggle('active')"><div class="ls-ico">🗣️</div><div class="ls-n">Production</div><div class="ls-t">10–15 min</div></div>
-      <div class="lstage active" data-s="Wrap-Up & Feedback (5 min)" onclick="this.classList.toggle('active')"><div class="ls-ico">✅</div><div class="ls-n">Wrap-Up</div><div class="ls-t">5 min</div></div>
+      <div class="lstage active" data-s="Warm-Up (5–10 min)" onclick="this.classList.toggle('active')"><div class="ls-ico"><i data-lucide="zap"></i></div><div class="ls-n">Warm-Up</div><div class="ls-t">5–10 min</div></div>
+      <div class="lstage active" data-s="Presentation (10–15 min)" onclick="this.classList.toggle('active')"><div class="ls-ico"><i data-lucide="monitor-play"></i></div><div class="ls-n">Presentation</div><div class="ls-t">10–15 min</div></div>
+      <div class="lstage active" data-s="Controlled Practice (10–15 min)" onclick="this.classList.toggle('active')"><div class="ls-ico"><i data-lucide="pencil-ruler"></i></div><div class="ls-n">Practice</div><div class="ls-t">10–15 min</div></div>
+      <div class="lstage active" data-s="Freer Production (10–15 min)" onclick="this.classList.toggle('active')"><div class="ls-ico"><i data-lucide="message-square-text"></i></div><div class="ls-n">Production</div><div class="ls-t">10–15 min</div></div>
+      <div class="lstage active" data-s="Wrap-Up & Feedback (5 min)" onclick="this.classList.toggle('active')"><div class="ls-ico"><i data-lucide="badge-check"></i></div><div class="ls-n">Wrap-Up</div><div class="ls-t">5 min</div></div>
     </div>
     <div class="glayout">
       <div>
@@ -4669,13 +4671,13 @@ function dismissSessionBanner() {
           <div class="shdr"><div class="snum">1</div><h3>Lesson Focus</h3></div>
           <div class="sbdy">
             <div class="cgrid" id="lp-focus">
-              <div class="chip active" data-v="Grammar" onclick="SC(this,'lp-focus')">📐 Grammar</div>
-              <div class="chip" data-v="Vocabulary" onclick="SC(this,'lp-focus')">🔤 Vocabulary</div>
-              <div class="chip" data-v="Speaking" onclick="SC(this,'lp-focus')">🗣️ Speaking</div>
-              <div class="chip" data-v="Writing" onclick="SC(this,'lp-focus')">✍️ Writing</div>
-              <div class="chip" data-v="Reading" onclick="SC(this,'lp-focus')">📖 Reading</div>
-              <div class="chip" data-v="Listening" onclick="SC(this,'lp-focus')">🎧 Listening</div>
-              <div class="chip" data-v="Integrated Skills" onclick="SC(this,'lp-focus')">🔗 Integrated</div>
+              <div class="chip active" data-v="Grammar" onclick="SC(this,'lp-focus')"><i data-lucide="square-function"></i> Grammar</div>
+              <div class="chip" data-v="Vocabulary" onclick="SC(this,'lp-focus')"><i data-lucide="book-a"></i> Vocabulary</div>
+              <div class="chip" data-v="Speaking" onclick="SC(this,'lp-focus')"><i data-lucide="mic-2"></i> Speaking</div>
+              <div class="chip" data-v="Writing" onclick="SC(this,'lp-focus')"><i data-lucide="pen-line"></i> Writing</div>
+              <div class="chip" data-v="Reading" onclick="SC(this,'lp-focus')"><i data-lucide="book-open"></i> Reading</div>
+              <div class="chip" data-v="Listening" onclick="SC(this,'lp-focus')"><i data-lucide="headphones"></i> Listening</div>
+              <div class="chip" data-v="Integrated Skills" onclick="SC(this,'lp-focus')"><i data-lucide="link-2"></i> Integrated</div>
             </div>
           </div>
         </div>
@@ -4710,7 +4712,7 @@ function dismissSessionBanner() {
           <div class="rp-hdr"><span class="rp-lbl">Lesson Plan</span><div class="rp-acts"><button class="rp-btn" onclick="copyOut('lp-out')">Copy</button><button class="rp-btn" onclick="generateLesson()">Regenerate</button><button class="rp-btn" onclick="nirPrint('lp-out')" title="Print">🖨</button></div></div>
           <div id="lp-wc" style="font-size:11px;color:var(--muted);text-align:right;min-height:16px;padding-right:2px;"></div>
           <div id="lp-out" class="out-txt"><div class="rp-empty">
-  <div class="re-ico">📋</div>
+  <div class="re-ico"><i data-lucide="calendar-days"></i></div>
   <p>Your complete TESOL-aligned lesson plan will appear here.</p>
   <p style="margin-top:0.75rem;font-size:11px;opacity:0.7">Includes: objectives · staged activities · timing · materials · assessment</p>
 </div></div>
@@ -4764,10 +4766,10 @@ function dismissSessionBanner() {
           <div class="shdr"><div class="snum">2</div><h3>Include in Output</h3></div>
           <div class="sbdy">
             <div class="cgrid" id="ielts-inc">
-              <div class="chip active" data-v="model answer" onclick="SC(this,'ielts-inc')">✅ Model Answer</div>
-              <div class="chip active" data-v="band descriptor notes" onclick="SC(this,'ielts-inc')">📊 Band Notes</div>
-              <div class="chip" data-v="examiner tips and common mistakes" onclick="SC(this,'ielts-inc')">💬 Examiner Tips</div>
-              <div class="chip" data-v="key academic vocabulary with definitions" onclick="SC(this,'ielts-inc')">🔤 Vocabulary</div>
+              <div class="chip active" data-v="model answer" onclick="SC(this,'ielts-inc')"><i data-lucide="check-circle-2"></i> Model Answer</div>
+              <div class="chip active" data-v="band descriptor notes" onclick="SC(this,'ielts-inc')"><i data-lucide="bar-chart-2"></i> Band Notes</div>
+              <div class="chip" data-v="examiner tips and common mistakes" onclick="SC(this,'ielts-inc')"><i data-lucide="message-circle"></i> Examiner Tips</div>
+              <div class="chip" data-v="key academic vocabulary with definitions" onclick="SC(this,'ielts-inc')"><i data-lucide="book-a"></i> Vocabulary</div>
             </div>
           </div>
         </div>
@@ -4801,9 +4803,9 @@ function dismissSessionBanner() {
       <div>
         <div class="stitle"><span class="stg">Feedback Type</span></div>
         <div class="ec-opts" id="ec-type">
-          <div class="eo active" data-v="direct correction with clear explanations for each error" onclick="selEC(this)"><div class="ei">✅</div><h4>Direct Correction</h4><p>Corrected text + explanations</p></div>
-          <div class="eo" data-v="coded feedback using standard ELT correction codes: WW (wrong word), WF (word form), T (tense), Sp (spelling), P (punctuation), Agr (agreement)" onclick="selEC(this)"><div class="ei">🔤</div><h4>Coded Feedback</h4><p>WW, WF, T, Sp, P codes</p></div>
-          <div class="eo" data-v="metalinguistic commentary at teacher-training level — explain the linguistic rule behind each error" onclick="selEC(this)"><div class="ei">🎓</div><h4>Metalinguistic</h4><p>Teacher training depth</p></div>
+          <div class="eo active" data-v="direct correction with clear explanations for each error" onclick="selEC(this)"><div class="ei"><i data-lucide="check-circle-2"></i></div><h4>Direct Correction</h4><p>Corrected text + explanations</p></div>
+          <div class="eo" data-v="coded feedback using standard ELT correction codes: WW (wrong word), WF (word form), T (tense), Sp (spelling), P (punctuation), Agr (agreement)" onclick="selEC(this)"><div class="ei"><i data-lucide="tag"></i></div><h4>Coded Feedback</h4><p>WW, WF, T, Sp, P codes</p></div>
+          <div class="eo" data-v="metalinguistic commentary at teacher-training level — explain the linguistic rule behind each error" onclick="selEC(this)"><div class="ei"><i data-lucide="graduation-cap"></i></div><h4>Metalinguistic</h4><p>Teacher training depth</p></div>
         </div>
         <div class="sblock" style="margin-top:1rem">
           <div class="shdr"><div class="snum">1</div><h3>Student Level</h3></div>
@@ -4828,7 +4830,7 @@ function dismissSessionBanner() {
           <div class="rp-hdr"><span class="rp-lbl">Feedback Report</span><div class="rp-acts"><button class="rp-btn" onclick="copyOut('ec-out')">Copy</button><button class="rp-btn" onclick="generateError()">Re-analyse</button><button class="rp-btn" onclick="nirPrint('ec-out')" title="Print">🖨</button></div></div>
           <div id="ec-wc" style="font-size:11px;color:var(--muted);text-align:right;min-height:16px;padding-right:2px;"></div>
           <div id="ec-out" class="out-txt"><div class="rp-empty">
-  <div class="re-ico">✅</div>
+  <div class="re-ico"><i data-lucide="spell-check-2"></i></div>
   <p>Paste student writing above and click <strong style="color:var(--gold)">Analyse</strong> for detailed linguistic feedback.</p>
   <p style="margin-top:0.75rem;font-size:11px;opacity:0.7">Identifies: grammar errors · vocabulary · coherence · CEFR level · improvement suggestions</p>
 </div></div>
@@ -4851,24 +4853,24 @@ function dismissSessionBanner() {
       <div>
         <div class="stitle"><span class="stg">Exercise Types — toggle to include</span></div>
         <div class="wtypes" id="ws-types">
-          <div class="wt active" data-v="Gap-fill" onclick="this.classList.toggle('active')"><div class="wt-ico">✏️</div><h4>Gap Fill</h4></div>
-          <div class="wt active" data-v="Multiple Choice" onclick="this.classList.toggle('active')"><div class="wt-ico">🔘</div><h4>Multiple Choice</h4></div>
-          <div class="wt" data-v="Error Correction" onclick="this.classList.toggle('active')"><div class="wt-ico">🔴</div><h4>Error Correction</h4></div>
-          <div class="wt" data-v="Matching" onclick="this.classList.toggle('active')"><div class="wt-ico">🔗</div><h4>Matching</h4></div>
-          <div class="wt" data-v="Word Order" onclick="this.classList.toggle('active')"><div class="wt-ico">🔀</div><h4>Word Order</h4></div>
-          <div class="wt" data-v="Short Answer" onclick="this.classList.toggle('active')"><div class="wt-ico">💬</div><h4>Short Answer</h4></div>
-          <div class="wt" data-v="Translation" onclick="this.classList.toggle('active')"><div class="wt-ico">🌍</div><h4>Translation</h4></div>
-          <div class="wt" data-v="Writing Task" onclick="this.classList.toggle('active')"><div class="wt-ico">📝</div><h4>Writing Task</h4></div>
+          <div class="wt active" data-v="Gap-fill" onclick="this.classList.toggle('active')"><div class="wt-ico"><i data-lucide="minus-square"></i></div><h4>Gap Fill</h4></div>
+          <div class="wt active" data-v="Multiple Choice" onclick="this.classList.toggle('active')"><div class="wt-ico"><i data-lucide="list-checks"></i></div><h4>Multiple Choice</h4></div>
+          <div class="wt" data-v="Error Correction" onclick="this.classList.toggle('active')"><div class="wt-ico"><i data-lucide="spell-check-2"></i></div><h4>Error Correction</h4></div>
+          <div class="wt" data-v="Matching" onclick="this.classList.toggle('active')"><div class="wt-ico"><i data-lucide="link-2"></i></div><h4>Matching</h4></div>
+          <div class="wt" data-v="Word Order" onclick="this.classList.toggle('active')"><div class="wt-ico"><i data-lucide="arrow-left-right"></i></div><h4>Word Order</h4></div>
+          <div class="wt" data-v="Short Answer" onclick="this.classList.toggle('active')"><div class="wt-ico"><i data-lucide="message-circle"></i></div><h4>Short Answer</h4></div>
+          <div class="wt" data-v="Translation" onclick="this.classList.toggle('active')"><div class="wt-ico"><i data-lucide="globe-2"></i></div><h4>Translation</h4></div>
+          <div class="wt" data-v="Writing Task" onclick="this.classList.toggle('active')"><div class="wt-ico"><i data-lucide="pen-line"></i></div><h4>Writing Task</h4></div>
         </div>
         <div class="sblock">
           <div class="shdr"><div class="snum">1</div><h3>Focus &amp; Level</h3></div>
           <div class="sbdy">
             <div class="cgrid" id="ws-focus" style="margin-bottom:.9rem">
-              <div class="chip active" data-v="Grammar" onclick="SC(this,'ws-focus')">📐 Grammar</div>
-              <div class="chip" data-v="Vocabulary" onclick="SC(this,'ws-focus')">🔤 Vocabulary</div>
-              <div class="chip" data-v="Reading" onclick="SC(this,'ws-focus')">📖 Reading</div>
-              <div class="chip" data-v="Writing" onclick="SC(this,'ws-focus')">✍️ Writing</div>
-              <div class="chip" data-v="Mixed Skills" onclick="SC(this,'ws-focus')">🔗 Mixed</div>
+              <div class="chip active" data-v="Grammar" onclick="SC(this,'ws-focus')"><i data-lucide="square-function"></i> Grammar</div>
+              <div class="chip" data-v="Vocabulary" onclick="SC(this,'ws-focus')"><i data-lucide="book-a"></i> Vocabulary</div>
+              <div class="chip" data-v="Reading" onclick="SC(this,'ws-focus')"><i data-lucide="book-open"></i> Reading</div>
+              <div class="chip" data-v="Writing" onclick="SC(this,'ws-focus')"><i data-lucide="pen-line"></i> Writing</div>
+              <div class="chip" data-v="Mixed Skills" onclick="SC(this,'ws-focus')"><i data-lucide="link-2"></i> Mixed</div>
             </div>
             <div class="lpills" id="ws-level">
               <div class="lvl" data-v="A1" onclick="SP(this,'ws-level')">A1</div>
@@ -4918,14 +4920,14 @@ function dismissSessionBanner() {
   <div class="content">
     <div class="lib-filters" id="lib-filters">
       <div class="lf active" data-c="All" onclick="filterLib(this)">All</div>
-      <div class="lf" data-c="Writing" onclick="filterLib(this)">✍️ Writing</div>
-      <div class="lf" data-c="Speaking" onclick="filterLib(this)">🗣️ Speaking</div>
-      <div class="lf" data-c="IELTS" onclick="filterLib(this)">📘 IELTS</div>
-      <div class="lf" data-c="Lesson Plan" onclick="filterLib(this)">📋 Lesson Plan</div>
-      <div class="lf" data-c="Activity" onclick="filterLib(this)">🎮 Activity</div>
-      <div class="lf" data-c="Worksheet" onclick="filterLib(this)">📄 Worksheet</div>
-      <div class="lf" data-c="Vocabulary" onclick="filterLib(this)">🔤 Vocabulary</div>
-      <div class="lf" data-c="Saved" onclick="filterLib(this)">🔖 Saved</div>
+      <div class="lf" data-c="Writing" onclick="filterLib(this)"><i data-lucide="pen-line"></i> Writing</div>
+      <div class="lf" data-c="Speaking" onclick="filterLib(this)"><i data-lucide="mic-2"></i> Speaking</div>
+      <div class="lf" data-c="IELTS" onclick="filterLib(this)"><i data-lucide="graduation-cap"></i> IELTS</div>
+      <div class="lf" data-c="Lesson Plan" onclick="filterLib(this)"><i data-lucide="calendar-days"></i> Lesson Plan</div>
+      <div class="lf" data-c="Activity" onclick="filterLib(this)"><i data-lucide="gamepad-2"></i> Activity</div>
+      <div class="lf" data-c="Worksheet" onclick="filterLib(this)"><i data-lucide="layout-template"></i> Worksheet</div>
+      <div class="lf" data-c="Vocabulary" onclick="filterLib(this)"><i data-lucide="book-a"></i> Vocabulary</div>
+      <div class="lf" data-c="Saved" onclick="filterLib(this)"><i data-lucide="bookmark"></i> Saved</div>
     </div>
     <div class="lgrid" id="lib-grid"></div>
   </div>
@@ -5037,10 +5039,10 @@ function dismissSessionBanner() {
   </div>
   <div class="content">
     <div class="sgrid">
-      <div class="sc"><div class="sc-ico">⚡</div><div class="sc-v" id="an-total">0</div><div class="sc-l">Total Prompts</div><div class="sc-s">All time</div></div>
-      <div class="sc"><div class="sc-ico">🔖</div><div class="sc-v" id="an-saved">0</div><div class="sc-l">Saved Prompts</div><div class="sc-s">In your library</div></div>
-      <div class="sc"><div class="sc-ico">⭐</div><div class="sc-v">FREE</div><div class="sc-l">Current Plan</div><div class="sc-s">Upgrade for more</div></div>
-      <div class="sc"><div class="sc-ico">📅</div><div class="sc-v" id="an-days">0</div><div class="sc-l">Days Active</div><div class="sc-s">Since joining</div></div>
+      <div class="sc"><div class="sc-ico"><i data-lucide="zap"></i></div><div class="sc-v" id="an-total">0</div><div class="sc-l">Total Prompts</div><div class="sc-s">All time</div></div>
+      <div class="sc"><div class="sc-ico"><i data-lucide="bookmark"></i></div><div class="sc-v" id="an-saved">0</div><div class="sc-l">Saved Prompts</div><div class="sc-s">In your library</div></div>
+      <div class="sc"><div class="sc-ico"><i data-lucide="star"></i></div><div class="sc-v">FREE</div><div class="sc-l">Current Plan</div><div class="sc-s">Upgrade for more</div></div>
+      <div class="sc"><div class="sc-ico"><i data-lucide="calendar"></i></div><div class="sc-v" id="an-days">0</div><div class="sc-l">Days Active</div><div class="sc-s">Since joining</div></div>
     </div>
 
     <div class="stitle" style="margin-top:1.5rem"><span class="stg">Most Used Tools</span></div>
@@ -5108,10 +5110,10 @@ function dismissSessionBanner() {
     <div class="ast-global-layer">
       <span class="ast-global-title" id="ast-global-title">Global Tools</span>
       <div class="ast-global-btns">
-        <button class="ast-global-btn" id="ast-g-rescue"    onclick="astGlobal('rescue')">⚡ Instant Rescue</button>
+        <button class="ast-global-btn" id="ast-g-rescue"    onclick="astGlobal('rescue')"><i data-lucide="zap"></i> Instant Rescue</button>
         <button class="ast-global-btn" id="ast-g-simulate"  onclick="astGlobal('simulate')">🎭 Simulation</button>
-        <button class="ast-global-btn" id="ast-g-style"     onclick="astGlobal('style')">🎨 Style Switch</button>
-        <button class="ast-global-btn" id="ast-g-difficulty"onclick="astGlobal('difficulty')">📊 Difficulty</button>
+        <button class="ast-global-btn" id="ast-g-style"     onclick="astGlobal('style')"><i data-lucide="palette"></i> Style Switch</button>
+        <button class="ast-global-btn" id="ast-g-difficulty"onclick="astGlobal('difficulty')"><i data-lucide="sliders-horizontal"></i> Difficulty</button>
         <button class="ast-global-btn" id="ast-g-fix"       onclick="astGlobal('fix')">🔧 Fix Lesson</button>
       </div>
     </div>
@@ -8323,6 +8325,23 @@ html.light #sidebar .sb-item:focus-visible .si svg *,
 html.light #sidebar .sb-item.active .si svg * {
   stroke: #A68124 !important;
 }
+
+/* ── Lucide icon sizing inside UI components ── */
+.ls-ico i, .ls-ico svg { width:22px; height:22px; stroke:currentColor; fill:none; stroke-width:1.75; stroke-linecap:round; stroke-linejoin:round; }
+.chip i, .chip svg { width:13px; height:13px; stroke:currentColor; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; vertical-align:middle; margin-right:2px; }
+.fi i, .fi svg { width:22px; height:22px; stroke:currentColor; fill:none; stroke-width:1.75; stroke-linecap:round; stroke-linejoin:round; }
+.sc-ico i, .sc-ico svg { width:20px; height:20px; stroke:currentColor; fill:none; stroke-width:1.75; stroke-linecap:round; stroke-linejoin:round; }
+.wt-ico i, .wt-ico svg { width:20px; height:20px; stroke:currentColor; fill:none; stroke-width:1.75; stroke-linecap:round; stroke-linejoin:round; }
+.re-ico i, .re-ico svg { width:28px; height:28px; stroke:currentColor; fill:none; stroke-width:1.5; stroke-linecap:round; stroke-linejoin:round; }
+.ei i, .ei svg { width:20px; height:20px; stroke:currentColor; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
+.ui-ico i, .ui-ico svg { width:16px; height:16px; stroke:currentColor; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
+.lf i, .lf svg { width:13px; height:13px; stroke:currentColor; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; vertical-align:middle; margin-right:2px; }
+.ast-global-btn i, .ast-global-btn svg { width:14px; height:14px; stroke:currentColor; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; vertical-align:middle; margin-right:3px; }
 </style>
+
+<script>
+// Re-run lucide icons after dynamic content
+if(window.lucide) lucide.createIcons();
+</script>
 </body>
 </html>
