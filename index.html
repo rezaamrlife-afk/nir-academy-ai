@@ -5747,20 +5747,24 @@ async function callAPI(prompt,outId,btn){
   if(btn){btn.classList.remove("loading");btn.textContent="✦  "+(btn.dataset.lbl||"Generate");}
 }
 
-async function generate(){await callAPI(buildGen(),"prompt-out",document.getElementById("gen-btn"));}
+async function generate(){window._lastToolUsed='prompt_generator';await callAPI(buildGen(),"prompt-out",document.getElementById("gen-btn"));}
 async function generateLesson(){
+  window._lastToolUsed='lesson_planner';
   const btns=document.querySelectorAll("#page-lesson .btn-gen");
   await callAPI(buildLesson(),"lp-out",btns[0]||null);
 }
 async function generateIELTS(){
+  window._lastToolUsed='ielts_generator';
   const btns=document.querySelectorAll("#page-ielts .btn-gen");
   await callAPI(buildIELTS(),"ielts-out",btns[0]||null);
 }
 async function generateWorksheet(){
+  window._lastToolUsed='worksheet_builder';
   const btns=document.querySelectorAll("#page-worksheet .btn-gen");
   await callAPI(buildWorksheet(),"ws-out",btns[0]||null);
 }
 async function generateError(){
+  window._lastToolUsed='error_correction';
   const p=buildError();
   if(!p){T("Please paste student writing first.");return;}
   const btns=document.querySelectorAll("#page-error .btn-gen");
@@ -6258,15 +6262,21 @@ async function loadHistory(){
       + '<button class="btn-gen" style="width:auto;padding:10px 24px;font-size:12px" onclick="go(\'generator\')">✦ Start Generating</button></div>';
     return;
   }
-  const toolIcons = {
-    'generator':'wand-sparkles','lesson':'calendar-days','ielts':'graduation-cap',
-    'error':'scan-text','worksheet':'layout-template','assistant':'bot-message-square'
+  const toolMeta = {
+    'prompt_generator': {icon:'wand-sparkles', label:'Prompt Generator'},
+    'lesson_planner':   {icon:'calendar-days',  label:'Lesson Planner'},
+    'ielts_generator':  {icon:'graduation-cap', label:'IELTS Generator'},
+    'error_correction': {icon:'scan-text',       label:'Error Correction'},
+    'worksheet_builder':{icon:'layout-template', label:'Worksheet Builder'},
+    'ai_assistant':     {icon:'bot-message-square', label:'AI Assistant'},
+    'general':          {icon:'zap',             label:'General'},
   };
   grid.innerHTML = data.map(r=>{
     const date = new Date(r.created_at).toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'});
     const time = new Date(r.created_at).toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});
-    const icon = toolIcons[r.tool] || 'zap';
-    const toolName = (r.tool||'Tool').charAt(0).toUpperCase()+(r.tool||'').slice(1);
+    const meta = toolMeta[r.tool] || {icon:'zap', label: (r.tool||'Tool').replace(/_/g,' ').replace(/\b\w/g,c=>c.toUpperCase())};
+    const icon = meta.icon;
+    const toolName = meta.label;
     const status = r.success===false ? '<span style="color:#f87171;font-size:9px;font-weight:700">✗ Failed</span>' : '<span style="color:#34d399;font-size:9px;font-weight:700">✓ Success</span>';
     return `<div class="saved-card">
       <div class="sc-date">${date} · ${time}</div>
