@@ -5018,15 +5018,7 @@ function dismissSessionBanner() {
     <p>Your recent AI prompt activity across all tools.</p>
   </div>
   <div class="content">
-    <div id="history-grid" class="saved-grid">
-      <div style="grid-column:1/-1;text-align:center;padding:3rem;color:var(--muted)">
-        <div style="font-size:40px;margin-bottom:1rem">🕐</div>
-        <p style="font-size:14px;color:#ddd;margin-bottom:.5rem">History Coming Soon</p>
-        <p style="font-size:12px;color:var(--muted)">Your prompt history will be saved here automatically once you sign in and start generating.</p>
-        <br>
-        <button class="btn-gen" style="width:auto;padding:12px 28px" onclick="go('generator')">✦ Start Generating</button>
-      </div>
-    </div>
+    <div id="history-grid" class="saved-grid"></div>
   </div>
 </div>
 
@@ -5254,6 +5246,8 @@ function go(id){
     openAuth();
     return;
   }
+  if(id==='history') loadHistory();
+  if(id==='saved')   loadSavedPrompts();
 }
 
 // ── Auth Modal UI (no Supabase dependency) ──
@@ -6240,6 +6234,49 @@ async function deletePrompt(id){
   await SB.from('saved_prompts').delete().eq('id',id);
   loadSavedPrompts();
   T('Prompt deleted');
+}
+
+async function loadHistory(){
+  const grid = document.getElementById('history-grid');
+  if(!grid) return;
+  const user = SB && SB.auth && (await SB.auth.getUser()).data.user;
+  if(!user){
+    grid.innerHTML = '<p style="grid-column:1/-1;text-align:center;padding:3rem;font-size:13px;color:var(--muted)">Please sign in to view your history.</p>';
+    return;
+  }
+  grid.innerHTML = '<p style="grid-column:1/-1;text-align:center;padding:2rem;font-size:12px;color:var(--muted)">Loading…</p>';
+  const { data, error } = await SB.from('nira_requests')
+    .select('*')
+    .eq('user_id', user.id)
+    .order('created_at', { ascending: false })
+    .limit(50);
+  if(error || !data || !data.length){
+    grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:3rem">'
+      + '<div style="margin-bottom:1rem;opacity:.5"><svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>'
+      + '<p style="font-size:14px;color:var(--text);margin-bottom:.4rem;font-weight:600">No activity yet</p>'
+      + '<p style="font-size:12px;color:var(--muted);margin-bottom:1.2rem">Your prompt history will appear here as you use the tools.</p>'
+      + '<button class="btn-gen" style="width:auto;padding:10px 24px;font-size:12px" onclick="go(\'generator\')">✦ Start Generating</button></div>';
+    return;
+  }
+  const toolIcons = {
+    'generator':'wand-sparkles','lesson':'calendar-days','ielts':'graduation-cap',
+    'error':'scan-text','worksheet':'layout-template','assistant':'bot-message-square'
+  };
+  grid.innerHTML = data.map(r=>{
+    const date = new Date(r.created_at).toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'});
+    const time = new Date(r.created_at).toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});
+    const icon = toolIcons[r.tool] || 'zap';
+    const toolName = (r.tool||'Tool').charAt(0).toUpperCase()+(r.tool||'').slice(1);
+    const status = r.success===false ? '<span style="color:#f87171;font-size:9px;font-weight:700">✗ Failed</span>' : '<span style="color:#34d399;font-size:9px;font-weight:700">✓ Success</span>';
+    return `<div class="saved-card">
+      <div class="sc-date">${date} · ${time}</div>
+      <span class="sc-tool" style="display:inline-flex;align-items:center;gap:4px">
+        <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-${icon}"/></svg>
+        ${toolName}
+      </span>
+      <div style="margin-top:.5rem">${status}${r.duration_ms?` <span style="font-size:9px;color:var(--muted);margin-left:6px">${(r.duration_ms/1000).toFixed(1)}s</span>`:''}</div>
+    </div>`;
+  }).join('');
 }
 
 function loadIntoGenerator(text){
