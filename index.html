@@ -5772,28 +5772,48 @@ async function resolveWorksheetImages(){
     var item = toProcess[i];
     try{
       var r = await fetch("/api/images?q="+encodeURIComponent(item.word));
+      if(!r.ok){ item.node.nodeValue = item.node.nodeValue.replace(item.raw,""); continue; }
       var data = await r.json();
       if(data.error || !data.url){
-        // Remove placeholder cleanly
+        // No relevant image found — remove placeholder cleanly
         item.node.nodeValue = item.node.nodeValue.replace(item.raw,"");
         continue;
       }
-      // Replace text node placeholder with figure element
+
+      // Build <figure> with image + word label + photographer attribution
       var fig = document.createElement("figure");
       fig.className = "ws-fig";
-      fig.style.cssText = "display:inline-block;margin:.6rem .5rem .6rem 0;vertical-align:top;text-align:center;max-width:140px";
+
       var img = document.createElement("img");
       img.src = data.url;
       img.alt = item.word;
       img.loading = "lazy";
-      img.style.cssText = "width:130px;height:90px;object-fit:cover;border-radius:6px;border:1px solid var(--bdr)";
       img.onerror = function(){ this.closest(".ws-fig").remove(); };
-      var cap = document.createElement("figcaption");
-      cap.style.cssText = "font-size:10px;color:var(--muted);margin-top:3px";
-      cap.textContent = item.word;
+
+      // Word label
+      var wordLabel = document.createElement("figcaption");
+      wordLabel.className = "ws-fig-word";
+      wordLabel.textContent = item.word;
+
+      // Pixabay attribution (required by terms)
+      var attr = document.createElement("div");
+      attr.className = "ws-fig-attr";
+      if(data.attribution && data.attribution.name){
+        var attrLink = document.createElement("a");
+        attrLink.href = data.attribution.page || data.attribution.profile || "https://pixabay.com";
+        attrLink.target = "_blank";
+        attrLink.rel = "noopener noreferrer";
+        attrLink.textContent = "Photo: " + data.attribution.name + " / Pixabay";
+        attr.appendChild(attrLink);
+      } else {
+        attr.textContent = "Photo: Pixabay";
+      }
+
       fig.appendChild(img);
-      fig.appendChild(cap);
-      // Replace just the placeholder text with the figure
+      fig.appendChild(wordLabel);
+      fig.appendChild(attr);
+
+      // Replace the placeholder text node with the figure
       var before = item.node.nodeValue.substring(0, item.node.nodeValue.indexOf(item.raw));
       var after  = item.node.nodeValue.substring(item.node.nodeValue.indexOf(item.raw)+item.raw.length);
       var beforeNode = document.createTextNode(before);
@@ -5803,7 +5823,8 @@ async function resolveWorksheetImages(){
       item.node.parentNode.insertBefore(afterNode, item.node);
       item.node.parentNode.removeChild(item.node);
     } catch(e){
-      item.node.nodeValue = item.node.nodeValue.replace(item.raw,"");
+      // Fail silently — remove placeholder, worksheet still complete
+      try{ item.node.nodeValue = item.node.nodeValue.replace(item.raw,""); }catch(_){}
     }
   }
 }
@@ -7005,7 +7026,9 @@ function nirPrint(outId) {
     '@media print{body{padding:1cm}}' +
     '.ws-fig{float:left;max-width:42%;margin:0 1rem 1rem 0;page-break-inside:avoid;break-inside:avoid;text-align:center}' +
     '.ws-fig img{width:100%;height:auto;border:1px solid #ccc;border-radius:4px;display:block}' +
-    '.ws-fig figcaption{font-size:10px;color:#555;margin-top:3px}' +
+    '.ws-fig-word{display:block;font-size:11px;font-weight:600;color:#111;margin-top:4px;text-transform:capitalize}' +
+    '.ws-fig-attr{font-size:9px;color:#888;margin-top:2px;line-height:1.3}' +
+    '.ws-fig-attr a{color:#888;text-decoration:none}' +
     '.ws-fig+*{clear:both}' +
     '</style></head><body>' +
     '<p style="font-size:11px;color:#999;border-bottom:1px solid #eee;padding-bottom:8px;margin-bottom:20px">NIR Academy · Dr. Niki Majidi · niracademy.com</p>' +
@@ -7517,10 +7540,10 @@ window.nirHideSkeleton = function(outId) {
   out.querySelectorAll('.skeleton-line').forEach(function(el){ el.remove(); });
 };
 
-/* Patch callAPI to show skeleton */
+/* Patch callAPI to show skeleton — forward ALL args including onComplete */
 var _origCallAPI = window.callAPI;
 if (typeof _origCallAPI === 'function') {
-  window.callAPI = function(prompt, outId, btn) {
+  window.callAPI = function(prompt, outId, btn, onComplete) {
     nirShowSkeleton(outId);
     return _origCallAPI.apply(this, arguments);
   };
@@ -9012,10 +9035,10 @@ if(window.lucide){ lucide.createIcons(); } else { setTimeout(function(){ if(wind
 
 /* PHASE 7 — Worksheet Images (vocabulary A1/A2 only) */
 
-/* Screen layout for ws-fig grid */
+/* Screen layout */
 #ws-out .ws-fig {
   display: inline-block;
-  margin: 0.6rem 0.5rem 0.6rem 0;
+  margin: 0.6rem 0.75rem 0.6rem 0;
   vertical-align: top;
   text-align: center;
   max-width: 140px;
@@ -9028,11 +9051,26 @@ if(window.lucide){ lucide.createIcons(); } else { setTimeout(function(){ if(wind
   border: 1px solid var(--bdr);
   display: block;
 }
-#ws-out .ws-fig figcaption {
-  font-size: 10px;
-  color: var(--muted);
-  margin-top: 3px;
+#ws-out .ws-fig-word {
+  display: block;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--txt);
+  margin-top: 4px;
+  text-transform: capitalize;
 }
+#ws-out .ws-fig-attr {
+  font-size: 9px;
+  color: var(--muted);
+  margin-top: 2px;
+  line-height: 1.3;
+}
+#ws-out .ws-fig-attr a {
+  color: var(--muted);
+  text-decoration: none;
+  opacity: 0.75;
+}
+#ws-out .ws-fig-attr a:hover { opacity: 1; text-decoration: underline; }
 
 /* Mobile: full-width stacked */
 @media (max-width: 600px) {
@@ -9047,7 +9085,7 @@ if(window.lucide){ lucide.createIcons(); } else { setTimeout(function(){ if(wind
   }
 }
 
-/* Print: float left, no shadow, page-break safe */
+/* Print: float left, page-break safe, attribution visible */
 @media print {
   #ws-out .ws-fig {
     float: left;
@@ -9062,13 +9100,10 @@ if(window.lucide){ lucide.createIcons(); } else { setTimeout(function(){ if(wind
     border: 1px solid #ccc;
     border-radius: 4px;
   }
-  #ws-out .ws-fig figcaption {
-    color: #555;
-  }
-  /* clear floats after images */
-  #ws-out .ws-fig + * {
-    clear: both;
-  }
+  #ws-out .ws-fig-word { color: #111; }
+  #ws-out .ws-fig-attr,
+  #ws-out .ws-fig-attr a { color: #888; text-decoration: none; }
+  #ws-out .ws-fig + * { clear: both; }
 }
 </style>
 
