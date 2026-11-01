@@ -4611,6 +4611,7 @@ function dismissSessionBanner() {
               <div class="sg"><label>Prompt Type</label><select id="out-type"><option value="Advanced structured professional prompt">Advanced</option><option value="Simple, concise prompt">Simple</option><option value="Classroom-ready activity with full instructions">Classroom-Ready</option></select></div>
               <div class="sg"><label>Detail Level</label><select id="out-len"><option value="detailed with step-by-step instructions">Detailed</option><option value="medium length">Medium</option><option value="short and concise">Short</option></select></div>
               <div class="sg"><label>Style</label><select id="out-style"><option value="formal and academic">Formal</option><option value="creative and engaging">Creative</option><option value="rigorous exam-style">Exam-Style</option><option value="warm and conversational">Conversational</option></select></div>
+              <div class="sg"><label>Class Size <span style="font-weight:400;opacity:.6">(optional)</span></label><select id="out-classsize"><option value="a standard class of 15–20 adult learners">Standard (15–20)</option><option value="a small group of 5–10 learners">Small (5–10)</option><option value="a large class of 25–35 learners">Large (25–35)</option><option value="a 1-to-1 private lesson">1-to-1</option><option value="an online class">Online</option></select></div>
             </div>
           </div>
         </div>
@@ -5378,20 +5379,32 @@ function buildGen(){
   const type=document.getElementById("out-type").value;
   const len=document.getElementById("out-len").value;
   const style=document.getElementById("out-style").value;
-  return `You are an expert AI prompt engineer for NIR Academy (niracademy.com) — the AI-powered ELT platform by Dr. Niki Majidi. Pedagogy First. AI Enhanced. Future Ready.
+  const classSize=(document.getElementById("out-classsize")?.value)||"a standard class of 15–20 adult learners";
+  // Reconcile Mode + Goal: if goal implies a specific role, let goal lead
+  const goalRoleMap={
+    "Create a detailed lesson plan":"TESOL-certified Lesson Planner",
+    "Design a grammar worksheet":"experienced EFL/ESL Teacher",
+    "Generate IELTS practice material":"IELTS Examiner and Trainer",
+    "Write a reading comprehension":"Reading Skills Instructor",
+    "Create a writing task":"Academic Writing Tutor",
+    "Build a speaking activity":"English Speaking Coach",
+  };
+  const effectiveRole = goalRoleMap[S.goal] || S.mode;
+  return `You are an expert AI prompt engineer for NIR Academy (niracademy.com) — the AI-powered ELT platform by Dr. Niki Majidi.
 
 Create a ${type} for an English language teacher:
-ROLE: ${S.mode}
+ROLE: ${effectiveRole}
 GOAL: ${S.goal}
 LEVEL: ${S.level}
 TOPIC: ${topic}
+CLASS: ${classSize}
 DETAIL: ${len}
 STYLE: ${style}
 
 Structure using this ELT framework:
 1. ROLE — Precisely who the AI acts as
 2. TASK — Exactly what to generate
-3. LEARNER CONTEXT — Level, adult learners, class size 15–20
+3. LEARNER CONTEXT — ${S.level}, ${classSize}
 4. TOPIC & CONSTRAINTS — Subject, timing, cultural sensitivity
 5. FORMAT — Table, numbered list, stage plan, or worksheet layout
 6. QUALITY STANDARDS — CEFR alignment, CLT principles, authentic task design
@@ -5957,7 +5970,8 @@ function copyOut(id){
 function saveP(){
   const t=document.getElementById("prompt-out").textContent;
   if(!t||t.includes("Configure"))return;
-  S.saved.push(t);buildLib();T("Saved to Prompt Library ✓");
+  S.saved.push(t);buildLib();
+  savePromptToDB(t,'Prompt Generator');
 }
 
 // ══ LIBRARY ══
