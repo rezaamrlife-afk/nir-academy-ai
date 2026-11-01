@@ -1,149 +1,326 @@
-// /api/images.js — Vercel serverless function
-// Proxies Pixabay image search. API key stays server-side only.
-// Usage: GET /api/images?q=apple
-// Returns: { url, pageURL } or { error: "..." }
-
-// Curated search suffixes for common vocabulary categories
-// Makes queries more specific so Pixabay returns relevant images
 function buildQuery(word) {
-  const w = word.toLowerCase().trim();
+  const w = word.toLowerCase().trim().replace(/[_-]+/g, ' ');
 
-  // Places / buildings
-  if (['hotel','motel','hostel'].includes(w)) return 'hotel building exterior';
-  if (['restaurant','cafe','coffee shop'].includes(w)) return 'restaurant interior';
-  if (['school','classroom'].includes(w)) return 'classroom school children';
-  if (['hospital','clinic'].includes(w)) return 'hospital building';
-  if (['airport'].includes(w)) return 'airport terminal';
-  if (['house','home'].includes(w)) return 'house residential building';
-  if (['shop','store','market'].includes(w)) return 'store shop retail';
-  if (['library'].includes(w)) return 'library books shelves';
-  if (['kitchen'].includes(w)) return 'kitchen room cooking';
-  if (['garden'].includes(w)) return 'garden flowers plants';
-  if (['office'].includes(w)) return 'office desk workplace';
-  if (['park'].includes(w)) return 'park green trees outdoor';
-  if (['beach'].includes(w)) return 'beach sea sand';
-  if (['mountain'].includes(w)) return 'mountain landscape';
-  if (['city','town'].includes(w)) return 'city street buildings';
+  const topics = {
+    // FOOD & DRINK
+    apple: 'red apple fruit isolated',
+    banana: 'yellow banana fruit',
+    orange: 'orange citrus fruit',
+    grapes: 'fresh grapes fruit',
+    strawberry: 'fresh strawberries',
+    watermelon: 'watermelon fruit',
+    lemon: 'yellow lemon citrus',
+    peach: 'fresh peach fruit',
+    pear: 'pear fruit',
+    pineapple: 'pineapple tropical fruit',
+    bread: 'fresh bread loaf bakery',
+    cheese: 'cheese food',
+    butter: 'butter food',
+    milk: 'glass of milk',
+    water: 'glass of water',
+    coffee: 'cup of coffee',
+    tea: 'cup of tea',
+    juice: 'glass of fruit juice',
+    egg: 'egg breakfast food',
+    eggs: 'eggs breakfast food',
+    rice: 'cooked rice bowl',
+    pasta: 'pasta food plate',
+    pizza: 'pizza food',
+    burger: 'hamburger food',
+    sandwich: 'fresh sandwich',
+    soup: 'bowl of soup',
+    salad: 'fresh vegetable salad',
+    chicken: 'cooked chicken meal',
+    fish: 'fresh fish seafood',
+    meat: 'fresh meat food',
+    potato: 'potatoes vegetables',
+    tomato: 'fresh red tomatoes',
+    carrot: 'fresh carrots',
+    onion: 'onions vegetables',
+    cucumber: 'fresh cucumber',
+    cake: 'cake dessert',
+    chocolate: 'chocolate dessert',
+    icecream: 'ice cream dessert',
+    ice_cream: 'ice cream dessert',
+    cookie: 'cookies biscuits',
+    breakfast: 'breakfast table food',
+    lunch: 'lunch meal',
+    dinner: 'dinner meal table',
 
-  // Transport
-  if (['bus'].includes(w)) return 'bus public transport vehicle';
-  if (['car'].includes(w)) return 'car vehicle road';
-  if (['train'].includes(w)) return 'train railway station';
-  if (['plane','airplane','aeroplane','flight'].includes(w)) return 'airplane aircraft sky';
-  if (['boat','ship'].includes(w)) return 'boat ship water';
-  if (['bicycle','bike'].includes(w)) return 'bicycle bike riding';
-  if (['taxi'].includes(w)) return 'taxi yellow cab';
+    // ANIMALS
+    cat: 'cat kitten pet',
+    dog: 'dog puppy pet',
+    bird: 'colorful bird',
+    horse: 'horse animal',
+    cow: 'cow farm animal',
+    sheep: 'sheep farm',
+    goat: 'goat farm animal',
+    rabbit: 'rabbit bunny',
+    elephant: 'elephant wildlife',
+    lion: 'lion wildlife',
+    tiger: 'tiger wildlife',
+    monkey: 'monkey animal',
+    bear: 'bear wildlife',
+    giraffe: 'giraffe animal',
+    zebra: 'zebra wildlife',
+    snake: 'snake reptile',
+    turtle: 'turtle animal',
+    dolphin: 'dolphin swimming',
+    whale: 'whale ocean',
+    penguin: 'penguin animal',
+    butterfly: 'butterfly colorful',
+    bee: 'honey bee flower',
+    duck: 'duck bird',
+    chicken_animal: 'chicken farm animal',
+    frog: 'green frog',
+    fox: 'fox wildlife',
 
-  // Travel / booking vocabulary
-  if (['ticket'].includes(w)) return 'ticket paper entrance';
-  if (['reservation','booking'].includes(w)) return 'hotel reservation reception desk';
-  if (['room'].includes(w)) return 'hotel room bed interior';
-  if (['seat'].includes(w)) return 'seat chair sitting';
-  if (['passport'].includes(w)) return 'passport travel document';
-  if (['suitcase','luggage','bag'].includes(w)) return 'suitcase luggage travel';
-  if (['map'].includes(w)) return 'map paper travel';
+    // CLOTHES
+    shirt: 'shirt clothing',
+    tshirt: 't shirt clothing',
+    trousers: 'trousers pants clothing',
+    jeans: 'blue jeans clothing',
+    dress: 'dress fashion clothing',
+    skirt: 'skirt clothing',
+    jacket: 'jacket clothing',
+    coat: 'winter coat',
+    shoes: 'shoes footwear',
+    trainers: 'sports trainers shoes',
+    boots: 'boots footwear',
+    socks: 'socks clothing',
+    hat: 'hat clothing',
+    cap: 'baseball cap',
+    scarf: 'scarf winter clothing',
+    gloves: 'winter gloves',
+    sweater: 'sweater clothing',
+    sunglasses: 'sunglasses',
+    tie: 'necktie clothing',
+    uniform: 'school uniform',
 
-  // Food & drink
-  if (['apple'].includes(w)) return 'apple fruit red isolated';
-  if (['banana'].includes(w)) return 'banana fruit yellow';
-  if (['orange'].includes(w)) return 'orange fruit citrus';
-  if (['bread'].includes(w)) return 'bread loaf bakery';
-  if (['milk'].includes(w)) return 'milk glass white drink';
-  if (['water'].includes(w)) return 'water glass drink clear';
-  if (['coffee'].includes(w)) return 'coffee cup hot drink';
-  if (['tea'].includes(w)) return 'tea cup hot drink';
-  if (['egg','eggs'].includes(w)) return 'egg breakfast food';
-  if (['rice'].includes(w)) return 'rice bowl food white';
-  if (['fish'].includes(w)) return 'fish food seafood';
-  if (['chicken'].includes(w)) return 'chicken meal food cooked';
-  if (['pizza'].includes(w)) return 'pizza food italian';
-  if (['salad'].includes(w)) return 'salad vegetables healthy';
-  if (['cake'].includes(w)) return 'cake sweet dessert';
-  if (['table'].includes(w)) return 'dining table wooden furniture';
+    // HOME & FURNITURE
+    house: 'beautiful house exterior',
+    home: 'comfortable home interior',
+    bedroom: 'bedroom interior',
+    bathroom: 'modern bathroom',
+    kitchen: 'modern kitchen',
+    living_room: 'living room interior',
+    garden: 'beautiful garden plants',
+    door: 'wooden door',
+    window: 'house window',
+    table: 'wooden dining table',
+    chair: 'chair furniture',
+    sofa: 'comfortable sofa',
+    bed: 'bed bedroom furniture',
+    lamp: 'table lamp',
+    mirror: 'wall mirror',
+    fridge: 'refrigerator kitchen',
+    television: 'television screen',
+    carpet: 'living room carpet',
+    clock: 'wall clock',
+    cupboard: 'kitchen cupboard',
+    wardrobe: 'clothes wardrobe',
 
-  // Animals
-  if (['cat'].includes(w)) return 'cat kitten pet';
-  if (['dog'].includes(w)) return 'dog puppy pet';
-  if (['bird'].includes(w)) return 'bird flying colorful';
-  if (['fish','goldfish'].includes(w)) return 'fish aquarium water';
-  if (['horse'].includes(w)) return 'horse animal field';
-  if (['cow'].includes(w)) return 'cow farm animal';
-  if (['sheep'].includes(w)) return 'sheep farm animal';
-  if (['rabbit'].includes(w)) return 'rabbit bunny pet';
-  if (['elephant'].includes(w)) return 'elephant animal wildlife';
-  if (['lion'].includes(w)) return 'lion animal wildlife';
+    // SCHOOL & EDUCATION
+    school: 'school building',
+    classroom: 'classroom students',
+    teacher: 'teacher teaching students',
+    student: 'student studying',
+    book: 'open book',
+    notebook: 'school notebook',
+    pencil: 'pencil stationery',
+    pen: 'writing pen',
+    ruler: 'school ruler',
+    eraser: 'rubber eraser stationery',
+    backpack: 'school backpack',
+    blackboard: 'classroom blackboard',
+    desk: 'school desk',
+    library: 'library bookshelves',
+    computer: 'computer desk',
+    laptop: 'laptop computer',
+    calculator: 'calculator',
+    scissors: 'school scissors',
+    paper: 'white paper sheets',
 
-  // School / classroom objects
-  if (['pencil'].includes(w)) return 'pencil stationery isolated';
-  if (['pen'].includes(w)) return 'pen writing stationery';
-  if (['book','books'].includes(w)) return 'book reading open pages';
-  if (['notebook'].includes(w)) return 'notebook paper school';
-  if (['backpack','bag'].includes(w)) return 'backpack school student';
-  if (['computer','laptop'].includes(w)) return 'laptop computer desk';
-  if (['phone','mobile'].includes(w)) return 'smartphone mobile phone';
-  if (['clock','watch'].includes(w)) return 'clock time wall';
-  if (['chair'].includes(w)) return 'chair furniture seat';
-  if (['door'].includes(w)) return 'door entrance wooden';
-  if (['window'].includes(w)) return 'window glass building';
+    // BODY & HEALTH
+    head: 'human head anatomy',
+    face: 'human face portrait',
+    eye: 'human eye',
+    eyes: 'human eyes',
+    ear: 'human ear',
+    nose: 'human nose',
+    mouth: 'human mouth',
+    teeth: 'human teeth',
+    hair: 'human hair',
+    hand: 'human hand',
+    hands: 'human hands',
+    arm: 'human arm',
+    leg: 'human leg',
+    foot: 'human foot',
+    feet: 'human feet',
+    heart: 'human heart medical illustration',
+    doctor: 'doctor medical professional',
+    nurse: 'nurse hospital',
+    hospital: 'hospital building',
+    medicine: 'medicine tablets',
+    dentist: 'dentist dental clinic',
 
-  // People / jobs
-  if (['teacher'].includes(w)) return 'teacher classroom teaching';
-  if (['doctor'].includes(w)) return 'doctor medical professional';
-  if (['student'].includes(w)) return 'student studying reading';
-  if (['family'].includes(w)) return 'family happy together';
-  if (['children','child','kids'].includes(w)) return 'children playing happy';
-  if (['baby'].includes(w)) return 'baby infant cute';
-  if (['man'].includes(w)) return 'man adult male portrait';
-  if (['woman'].includes(w)) return 'woman adult female portrait';
+    // TRANSPORT
+    car: 'car vehicle',
+    bus: 'public transport bus',
+    train: 'train railway',
+    plane: 'airplane sky',
+    airplane: 'airplane aircraft',
+    bicycle: 'bicycle bike',
+    bike: 'bicycle',
+    taxi: 'yellow taxi cab',
+    truck: 'delivery truck',
+    motorcycle: 'motorcycle',
+    boat: 'boat water',
+    ship: 'large ship ocean',
+    helicopter: 'helicopter sky',
+    subway: 'metro train station',
+    traffic: 'city traffic road',
+    airport: 'airport terminal',
+    station: 'train station',
 
-  // Default: word + isolated white background for clean result
-  return w + ' isolated white background';
-}
+    // PLACES & TRAVEL
+    hotel: 'hotel building exterior',
+    restaurant: 'restaurant interior',
+    cafe: 'coffee shop cafe',
+    shop: 'retail shop',
+    supermarket: 'supermarket shopping',
+    market: 'street market',
+    bank: 'bank building',
+    museum: 'museum interior',
+    cinema: 'movie theater',
+    park: 'green public park',
+    beach: 'beach sea sand',
+    mountain: 'mountain landscape',
+    forest: 'green forest',
+    river: 'river nature',
+    lake: 'beautiful lake',
+    city: 'city skyline',
+    village: 'small village',
+    country: 'countryside landscape',
+    passport: 'passport travel document',
+    suitcase: 'travel suitcase luggage',
+    luggage: 'travel luggage',
+    ticket: 'travel ticket',
+    map: 'paper travel map',
 
-export default async function handler(req, res) {
-  res.setHeader('Access-Control-Allow-Origin', req.headers.origin || '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
-  if (req.method === 'OPTIONS') { res.status(200).end(); return; }
-  if (req.method !== 'GET') { res.status(405).json({ error: 'Method not allowed' }); return; }
+    // NATURE & WEATHER
+    sun: 'bright sun sky',
+    moon: 'moon night sky',
+    star: 'stars night sky',
+    sky: 'blue sky clouds',
+    cloud: 'white clouds sky',
+    rain: 'rain falling',
+    rainy: 'rainy weather',
+    snow: 'snow winter landscape',
+    snowy: 'snowy winter day',
+    wind: 'wind trees nature',
+    storm: 'thunderstorm lightning',
+    rainbow: 'rainbow sky',
+    flower: 'colorful flower',
+    tree: 'green tree',
+    grass: 'green grass',
+    leaf: 'green leaf',
+    plant: 'green house plant',
+    sea: 'blue sea ocean',
+    ocean: 'ocean waves',
+    desert: 'desert sand dunes',
+    fire: 'campfire flames',
 
-  const q = (req.query.q || '').trim();
-  if (!q) { res.status(400).json({ error: 'Missing query parameter: q' }); return; }
+    // SPORTS
+    football: 'football soccer match',
+    soccer: 'soccer football',
+    basketball: 'basketball game',
+    tennis: 'tennis player court',
+    volleyball: 'volleyball game',
+    swimming: 'person swimming pool',
+    running: 'person running outdoors',
+    cycling: 'person cycling',
+    skiing: 'skiing snow mountain',
+    skating: 'ice skating',
+    boxing: 'boxing sport',
+    baseball: 'baseball game',
+    golf: 'golf course',
+    yoga: 'person doing yoga',
+    gym: 'fitness gym workout',
 
-  const key = process.env.PIXABAY_API_KEY;
-  if (!key) { res.status(500).json({ error: 'Image service not configured' }); return; }
+    // PEOPLE & JOBS
+    man: 'adult man portrait',
+    woman: 'adult woman portrait',
+    boy: 'young boy portrait',
+    girl: 'young girl portrait',
+    baby: 'baby infant',
+    child: 'child playing',
+    children: 'children playing together',
+    family: 'happy family together',
+    friend: 'friends together',
+    police: 'police officer',
+    policeman: 'police officer',
+    firefighter: 'firefighter uniform',
+    chef: 'professional chef cooking',
+    cook: 'person cooking kitchen',
+    farmer: 'farmer working on farm',
+    driver: 'professional driver',
+    pilot: 'airline pilot',
+    singer: 'singer performing',
+    artist: 'artist painting',
+    photographer: 'photographer camera',
+    builder: 'construction worker',
+    waiter: 'restaurant waiter',
+    waitress: 'restaurant waitress',
 
-  const search = buildQuery(q);
+    // TECHNOLOGY
+    phone: 'smartphone mobile phone',
+    mobile: 'mobile phone',
+    tablet: 'tablet computer',
+    camera: 'digital camera',
+    headphones: 'headphones',
+    keyboard: 'computer keyboard',
+    mouse: 'computer mouse',
+    internet: 'internet technology',
+    robot: 'modern robot',
+    drone: 'flying drone',
+    printer: 'office printer',
 
-  const trySearch = async (query, extraParams = {}) => {
-    const params = new URLSearchParams({
-      key,
-      q: query,
-      image_type: 'photo',
-      orientation: 'horizontal',
-      safesearch: 'true',
-      per_page: '5',
-      min_width: '400',
-      ...extraParams,
-    });
-    const r = await fetch(`https://pixabay.com/api/?${params}`);
-    if (!r.ok) return null;
-    const data = await r.json();
-    return (data.hits && data.hits.length > 0) ? data.hits[0] : null;
+    // MUSIC & ENTERTAINMENT
+    music: 'music instruments',
+    guitar: 'acoustic guitar',
+    piano: 'piano keyboard',
+    drum: 'musical drums',
+    violin: 'violin instrument',
+    microphone: 'stage microphone',
+    concert: 'live music concert',
+    dance: 'people dancing',
+    movie: 'cinema movie',
+    television: 'television',
+
+    // EMOTIONS
+    happy: 'happy smiling person',
+    sad: 'sad person portrait',
+    angry: 'angry facial expression',
+    surprised: 'surprised facial expression',
+    scared: 'scared facial expression',
+    tired: 'tired person',
+    excited: 'excited happy person',
+    laughing: 'person laughing',
+    smiling: 'smiling face',
+    crying: 'person crying',
+
+    // COLORS
+    red: 'red color objects',
+    blue: 'blue color objects',
+    green: 'green color objects',
+    yellow: 'yellow color objects',
+    black: 'black color objects',
+    white: 'white color objects',
+    pink: 'pink color objects',
+    purple: 'purple color objects',
+    brown: 'brown color objects'
   };
 
-  try {
-    // Pass 1: curated query
-    let hit = await trySearch(search);
-
-    // Pass 2: bare word, no filters
-    if (!hit) hit = await trySearch(q);
-
-    if (!hit) {
-      res.status(200).json({ error: 'not found' }); return;
-    }
-
-    res.status(200).json({ url: hit.webformatURL, pageURL: hit.pageURL });
-  } catch (e) {
-    res.status(502).json({ error: 'Network error' });
-  }
+  return topics[w] || `${w} object photo`;
 }
