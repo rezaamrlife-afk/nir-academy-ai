@@ -8769,6 +8769,141 @@ if(window.lucide){ lucide.createIcons(); } else { setTimeout(function(){ if(wind
     bottom: calc(80px + var(--safe-bottom, env(safe-area-inset-bottom, 0px)));
   }
 }
+
+/* ══════════════════════════════════════════════════════════
+   PHASE 6 — Internal Spacing & Alignment Polish (mobile only)
+   All rules inside @media max-width queries.
+   No colors, no font changes, no desktop impact.
+   ══════════════════════════════════════════════════════════ */
+
+/* ── 6a. Tool cards (.tc): uniform internal breathing room ── */
+@media (max-width: 960px) {
+  .tc {
+    padding: 18px 16px;
+    display: flex;
+    flex-direction: column;
+  }
+  .tc-ico {
+    margin-bottom: 10px;
+  }
+  .tc h3 {
+    margin-bottom: 6px;
+  }
+  .tc-cta {
+    margin-top: 10px;
+  }
+}
+
+/* ── 6b. Output panel header (.rp-hdr): padding so label/buttons don't touch edges ── */
+@media (max-width: 960px) {
+  .rp-hdr {
+    padding: 10px 14px;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+}
+
+/* ── 6c. Output panel container (.rpanel): tighter padding on small screens ── */
+@media (max-width: 600px) {
+  .rpanel {
+    padding: 0;
+  }
+}
+
+/* ── 6d. .iband info band: stack vertically on narrow screens ── */
+@media (max-width: 600px) {
+  .iband {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 1.2rem 1rem;
+  }
+  .ib-r {
+    text-align: left;
+  }
+}
+
+/* ── 6e. Onboard steps (.ob-step): aligned content inside card at single-col ── */
+@media (max-width: 600px) {
+  .ob-step {
+    padding: 14px 16px;
+    gap: 10px;
+    align-items: flex-start;
+  }
+  .ob-num {
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+}
+
+/* ── 6f. Learning stages (.lstage): min-height and balanced padding at 2-col ── */
+@media (max-width: 600px) {
+  .lstage {
+    min-height: 56px;
+    padding: 10px 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+  }
+}
+
+/* ── 6g. Tool card grid (.sgrid): consistent gap at 600px 2-col layout ── */
+@media (max-width: 600px) {
+  .sgrid {
+    gap: 10px;
+    margin-bottom: 1.6rem;
+  }
+}
+
+/* ── 6h. Footer columns: spacing between heading and links ── */
+@media (max-width: 600px) {
+  .foot-col {
+    padding-bottom: 6px;
+  }
+  .foot-col h5 {
+    margin-bottom: 10px;
+  }
+  .foot-col a {
+    margin-bottom: 8px;
+  }
+  .foot-bot {
+    margin-top: 1.2rem;
+    padding-top: 0.85rem;
+    flex-direction: column;
+    gap: 6px;
+    align-items: flex-start;
+  }
+}
+
+/* ── 6i. Bottom nav label-icon gap: consistent vertical centering ── */
+@media (max-width: 600px) {
+  .mn-item {
+    gap: 3px;
+    padding: 6px 4px;
+  }
+}
+
+/* ── 6j. Generator body (.sbdy) inner group gap: consistent vertical rhythm ── */
+@media (max-width: 960px) {
+  .sbdy {
+    padding: 1rem 1.1rem;
+  }
+  .sbdy .sg {
+    margin-bottom: 0.9rem;
+  }
+  .sbdy .sg:last-child {
+    margin-bottom: 0;
+  }
+}
+
+/* ── 6k. glayout gap on single-column mobile: avoid double-padding ── */
+@media (max-width: 600px) {
+  .glayout {
+    gap: 0.75rem;
+  }
+}
 </style>
 
 <script>
