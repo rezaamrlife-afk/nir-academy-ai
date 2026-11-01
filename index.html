@@ -4816,6 +4816,7 @@ function dismissSessionBanner() {
           <div class="shdr"><div class="snum">1</div><h3>Student Level</h3></div>
           <div class="sbdy">
             <div class="lpills" id="ec-level">
+              <div class="lvl" data-v="A1" onclick="SP(this,'ec-level')">A1</div>
               <div class="lvl" data-v="A2" onclick="SP(this,'ec-level')">A2</div>
               <div class="lvl active" data-v="B1" onclick="SP(this,'ec-level')">B1</div>
               <div class="lvl" data-v="B2" onclick="SP(this,'ec-level')">B2</div>
@@ -5490,20 +5491,56 @@ IMPORTANT: Use only Markdown formatting (##, **, -, |table|). Never use HTML tag
 function buildError(){
   const text=document.getElementById("ec-text").value.trim();
   if(!text)return null;
+  const words=text.split(/\s+/).filter(Boolean);
+  if(words.length>400){
+    const el=document.getElementById("ec-text");
+    el.style.borderColor="var(--gold)";
+    el.title="Please keep input under 400 words for best results.";
+    const T=document.getElementById("ec-wc");
+    if(T) T.textContent="⚠ "+words.length+" words — please shorten to under 400 for accurate analysis.";
+    return null;
+  }
+  const isIELTS = S.ecLevel==="IELTS";
+  const isCoded = S.ecType.includes("coded feedback");
+  const codedNote = isCoded?`
+For Coded Feedback: first show the original sentence with correction codes inserted inline in [brackets] after each error, then include the error in the table below.
+Codes: WW=wrong word, WF=word form, T=tense, Sp=spelling, P=punctuation, Agr=agreement, WO=word order, Art=article.`:"";
+  const ieltsCriteria = isIELTS?`
+
+IELTS Writing Assessment — evaluate against all 4 official criteria:
+- **Task Achievement/Response** — does the writing address the task fully?
+- **Coherence & Cohesion** — paragraphing, linking, logical flow
+- **Lexical Resource** — range, accuracy, collocations, word choice
+- **Grammatical Range & Accuracy** — structures, complexity, error frequency
+Estimate a band score (e.g. Band 6.0) and justify it.`:"";
+
   return `You are an ELT writing specialist for NIR Academy by Dr. Niki Majidi.
 
-Provide ${S.ecType} for this ${S.ecLevel} student writing:
+Student level: ${S.ecLevel}
+Feedback type: ${S.ecType}${codedNote}${ieltsCriteria}
 
+Student writing:
 "${text}"
 
 Structure your response as:
-1. OVERVIEW — General assessment in 2–3 sentences
-2. ERROR ANALYSIS TABLE — Error | Type/Category | Correction | Linguistic Explanation
-3. LANGUAGE STRENGTHS — What the student does well (minimum 3 points)
-4. PRIORITY IMPROVEMENTS — Top 3 focus areas for this level
-5. REVISED VERSION — Full corrected text
-6. TEACHER NOTES — Metalinguistic commentary + 2 suggested follow-up activities
-IMPORTANT: Use only Markdown formatting (##, **, -, |table|). Never use HTML tags like <br>, <p>, <strong>, <div>.`;
+## 1. Overview
+General assessment in 2–3 sentences. For IELTS: include estimated band score.
+
+## 2. Error Analysis${isCoded?" (with inline coded annotation)":""}
+Table: Original | Code | Correction | Explanation
+
+## 3. Language Strengths
+Minimum 3 specific points.
+
+## 4. Priority Improvements
+Top 3 focus areas appropriate for ${S.ecLevel} level.
+
+## 5. Revised Version
+Full corrected text only — no commentary.
+
+## 6. Teacher Notes
+Key linguistic rules illustrated by this student's errors + 2 follow-up activity suggestions.
+IMPORTANT: Use only Markdown formatting (##, **, -, |table|). Never use HTML tags.`;
 }
 
 function buildWorksheet(){
