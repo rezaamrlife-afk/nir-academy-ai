@@ -4891,6 +4891,14 @@ function dismissSessionBanner() {
             </div>
           </div>
         </div>
+        <div id="ws-img-toggle" class="sblock" style="display:none">
+          <div class="sbdy" style="padding-top:.6rem;padding-bottom:.6rem">
+            <label class="ws-img-label" style="display:flex;align-items:center;gap:.6rem;cursor:pointer;font-size:13px;color:var(--txt2)">
+              <input type="checkbox" id="ws-imgs" style="width:16px;height:16px;cursor:pointer;accent-color:var(--gold)" onchange="S.wsImages=this.checked">
+              <span>Add vocabulary images <span style="font-size:11px;opacity:.65">(A1/A2 only · optional)</span></span>
+            </label>
+          </div>
+        </div>
         <button class="btn-gen" data-lbl="Build Worksheet" onclick="generateWorksheet()">✦ &nbsp;Build Worksheet<span class="btn-progress"></span></button>
       </div>
       <div>
@@ -5224,7 +5232,8 @@ const S={
   ieltBand:"Band 6.0–6.5",
   ecType:"direct correction with clear explanations for each error",
   ecLevel:"B1",
-  lpLevel:"A1", wsLevel:"B1",
+  lpLevel:"A1", wsLevel:"B1", wsFocus:"Grammar",
+  wsImages:false,
   saved:[], deferredPrompt:null
 };
 
@@ -5333,7 +5342,7 @@ function SC(el,id){
   if(id==="mode-chips")S.mode=el.dataset.v;
   if(id==="goal-chips")S.goal=el.dataset.v;
   if(id==="lp-focus")S.lpFocus=el.dataset.v;
-  if(id==="ws-focus")S.wsFocus=el.dataset.v;
+  if(id==="ws-focus"){S.wsFocus=el.dataset.v;wsImgToggleVisibility();}
 }
 function SP(el,id){
   document.querySelectorAll("#"+id+" .lvl").forEach(p=>p.classList.remove("active"));
@@ -5341,7 +5350,7 @@ function SP(el,id){
   if(id==="level-pills")S.level=el.dataset.v;
   if(id==="lp-level")S.lpLevel=el.dataset.v;
   if(id==="ec-level")S.ecLevel=el.dataset.v;
-  if(id==="ws-level")S.wsLevel=el.dataset.v;
+  if(id==="ws-level"){S.wsLevel=el.dataset.v;wsImgToggleVisibility();}
 }
 function selectBand(el){
   document.querySelectorAll("#band-pills .bp").forEach(p=>p.classList.remove("active"));
@@ -5479,7 +5488,10 @@ Format requirements:
 - ${nts}
 
 Make it visually clear and immediately printable.
-IMPORTANT: Use only Markdown formatting (##, **, -, |table|). Never use HTML tags like <br>, <p>, <strong>, <div>.`;
+IMPORTANT: Use only Markdown formatting (##, **, -, |table|). Never use HTML tags like <br>, <p>, <strong>, <div>.${S.wsImages?`
+
+IMAGE PLACEHOLDERS: For up to 4 key vocabulary items in this worksheet, insert a placeholder on its own line in the exact format {{IMAGE:word}} — replace "word" with the English word being illustrated. Place each placeholder immediately before the exercise item it illustrates. Use only concrete, easily photographed nouns (e.g. apple, bus, house). Do not use placeholders for abstract concepts, grammar items, or actions.`:""}
+`;
 }
 
 // ══ API CALL ══
@@ -5631,7 +5643,7 @@ function showLimitMsg(outId,btn){
   if(btn){btn.classList.remove("loading");btn.textContent="✦  "+(btn.dataset.lbl||"Generate");}
 }
 
-async function callAPI(prompt,outId,btn){
+async function callAPI(prompt,outId,btn,onComplete){
   if(btn){btn.classList.add("loading");const lbl=btn.dataset.lbl||"Generate";btn.textContent="⟳  Generating…";}
   const out=document.getElementById(outId);
   out.innerHTML="<span class='cur'></span>";
@@ -5671,6 +5683,7 @@ async function callAPI(prompt,outId,btn){
         out.classList.remove('md-rendering');
         out.innerHTML = renderMD(text);
         nirWordCount(outId,outId.replace("-out","-wc"));
+        if(typeof onComplete==="function") onComplete(text);
       }
     },spd);
     S.last=text;
@@ -5711,8 +5724,90 @@ async function generateIELTS(){
 async function generateWorksheet(){
   window._lastToolUsed='worksheet_builder';
   const btns=document.querySelectorAll("#page-worksheet .btn-gen");
-  await callAPI(buildWorksheet(),"ws-out",btns[0]||null);
+  await callAPI(buildWorksheet(),"ws-out",btns[0]||null, S.wsImages?resolveWorksheetImages:null);
 }
+// ── Worksheet image toggle visibility ──
+function wsImgToggleVisibility(){
+  var show = (S.wsFocus==="Vocabulary") && (S.wsLevel==="A1"||S.wsLevel==="A2");
+  var el = document.getElementById("ws-img-toggle");
+  if(!el) return;
+  el.style.display = show ? "" : "none";
+  // Reset checkbox when hidden
+  if(!show){
+    S.wsImages=false;
+    var cb=document.getElementById("ws-imgs");
+    if(cb) cb.checked=false;
+  }
+}
+
+// ── Resolve {{IMAGE:word}} placeholders in ws-out after render ──
+async function resolveWorksheetImages(){
+  var out = document.getElementById("ws-out");
+  if(!out) return;
+
+  // Find all text nodes containing {{IMAGE:word}}
+  var walker = document.createTreeWalker(out, NodeFilter.SHOW_TEXT, null, false);
+  var nodes = [];
+  var node;
+  while((node = walker.nextNode())){
+    if(node.nodeValue && node.nodeValue.includes("{{IMAGE:")){
+      nodes.push(node);
+    }
+  }
+  if(!nodes.length) return;
+
+  // Deduplicate words, cap at 4
+  var seen = {};
+  var toProcess = [];
+  nodes.forEach(function(n){
+    var matches = n.nodeValue.match(/\{\{IMAGE:([^}]+)\}\}/g)||[];
+    matches.forEach(function(m){
+      var word = m.replace(/\{\{IMAGE:/,"").replace(/\}\}/,"").trim().toLowerCase();
+      if(!seen[word] && toProcess.length<4){ seen[word]=true; toProcess.push({node:n,word:word,raw:m}); }
+    });
+  });
+
+  // Fetch and inject images
+  for(var i=0;i<toProcess.length;i++){
+    var item = toProcess[i];
+    try{
+      var r = await fetch("/api/images?q="+encodeURIComponent(item.word));
+      var data = await r.json();
+      if(data.error || !data.url){
+        // Remove placeholder cleanly
+        item.node.nodeValue = item.node.nodeValue.replace(item.raw,"");
+        continue;
+      }
+      // Replace text node placeholder with figure element
+      var fig = document.createElement("figure");
+      fig.className = "ws-fig";
+      fig.style.cssText = "display:inline-block;margin:.6rem .5rem .6rem 0;vertical-align:top;text-align:center;max-width:140px";
+      var img = document.createElement("img");
+      img.src = data.url;
+      img.alt = item.word;
+      img.loading = "lazy";
+      img.style.cssText = "width:130px;height:90px;object-fit:cover;border-radius:6px;border:1px solid var(--bdr)";
+      img.onerror = function(){ this.closest(".ws-fig").remove(); };
+      var cap = document.createElement("figcaption");
+      cap.style.cssText = "font-size:10px;color:var(--muted);margin-top:3px";
+      cap.textContent = item.word;
+      fig.appendChild(img);
+      fig.appendChild(cap);
+      // Replace just the placeholder text with the figure
+      var before = item.node.nodeValue.substring(0, item.node.nodeValue.indexOf(item.raw));
+      var after  = item.node.nodeValue.substring(item.node.nodeValue.indexOf(item.raw)+item.raw.length);
+      var beforeNode = document.createTextNode(before);
+      var afterNode  = document.createTextNode(after);
+      item.node.parentNode.insertBefore(beforeNode, item.node);
+      item.node.parentNode.insertBefore(fig, item.node);
+      item.node.parentNode.insertBefore(afterNode, item.node);
+      item.node.parentNode.removeChild(item.node);
+    } catch(e){
+      item.node.nodeValue = item.node.nodeValue.replace(item.raw,"");
+    }
+  }
+}
+
 async function generateError(){
   window._lastToolUsed='error_correction';
   const p=buildError();
@@ -6879,12 +6974,18 @@ document.addEventListener('click', function(e) {
 function nirPrint(outId) {
   var el = document.getElementById(outId);
   if (!el) return;
-  // Use stored raw text (S.last) when available, else extract textContent
-  var raw = (outId === 'prompt-out' || outId === 'lp-out' || outId === 'ielts-out' || outId === 'ec-out' || outId === 'ws-out')
-    ? (S.last || el.textContent || '')
-    : (el.textContent || '');
-  if (!raw.trim() || raw.includes('Configure') || raw.includes('will appear')) return;
-  var rendered = (typeof renderMD === 'function') ? renderMD(raw) : '<pre>' + raw.replace(/</g,'&lt;').replace(/>/g,'&gt;') + '</pre>';
+  // For ws-out with images, use the live rendered HTML directly
+  var rendered;
+  if (outId === 'ws-out' && S.wsImages && el.querySelector('.ws-fig')) {
+    rendered = el.innerHTML;
+  } else {
+    // Use stored raw text (S.last) when available, else extract textContent
+    var raw = (outId === 'prompt-out' || outId === 'lp-out' || outId === 'ielts-out' || outId === 'ec-out' || outId === 'ws-out')
+      ? (S.last || el.textContent || '')
+      : (el.textContent || '');
+    if (!raw.trim() || raw.includes('Configure') || raw.includes('will appear')) return;
+    rendered = (typeof renderMD === 'function') ? renderMD(raw) : '<pre>' + raw.replace(/</g,'&lt;').replace(/>/g,'&gt;') + '</pre>';
+  }
   var win = window.open('', '_blank', 'width=800,height=600');
   win.document.write(
     '<html><head><title>NIR Academy Output</title>' +
@@ -6902,6 +7003,10 @@ function nirPrint(outId) {
     'hr{border:none;border-top:1px solid #ddd;margin:1.5em 0}' +
     'p{margin:.6em 0}' +
     '@media print{body{padding:1cm}}' +
+    '.ws-fig{float:left;max-width:42%;margin:0 1rem 1rem 0;page-break-inside:avoid;break-inside:avoid;text-align:center}' +
+    '.ws-fig img{width:100%;height:auto;border:1px solid #ccc;border-radius:4px;display:block}' +
+    '.ws-fig figcaption{font-size:10px;color:#555;margin-top:3px}' +
+    '.ws-fig+*{clear:both}' +
     '</style></head><body>' +
     '<p style="font-size:11px;color:#999;border-bottom:1px solid #eee;padding-bottom:8px;margin-bottom:20px">NIR Academy · Dr. Niki Majidi · niracademy.com</p>' +
     rendered +
@@ -8902,6 +9007,67 @@ if(window.lucide){ lucide.createIcons(); } else { setTimeout(function(){ if(wind
 @media (max-width: 600px) {
   .glayout {
     gap: 0.75rem;
+  }
+}
+
+/* PHASE 7 — Worksheet Images (vocabulary A1/A2 only) */
+
+/* Screen layout for ws-fig grid */
+#ws-out .ws-fig {
+  display: inline-block;
+  margin: 0.6rem 0.5rem 0.6rem 0;
+  vertical-align: top;
+  text-align: center;
+  max-width: 140px;
+}
+#ws-out .ws-fig img {
+  width: 130px;
+  height: 90px;
+  object-fit: cover;
+  border-radius: 6px;
+  border: 1px solid var(--bdr);
+  display: block;
+}
+#ws-out .ws-fig figcaption {
+  font-size: 10px;
+  color: var(--muted);
+  margin-top: 3px;
+}
+
+/* Mobile: full-width stacked */
+@media (max-width: 600px) {
+  #ws-out .ws-fig {
+    display: block;
+    max-width: 100%;
+    margin: 0.5rem 0;
+  }
+  #ws-out .ws-fig img {
+    width: 100%;
+    height: 120px;
+  }
+}
+
+/* Print: float left, no shadow, page-break safe */
+@media print {
+  #ws-out .ws-fig {
+    float: left;
+    max-width: 42%;
+    margin: 0 1rem 1rem 0;
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+  #ws-out .ws-fig img {
+    width: 100%;
+    height: auto;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  #ws-out .ws-fig figcaption {
+    color: #555;
+  }
+  /* clear floats after images */
+  #ws-out .ws-fig + * {
+    clear: both;
   }
 }
 </style>
