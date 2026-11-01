@@ -5412,15 +5412,26 @@ DURATION: ${dur}
 CLASS SIZE: ${sz}
 STAGES TO INCLUDE: ${stages}${unitSection}
 
+CEFR LEVEL GUIDANCE for ${S.lpLevel}:
+${{
+  A1:"Can-do: understand and use familiar everyday expressions. Activities: short controlled tasks, visual support, minimal writing. Expected output: single words, short phrases.",
+  A2:"Can-do: communicate in simple routine tasks on familiar topics. Activities: structured pair work, guided dialogues. Expected output: simple sentences, short exchanges.",
+  B1:"Can-do: deal with most situations likely to arise whilst travelling. Activities: pair/group tasks, role-play, short discussions. Expected output: connected text, opinions with reasons.",
+  B2:"Can-do: interact with a degree of fluency and spontaneity. Activities: debates, extended tasks, peer feedback. Expected output: clear detailed text, argument development.",
+  C1:"Can-do: express ideas fluently and spontaneously. Activities: open-ended tasks, student-led discussion, critical analysis. Expected output: well-structured extended discourse."
+}[S.lpLevel]||"Apply appropriate CEFR expectations for this level."}
+
 For EACH stage include:
-- Stage name and exact timing
-- Clear learning aims and sub-objectives
+- Stage name, exact timing, and interaction pattern (T→S whole class / S↔S pair / group work / individual)
+- Learning aim and CEFR can-do link
 - Step-by-step teacher instructions
-- Student activity description
-- Materials and resources needed
+- Student activity with clear task outcome
+- Materials needed
+- Formative check: how teacher assesses understanding before moving on
 - Anticipated problems and solutions
 
-End with: homework task, differentiation strategies for mixed levels, and 3 teacher reflection questions.
+End with: homework task, differentiation for mixed levels, and 2 teacher reflection questions.
+Keep each stage concise — practical over exhaustive.
 Format: structured, clearly labelled, immediately teachable.
 IMPORTANT: Use only Markdown formatting (##, **, -, |table|). Never use HTML tags like <br>, <p>, <strong>, <div>.`;
 }
@@ -5490,7 +5501,18 @@ Format requirements:
 Make it visually clear and immediately printable.
 IMPORTANT: Use only Markdown formatting (##, **, -, |table|). Never use HTML tags like <br>, <p>, <strong>, <div>.${S.wsImages?`
 
-IMAGE PLACEHOLDERS: For up to 4 key vocabulary items in this worksheet, insert a placeholder on its own line in the exact format {{IMAGE:word}} — replace "word" with the English word being illustrated. Place each placeholder immediately before the exercise item it illustrates. Use only concrete, easily photographed nouns (e.g. apple, bus, house). Do not use placeholders for abstract concepts, grammar items, or actions.`:""}
+IMAGE PLACEHOLDERS: For up to 4 key vocabulary items in this worksheet, insert an image placeholder using this exact format — a blank line, then the placeholder alone on its own line, then another blank line:
+
+(blank line)
+{{IMAGE:word}}
+(blank line)
+
+Rules:
+- The placeholder MUST be alone on its own paragraph line — never inside a sentence, never inside a table cell, never inside a list item, never at the end of a numbered line.
+- Replace "word" with the single English noun being illustrated (e.g. {{IMAGE:cat}}, {{IMAGE:bus}}).
+- Place the placeholder immediately BEFORE the exercise item or section it illustrates.
+- Use only concrete, easily photographed nouns. Do not use placeholders for abstract concepts, grammar items, verbs, or adjectives.
+- Maximum 4 placeholders per worksheet.`:""}
 `;
 }
 
@@ -5654,7 +5676,7 @@ async function callAPI(prompt,outId,btn,onComplete){
     if(token) headers["Authorization"]="Bearer "+token;
     const res=await fetch("/api/generate",{
       method:"POST",headers,
-      body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:1000,messages:[{role:"user",content:prompt}]})
+      body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:2500,messages:[{role:"user",content:prompt}]})
     });
     if(res.status===429){showLimitMsg(outId,btn);return;}
     if(res.status===401){
@@ -5745,87 +5767,106 @@ async function resolveWorksheetImages(){
   var out = document.getElementById("ws-out");
   if(!out) return;
 
-  // Find all text nodes containing {{IMAGE:word}}
-  var walker = document.createTreeWalker(out, NodeFilter.SHOW_TEXT, null, false);
-  var nodes = [];
-  var node;
-  while((node = walker.nextNode())){
-    if(node.nodeValue && node.nodeValue.includes("{{IMAGE:")){
-      nodes.push(node);
+  // ── Helper: find next unresolved {{IMAGE:word}} text node in the DOM ──
+  // Re-walks from scratch each time so stale node references never cause issues.
+  function findNextPlaceholder(root) {
+    var walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, null, false);
+    var node;
+    while((node = walker.nextNode())){
+      if(node.nodeValue && node.nodeValue.includes("{{IMAGE:")){
+        var m = node.nodeValue.match(/\{\{IMAGE:([a-z0-9_-]+)\}\}/i);
+        if(m) return { node: node, raw: m[0], word: m[1].trim().toLowerCase() };
+      }
+    }
+    return null;
+  }
+
+  // ── Remove a placeholder text from a node cleanly ──
+  function removePlaceholder(node, raw) {
+    try { node.nodeValue = node.nodeValue.replace(raw, ""); } catch(_) {}
+  }
+
+  // ── Build <figure> element for a resolved image ──
+  function buildFigure(word, data) {
+    var fig = document.createElement("figure");
+    fig.className = "ws-fig";
+
+    var img = document.createElement("img");
+    img.src = data.url;
+    img.alt = word;
+    img.loading = "lazy";
+    img.onerror = function(){ var f=this.closest(".ws-fig"); if(f) f.remove(); };
+
+    var wordLabel = document.createElement("figcaption");
+    wordLabel.className = "ws-fig-word";
+    wordLabel.textContent = word;
+
+    var attr = document.createElement("div");
+    attr.className = "ws-fig-attr";
+    if(data.attribution && data.attribution.name){
+      var a = document.createElement("a");
+      a.href = data.attribution.page || data.attribution.profile || "https://pixabay.com";
+      a.target = "_blank";
+      a.rel = "noopener noreferrer";
+      a.textContent = "Photo: " + data.attribution.name + " / Pixabay";
+      attr.appendChild(a);
+    } else {
+      attr.textContent = "Photo: Pixabay";
+    }
+
+    fig.appendChild(img);
+    fig.appendChild(wordLabel);
+    fig.appendChild(attr);
+    return fig;
+  }
+
+  // ── Replace a text node's placeholder with a <figure> ──
+  // Splits the text node around the placeholder and inserts the figure between.
+  // Works whether the placeholder is alone in a <p> or mixed with other text.
+  function injectFigure(node, raw, fig) {
+    var val    = node.nodeValue;
+    var idx    = val.indexOf(raw);
+    if(idx === -1) return;
+    var before = val.substring(0, idx);
+    var after  = val.substring(idx + raw.length);
+    var parent = node.parentNode;
+    if(!parent) return;
+    if(before) parent.insertBefore(document.createTextNode(before), node);
+    parent.insertBefore(fig, node);
+    if(after)  parent.insertBefore(document.createTextNode(after),  node);
+    parent.removeChild(node);
+  }
+
+  // ── Main loop: re-walk DOM after each replacement (max 4 images) ──
+  var seen  = {};
+  var count = 0;
+
+  while(count < 4) {
+    var found = findNextPlaceholder(out);
+    if(!found) break;
+
+    var word = found.word;
+
+    // Skip duplicates — remove the extra placeholder and re-scan
+    if(seen[word]) { removePlaceholder(found.node, found.raw); continue; }
+    seen[word] = true;
+    count++;
+
+    try {
+      var r = await fetch("/api/images?q=" + encodeURIComponent(word));
+      if(!r.ok){ removePlaceholder(found.node, found.raw); continue; }
+      var data = await r.json();
+      if(data.error || !data.url){ removePlaceholder(found.node, found.raw); continue; }
+      injectFigure(found.node, found.raw, buildFigure(word, data));
+    } catch(e) {
+      try { removePlaceholder(found.node, found.raw); } catch(_) {}
     }
   }
-  if(!nodes.length) return;
 
-  // Deduplicate words, cap at 4
-  var seen = {};
-  var toProcess = [];
-  nodes.forEach(function(n){
-    var matches = n.nodeValue.match(/\{\{IMAGE:([^}]+)\}\}/g)||[];
-    matches.forEach(function(m){
-      var word = m.replace(/\{\{IMAGE:/,"").replace(/\}\}/,"").trim().toLowerCase();
-      if(!seen[word] && toProcess.length<4){ seen[word]=true; toProcess.push({node:n,word:word,raw:m}); }
-    });
-  });
-
-  // Fetch and inject images
-  for(var i=0;i<toProcess.length;i++){
-    var item = toProcess[i];
-    try{
-      var r = await fetch("/api/images?q="+encodeURIComponent(item.word));
-      if(!r.ok){ item.node.nodeValue = item.node.nodeValue.replace(item.raw,""); continue; }
-      var data = await r.json();
-      if(data.error || !data.url){
-        // No relevant image found — remove placeholder cleanly
-        item.node.nodeValue = item.node.nodeValue.replace(item.raw,"");
-        continue;
-      }
-
-      // Build <figure> with image + word label + photographer attribution
-      var fig = document.createElement("figure");
-      fig.className = "ws-fig";
-
-      var img = document.createElement("img");
-      img.src = data.url;
-      img.alt = item.word;
-      img.loading = "lazy";
-      img.onerror = function(){ this.closest(".ws-fig").remove(); };
-
-      // Word label
-      var wordLabel = document.createElement("figcaption");
-      wordLabel.className = "ws-fig-word";
-      wordLabel.textContent = item.word;
-
-      // Pixabay attribution (required by terms)
-      var attr = document.createElement("div");
-      attr.className = "ws-fig-attr";
-      if(data.attribution && data.attribution.name){
-        var attrLink = document.createElement("a");
-        attrLink.href = data.attribution.page || data.attribution.profile || "https://pixabay.com";
-        attrLink.target = "_blank";
-        attrLink.rel = "noopener noreferrer";
-        attrLink.textContent = "Photo: " + data.attribution.name + " / Pixabay";
-        attr.appendChild(attrLink);
-      } else {
-        attr.textContent = "Photo: Pixabay";
-      }
-
-      fig.appendChild(img);
-      fig.appendChild(wordLabel);
-      fig.appendChild(attr);
-
-      // Replace the placeholder text node with the figure
-      var before = item.node.nodeValue.substring(0, item.node.nodeValue.indexOf(item.raw));
-      var after  = item.node.nodeValue.substring(item.node.nodeValue.indexOf(item.raw)+item.raw.length);
-      var beforeNode = document.createTextNode(before);
-      var afterNode  = document.createTextNode(after);
-      item.node.parentNode.insertBefore(beforeNode, item.node);
-      item.node.parentNode.insertBefore(fig, item.node);
-      item.node.parentNode.insertBefore(afterNode, item.node);
-      item.node.parentNode.removeChild(item.node);
-    } catch(e){
-      // Fail silently — remove placeholder, worksheet still complete
-      try{ item.node.nodeValue = item.node.nodeValue.replace(item.raw,""); }catch(_){}
-    }
+  // Clean up any remaining placeholders beyond the cap (shouldn't happen, but safe)
+  var leftover;
+  while((leftover = findNextPlaceholder(out))) {
+    removePlaceholder(leftover.node, leftover.raw);
   }
 }
 
@@ -7540,10 +7581,10 @@ window.nirHideSkeleton = function(outId) {
   out.querySelectorAll('.skeleton-line').forEach(function(el){ el.remove(); });
 };
 
-/* Patch callAPI to show skeleton */
+/* Patch callAPI to show skeleton — forward ALL args including onComplete */
 var _origCallAPI = window.callAPI;
 if (typeof _origCallAPI === 'function') {
-  window.callAPI = function(prompt, outId, btn) {
+  window.callAPI = function(prompt, outId, btn, onComplete) {
     nirShowSkeleton(outId);
     return _origCallAPI.apply(this, arguments);
   };
