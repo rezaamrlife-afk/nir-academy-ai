@@ -4738,6 +4738,9 @@ function dismissSessionBanner() {
       <div class="ic" id="ic-2" onclick="selIELTS(this,'Academic Writing Task 2 (discursive essay — opinion, discussion, problem-solution)')"><div class="ic-n">2</div><h3>Academic Writing Task 2</h3><p>Essay: opinion, discussion, problem-solution, two-part question</p></div>
       <div class="ic" id="ic-3" onclick="selIELTS(this,'General Training Writing Task 1 (letter — formal, semi-formal or informal)')"><div class="ic-n">GT1</div><h3>GT Writing Task 1</h3><p>Letter writing: formal, semi-formal, informal</p></div>
       <div class="ic" id="ic-4" onclick="selIELTS(this,'IELTS Academic Reading passage with True/False/Not Given, Multiple Choice and Matching questions')"><div class="ic-n">R</div><h3>Reading Passage</h3><p>Academic reading with TFNG, MCQ, matching and summary tasks</p></div>
+      <div class="ic" id="ic-sp1" onclick="selIELTS(this,'IELTS Speaking Part 1 (interviewer questions on familiar topics — home, work, hobbies, daily life)')"><div class="ic-n">S1</div><h3>Speaking Part 1</h3><p>Familiar topic questions: home, work, hobbies, daily routines</p></div>
+      <div class="ic" id="ic-sp2" onclick="selIELTS(this,'IELTS Speaking Part 2 (individual long turn — cue card with preparation time)')"><div class="ic-n">S2</div><h3>Speaking Part 2</h3><p>Cue card: 1-min prep, 2-min individual talk</p></div>
+      <div class="ic" id="ic-sp3" onclick="selIELTS(this,'IELTS Speaking Part 3 (two-way discussion — abstract and analytical questions linked to Part 2 topic)')"><div class="ic-n">S3</div><h3>Speaking Part 3</h3><p>Two-way discussion: abstract and analytical follow-up questions</p></div>
     </div>
     <div class="stitle"><span class="stg">Target Band</span></div>
     <div class="bpills" id="band-pills">
@@ -4770,6 +4773,8 @@ function dismissSessionBanner() {
               <div class="chip active" data-v="band descriptor notes" onclick="SC(this,'ielts-inc')"><i data-lucide="bar-chart-2"></i> Band Notes</div>
               <div class="chip" data-v="examiner tips and common mistakes" onclick="SC(this,'ielts-inc')"><i data-lucide="message-circle"></i> Examiner Tips</div>
               <div class="chip" data-v="key academic vocabulary with definitions" onclick="SC(this,'ielts-inc')"><i data-lucide="book-a"></i> Vocabulary</div>
+              <div class="chip" data-v="band 6, 7 and 8 sample answers with commentary" onclick="SC(this,'ielts-inc')"><i data-lucide="layers"></i> Band 6/7/8 Answers</div>
+              <div class="chip" data-v="all 4 IELTS Speaking assessment criteria (Fluency &amp; Coherence, Lexical Resource, Grammatical Range &amp; Accuracy, Pronunciation) with practical feedback guidance" onclick="SC(this,'ielts-inc')"><i data-lucide="clipboard-list"></i> Assessment Criteria</div>
             </div>
           </div>
         </div>
@@ -5439,6 +5444,34 @@ IMPORTANT: Use only Markdown formatting (##, **, -, |table|). Never use HTML tag
 function buildIELTS(){
   const topic=document.getElementById("ielts-topic").value.trim()||"Technology and society";
   const inc=Array.from(document.querySelectorAll("#ielts-inc .chip.active")).map(c=>c.dataset.v).join(", ");
+  const isSpeaking = S.ieltType.includes('Speaking Part');
+  if(isSpeaking){
+    const part = S.ieltType.includes('Part 1')?1:S.ieltType.includes('Part 2')?2:3;
+    const partInstructions = {
+      1:`## Part 1 — Familiar Topics\n- Generate 3 topic areas related to: ${topic}\n- For each topic: 3–4 natural examiner questions\n- For each question: sample answer at ${S.ieltBand} with inline commentary`,
+      2:`## Part 2 — Individual Long Turn\n- Generate a realistic cue card on: ${topic}\n- Include: What, When/Where, Who/How, and "Explain why…"\n- Provide a full 2-minute model answer at ${S.ieltBand}\n- Annotate for Fluency, Lexical Resource, Grammar, and Pronunciation`,
+      3:`## Part 3 — Two-Way Discussion\n- Generate 6 abstract/analytical questions linked to: ${topic}\n- For each: sample answer at ${S.ieltBand} with examiner commentary\n- Include follow-up probing questions the examiner might use`
+    };
+    return `You are an experienced IELTS Speaking examiner and trainer for NIR Academy by Dr. Niki Majidi.
+
+Generate authentic IELTS Speaking Part ${part} material at ${S.ieltBand}.
+TOPIC: ${topic}
+INCLUDE: ${inc}
+
+${partInstructions[part]}
+
+## Assessment Criteria Feedback
+For each sample answer, provide brief feedback on all 4 criteria:
+- **Fluency & Coherence** — flow, hesitation, logical sequencing
+- **Lexical Resource** — range, accuracy, collocations, less common vocabulary
+- **Grammatical Range & Accuracy** — structures used, errors, complexity
+- **Pronunciation** — features to highlight (word stress, intonation, linking — written guidance only)
+
+## Band Progression Note
+Show how the answer could be improved from ${S.ieltBand} to the next band up — one concrete tip per criterion.
+
+IMPORTANT: Use only Markdown formatting (##, **, -, |table|). Never use HTML tags.`;
+  }
   return `You are an experienced IELTS examiner and trainer for NIR Academy by Dr. Niki Majidi.
 
 Generate an authentic ${S.ieltType} at ${S.ieltBand}.
