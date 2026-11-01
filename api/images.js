@@ -1,326 +1,343 @@
-function buildQuery(word) {
-  const w = word.toLowerCase().trim().replace(/[_-]+/g, ' ');
 
-  const topics = {
-    // FOOD & DRINK
-    apple: 'red apple fruit isolated',
-    banana: 'yellow banana fruit',
-    orange: 'orange citrus fruit',
-    grapes: 'fresh grapes fruit',
-    strawberry: 'fresh strawberries',
-    watermelon: 'watermelon fruit',
-    lemon: 'yellow lemon citrus',
-    peach: 'fresh peach fruit',
-    pear: 'pear fruit',
-    pineapple: 'pineapple tropical fruit',
-    bread: 'fresh bread loaf bakery',
-    cheese: 'cheese food',
-    butter: 'butter food',
-    milk: 'glass of milk',
-    water: 'glass of water',
-    coffee: 'cup of coffee',
-    tea: 'cup of tea',
-    juice: 'glass of fruit juice',
-    egg: 'egg breakfast food',
-    eggs: 'eggs breakfast food',
-    rice: 'cooked rice bowl',
-    pasta: 'pasta food plate',
-    pizza: 'pizza food',
-    burger: 'hamburger food',
-    sandwich: 'fresh sandwich',
-    soup: 'bowl of soup',
-    salad: 'fresh vegetable salad',
-    chicken: 'cooked chicken meal',
-    fish: 'fresh fish seafood',
-    meat: 'fresh meat food',
-    potato: 'potatoes vegetables',
-    tomato: 'fresh red tomatoes',
-    carrot: 'fresh carrots',
-    onion: 'onions vegetables',
-    cucumber: 'fresh cucumber',
-    cake: 'cake dessert',
-    chocolate: 'chocolate dessert',
-    icecream: 'ice cream dessert',
-    ice_cream: 'ice cream dessert',
-    cookie: 'cookies biscuits',
-    breakfast: 'breakfast table food',
-    lunch: 'lunch meal',
-    dinner: 'dinner meal table',
+// /api/images.js
+// NIR Academy — Smart Vocabulary Image Search
+// GET /api/images?q=apple
+// Compatible response: { url, pageURL }
 
-    // ANIMALS
-    cat: 'cat kitten pet',
-    dog: 'dog puppy pet',
-    bird: 'colorful bird',
-    horse: 'horse animal',
-    cow: 'cow farm animal',
-    sheep: 'sheep farm',
-    goat: 'goat farm animal',
-    rabbit: 'rabbit bunny',
-    elephant: 'elephant wildlife',
-    lion: 'lion wildlife',
-    tiger: 'tiger wildlife',
-    monkey: 'monkey animal',
-    bear: 'bear wildlife',
-    giraffe: 'giraffe animal',
-    zebra: 'zebra wildlife',
-    snake: 'snake reptile',
-    turtle: 'turtle animal',
-    dolphin: 'dolphin swimming',
-    whale: 'whale ocean',
-    penguin: 'penguin animal',
-    butterfly: 'butterfly colorful',
-    bee: 'honey bee flower',
-    duck: 'duck bird',
-    chicken_animal: 'chicken farm animal',
-    frog: 'green frog',
-    fox: 'fox wildlife',
+const STOP_WORDS = new Set([
+  'a', 'an', 'the', 'of', 'in', 'on', 'at', 'to',
+  'for', 'and', 'or', 'with', 'from', 'by'
+]);
 
-    // CLOTHES
-    shirt: 'shirt clothing',
-    tshirt: 't shirt clothing',
-    trousers: 'trousers pants clothing',
-    jeans: 'blue jeans clothing',
-    dress: 'dress fashion clothing',
-    skirt: 'skirt clothing',
-    jacket: 'jacket clothing',
-    coat: 'winter coat',
-    shoes: 'shoes footwear',
-    trainers: 'sports trainers shoes',
-    boots: 'boots footwear',
-    socks: 'socks clothing',
-    hat: 'hat clothing',
-    cap: 'baseball cap',
-    scarf: 'scarf winter clothing',
-    gloves: 'winter gloves',
-    sweater: 'sweater clothing',
-    sunglasses: 'sunglasses',
-    tie: 'necktie clothing',
-    uniform: 'school uniform',
+const CATEGORY_TERMS = {
+  food: [
+    'food', 'fruit', 'vegetable', 'drink', 'meal',
+    'bread', 'rice', 'meat', 'fish', 'chicken',
+    'apple', 'banana', 'orange', 'pizza', 'cake',
+    'coffee', 'tea', 'milk', 'water', 'soup',
+    'sandwich', 'cheese', 'egg', 'potato', 'tomato'
+  ],
+  animal: [
+    'animal', 'pet', 'wildlife', 'bird', 'fish',
+    'cat', 'dog', 'horse', 'cow', 'lion', 'tiger',
+    'elephant', 'monkey', 'rabbit', 'snake',
+    'butterfly', 'dolphin', 'whale', 'penguin'
+  ],
+  place: [
+    'hotel', 'school', 'hospital', 'restaurant',
+    'airport', 'station', 'library', 'museum',
+    'office', 'bank', 'shop', 'market', 'park',
+    'beach', 'mountain', 'village', 'city',
+    'kitchen', 'bedroom', 'bathroom', 'classroom'
+  ],
+  transport: [
+    'car', 'bus', 'train', 'plane', 'airplane',
+    'bicycle', 'bike', 'taxi', 'truck', 'boat',
+    'ship', 'motorcycle', 'helicopter', 'subway'
+  ],
+  clothing: [
+    'shirt', 'trousers', 'jeans', 'dress', 'skirt',
+    'jacket', 'coat', 'shoes', 'boots', 'hat',
+    'cap', 'socks', 'scarf', 'gloves', 'sweater'
+  ],
+  people: [
+    'teacher', 'student', 'doctor', 'nurse',
+    'police', 'policeman', 'firefighter', 'chef',
+    'farmer', 'driver', 'pilot', 'waiter',
+    'woman', 'man', 'child', 'baby', 'family'
+  ],
+  objects: [
+    'book', 'pen', 'pencil', 'table', 'chair',
+    'computer', 'laptop', 'phone', 'camera',
+    'clock', 'door', 'window', 'bag', 'watch',
+    'lamp', 'bed', 'sofa', 'mirror', 'bottle'
+  ],
+  nature: [
+    'tree', 'flower', 'forest', 'river', 'lake',
+    'ocean', 'sea', 'desert', 'sun', 'moon',
+    'star', 'cloud', 'rain', 'snow', 'rainbow',
+    'mountain', 'waterfall', 'grass', 'leaf'
+  ],
+  sport: [
+    'football', 'soccer', 'basketball', 'tennis',
+    'volleyball', 'swimming', 'running', 'cycling',
+    'skiing', 'boxing', 'golf', 'yoga', 'gym'
+  ],
+  technology: [
+    'robot', 'internet', 'software', 'keyboard',
+    'printer', 'tablet', 'smartphone', 'drone',
+    'headphones', 'microphone', 'screen'
+  ]
+};
 
-    // HOME & FURNITURE
-    house: 'beautiful house exterior',
-    home: 'comfortable home interior',
-    bedroom: 'bedroom interior',
-    bathroom: 'modern bathroom',
-    kitchen: 'modern kitchen',
-    living_room: 'living room interior',
-    garden: 'beautiful garden plants',
-    door: 'wooden door',
-    window: 'house window',
-    table: 'wooden dining table',
-    chair: 'chair furniture',
-    sofa: 'comfortable sofa',
-    bed: 'bed bedroom furniture',
-    lamp: 'table lamp',
-    mirror: 'wall mirror',
-    fridge: 'refrigerator kitchen',
-    television: 'television screen',
-    carpet: 'living room carpet',
-    clock: 'wall clock',
-    cupboard: 'kitchen cupboard',
-    wardrobe: 'clothes wardrobe',
+const ACTION_TERMS = [
+  'running', 'walking', 'swimming', 'cooking',
+  'reading', 'writing', 'playing', 'dancing',
+  'singing', 'driving', 'sleeping', 'eating',
+  'drinking', 'working', 'studying', 'shopping',
+  'traveling', 'travelling', 'cleaning', 'painting',
+  'teaching', 'learning', 'cycling', 'climbing',
+  'fishing', 'flying', 'laughing', 'crying'
+];
 
-    // SCHOOL & EDUCATION
-    school: 'school building',
-    classroom: 'classroom students',
-    teacher: 'teacher teaching students',
-    student: 'student studying',
-    book: 'open book',
-    notebook: 'school notebook',
-    pencil: 'pencil stationery',
-    pen: 'writing pen',
-    ruler: 'school ruler',
-    eraser: 'rubber eraser stationery',
-    backpack: 'school backpack',
-    blackboard: 'classroom blackboard',
-    desk: 'school desk',
-    library: 'library bookshelves',
-    computer: 'computer desk',
-    laptop: 'laptop computer',
-    calculator: 'calculator',
-    scissors: 'school scissors',
-    paper: 'white paper sheets',
+function normalize(value) {
+  return String(value || '')
+    .toLowerCase()
+    .trim()
+    .replace(/[_-]+/g, ' ')
+    .replace(/[^\p{L}\p{N}\s]/gu, '')
+    .replace(/\s+/g, ' ');
+}
 
-    // BODY & HEALTH
-    head: 'human head anatomy',
-    face: 'human face portrait',
-    eye: 'human eye',
-    eyes: 'human eyes',
-    ear: 'human ear',
-    nose: 'human nose',
-    mouth: 'human mouth',
-    teeth: 'human teeth',
-    hair: 'human hair',
-    hand: 'human hand',
-    hands: 'human hands',
-    arm: 'human arm',
-    leg: 'human leg',
-    foot: 'human foot',
-    feet: 'human feet',
-    heart: 'human heart medical illustration',
-    doctor: 'doctor medical professional',
-    nurse: 'nurse hospital',
-    hospital: 'hospital building',
-    medicine: 'medicine tablets',
-    dentist: 'dentist dental clinic',
+function wordsOf(value) {
+  return normalize(value)
+    .split(' ')
+    .filter(word => word && !STOP_WORDS.has(word));
+}
 
-    // TRANSPORT
-    car: 'car vehicle',
-    bus: 'public transport bus',
-    train: 'train railway',
-    plane: 'airplane sky',
-    airplane: 'airplane aircraft',
-    bicycle: 'bicycle bike',
-    bike: 'bicycle',
-    taxi: 'yellow taxi cab',
-    truck: 'delivery truck',
-    motorcycle: 'motorcycle',
-    boat: 'boat water',
-    ship: 'large ship ocean',
-    helicopter: 'helicopter sky',
-    subway: 'metro train station',
-    traffic: 'city traffic road',
-    airport: 'airport terminal',
-    station: 'train station',
+function detectCategory(query) {
+  const words = wordsOf(query);
 
-    // PLACES & TRAVEL
-    hotel: 'hotel building exterior',
-    restaurant: 'restaurant interior',
-    cafe: 'coffee shop cafe',
-    shop: 'retail shop',
-    supermarket: 'supermarket shopping',
-    market: 'street market',
-    bank: 'bank building',
-    museum: 'museum interior',
-    cinema: 'movie theater',
-    park: 'green public park',
-    beach: 'beach sea sand',
-    mountain: 'mountain landscape',
-    forest: 'green forest',
-    river: 'river nature',
-    lake: 'beautiful lake',
-    city: 'city skyline',
-    village: 'small village',
-    country: 'countryside landscape',
-    passport: 'passport travel document',
-    suitcase: 'travel suitcase luggage',
-    luggage: 'travel luggage',
-    ticket: 'travel ticket',
-    map: 'paper travel map',
+  for (const [category, terms] of Object.entries(CATEGORY_TERMS)) {
+    if (words.some(word => terms.includes(word))) {
+      return category;
+    }
+  }
 
-    // NATURE & WEATHER
-    sun: 'bright sun sky',
-    moon: 'moon night sky',
-    star: 'stars night sky',
-    sky: 'blue sky clouds',
-    cloud: 'white clouds sky',
-    rain: 'rain falling',
-    rainy: 'rainy weather',
-    snow: 'snow winter landscape',
-    snowy: 'snowy winter day',
-    wind: 'wind trees nature',
-    storm: 'thunderstorm lightning',
-    rainbow: 'rainbow sky',
-    flower: 'colorful flower',
-    tree: 'green tree',
-    grass: 'green grass',
-    leaf: 'green leaf',
-    plant: 'green house plant',
-    sea: 'blue sea ocean',
-    ocean: 'ocean waves',
-    desert: 'desert sand dunes',
-    fire: 'campfire flames',
+  if (words.some(word => ACTION_TERMS.includes(word))) {
+    return 'action';
+  }
 
-    // SPORTS
-    football: 'football soccer match',
-    soccer: 'soccer football',
-    basketball: 'basketball game',
-    tennis: 'tennis player court',
-    volleyball: 'volleyball game',
-    swimming: 'person swimming pool',
-    running: 'person running outdoors',
-    cycling: 'person cycling',
-    skiing: 'skiing snow mountain',
-    skating: 'ice skating',
-    boxing: 'boxing sport',
-    baseball: 'baseball game',
-    golf: 'golf course',
-    yoga: 'person doing yoga',
-    gym: 'fitness gym workout',
+  if (words.some(word =>
+    /^(tion|sion|ness|ment|ity|ism|ance|ence)$/.test(word.slice(-4))
+  )) {
+    return 'concept';
+  }
 
-    // PEOPLE & JOBS
-    man: 'adult man portrait',
-    woman: 'adult woman portrait',
-    boy: 'young boy portrait',
-    girl: 'young girl portrait',
-    baby: 'baby infant',
-    child: 'child playing',
-    children: 'children playing together',
-    family: 'happy family together',
-    friend: 'friends together',
-    police: 'police officer',
-    policeman: 'police officer',
-    firefighter: 'firefighter uniform',
-    chef: 'professional chef cooking',
-    cook: 'person cooking kitchen',
-    farmer: 'farmer working on farm',
-    driver: 'professional driver',
-    pilot: 'airline pilot',
-    singer: 'singer performing',
-    artist: 'artist painting',
-    photographer: 'photographer camera',
-    builder: 'construction worker',
-    waiter: 'restaurant waiter',
-    waitress: 'restaurant waitress',
+  return 'general';
+}
 
-    // TECHNOLOGY
-    phone: 'smartphone mobile phone',
-    mobile: 'mobile phone',
-    tablet: 'tablet computer',
-    camera: 'digital camera',
-    headphones: 'headphones',
-    keyboard: 'computer keyboard',
-    mouse: 'computer mouse',
-    internet: 'internet technology',
-    robot: 'modern robot',
-    drone: 'flying drone',
-    printer: 'office printer',
+function expandQueries(input) {
+  const q = normalize(input);
+  const category = detectCategory(q);
 
-    // MUSIC & ENTERTAINMENT
-    music: 'music instruments',
-    guitar: 'acoustic guitar',
-    piano: 'piano keyboard',
-    drum: 'musical drums',
-    violin: 'violin instrument',
-    microphone: 'stage microphone',
-    concert: 'live music concert',
-    dance: 'people dancing',
-    movie: 'cinema movie',
-    television: 'television',
+  const queries = [];
 
-    // EMOTIONS
-    happy: 'happy smiling person',
-    sad: 'sad person portrait',
-    angry: 'angry facial expression',
-    surprised: 'surprised facial expression',
-    scared: 'scared facial expression',
-    tired: 'tired person',
-    excited: 'excited happy person',
-    laughing: 'person laughing',
-    smiling: 'smiling face',
-    crying: 'person crying',
+  // Preserve the complete phrase.
+  queries.push(q);
 
-    // COLORS
-    red: 'red color objects',
-    blue: 'blue color objects',
-    green: 'green color objects',
-    yellow: 'yellow color objects',
-    black: 'black color objects',
-    white: 'white color objects',
-    pink: 'pink color objects',
-    purple: 'purple color objects',
-    brown: 'brown color objects'
+  // Add category-aware alternatives.
+  const templates = {
+    food: [
+      `${q} food`,
+      `${q} fresh food`,
+      `${q} food photography`
+    ],
+    animal: [
+      `${q} animal`,
+      `${q} wildlife`,
+      `${q} animal photography`
+    ],
+    place: [
+      `${q} building`,
+      `${q} interior exterior`,
+      `${q} place photography`
+    ],
+    transport: [
+      `${q} vehicle`,
+      `${q} transportation`,
+      `${q} vehicle photography`
+    ],
+    clothing: [
+      `${q} clothing`,
+      `${q} fashion`,
+      `${q} clothing photography`
+    ],
+    people: [
+      `${q} person`,
+      `${q} people`,
+      `${q} professional photography`
+    ],
+    objects: [
+      `${q} object`,
+      `${q} everyday object`,
+      `${q} isolated object`
+    ],
+    nature: [
+      `${q} nature`,
+      `${q} landscape`,
+      `${q} nature photography`
+    ],
+    sport: [
+      `${q} sport`,
+      `${q} sports activity`,
+      `${q} sports photography`
+    ],
+    technology: [
+      `${q} technology`,
+      `${q} modern technology`,
+      `${q} technology photography`
+    ],
+    action: [
+      `${q} activity`,
+      `person ${q}`,
+      `${q} people photography`
+    ],
+    concept: [
+      `${q} concept`,
+      `${q} illustration`,
+      `${q} real life example`
+    ],
+    general: [
+      `${q} object`,
+      `${q} real life`,
+      `${q} photography`
+    ]
   };
 
-  return topics[w] || `${w} object photo`;
+  queries.push(...(templates[category] || templates.general));
+
+  // For phrases, try meaningful individual terms too.
+  const words = wordsOf(q);
+
+  if (words.length > 1) {
+    for (const word of words.slice(0, 2)) {
+      queries.push(word);
+    }
+  }
+
+  return [...new Set(queries)].slice(0, 5);
+}
+
+function scoreImage(hit, query) {
+  const tags = normalize(hit.tags || '')
+    .split(',')
+    .map(tag => normalize(tag));
+
+  const queryWords = wordsOf(query);
+
+  let score = 0;
+
+  for (const word of queryWords) {
+    if (tags.some(tag => tag === word)) score += 12;
+    else if (tags.some(tag => tag.includes(word))) score += 6;
+  }
+
+  if (tags.some(tag => tag === normalize(query))) {
+    score += 15;
+  }
+
+  if (hit.imageWidth >= 1000) score += 3;
+  if (hit.imageHeight >= 600) score += 2;
+  if (hit.type === 'photo') score += 2;
+
+  return score;
+}
+
+async function pixabaySearch(query, key) {
+  const params = new URLSearchParams({
+    key,
+    q: query,
+    image_type: 'photo',
+    safesearch: 'true',
+    per_page: '10',
+    min_width: '400',
+    order: 'popular'
+  });
+
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 6500);
+
+  try {
+    const response = await fetch(
+      `https://pixabay.com/api/?${params}`,
+      { signal: controller.signal }
+    );
+
+    if (!response.ok) return [];
+
+    const data = await response.json();
+    return Array.isArray(data.hits) ? data.hits : [];
+  } finally {
+    clearTimeout(timeout);
+  }
+}
+
+export default async function handler(req, res) {
+  res.setHeader('Access-Control-Allow-Origin', req.headers.origin || '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+
+  if (req.method === 'OPTIONS') {
+    return res.status(200).end();
+  }
+
+  if (req.method !== 'GET') {
+    return res.status(405).json({ error: 'Method not allowed' });
+  }
+
+  const q = normalize(req.query.q);
+
+  if (!q) {
+    return res.status(400).json({ error: 'Missing query parameter: q' });
+  }
+
+  if (q.length > 80) {
+    return res.status(400).json({ error: 'Query too long' });
+  }
+
+  const key = process.env.PIXABAY_API_KEY;
+
+  if (!key) {
+    return res.status(500).json({
+      error: 'Image service not configured'
+    });
+  }
+
+  try {
+    const queries = expandQueries(q);
+    const allHits = new Map();
+
+    for (const searchQuery of queries) {
+      const hits = await pixabaySearch(searchQuery, key);
+
+      for (const hit of hits) {
+        if (hit.id && !allHits.has(hit.id)) {
+          allHits.set(hit.id, hit);
+        }
+      }
+
+      // Stop early if we already have enough candidates.
+      if (allHits.size >= 20) break;
+    }
+
+    if (!allHits.size) {
+      return res.status(200).json({ error: 'not found' });
+    }
+
+    const ranked = [...allHits.values()]
+      .map(hit => ({
+        hit,
+        score: scoreImage(hit, q)
+      }))
+      .sort((a, b) => b.score - a.score);
+
+    const best = ranked[0].hit;
+
+    if (!best.webformatURL || !best.pageURL) {
+      return res.status(200).json({ error: 'not found' });
+    }
+
+    return res.status(200).json({
+      url: best.webformatURL,
+      pageURL: best.pageURL
+    });
+
+  } catch (error) {
+    console.error('[NIR Image Search]', error.message);
+
+    return res.status(502).json({
+      error: 'Image search temporarily unavailable'
+    });
+  }
 }
