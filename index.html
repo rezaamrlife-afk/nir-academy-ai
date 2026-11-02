@@ -4733,7 +4733,7 @@ function dismissSessionBanner() {
       </div>
       <div>
         <div class="rpanel">
-          <div class="rp-hdr"><span class="rp-lbl">Lesson Plan</span><div class="rp-acts"><button class="rp-btn save-ws" onclick="saveToWorkspace('lp-out','Lesson Planner')">💾 Save</button><button class="rp-btn" onclick="copyOut('lp-out')">Copy</button><button class="rp-btn" onclick="generateLesson()">Regenerate</button><button class="rp-btn" onclick="nirPrint('lp-out')" title="Print">🖨</button></div></div>
+          <div class="rp-hdr"><span class="rp-lbl">Lesson Plan</span><div class="rp-acts"><button class="rp-btn save-ws" onclick="saveToWorkspace('lp-out','Lesson Planner')">💾 Save</button><button class="rp-btn" onclick="copyOut('lp-out')">Copy</button><button class="rp-btn" onclick="generateLesson()">Regenerate</button><button class="rp-btn" onclick="nirPrint('lp-out')" title="Print">🖨</button><button class="rp-btn" onclick="nirDownloadDocx('lp-out')" title="Download Word">📄</button></div></div>
           <div id="lp-wc" style="font-size:11px;color:var(--muted);text-align:right;min-height:16px;padding-right:2px;"></div>
           <div id="lp-out" class="out-txt"><div class="rp-empty">
   <div class="re-ico"><i data-lucide="calendar-days"></i></div>
@@ -4806,7 +4806,7 @@ function dismissSessionBanner() {
       </div>
       <div>
         <div class="rpanel">
-          <div class="rp-hdr"><span class="rp-lbl">IELTS Task</span><div class="rp-acts"><button class="rp-btn save-ws" onclick="saveToWorkspace('ielts-out','IELTS Generator')">💾 Save</button><button class="rp-btn" onclick="copyOut('ielts-out')">Copy</button><button class="rp-btn" onclick="generateIELTS()">Regenerate</button><button class="rp-btn" onclick="nirPrint('ielts-out')" title="Print">🖨</button></div></div>
+          <div class="rp-hdr"><span class="rp-lbl">IELTS Task</span><div class="rp-acts"><button class="rp-btn save-ws" onclick="saveToWorkspace('ielts-out','IELTS Generator')">💾 Save</button><button class="rp-btn" onclick="copyOut('ielts-out')">Copy</button><button class="rp-btn" onclick="generateIELTS()">Regenerate</button><button class="rp-btn" onclick="nirPrint('ielts-out')" title="Print">🖨</button><button class="rp-btn" onclick="nirDownloadDocx('ielts-out')" title="Download Word">📄</button></div></div>
           <div id="ielts-wc" style="font-size:11px;color:var(--muted);text-align:right;min-height:16px;padding-right:2px;"></div>
           <div id="ielts-out" class="out-txt"><div class="rp-empty">
   <div class="re-ico">📘</div>
@@ -4857,7 +4857,7 @@ function dismissSessionBanner() {
       </div>
       <div>
         <div class="rpanel">
-          <div class="rp-hdr"><span class="rp-lbl">Feedback Report</span><div class="rp-acts"><button class="rp-btn save-ws" onclick="saveToWorkspace('ec-out','Error Correction')">💾 Save</button><button class="rp-btn" onclick="copyOut('ec-out')">Copy</button><button class="rp-btn" onclick="generateError()">Re-analyse</button><button class="rp-btn" onclick="nirPrint('ec-out')" title="Print">🖨</button></div></div>
+          <div class="rp-hdr"><span class="rp-lbl">Feedback Report</span><div class="rp-acts"><button class="rp-btn save-ws" onclick="saveToWorkspace('ec-out','Error Correction')">💾 Save</button><button class="rp-btn" onclick="copyOut('ec-out')">Copy</button><button class="rp-btn" onclick="generateError()">Re-analyse</button><button class="rp-btn" onclick="nirPrint('ec-out')" title="Print">🖨</button><button class="rp-btn" onclick="nirDownloadDocx('ec-out')" title="Download Word">📄</button></div></div>
           <div id="ec-wc" style="font-size:11px;color:var(--muted);text-align:right;min-height:16px;padding-right:2px;"></div>
           <div id="ec-out" class="out-txt"><div class="rp-empty">
   <div class="re-ico"><i data-lucide="spell-check-2"></i></div>
@@ -4933,7 +4933,7 @@ function dismissSessionBanner() {
       </div>
       <div>
         <div class="rpanel">
-          <div class="rp-hdr"><span class="rp-lbl">Worksheet</span><div class="rp-acts"><button class="rp-btn save-ws" onclick="saveToWorkspace('ws-out','Worksheet Builder')">💾 Save</button><button class="rp-btn" onclick="copyOut('ws-out')">Copy</button><button class="rp-btn" onclick="generateWorksheet()">Regenerate</button><button class="rp-btn" onclick="nirPrint('ws-out')" title="Print">🖨</button></div></div>
+          <div class="rp-hdr"><span class="rp-lbl">Worksheet</span><div class="rp-acts"><button class="rp-btn save-ws" onclick="saveToWorkspace('ws-out','Worksheet Builder')">💾 Save</button><button class="rp-btn" onclick="copyOut('ws-out')">Copy</button><button class="rp-btn" onclick="generateWorksheet()">Regenerate</button><button class="rp-btn" onclick="nirPrint('ws-out')" title="Print">🖨</button><button class="rp-btn" onclick="nirDownloadDocx('ws-out')" title="Download Word">📄</button></div></div>
           <div id="ws-wc" style="font-size:11px;color:var(--muted);text-align:right;min-height:16px;padding-right:2px;"></div>
           <div id="ws-out" class="out-txt"><div class="rp-empty">
   <div class="re-ico">📄</div>
@@ -7330,6 +7330,161 @@ function nirPrint(outId) {
   setTimeout(function(){ win.print(); }, 400);
 }
 
+// ── nirDownloadDocx: export output as editable Word .docx ──
+function nirDownloadDocx(outId) {
+  var el = document.getElementById(outId);
+  if (!el) return;
+  var raw = (S.last && (outId === 'lp-out' || outId === 'ielts-out' || outId === 'ec-out' || outId === 'ws-out' || outId === 'prompt-out'))
+    ? S.last : (el.textContent || '');
+  if (!raw.trim() || raw.includes('Configure') || raw.includes('will appear')) return;
+
+  function doGenerate(docx) {
+    var Document = docx.Document, Paragraph = docx.Paragraph, TextRun = docx.TextRun,
+        HeadingLevel = docx.HeadingLevel, Table = docx.Table, TableRow = docx.TableRow,
+        TableCell = docx.TableCell, WidthType = docx.WidthType, BorderStyle = docx.BorderStyle,
+        Packer = docx.Packer, AlignmentType = docx.AlignmentType,
+        UnderlineType = docx.UnderlineType;
+
+    var children = [];
+    var lines = raw.split('\n');
+    var i = 0;
+
+    function cellBorder() {
+      return { style: BorderStyle.SINGLE, size: 6, color: 'AAAAAA' };
+    }
+
+    while (i < lines.length) {
+      var line = lines[i];
+
+      // blank line
+      if (!line.trim()) { children.push(new Paragraph({ text: '' })); i++; continue; }
+
+      // h1
+      if (/^# /.test(line)) {
+        children.push(new Paragraph({ text: line.replace(/^# /, ''), heading: HeadingLevel.HEADING_1 }));
+        i++; continue;
+      }
+      // h2
+      if (/^## /.test(line)) {
+        children.push(new Paragraph({ text: line.replace(/^## /, ''), heading: HeadingLevel.HEADING_2 }));
+        i++; continue;
+      }
+      // h3
+      if (/^### /.test(line)) {
+        children.push(new Paragraph({ text: line.replace(/^### /, ''), heading: HeadingLevel.HEADING_3 }));
+        i++; continue;
+      }
+      // h4
+      if (/^#### /.test(line)) {
+        children.push(new Paragraph({ text: line.replace(/^#### /, ''), heading: HeadingLevel.HEADING_4 }));
+        i++; continue;
+      }
+
+      // hr
+      if (/^---+$/.test(line.trim())) {
+        children.push(new Paragraph({ text: '─────────────────────────────────', style: 'Normal' }));
+        i++; continue;
+      }
+
+      // table: collect all contiguous | rows
+      if (/^\|/.test(line)) {
+        var tableLines = [];
+        while (i < lines.length && /^\|/.test(lines[i])) { tableLines.push(lines[i]); i++; }
+        // filter out separator rows (|---|)
+        tableLines = tableLines.filter(function(l){ return !/^\|[\s\-|:]+\|$/.test(l.trim()); });
+        if (tableLines.length > 0) {
+          var rows = tableLines.map(function(l, ri) {
+            var cells = l.replace(/^\||\|$/g,'').split('|').map(function(c){ return c.trim(); });
+            return new TableRow({
+              children: cells.map(function(c) {
+                return new TableCell({
+                  borders: { top: cellBorder(), bottom: cellBorder(), left: cellBorder(), right: cellBorder() },
+                  children: [new Paragraph({
+                    children: [new TextRun({ text: c, bold: ri === 0 })]
+                  })]
+                });
+              })
+            });
+          });
+          children.push(new Table({ rows: rows, width: { size: 100, type: WidthType.PERCENTAGE } }));
+        }
+        continue;
+      }
+
+      // bullet
+      if (/^[\*\-] /.test(line)) {
+        var btext = line.replace(/^[\*\-] /, '');
+        children.push(new Paragraph({ text: btext, bullet: { level: 0 } }));
+        i++; continue;
+      }
+      // numbered list
+      if (/^\d+\. /.test(line)) {
+        var ntext = line.replace(/^\d+\. /, '');
+        children.push(new Paragraph({ numbering: { reference: 'default-numbering', level: 0 }, children: [new TextRun({ text: ntext })] }));
+        i++; continue;
+      }
+
+      // bold/italic inline — parse runs
+      var runChildren = [];
+      var seg = line;
+      var rPat = /(\*\*\*(.+?)\*\*\*|\*\*(.+?)\*\*|\*(.+?)\*|`(.+?)`)/g;
+      var lastIdx = 0, m2;
+      rPat.lastIndex = 0;
+      while ((m2 = rPat.exec(seg)) !== null) {
+        if (m2.index > lastIdx) runChildren.push(new TextRun({ text: seg.slice(lastIdx, m2.index) }));
+        if (m2[2]) runChildren.push(new TextRun({ text: m2[2], bold: true, italics: true }));
+        else if (m2[3]) runChildren.push(new TextRun({ text: m2[3], bold: true }));
+        else if (m2[4]) runChildren.push(new TextRun({ text: m2[4], italics: true }));
+        else if (m2[5]) runChildren.push(new TextRun({ text: m2[5], font: 'Courier New' }));
+        lastIdx = m2.index + m2[0].length;
+      }
+      if (lastIdx < seg.length) runChildren.push(new TextRun({ text: seg.slice(lastIdx) }));
+      children.push(new Paragraph({ children: runChildren }));
+      i++;
+    }
+
+    var doc = new Document({
+      numbering: {
+        config: [{
+          reference: 'default-numbering',
+          levels: [{ level: 0, format: 'decimal', text: '%1.', alignment: AlignmentType.START }]
+        }]
+      },
+      styles: {
+        paragraphStyles: [
+          { id: 'Heading1', name: 'Heading 1', run: { bold: true, size: 32, color: '1B2A4A' }, paragraph: { spacing: { before: 240, after: 120 } } },
+          { id: 'Heading2', name: 'Heading 2', run: { bold: true, size: 26, color: '1B2A4A' }, paragraph: { spacing: { before: 200, after: 80 } } },
+          { id: 'Heading3', name: 'Heading 3', run: { bold: true, size: 22, color: '2C3E50' }, paragraph: { spacing: { before: 160, after: 60 } } }
+        ]
+      },
+      sections: [{
+        properties: { page: { margin: { top: 1134, bottom: 1134, left: 1134, right: 1134 } } },
+        children: [
+          new Paragraph({ children: [new TextRun({ text: 'NIR Academy · Dr. Niki Majidi · niracademy.com', color: '999999', size: 18 })] }),
+          new Paragraph({ text: '' })
+        ].concat(children)
+      }]
+    });
+
+    Packer.toBlob(doc).then(function(blob) {
+      var toolNames = { 'lp-out':'Lesson_Plan', 'ielts-out':'IELTS_Task', 'ec-out':'Feedback_Report', 'ws-out':'Worksheet', 'prompt-out':'Prompt' };
+      var fname = (toolNames[outId] || 'Output') + '_NIR_' + new Date().toISOString().slice(0,10) + '.docx';
+      var url = URL.createObjectURL(blob);
+      var a = document.createElement('a'); a.href = url; a.download = fname;
+      document.body.appendChild(a); a.click();
+      setTimeout(function(){ document.body.removeChild(a); URL.revokeObjectURL(url); }, 1000);
+    });
+  }
+
+  // Lazy-load docx.js from CDN
+  if (window.docx) { doGenerate(window.docx); return; }
+  var script = document.createElement('script');
+  script.src = 'https://cdnjs.cloudflare.com/ajax/libs/docx/8.5.0/docx.umd.min.js';
+  script.onload = function() { if (window.docx) doGenerate(window.docx); };
+  script.onerror = function() { alert('Could not load Word export library. Please check your internet connection.'); };
+  document.head.appendChild(script);
+}
+
 // ── nirWordCount: update word count display ──
 function nirWordCount(outId, wcId) {
   var el = document.getElementById(outId);
@@ -8871,6 +9026,11 @@ if(window.lucide){ lucide.createIcons(); } else { setTimeout(function(){ if(wind
   }
   /* Print button (icon-only): square touch area */
   .rp-btn[title="Print"] {
+    min-width: 44px;
+    padding: 10px;
+  }
+  /* DOCX button: square touch area */
+  .rp-btn[title="Download Word"] {
     min-width: 44px;
     padding: 10px;
   }
