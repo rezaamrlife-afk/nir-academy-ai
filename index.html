@@ -73,7 +73,7 @@ const LANGS = {
     sb_resources: 'Resources', sb_library: 'Prompt Library',
     sb_insights: 'Insights & Blog',
     sb_account: 'Account', sb_profile: 'My Profile',
-    sb_saved: 'Saved Prompts', sb_history: 'History', sb_analytics: 'Analytics',
+    sb_saved: 'Workspace', sb_history: 'History', sb_analytics: 'Analytics',
     sb_pro_title: '✦ Go Pro',
     sb_pro_desc: 'Unlimited prompts, saved library, priority AI & all tools.',
     sb_pro_btn: 'Upgrade to Pro →',
@@ -221,7 +221,7 @@ const LANGS = {
     sb_resources: 'Kaynaklar', sb_library: 'Prompt Kütüphanesi',
     sb_insights: 'Makaleler & Blog',
     sb_account: 'Hesabım', sb_profile: 'Profilim',
-    sb_saved: 'Kayıtlı Promptlar', sb_history: 'Geçmiş', sb_analytics: 'Analitik',
+    sb_saved: 'Çalışma Alanı', sb_history: 'Geçmiş', sb_analytics: 'Analitik',
     sb_pro_title: '✦ Pro\'ya Geç',
     sb_pro_desc: 'Sınırsız prompt, kayıtlı kütüphane, öncelikli AI ve tüm araçlar.',
     sb_pro_btn: 'Pro\'ya Yükselt →',
@@ -357,7 +357,7 @@ const LANGS = {
     sb_resources: 'الموارد', sb_library: 'مكتبة البروبت',
     sb_insights: 'مقالات ومدونة',
     sb_account: 'حسابي', sb_profile: 'ملفي الشخصي',
-    sb_saved: 'البروبتات المحفوظة', sb_history: 'السجل', sb_analytics: 'التحليلات',
+    sb_saved: 'مساحة العمل', sb_history: 'السجل', sb_analytics: 'التحليلات',
     sb_pro_title: '✦ الترقية إلى Pro',
     sb_pro_desc: 'بروبتات غير محدودة، مكتبة محفوظة، ذكاء اصطناعي بأولوية وجميع الأدوات.',
     sb_pro_btn: 'ترقية إلى Pro ←',
@@ -493,7 +493,7 @@ const LANGS = {
     sb_resources: '资源', sb_library: 'Prompt 资源库',
     sb_insights: '洞见与博客',
     sb_account: '我的账户', sb_profile: '我的资料',
-    sb_saved: '已保存的 Prompt', sb_history: '历史记录', sb_analytics: '数据分析',
+    sb_saved: '工作区', sb_history: '历史记录', sb_analytics: '数据分析',
     sb_pro_title: '✦ 升级 Pro',
     sb_pro_desc: '无限 Prompt、保存的资源库、优先 AI 及所有工具。',
     sb_pro_btn: '升级到 Pro →',
@@ -642,7 +642,7 @@ const LANGS = {
     sb_insights: 'مقالات و وبلاگ',
     sb_account: 'حساب کاربری',
     sb_profile: 'پروفایل من',
-    sb_saved: 'پرامپت‌های ذخیره‌شده',
+    sb_saved: 'فضای کاری',
     sb_history: 'تاریخچه',
     sb_analytics: 'آمار و تحلیل',
     sb_pro_title: '✦ نسخه حرفه‌ای',
@@ -4243,7 +4243,7 @@ function dismissSessionBanner() {
   </div>
   <div class="um-dropdown" id="um-dropdown">
     <div class="um-item" onclick="go('profile');toggleUserMenu()"><span class="ui-ico">👤</span> My Profile</div>
-    <div class="um-item" onclick="go('saved');toggleUserMenu()"><span class="ui-ico">🔖</span> Saved Prompts</div>
+    <div class="um-item" onclick="go('saved');toggleUserMenu()"><span class="ui-ico">🔖</span> Workspace</div>
     <div class="um-item" onclick="go('dashboard');toggleUserMenu()"><span class="ui-ico"><i data-lucide="chart-no-axes-combined"></i></span> Dashboard</div>
     <div class="um-div"></div>
     <div class="um-item danger" onclick="doLogout()"><span class="ui-ico">🚪</span> Sign Out</div>
@@ -4340,7 +4340,7 @@ function dismissSessionBanner() {
   <div class="sb-sec" id="sb-account-sec" style="display:none">
     <span class="sb-lbl" id="sb-lbl-account">Account</span>
     <div class="sb-item" id="sb-profile" style="display:none" onclick="go('profile')"><span class="si"><i data-lucide="circle-user-round"></i></span> <span id="sb-txt-profile">My Profile</span></div>
-    <div class="sb-item" id="sb-saved" style="display:none" onclick="go('saved')"><span class="si"><i data-lucide="bookmark-check"></i></span> <span id="sb-txt-saved">Saved Prompts</span></div>
+    <div class="sb-item" id="sb-saved" style="display:none" onclick="go('saved')"><span class="si"><i data-lucide="bookmark-check"></i></span> <span id="sb-txt-saved">Workspace</span></div>
     <div class="sb-item" id="sb-history" style="display:none" onclick="go('history')"><span class="si"><i data-lucide="history"></i></span> <span id="sb-txt-history">History</span></div>
     <div class="sb-item" id="sb-analytics" style="display:none" onclick="go('analytics')"><span class="si"><i data-lucide="chart-column-increasing"></i></span> <span id="sb-txt-analytics">Analytics</span></div>
   </div>
