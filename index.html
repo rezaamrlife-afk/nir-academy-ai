@@ -1683,6 +1683,34 @@ html.light .rm:hover{box-shadow:0 6px 20px rgba(0,0,0,.12);}
 .ast-msg-user .ast-bubble{background:var(--gold);color:var(--bg);font-weight:500;}
 .ast-msg-ai  .ast-bubble{background:var(--bg4);color:var(--text);border:1px solid var(--bdr);}
 .ast-msg-label{font-size:11px;color:#888888;letter-spacing:.5px;}
+.ast-use-bar{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px;padding-top:6px;border-top:1px solid rgba(255,255,255,.07);}
+.ast-use-btn{background:none;border:1px solid var(--bdr);border-radius:20px;color:var(--muted);font-size:10px;font-weight:600;padding:3px 10px;cursor:pointer;letter-spacing:.3px;transition:color .15s,border-color .15s;}
+.ast-use-btn:hover{color:var(--gold);border-color:var(--gold);}
+html.light .ast-use-bar{border-top-color:rgba(0,0,0,.08);}
+html.light .ast-use-btn{border-color:#D9E5EE;color:#6B7A8D;}
+html.light .ast-use-btn:hover{color:#1B5FAA;border-color:#1B5FAA;}
+/* Context Bridge Modal */
+#ast-bridge-modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:9000;align-items:center;justify-content:center;}
+#ast-bridge-modal.open{display:flex;}
+.ast-bridge-box{background:var(--bg2);border:1px solid var(--bdr2);border-radius:var(--rl);padding:1.5rem;width:min(420px,90vw);display:flex;flex-direction:column;gap:1rem;}
+.ast-bridge-title{font-size:14px;font-weight:700;color:var(--text);}
+.ast-bridge-dest{font-size:12px;color:var(--gold-dim);margin-top:-6px;}
+.ast-bridge-row{display:flex;flex-direction:column;gap:4px;}
+.ast-bridge-label{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;}
+.ast-bridge-input{background:var(--bg3);border:1px solid var(--bdr);border-radius:6px;color:var(--text);font-size:13px;padding:7px 10px;width:100%;box-sizing:border-box;}
+.ast-bridge-input:focus{outline:none;border-color:var(--gold);}
+.ast-bridge-levels{display:flex;gap:6px;flex-wrap:wrap;}
+.ast-bridge-lvl{background:var(--bg3);border:1px solid var(--bdr);border-radius:6px;color:var(--muted);font-size:12px;font-weight:600;padding:4px 12px;cursor:pointer;}
+.ast-bridge-lvl.active{border-color:var(--gold);color:var(--gold);}
+.ast-bridge-actions{display:flex;gap:8px;justify-content:flex-end;margin-top:4px;}
+.ast-bridge-cancel{background:none;border:1px solid var(--bdr);border-radius:6px;color:var(--muted);font-size:13px;padding:7px 16px;cursor:pointer;}
+.ast-bridge-go{background:var(--gold);border:none;border-radius:6px;color:var(--bg);font-size:13px;font-weight:700;padding:7px 18px;cursor:pointer;}
+.ast-bridge-preview{font-size:11px;color:var(--muted);background:var(--bg3);border:1px solid var(--bdr);border-radius:6px;padding:8px 10px;max-height:80px;overflow-y:auto;line-height:1.5;white-space:pre-wrap;}
+html.light .ast-bridge-box{background:#fff;}
+html.light .ast-bridge-input{background:#f4f7fb;border-color:#D9E5EE;color:#18354B;}
+html.light .ast-bridge-lvl{background:#f4f7fb;border-color:#D9E5EE;color:#6B7A8D;}
+html.light .ast-bridge-lvl.active{border-color:#1B5FAA;color:#1B5FAA;}
+html.light .ast-bridge-preview{background:#f4f7fb;border-color:#D9E5EE;color:#6B7A8D;}
 .ast-input-row{display:flex;gap:8px;align-items:flex-end;}
 .ast-input{
   flex:1;background:var(--bg3);border:1px solid var(--bdr);border-radius:var(--r);
@@ -4155,6 +4183,37 @@ function dismissSessionBanner() {
 </head>
 <body>
 <div id="nir-toast-container"></div>
+
+<!-- ═══ AI ASSISTANT CONTEXT BRIDGE MODAL ═══ -->
+<div id="ast-bridge-modal" role="dialog" aria-modal="true" aria-label="Send to Tool">
+  <div class="ast-bridge-box">
+    <div class="ast-bridge-title">Send to Tool</div>
+    <div class="ast-bridge-dest" id="ast-bridge-dest"></div>
+    <div class="ast-bridge-row">
+      <div class="ast-bridge-label">Topic / Context</div>
+      <input type="text" id="ast-bridge-topic" class="ast-bridge-input" placeholder="e.g. Present Perfect, IELTS Task 2, Classroom management…" />
+    </div>
+    <div class="ast-bridge-row">
+      <div class="ast-bridge-label">CEFR Level</div>
+      <div class="ast-bridge-levels" id="ast-bridge-levels">
+        <div class="ast-bridge-lvl" data-v="A1" onclick="astBridgeLvl(this)">A1</div>
+        <div class="ast-bridge-lvl" data-v="A2" onclick="astBridgeLvl(this)">A2</div>
+        <div class="ast-bridge-lvl active" data-v="B1" onclick="astBridgeLvl(this)">B1</div>
+        <div class="ast-bridge-lvl" data-v="B2" onclick="astBridgeLvl(this)">B2</div>
+        <div class="ast-bridge-lvl" data-v="C1" onclick="astBridgeLvl(this)">C1</div>
+        <div class="ast-bridge-lvl" data-v="IELTS" onclick="astBridgeLvl(this)">IELTS</div>
+      </div>
+    </div>
+    <div class="ast-bridge-row">
+      <div class="ast-bridge-label">AI Output Preview</div>
+      <div class="ast-bridge-preview" id="ast-bridge-preview"></div>
+    </div>
+    <div class="ast-bridge-actions">
+      <button class="ast-bridge-cancel" onclick="astBridgeClose()">Cancel</button>
+      <button class="ast-bridge-go" id="ast-bridge-go" onclick="astBridgeConfirm()">Open Tool →</button>
+    </div>
+  </div>
+</div>
 
 <!-- ═══════════ NIRA ONBOARDING ═══════════ -->
 <div id="nira-onboard" class="nira-ob-overlay" role="dialog" aria-modal="true" aria-label="Welcome to NIR Academy">
@@ -7258,6 +7317,112 @@ function astBuildSystemPrompt() {
   return prompt;
 }
 
+// ── CONTEXT BRIDGE ──
+window._astBridgeDest = null; // 'lesson' | 'worksheet' | 'error'
+
+function astBridgeOpen(dest) {
+  window._astBridgeDest = dest;
+  var lastAI = '';
+  for (var i = window.A.history.length - 1; i >= 0; i--) {
+    if (window.A.history[i].role === 'assistant') { lastAI = window.A.history[i].content; break; }
+  }
+  window.A.lastOutput = lastAI;
+
+  // Pre-fill topic from last user message
+  var lastUser = '';
+  for (var j = window.A.history.length - 1; j >= 0; j--) {
+    if (window.A.history[j].role === 'user') { lastUser = window.A.history[j].content; break; }
+  }
+  var topicHint = lastUser.length > 60 ? lastUser.slice(0, 60) + '…' : lastUser;
+
+  // Dest label
+  var destLabels = { lesson:'Lesson Planner', worksheet:'Worksheet Builder', error:'Error Correction' };
+  document.getElementById('ast-bridge-dest').textContent = '→ ' + (destLabels[dest] || dest);
+
+  // Pre-fill topic input
+  var ti = document.getElementById('ast-bridge-topic');
+  if (ti) ti.value = S.topic || topicHint || '';
+
+  // Pre-select level based on mode/subMode
+  var lvlGuess = 'B1';
+  if (window.A.subMode && /ielts/i.test(window.A.subMode)) lvlGuess = 'IELTS';
+  else if (S.lpLevel) lvlGuess = S.lpLevel;
+  else if (S.wsLevel) lvlGuess = S.wsLevel;
+  document.querySelectorAll('.ast-bridge-lvl').forEach(function(el) {
+    el.classList.toggle('active', el.dataset.v === lvlGuess);
+  });
+  window._astBridgeLvl = lvlGuess;
+
+  // Preview: first 300 chars of last AI output
+  var prev = document.getElementById('ast-bridge-preview');
+  if (prev) prev.textContent = lastAI ? lastAI.slice(0, 300) + (lastAI.length > 300 ? '…' : '') : '(no output yet)';
+
+  // Show IELTS pill only for error dest
+  var ieltsEl = document.querySelector('.ast-bridge-lvl[data-v="IELTS"]');
+  if (ieltsEl) ieltsEl.style.display = (dest === 'error') ? '' : 'none';
+
+  document.getElementById('ast-bridge-modal').classList.add('open');
+}
+
+function astBridgeLvl(el) {
+  document.querySelectorAll('.ast-bridge-lvl').forEach(function(c){ c.classList.remove('active'); });
+  el.classList.add('active');
+  window._astBridgeLvl = el.dataset.v;
+}
+
+function astBridgeClose() {
+  document.getElementById('ast-bridge-modal').classList.remove('open');
+}
+
+function astBridgeConfirm() {
+  var dest  = window._astBridgeDest;
+  var topic = (document.getElementById('ast-bridge-topic').value || '').trim();
+  var level = window._astBridgeLvl || 'B1';
+  var output = window.A.lastOutput || '';
+
+  // Write to shared S state
+  if (topic) S.topic = topic;
+
+  if (dest === 'lesson') {
+    // Transfer level + topic
+    S.lpLevel = level;
+    setPillActive('lp-level', level);
+    var lpTopic = document.getElementById('lp-topic');
+    if (lpTopic) lpTopic.value = topic;
+    astBridgeClose();
+    go('lesson');
+
+  } else if (dest === 'worksheet') {
+    // Transfer level + topic + skill focus guess
+    S.wsLevel = level === 'IELTS' ? 'B2' : level;
+    setPillActive('ws-level', S.wsLevel);
+    var wsTopic = document.getElementById('ws-topic');
+    if (wsTopic) wsTopic.value = topic;
+    wsImgToggleVisibility();
+    astBridgeClose();
+    go('worksheet');
+
+  } else if (dest === 'error') {
+    // Transfer level; put AI output into EC textarea as suggested text
+    S.ecLevel = level;
+    setPillActive('ec-level', level);
+    var ecText = document.getElementById('ec-text');
+    if (ecText) {
+      // Don't overwrite existing student text — set placeholder only
+      if (!ecText.value.trim()) {
+        ecText.placeholder = 'Paste student writing here (context: ' + (topic || 'AI Assistant conversation') + ')';
+      }
+    }
+    astBridgeClose();
+    go('error');
+  }
+}
+
+// Helper already defined in cross-tool section; guard against redefinition
+if (!window._setPillActiveDefined) {
+  window._setPillActiveDefined = true;
+}
+
 // ── RENDER MESSAGE ──
 function astRenderMessage(role, text) {
   var history = document.getElementById('ast-history');
@@ -7277,6 +7442,36 @@ function astRenderMessage(role, text) {
     bubble.textContent = text;
   } else {
     bubble.innerHTML = renderMD(text);
+    // ── Use-in-Tool bar (assistant messages only) ──
+    var bar = document.createElement('div');
+    bar.className = 'ast-use-bar';
+    var mode = window.A ? window.A.mode : '';
+    var dests = [];
+    if (mode === 'teacher') {
+      dests = [
+        ['📋 → Lesson Planner', 'lesson'],
+        ['📄 → Worksheet Builder', 'worksheet'],
+        ['✅ → Error Correction', 'error']
+      ];
+    } else if (mode === 'student') {
+      dests = [
+        ['✅ → Error Correction', 'error'],
+        ['📄 → Worksheet Builder', 'worksheet']
+      ];
+    } else if (mode === 'kids') {
+      dests = [
+        ['📄 → Worksheet Builder', 'worksheet']
+      ];
+    }
+    dests.forEach(function(d) {
+      var btn = document.createElement('button');
+      btn.className = 'ast-use-btn';
+      btn.textContent = d[0];
+      btn.setAttribute('data-dest', d[1]);
+      btn.onclick = (function(dest){ return function(){ astBridgeOpen(dest); }; })(d[1]);
+      bar.appendChild(btn);
+    });
+    if (dests.length > 0) bubble.appendChild(bar);
   }
   msg.appendChild(label);
   msg.appendChild(bubble);
