@@ -3556,15 +3556,29 @@ html.light .rp-btn.copied { color: #059669 !important; }
 
 /* ══ SAVED PROMPTS PAGE ══ */
 .saved-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1rem}
-.saved-card{background:#161616;border:1px solid rgba(201,168,76,.17);border-radius:12px;padding:1.3rem;transition:all .2s}
+.saved-card{background:#161616;border:1px solid rgba(201,168,76,.17);border-radius:12px;padding:1.3rem;transition:all .2s;position:relative}
 .saved-card:hover{border-color:rgba(201,168,76,.32)}
+.saved-card.starred{border-color:rgba(201,168,76,.55)}
 .saved-card .sc-date{font-size:9px;color:#464646;margin-bottom:.4rem;letter-spacing:.5px}
 .saved-card .sc-tool{display:inline-block;background:rgba(201,168,76,.1);border:1px solid rgba(201,168,76,.2);border-radius:10px;padding:2px 8px;font-size:9px;color:#C9A84C;font-weight:700;letter-spacing:.8px;text-transform:uppercase;margin-bottom:.5rem}
-.saved-card .sc-preview{font-size:12px;color:#bbb;line-height:1.7;overflow:hidden;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical}
-.saved-card-actions{display:flex;gap:6px;margin-top:.8rem}
+.saved-card .sc-title{font-size:12.5px;font-weight:700;color:#ddd;margin-bottom:.3rem;line-height:1.35}
+.saved-card .sc-preview{font-size:11.5px;color:#bbb;line-height:1.7;overflow:hidden;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical}
+.saved-card .sc-output-preview{font-size:11px;color:#888;line-height:1.6;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;margin-top:.3rem;padding-top:.3rem;border-top:1px solid rgba(255,255,255,.05)}
+.saved-card-actions{display:flex;gap:6px;margin-top:.8rem;flex-wrap:wrap}
+.sc-star{position:absolute;top:.8rem;right:.8rem;background:none;border:none;cursor:pointer;font-size:14px;opacity:.5;transition:opacity .15s}
+.sc-star:hover,.sc-star.on{opacity:1}
 .sc-btn{background:#252525;border:1px solid rgba(201,168,76,.17);border-radius:6px;padding:5px 12px;font-size:10px;color:#787878;cursor:pointer;transition:all .15s;font-family:'Plus Jakarta Sans',sans-serif;font-weight:600}
 .sc-btn:hover{border-color:rgba(201,168,76,.4);color:#C9A84C}
 .sc-btn.del:hover{border-color:rgba(255,80,80,.4);color:#ff8080}
+/* Workspace toolbar */
+.ws-toolbar{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:1.2rem}
+.ws-search{flex:1;min-width:160px;background:var(--bg3);border:1px solid var(--bdr);border-radius:8px;padding:7px 12px;font-size:12px;color:var(--text);font-family:'Plus Jakarta Sans',sans-serif;outline:none}
+.ws-search:focus{border-color:var(--bdr2)}
+.ws-folder-chip{background:var(--bg3);border:1px solid var(--bdr);border-radius:20px;padding:4px 12px;font-size:11px;color:var(--muted);cursor:pointer;transition:all .15s;font-family:'Plus Jakarta Sans',sans-serif;font-weight:600;letter-spacing:.3px}
+.ws-folder-chip.active,.ws-folder-chip:hover{border-color:var(--bdr2);color:var(--gold)}
+/* Save-to-workspace button in tool panels */
+.rp-btn.save-ws{color:var(--gold-dim);border-color:rgba(201,168,76,.25)}
+.rp-btn.save-ws:hover{color:var(--gold);border-color:var(--gold)}
 
 /* ══ PROFILE PAGE ══ */
 .profile-card{background:#161616;border:1px solid rgba(201,168,76,.2);border-radius:16px;padding:2rem;max-width:500px}
@@ -3772,6 +3786,11 @@ html.light .saved-card .sc-preview { color: #2D3F55; }
 html.light .sc-btn { background: #F0F4FA; border-color: #D0DCF0; color: #2D3F55; }
 html.light .sc-btn:hover { background: #1A3F5C; color: #ffffff; border-color: #1A3F5C; }
 html.light .sc-btn.del:hover { background: #dc2626; color: #ffffff; border-color: #dc2626; }
+html.light .ws-search { background: #fff; border-color: #C8DDF0; color: #071929; }
+html.light .ws-folder-chip { background: #F0F4FA; border-color: #C8DDF0; color: #1A3F5C; }
+html.light .ws-folder-chip.active, html.light .ws-folder-chip:hover { border-color: #1A3F5C; color: #B07F00; }
+html.light .saved-card .sc-title { color: #071929; }
+html.light .saved-card .sc-output-preview { color: #4a6070; border-top-color: rgba(0,0,0,.08); }
 
 /* profile fields */
 html.light .profile-field label { color: #6B7FA3; }
@@ -4714,7 +4733,7 @@ function dismissSessionBanner() {
       </div>
       <div>
         <div class="rpanel">
-          <div class="rp-hdr"><span class="rp-lbl">Lesson Plan</span><div class="rp-acts"><button class="rp-btn" onclick="copyOut('lp-out')">Copy</button><button class="rp-btn" onclick="generateLesson()">Regenerate</button><button class="rp-btn" onclick="nirPrint('lp-out')" title="Print">🖨</button></div></div>
+          <div class="rp-hdr"><span class="rp-lbl">Lesson Plan</span><div class="rp-acts"><button class="rp-btn save-ws" onclick="saveToWorkspace('lp-out','Lesson Planner')">💾 Save</button><button class="rp-btn" onclick="copyOut('lp-out')">Copy</button><button class="rp-btn" onclick="generateLesson()">Regenerate</button><button class="rp-btn" onclick="nirPrint('lp-out')" title="Print">🖨</button></div></div>
           <div id="lp-wc" style="font-size:11px;color:var(--muted);text-align:right;min-height:16px;padding-right:2px;"></div>
           <div id="lp-out" class="out-txt"><div class="rp-empty">
   <div class="re-ico"><i data-lucide="calendar-days"></i></div>
@@ -4787,7 +4806,7 @@ function dismissSessionBanner() {
       </div>
       <div>
         <div class="rpanel">
-          <div class="rp-hdr"><span class="rp-lbl">IELTS Task</span><div class="rp-acts"><button class="rp-btn" onclick="copyOut('ielts-out')">Copy</button><button class="rp-btn" onclick="generateIELTS()">Regenerate</button><button class="rp-btn" onclick="nirPrint('ielts-out')" title="Print">🖨</button></div></div>
+          <div class="rp-hdr"><span class="rp-lbl">IELTS Task</span><div class="rp-acts"><button class="rp-btn save-ws" onclick="saveToWorkspace('ielts-out','IELTS Generator')">💾 Save</button><button class="rp-btn" onclick="copyOut('ielts-out')">Copy</button><button class="rp-btn" onclick="generateIELTS()">Regenerate</button><button class="rp-btn" onclick="nirPrint('ielts-out')" title="Print">🖨</button></div></div>
           <div id="ielts-wc" style="font-size:11px;color:var(--muted);text-align:right;min-height:16px;padding-right:2px;"></div>
           <div id="ielts-out" class="out-txt"><div class="rp-empty">
   <div class="re-ico">📘</div>
@@ -4838,7 +4857,7 @@ function dismissSessionBanner() {
       </div>
       <div>
         <div class="rpanel">
-          <div class="rp-hdr"><span class="rp-lbl">Feedback Report</span><div class="rp-acts"><button class="rp-btn" onclick="copyOut('ec-out')">Copy</button><button class="rp-btn" onclick="generateError()">Re-analyse</button><button class="rp-btn" onclick="nirPrint('ec-out')" title="Print">🖨</button></div></div>
+          <div class="rp-hdr"><span class="rp-lbl">Feedback Report</span><div class="rp-acts"><button class="rp-btn save-ws" onclick="saveToWorkspace('ec-out','Error Correction')">💾 Save</button><button class="rp-btn" onclick="copyOut('ec-out')">Copy</button><button class="rp-btn" onclick="generateError()">Re-analyse</button><button class="rp-btn" onclick="nirPrint('ec-out')" title="Print">🖨</button></div></div>
           <div id="ec-wc" style="font-size:11px;color:var(--muted);text-align:right;min-height:16px;padding-right:2px;"></div>
           <div id="ec-out" class="out-txt"><div class="rp-empty">
   <div class="re-ico"><i data-lucide="spell-check-2"></i></div>
@@ -4914,7 +4933,7 @@ function dismissSessionBanner() {
       </div>
       <div>
         <div class="rpanel">
-          <div class="rp-hdr"><span class="rp-lbl">Worksheet</span><div class="rp-acts"><button class="rp-btn" onclick="copyOut('ws-out')">Copy</button><button class="rp-btn" onclick="generateWorksheet()">Regenerate</button><button class="rp-btn" onclick="nirPrint('ws-out')" title="Print">🖨</button></div></div>
+          <div class="rp-hdr"><span class="rp-lbl">Worksheet</span><div class="rp-acts"><button class="rp-btn save-ws" onclick="saveToWorkspace('ws-out','Worksheet Builder')">💾 Save</button><button class="rp-btn" onclick="copyOut('ws-out')">Copy</button><button class="rp-btn" onclick="generateWorksheet()">Regenerate</button><button class="rp-btn" onclick="nirPrint('ws-out')" title="Print">🖨</button></div></div>
           <div id="ws-wc" style="font-size:11px;color:var(--muted);text-align:right;min-height:16px;padding-right:2px;"></div>
           <div id="ws-out" class="out-txt"><div class="rp-empty">
   <div class="re-ico">📄</div>
@@ -4975,20 +4994,31 @@ function dismissSessionBanner() {
 <!-- ═══ SAVED PROMPTS PAGE ═══ -->
 <div id="page-saved" class="page">
   <div class="ph">
-    <span class="ph-ey">✦ My Account</span>
-    <h1>Saved <span>Prompts</span></h1>
-    <p>All your saved prompts in one place. Copy, reuse, or delete anytime.</p>
+    <span class="ph-ey">✦ Teacher Workspace</span>
+    <h1>Saved <span>Work</span></h1>
+    <p>All your saved lesson plans, IELTS tasks, worksheets, feedback reports, and prompts in one place.</p>
   </div>
   <div class="content">
+    <!-- Toolbar: search + folder filters -->
+    <div class="ws-toolbar" id="ws-toolbar">
+      <input class="ws-search" id="ws-search" type="text" placeholder="Search saved work…" oninput="wsFilter()" />
+      <button class="ws-folder-chip active" id="ws-chip-All" onclick="wsSetFolder('All',this)">All</button>
+      <button class="ws-folder-chip" id="ws-chip-Starred" onclick="wsSetFolder('Starred',this)">★ Starred</button>
+      <button class="ws-folder-chip" id="ws-chip-Lesson Planner" onclick="wsSetFolder('Lesson Planner',this)">Lessons</button>
+      <button class="ws-folder-chip" id="ws-chip-IELTS Generator" onclick="wsSetFolder('IELTS Generator',this)">IELTS</button>
+      <button class="ws-folder-chip" id="ws-chip-Error Correction" onclick="wsSetFolder('Error Correction',this)">Error Correction</button>
+      <button class="ws-folder-chip" id="ws-chip-Worksheet Builder" onclick="wsSetFolder('Worksheet Builder',this)">Worksheets</button>
+      <button class="ws-folder-chip" id="ws-chip-Prompt Generator" onclick="wsSetFolder('Prompt Generator',this)">Prompts</button>
+    </div>
     <div id="saved-prompts-grid" class="saved-grid">
       <p id="saved-signin-msg" style="color:#464646;font-size:13px;text-align:center;padding:3rem;grid-column:1/-1">
-        Sign in to see your saved prompts.
+        Sign in to see your saved work.
         <br><br>
         <button class="btn-gen" style="width:auto;padding:12px 28px" onclick="openAuth()">✦ Sign In</button>
       </p>
       <p id="saved-empty-msg" style="display:none;font-size:13px;color:var(--muted);text-align:center;padding:3rem;grid-column:1/-1">
-        No saved prompts yet.<br>
-        <span style="font-size:11px;opacity:0.7">After generating, click <strong>Save</strong> on any output to add it here.</span>
+        Nothing saved yet.<br>
+        <span style="font-size:11px;opacity:0.7">Use the <strong>Save to Workspace</strong> button on any tool output.</span>
       </p>
     </div>
   </div>
@@ -6440,13 +6470,17 @@ document.addEventListener('click', e=>{
 // ══ SAVED PROMPTS (Supabase) ══
 async function savePromptToDB(text, tool){
   if(!currentUser){ openAuth(); return; }
+  const t = tool || 'Prompt Generator';
   const { error } = await SB.from('saved_prompts').insert({
-    user_id: currentUser.id,
-    content: text,
-    tool: tool || 'Prompt Generator',
+    user_id:    currentUser.id,
+    content:    text,
+    title:      text.substring(0,80),
+    tool:       t,
+    folder:     t,
+    starred:    false,
     created_at: new Date().toISOString()
   });
-  if(!error) T('✓ Prompt saved to your account!');
+  if(!error) T('✓ Prompt saved to Workspace!');
   else T('Could not save — please try again.');
 }
 
@@ -6458,44 +6492,139 @@ async function loadSavedPrompts(){
   }
   if(!currentUser) return;
   const { data, error } = await SB.from('saved_prompts')
-    .select('*')
+    .select('id, user_id, content, tool, created_at, title, output, starred, folder')
     .eq('user_id', currentUser.id)
     .order('created_at', { ascending:false })
-    .limit(50);
-  if(data) renderSavedPrompts(data);
+    .limit(100);
+  // Normalise: ensure new columns have defaults for legacy rows
+  if(data){
+    data.forEach(p=>{
+      if(p.starred === null || p.starred === undefined) p.starred = false;
+      if(!p.folder) p.folder = p.tool || 'Prompt Generator';
+      if(!p.title)  p.title  = (p.content||'').substring(0,60);
+    });
+    renderSavedPrompts(data);
+  }
 }
 
+// ── workspace filter state ──
+window._wsFolder = 'All';
+window._wsAllPrompts = [];
+
 function renderSavedPrompts(prompts){
+  window._wsAllPrompts = prompts;
+  wsRender(prompts);
+}
+
+function wsRender(prompts){
   const grid = document.getElementById('saved-prompts-grid');
   if(!grid) return;
-  if(!prompts.length){
-    grid.innerHTML = '<p style="color:#464646;font-size:13px;grid-column:1/-1;text-align:center;padding:3rem">No saved prompts yet. Generate a prompt and click Save!</p>';
+  // Apply folder + search filter
+  const folder = window._wsFolder || 'All';
+  const q = (document.getElementById('ws-search')||{}).value || '';
+  const term = q.toLowerCase().trim();
+  let filtered = prompts;
+  if(folder === 'Starred') filtered = filtered.filter(p=>p.starred);
+  else if(folder !== 'All') filtered = filtered.filter(p=>(p.tool||'Prompt Generator')===folder);
+  if(term) filtered = filtered.filter(p=>{
+    const hay = [(p.title||''),(p.content||''),(p.output||''),(p.tool||'')].join(' ').toLowerCase();
+    return hay.includes(term);
+  });
+  if(!filtered.length){
+    const msg = prompts.length===0
+      ? 'Nothing saved yet. Use the <strong>💾 Save</strong> button on any tool output.'
+      : 'No items match your search or filter.';
+    grid.innerHTML = `<p style="font-size:13px;color:var(--muted);text-align:center;padding:3rem;grid-column:1/-1">${msg}</p>`;
     return;
   }
-  // Store content in a map keyed by id to avoid HTML injection via onclick attributes
   if(!window._spMap) window._spMap = {};
   const esc = s => String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-  grid.innerHTML = prompts.map(p=>{
-    window._spMap[p.id] = p.content;
+  grid.innerHTML = filtered.map(p=>{
+    window._spMap[p.id] = p.content || '';
+    window._spMap['out_'+p.id] = p.output || '';
     const date = new Date(p.created_at).toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'});
-    const preview = p.content.replace(/</g,'&lt;').replace(/>/g,'&gt;').substring(0,150);
-    return `<div class="saved-card">
+    const displayTitle = esc(p.title || (p.content||'').substring(0,60) || 'Saved item');
+    const preview = (p.content||'').replace(/</g,'&lt;').replace(/>/g,'&gt;').substring(0,120);
+    const outputSnip = (p.output||'').replace(/<[^>]+>/g,'').substring(0,100);
+    const starred = p.starred ? 'on' : '';
+    const starredClass = p.starred ? ' starred' : '';
+    const copyTarget = p.output ? 'out_'+p.id : p.id;
+    return `<div class="saved-card${starredClass}" id="scard-${p.id}">
+      <button class="sc-star ${starred}" onclick="toggleStar('${p.id}',this)" title="Star this item">${p.starred?'★':'☆'}</button>
       <div class="sc-date">${date}</div>
-      <span class="sc-tool">${esc(p.tool)}</span>
-      <div class="sc-preview">${preview}…</div>
+      <span class="sc-tool">${esc(p.tool||'Prompt Generator')}</span>
+      <div class="sc-title">${displayTitle}</div>
+      ${preview ? `<div class="sc-preview">${preview}…</div>` : ''}
+      ${outputSnip ? `<div class="sc-output-preview">${esc(outputSnip)}…</div>` : ''}
       <div class="saved-card-actions">
-        <button class="sc-btn" onclick="navigator.clipboard.writeText(window._spMap['${p.id}']).then(()=>T('Copied to clipboard ✓'))">Copy</button>
-        <button class="sc-btn" onclick="loadIntoGenerator(window._spMap['${p.id}'])">Use</button>
+        <button class="sc-btn" onclick="navigator.clipboard.writeText(window._spMap['${copyTarget}']).then(()=>T('Copied ✓'))">Copy</button>
+        <button class="sc-btn" onclick="loadIntoGenerator(window._spMap['${p.id}'])">Use Prompt</button>
         <button class="sc-btn del" onclick="deletePrompt('${p.id}')">Delete</button>
       </div>
     </div>`;
   }).join('');
 }
 
+function wsFilter(){ wsRender(window._wsAllPrompts||[]); }
+
+function wsSetFolder(folder, el){
+  window._wsFolder = folder;
+  document.querySelectorAll('.ws-folder-chip').forEach(c=>c.classList.remove('active'));
+  if(el) el.classList.add('active');
+  wsRender(window._wsAllPrompts||[]);
+}
+
+async function toggleStar(id, btn){
+  const p = (window._wsAllPrompts||[]).find(x=>x.id===id);
+  if(!p) return;
+  const newVal = !p.starred;
+  p.starred = newVal;
+  btn.textContent = newVal ? '★' : '☆';
+  btn.classList.toggle('on', newVal);
+  const card = document.getElementById('scard-'+id);
+  if(card) card.classList.toggle('starred', newVal);
+  try { await SB.from('saved_prompts').update({starred:newVal}).eq('id',id).eq('user_id',currentUser.id); }
+  catch(e){ console.warn('Star update failed', e); }
+}
+
 async function deletePrompt(id){
-  await SB.from('saved_prompts').delete().eq('id',id);
-  loadSavedPrompts();
-  T('Prompt deleted');
+  await SB.from('saved_prompts').delete().eq('id',id).eq('user_id',currentUser.id);
+  window._wsAllPrompts = (window._wsAllPrompts||[]).filter(p=>p.id!==id);
+  wsRender(window._wsAllPrompts);
+  T('Deleted');
+}
+
+// ── SAVE OUTPUT TO WORKSPACE ──
+async function saveOutputToDB(title, outputText, tool){
+  if(!currentUser){ openAuth(); return; }
+  const { error } = await SB.from('saved_prompts').insert({
+    user_id:    currentUser.id,
+    title:      title,
+    content:    title,         // keep content=title for legacy compatibility
+    output:     outputText,
+    tool:       tool,
+    folder:     tool,
+    starred:    false,
+    created_at: new Date().toISOString()
+  });
+  if(!error) T('✓ Saved to Workspace!');
+  else T('Could not save — please try again.');
+}
+
+// ── SAVE BUTTON HANDLER (called from tool panels) ──
+function saveToWorkspace(outId, tool){
+  if(!currentUser){ openAuth(); return; }
+  const el = document.getElementById(outId);
+  if(!el){ T('Nothing to save yet.'); return; }
+  const rawText = el.innerText || el.textContent || '';
+  if(!rawText || rawText.length < 20){ T('Generate content first.'); return; }
+  // Build a title from S state
+  const lvl   = (S.level||'').replace(/\s*\(.*\)/,'').trim();
+  const topic = (S.topic||'').trim();
+  const ts    = new Date().toLocaleDateString('en-GB',{day:'2-digit',month:'short'});
+  const titleParts = [tool, lvl, topic].filter(Boolean);
+  const autoTitle = titleParts.join(' · ') + ' — ' + ts;
+  saveOutputToDB(autoTitle, rawText, tool);
 }
 
 async function loadHistory(){
