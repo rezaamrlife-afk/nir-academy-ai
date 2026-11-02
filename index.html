@@ -1660,10 +1660,14 @@ html.light .rm:hover{box-shadow:0 6px 20px rgba(0,0,0,.12);}
 }
 .ast-global-btn:hover:not(:disabled){border-color:var(--gold);color:var(--gold);}
 .ast-global-btn:disabled{opacity:.35;cursor:not-allowed;pointer-events:none;}
+.ast-conv-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;}
 .ast-context-label{
   font-size:12px;color:#AAAAAA;letter-spacing:1px;text-transform:uppercase;
-  margin-bottom:8px;padding:0 2px;
+  padding:0 2px;
 }
+.ast-clear-btn{background:none;border:1px solid var(--bdr);border-radius:6px;color:#AAAAAA;
+  font-size:12px;padding:3px 9px;cursor:pointer;transition:color .15s,border-color .15s;}
+.ast-clear-btn:hover{color:var(--text);border-color:var(--text);}
 .ast-history{
   background:var(--bg2);border:1px solid var(--bdr);border-radius:var(--r);
   min-height:200px;max-height:420px;overflow-y:auto;padding:16px;
@@ -5126,7 +5130,10 @@ function dismissSessionBanner() {
     </div>
 
     <!-- CONVERSATION AREA -->
-    <div id="ast-context-label" class="ast-context-label"></div>
+    <div class="ast-conv-header">
+      <div id="ast-context-label" class="ast-context-label"></div>
+      <button class="ast-clear-btn" id="ast-clear-btn" onclick="astClearConversation()" title="Clear conversation">🗑 Clear</button>
+    </div>
     <div id="ast-history"  class="ast-history"></div>
     <div class="ast-input-row">
       <textarea id="ast-input" class="ast-input" placeholder="Ask anything within your current mode..." rows="3"></textarea>
@@ -6627,7 +6634,7 @@ const AST_SUBMODES = {
     { id:'visual-learning', label:'Visual Learning', langKey:'ast_k_visual',
       details: ['Picture Tasks','TPR Activities'] },
     { id:'rewards',         label:'Rewards',         langKey:'ast_k_rewards',
-      details: ['XP','Badges','Streaks'] }
+      details: [] }
   ]
 };
 
@@ -6750,9 +6757,10 @@ function astRenderDetails(details) {
     pill.onclick = function() {
       document.querySelectorAll('.ast-detail-pill').forEach(function(p){ p.classList.remove('active'); });
       pill.classList.add('active');
-      // Append detail to sub-mode context
+      // Store detail as sub2 for system prompt
       var base = window.A.subMode ? window.A.subMode.split(' › ')[0] : '';
       window.A.subMode = base + ' › ' + detail;
+      window.A.sub2 = detail;
       astUpdateContextLabel();
     };
     row.appendChild(pill);
@@ -6763,6 +6771,7 @@ function astRenderDetails(details) {
 // ── SELECT SUB-MODE (keep history — Rule 5) ──
 function astSelectSubMode(subId, subLabel, details) {
   window.A.subMode = subLabel || subId;
+  window.A.sub2 = null;
   // Update sub-mode buttons
   document.querySelectorAll('.ast-sub-btn').forEach(function(btn) {
     btn.classList.toggle('active', btn.dataset.id === subId);
@@ -6786,22 +6795,38 @@ function astApplyGlobalRules(mode) {
 // ── GLOBAL FEATURE HANDLER ──
 function astGlobal(feature) {
   if (!window.A.mode) return;
+  var mode = window.A.mode;
+  var hasHistory = window.A.history.length > 0;
+  var lastAI = '';
+  for (var i = window.A.history.length - 1; i >= 0; i--) {
+    if (window.A.history[i].role === 'assistant') { lastAI = window.A.history[i].content; break; }
+  }
+  var lastUser = '';
+  for (var j = window.A.history.length - 1; j >= 0; j--) {
+    if (window.A.history[j].role === 'user') { lastUser = window.A.history[j].content; break; }
+  }
+  var sub = window.A.subMode ? ' (' + window.A.subMode + ')' : '';
   var prompts = {
-    rescue:     'Give me an instant classroom rescue activity for right now.',
-    simulate:   (window.A.mode === 'teacher')
-                  ? 'Simulate a student response to my last teaching point.'
-                  : (window.A.mode === 'student')
-                  ? 'Simulate examiner feedback on my last answer.'
-                  : 'Act as a fun game character and respond playfully.',
-    style:      'Switch your teaching style to a more engaging approach.',
-    difficulty: 'Adjust the difficulty level of your last response.',
-    fix:        (window.A.mode === 'teacher')
-                  ? 'Identify and fix the weakest part of my last lesson plan.'
-                  : 'Simplify your last explanation to make it clearer.'
+    rescue: hasHistory
+      ? 'Based on our conversation, give me an instant classroom rescue activity I can use right now.'
+      : 'Give me an instant classroom rescue activity for right now' + sub + '.',
+    simulate: mode === 'teacher'
+      ? (hasHistory ? 'Simulate a realistic student response to my last teaching point.' : 'Simulate a student response to a typical teaching point' + sub + '.')
+      : mode === 'student'
+      ? (hasHistory ? 'Simulate examiner feedback on my last answer.' : 'Simulate examiner feedback on a typical answer for my target exam.')
+      : (hasHistory ? 'Act as a fun game character and respond to what we just did.' : 'Act as a fun game character and start an activity.'),
+    style: hasHistory
+      ? 'Switch your teaching style to a more engaging approach for the topic we are working on.'
+      : 'Switch your teaching style to a more engaging approach' + sub + '.',
+    difficulty: hasHistory
+      ? (lastAI ? 'Adjust the difficulty of your last response — either simplify or increase the challenge based on what has been covered.' : 'Adjust the difficulty level of the current activity.')
+      : 'Suggest how I can adjust the difficulty of an activity' + sub + '.',
+    fix: mode === 'teacher'
+      ? (hasHistory ? 'Review the conversation so far and identify the weakest part of the lesson plan or activity. Then provide a concrete fix.' : 'I have not shared a lesson plan yet. Please ask me to describe my lesson so you can help fix the weakest part.')
+      : (hasHistory ? 'Simplify your last explanation so it is easier to understand.' : 'Tell me what you would like explained, and I will make it as clear as possible.')
   };
   var prompt = prompts[feature];
   if (!prompt) return;
-  // Inject as user turn then send
   var input = document.getElementById('ast-input');
   if (input) { input.value = prompt; astSend(); }
 }
@@ -6835,19 +6860,24 @@ async function astSend() {
   if (window.A.history.length > MAX_HISTORY) {
     window.A.history = window.A.history.slice(-MAX_HISTORY);
   }
-  var messages = [{ role:'user', content: systemPrompt + '\n\n' + userText }];
-  if (window.A.history.length > 2) {
-    // Include prior turns (exclude latest user which we just added)
+  var messages;
+  var hist = window.A.history.slice(0, -1); // all turns except the latest user message just pushed
+  if (hist.length > 0) {
+    // Inject system prompt onto the FIRST user-role message in history
     messages = [];
-    var hist = window.A.history.slice(0, -1);
-    // Prepend system context to first message only
-    if (hist.length > 0) {
-      messages.push({ role: hist[0].role, content: systemPrompt + '\n\n' + hist[0].content });
-      for (var i = 1; i < hist.length; i++) {
+    var injected = false;
+    for (var i = 0; i < hist.length; i++) {
+      if (!injected && hist[i].role === 'user') {
+        messages.push({ role: 'user', content: systemPrompt + '\n\n' + hist[i].content });
+        injected = true;
+      } else {
         messages.push({ role: hist[i].role, content: hist[i].content });
       }
     }
-    messages.push({ role:'user', content: userText });
+    messages.push({ role: 'user', content: userText });
+  } else {
+    // First turn — system prompt goes on this message
+    messages = [{ role: 'user', content: systemPrompt + '\n\n' + userText }];
   }
 
   try {
@@ -6967,6 +6997,12 @@ function astClearHistory() {
   if (!history) return;
   history.innerHTML = '';
   astShowEmptyState();
+}
+
+// ── CLEAR CONVERSATION (button handler — keeps mode/sub-mode) ──
+function astClearConversation() {
+  window.A.history = [];
+  astClearHistory();
 }
 
 // ── EMPTY STATE ──
