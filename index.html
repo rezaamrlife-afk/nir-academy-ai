@@ -3056,6 +3056,8 @@ html.light #elt-meta-strip strong { color: #1B2A4A; }
   flex-shrink: 0;
 }
 #next-step-bar.visible { display: flex; }
+.tool-next-bar { display:none; margin:6px 0 4px; padding:10px 12px; background:var(--bg3); border:1px solid var(--bdr); border-radius:var(--r); align-items:center; gap:8px; flex-wrap:wrap; }
+.tool-next-bar.visible { display:flex; }
 .ns-label {
   font-size: 10px;
   color: var(--muted);
@@ -4735,6 +4737,7 @@ function dismissSessionBanner() {
         <div class="rpanel">
           <div class="rp-hdr"><span class="rp-lbl">Lesson Plan</span><div class="rp-acts"><button class="rp-btn save-ws" onclick="saveToWorkspace('lp-out','Lesson Planner')">💾 Save</button><button class="rp-btn" onclick="copyOut('lp-out')">Copy</button><button class="rp-btn" onclick="generateLesson()">Regenerate</button><button class="rp-btn" onclick="nirPrint('lp-out')" title="Print">🖨</button><button class="rp-btn" onclick="nirDownloadDocx('lp-out')" title="Download Word">📄</button></div></div>
           <div id="lp-wc" style="font-size:11px;color:var(--muted);text-align:right;min-height:16px;padding-right:2px;"></div>
+          <div id="lp-next" class="tool-next-bar"></div>
           <div id="lp-out" class="out-txt"><div class="rp-empty">
   <div class="re-ico"><i data-lucide="calendar-days"></i></div>
   <p>Your complete TESOL-aligned lesson plan will appear here.</p>
@@ -4808,6 +4811,7 @@ function dismissSessionBanner() {
         <div class="rpanel">
           <div class="rp-hdr"><span class="rp-lbl">IELTS Task</span><div class="rp-acts"><button class="rp-btn save-ws" onclick="saveToWorkspace('ielts-out','IELTS Generator')">💾 Save</button><button class="rp-btn" onclick="copyOut('ielts-out')">Copy</button><button class="rp-btn" onclick="generateIELTS()">Regenerate</button><button class="rp-btn" onclick="nirPrint('ielts-out')" title="Print">🖨</button><button class="rp-btn" onclick="nirDownloadDocx('ielts-out')" title="Download Word">📄</button></div></div>
           <div id="ielts-wc" style="font-size:11px;color:var(--muted);text-align:right;min-height:16px;padding-right:2px;"></div>
+          <div id="ielts-next" class="tool-next-bar"></div>
           <div id="ielts-out" class="out-txt"><div class="rp-empty">
   <div class="re-ico">📘</div>
   <p>Your IELTS task with full model answer will appear here.</p>
@@ -4859,6 +4863,7 @@ function dismissSessionBanner() {
         <div class="rpanel">
           <div class="rp-hdr"><span class="rp-lbl">Feedback Report</span><div class="rp-acts"><button class="rp-btn save-ws" onclick="saveToWorkspace('ec-out','Error Correction')">💾 Save</button><button class="rp-btn" onclick="copyOut('ec-out')">Copy</button><button class="rp-btn" onclick="generateError()">Re-analyse</button><button class="rp-btn" onclick="nirPrint('ec-out')" title="Print">🖨</button><button class="rp-btn" onclick="nirDownloadDocx('ec-out')" title="Download Word">📄</button></div></div>
           <div id="ec-wc" style="font-size:11px;color:var(--muted);text-align:right;min-height:16px;padding-right:2px;"></div>
+          <div id="ec-next" class="tool-next-bar"></div>
           <div id="ec-out" class="out-txt"><div class="rp-empty">
   <div class="re-ico"><i data-lucide="spell-check-2"></i></div>
   <p>Paste student writing above and click <strong style="color:var(--gold)">Analyse</strong> for detailed linguistic feedback.</p>
@@ -5997,6 +6002,165 @@ async function generateError(){
   const btns=document.querySelectorAll("#page-error .btn-gen");
   await callAPI(p,"ec-out",btns[0]||null);
 }
+
+// ══ CROSS-TOOL NEXT STEPS ══
+
+// ── Helper: render a tool-next-bar with buttons ──
+function showToolNextBar(barId, steps) {
+  var bar = document.getElementById(barId);
+  if (!bar) return;
+  bar.innerHTML = '<span class="ns-label">Next step:</span>';
+  steps.forEach(function(step) {
+    var btn = document.createElement('button');
+    btn.className = 'ns-btn';
+    btn.textContent = step[0];
+    btn.onclick = step[1];
+    bar.appendChild(btn);
+  });
+  bar.classList.add('visible');
+}
+
+// ── Helper: set a chip active by value ──
+function setChipActive(groupId, value) {
+  document.querySelectorAll('#' + groupId + ' .chip').forEach(function(c) {
+    c.classList.toggle('active', c.dataset.v === value);
+  });
+}
+
+// ── Helper: set a level pill active by value ──
+function setPillActive(groupId, value) {
+  document.querySelectorAll('#' + groupId + ' .lvl').forEach(function(c) {
+    c.classList.toggle('active', c.dataset.v === value);
+  });
+}
+
+// 1. Lesson Planner → Worksheet Builder
+function lpToWorksheet() {
+  // Transfer topic
+  var topicEl = document.getElementById('lp-topic');
+  var wsTopic = document.getElementById('ws-topic');
+  if (topicEl && wsTopic) wsTopic.value = topicEl.value.trim() || S.topic || '';
+
+  // Transfer CEFR level
+  var lpLvl = S.lpLevel || 'B1';
+  S.wsLevel = lpLvl;
+  setPillActive('ws-level', lpLvl);
+
+  // Transfer skill focus
+  var lpFocus = document.querySelector('#lp-focus .chip.active');
+  var focusVal = lpFocus ? lpFocus.dataset.v : 'Grammar';
+  S.wsFocus = focusVal;
+  setChipActive('ws-focus', focusVal);
+
+  wsImgToggleVisibility();
+  go('worksheet');
+}
+
+// 2. IELTS Generator → Error Correction
+function ieltsToError() {
+  // Set Error Correction to IELTS mode
+  var ecLevelPills = document.querySelectorAll('#ec-level .lvl');
+  ecLevelPills.forEach(function(p) {
+    p.classList.toggle('active', p.dataset.v === 'IELTS');
+  });
+  S.ecLevel = 'IELTS';
+
+  // Transfer topic as a hint in the textarea placeholder
+  var ieltsTopicEl = document.getElementById('ielts-topic');
+  var ecText = document.getElementById('ec-text');
+  if (ecText && ecText.value.trim() === '' && ieltsTopicEl) {
+    ecText.placeholder = 'Paste student response to the IELTS task about: ' + (ieltsTopicEl.value.trim() || 'this topic') + '…';
+  }
+  go('error');
+}
+
+// 3. Error Correction → Worksheet Builder (practice from errors)
+function ecToWorksheet() {
+  // Extract dominant error type from output for topic hint
+  var ecOut = document.getElementById('ec-out');
+  var rawText = S.last || (ecOut ? ecOut.textContent : '');
+  var topic = 'Error correction practice';
+
+  // Simple heuristic: look for common grammar error keywords in output
+  var errorKeywords = [
+    ['tense','Verb Tenses'], ['verb form','Verb Forms'], ['article','Articles'],
+    ['preposition','Prepositions'], ['subject.*agreement','Subject-Verb Agreement'],
+    ['word order','Word Order'], ['vocabulary','Vocabulary'], ['spelling','Spelling'],
+    ['punctuation','Punctuation'], ['conditional','Conditionals'],
+    ['passive','Passive Voice'], ['relative clause','Relative Clauses']
+  ];
+  for (var k = 0; k < errorKeywords.length; k++) {
+    if (new RegExp(errorKeywords[k][0], 'i').test(rawText)) {
+      topic = errorKeywords[k][1];
+      break;
+    }
+  }
+
+  // Transfer level
+  var ecLvl = S.ecLevel === 'IELTS' ? 'B2' : (S.ecLevel || 'B1');
+  S.wsLevel = ecLvl;
+  setPillActive('ws-level', ecLvl);
+
+  // Set focus to Grammar (error correction → grammar practice)
+  S.wsFocus = 'Grammar';
+  setChipActive('ws-focus', 'Grammar');
+
+  // Activate Error Correction exercise type in worksheet
+  document.querySelectorAll('#ws-types .wt').forEach(function(wt) {
+    if (wt.dataset.v === 'Error Correction') wt.classList.add('active');
+  });
+
+  // Set topic
+  var wsTopic = document.getElementById('ws-topic');
+  if (wsTopic) wsTopic.value = topic;
+  S.topic = topic;
+
+  wsImgToggleVisibility();
+  go('worksheet');
+}
+
+// ── Wire next-step bars after each generation ──
+var _origGenerateLesson = generateLesson;
+generateLesson = async function() {
+  var bar = document.getElementById('lp-next');
+  if (bar) bar.classList.remove('visible');
+  await _origGenerateLesson();
+  var out = document.getElementById('lp-out');
+  if (out && out.textContent.trim() && !out.textContent.includes('will appear')) {
+    showToolNextBar('lp-next', [
+      ['📄 Create Worksheet for This Lesson', lpToWorksheet],
+      ['✅ Analyse Student Writing',          function(){ go('error'); }]
+    ]);
+  }
+};
+
+var _origGenerateIELTS = generateIELTS;
+generateIELTS = async function() {
+  var bar = document.getElementById('ielts-next');
+  if (bar) bar.classList.remove('visible');
+  await _origGenerateIELTS();
+  var out = document.getElementById('ielts-out');
+  if (out && out.textContent.trim() && !out.textContent.includes('will appear')) {
+    showToolNextBar('ielts-next', [
+      ['✅ Check Student Response (IELTS Mode)', ieltsToError],
+      ['🔄 Generate Another Task',               function(){ generateIELTS(); }]
+    ]);
+  }
+};
+
+var _origGenerateError = generateError;
+generateError = async function() {
+  var bar = document.getElementById('ec-next');
+  if (bar) bar.classList.remove('visible');
+  await _origGenerateError();
+  var out = document.getElementById('ec-out');
+  if (out && out.textContent.trim() && !out.textContent.includes('will appear')) {
+    showToolNextBar('ec-next', [
+      ['📄 Create Practice Worksheet', ecToWorksheet],
+      ['🔄 Re-analyse',                function(){ generateError(); }]
+    ]);
+  }
+};
 
 // ══ COPY & SAVE ══
 function copyOut(id){
