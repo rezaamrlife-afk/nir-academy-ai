@@ -7479,7 +7479,7 @@ function nirDownloadDocx(outId) {
   // Lazy-load docx.js from CDN
   if (window.docx) { doGenerate(window.docx); return; }
   var script = document.createElement('script');
-  script.src = 'https://cdnjs.cloudflare.com/ajax/libs/docx/8.5.0/docx.umd.min.js';
+  script.src = 'https://unpkg.com/docx@8.5.0/build/index.umd.js';
   script.onload = function() { if (window.docx) doGenerate(window.docx); };
   script.onerror = function() { alert('Could not load Word export library. Please check your internet connection.'); };
   document.head.appendChild(script);
