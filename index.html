@@ -3600,6 +3600,8 @@ html.light .rp-btn.copied { color: #059669 !important; }
 .sc-btn{background:#252525;border:1px solid rgba(201,168,76,.17);border-radius:6px;padding:5px 12px;font-size:10px;color:#787878;cursor:pointer;transition:all .15s;font-family:'Plus Jakarta Sans',sans-serif;font-weight:600}
 .sc-btn:hover{border-color:rgba(201,168,76,.4);color:#C9A84C}
 .sc-btn.del:hover{border-color:rgba(255,80,80,.4);color:#ff8080}
+.sc-btn.primary{border-color:rgba(201,168,76,.4);color:#C9A84C}
+.sc-btn.primary:hover{background:rgba(201,168,76,.12);border-color:#C9A84C}
 /* Workspace toolbar */
 .ws-toolbar{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:1.2rem}
 .ws-search{flex:1;min-width:160px;background:var(--bg3);border:1px solid var(--bdr);border-radius:8px;padding:7px 12px;font-size:12px;color:var(--text);font-family:'Plus Jakarta Sans',sans-serif;outline:none}
@@ -4999,6 +5001,7 @@ function dismissSessionBanner() {
         <div class="rpanel">
           <div class="rp-hdr"><span class="rp-lbl">Worksheet</span><div class="rp-acts"><button class="rp-btn save-ws" onclick="saveToWorkspace('ws-out','Worksheet Builder')">💾 Save</button><button class="rp-btn" onclick="copyOut('ws-out')">Copy</button><button class="rp-btn" onclick="generateWorksheet()">Regenerate</button><button class="rp-btn" onclick="nirPrint('ws-out')" title="Print">🖨</button><button class="rp-btn" onclick="nirDownloadDocx('ws-out')" title="Download Word">📄</button></div></div>
           <div id="ws-wc" style="font-size:11px;color:var(--muted);text-align:right;min-height:16px;padding-right:2px;"></div>
+          <div id="ws-next" class="tool-next-bar"></div>
           <div id="ws-out" class="out-txt"><div class="rp-empty">
   <div class="re-ico">📄</div>
   <p>Your print-ready worksheet will appear here.</p>
@@ -5872,7 +5875,6 @@ async function callAPI(prompt,outId,btn,onComplete){
     }
     const data=await res.json();
     const text=data.content?.map(b=>b.text||"").join("")||"Unable to generate. Please try again.";
-    if(text.includes("Unable to generate"))T("Something went wrong. Please try again.");
     // Typewriter animation, then render Markdown when done
     out.classList.add('md-rendering');
     out.textContent="";
@@ -5892,12 +5894,15 @@ async function callAPI(prompt,outId,btn,onComplete){
         if(typeof onComplete==="function") onComplete(text);
       }
     },spd);
-    S.last=text;
-    T("Content ready ✓");
-    if(window._usageIncrement) window._usageIncrement();
-    if(window.updateELTMeta) window.updateELTMeta();
-    if(window.showNextSteps) window.showNextSteps();
-    if(window.saveSession) window.saveSession();
+    var _failed = !text || text.startsWith('Unable to generate') || text.startsWith('Connection error');
+    if(!_failed){
+      S.last=text;
+      if(window._usageIncrement) window._usageIncrement();
+      if(window.updateELTMeta) window.updateELTMeta();
+      if(window.showNextSteps) window.showNextSteps();
+      if(window.saveSession) window.saveSession();
+    }
+    T(_failed ? "Something went wrong. Please try again." : "Content ready ✓");
     // ── Fix 1: dynamic ELT output label ──
     (function(){
       var lbl = document.getElementById('rp-lbl-txt');
@@ -5919,18 +5924,42 @@ async function callAPI(prompt,outId,btn,onComplete){
 async function generate(){window._lastToolUsed='prompt_generator';await callAPI(buildGen(),"prompt-out",document.getElementById("gen-btn"));}
 async function generateLesson(){
   window._lastToolUsed='lesson_planner';
+  var bar=document.getElementById('lp-next'); if(bar) bar.classList.remove('visible');
   const btns=document.querySelectorAll("#page-lesson .btn-gen");
-  await callAPI(buildLesson(),"lp-out",btns[0]||null);
+  await callAPI(buildLesson(),"lp-out",btns[0]||null, function(text){
+    if(!text||text.startsWith('Unable to generate')) return;
+    showToolNextBar('lp-next',[
+      ['📄 Create Worksheet for This Lesson', lpToWorksheet],
+      ['✅ Analyse Student Writing', function(){ go('error'); }],
+      ['📝 Send to Error Correction with Context', lpToError]
+    ]);
+  });
 }
 async function generateIELTS(){
   window._lastToolUsed='ielts_generator';
+  var bar=document.getElementById('ielts-next'); if(bar) bar.classList.remove('visible');
   const btns=document.querySelectorAll("#page-ielts .btn-gen");
-  await callAPI(buildIELTS(),"ielts-out",btns[0]||null);
+  await callAPI(buildIELTS(),"ielts-out",btns[0]||null, function(text){
+    if(!text||text.startsWith('Unable to generate')) return;
+    showToolNextBar('ielts-next',[
+      ['✅ Check Student Response (IELTS Mode)', ieltsToError],
+      ['📄 Build Worksheet from This Task', ieltsToWorksheet],
+      ['🔄 Generate Another Task', function(){ generateIELTS(); }]
+    ]);
+  });
 }
 async function generateWorksheet(){
   window._lastToolUsed='worksheet_builder';
+  var bar=document.getElementById('ws-next'); if(bar) bar.classList.remove('visible');
   const btns=document.querySelectorAll("#page-worksheet .btn-gen");
-  await callAPI(buildWorksheet(),"ws-out",btns[0]||null, S.wsImages?resolveWorksheetImages:null);
+  await callAPI(buildWorksheet(),"ws-out",btns[0]||null, function(text){
+    if(S.wsImages && typeof resolveWorksheetImages==='function') resolveWorksheetImages(text);
+    if(!text||text.startsWith('Unable to generate')) return;
+    showToolNextBar('ws-next',[
+      ['✅ Check Student Response', function(){ go('error'); }],
+      ['📖 Plan a Lesson for This Topic', wsToLesson]
+    ]);
+  });
 }
 // ── Worksheet image toggle visibility ──
 function wsImgToggleVisibility(){
@@ -6058,8 +6087,15 @@ async function generateError(){
   window._lastToolUsed='error_correction';
   const p=buildError();
   if(!p){T("Please paste student writing first.");return;}
+  var bar=document.getElementById('ec-next'); if(bar) bar.classList.remove('visible');
   const btns=document.querySelectorAll("#page-error .btn-gen");
-  await callAPI(p,"ec-out",btns[0]||null);
+  await callAPI(p,"ec-out",btns[0]||null, function(text){
+    if(!text||text.startsWith('Unable to generate')) return;
+    showToolNextBar('ec-next',[
+      ['📄 Create Practice Worksheet', ecToWorksheet],
+      ['🔄 Re-analyse', function(){ generateError(); }]
+    ]);
+  });
 }
 
 // ══ CROSS-TOOL NEXT STEPS ══
@@ -6098,7 +6134,9 @@ function lpToWorksheet() {
   // Transfer topic
   var topicEl = document.getElementById('lp-topic');
   var wsTopic = document.getElementById('ws-topic');
-  if (topicEl && wsTopic) wsTopic.value = topicEl.value.trim() || S.topic || '';
+  var topicVal = (topicEl ? topicEl.value.trim() : '') || S.topic || '';
+  if (wsTopic) wsTopic.value = topicVal;
+  S.topic = topicVal;
 
   // Transfer CEFR level
   var lpLvl = S.lpLevel || 'B1';
@@ -6135,27 +6173,14 @@ function ieltsToError() {
 
 // 3. Error Correction → Worksheet Builder (practice from errors)
 function ecToWorksheet() {
-  // Extract dominant error type from output for topic hint
-  var ecOut = document.getElementById('ec-out');
-  var rawText = S.last || (ecOut ? ecOut.textContent : '');
-  var topic = 'Error correction practice';
+  // Use explicit student text for topic — avoid unreliable keyword detection
+  var ecTextEl = document.getElementById('ec-text');
+  var studentText = ecTextEl ? ecTextEl.value.trim() : '';
+  var topic = studentText
+    ? studentText.substring(0, 60).replace(/\s+\S*$/, '').trim() + (studentText.length > 60 ? '…' : '')
+    : 'Error correction practice';
 
-  // Simple heuristic: look for common grammar error keywords in output
-  var errorKeywords = [
-    ['tense','Verb Tenses'], ['verb form','Verb Forms'], ['article','Articles'],
-    ['preposition','Prepositions'], ['subject.*agreement','Subject-Verb Agreement'],
-    ['word order','Word Order'], ['vocabulary','Vocabulary'], ['spelling','Spelling'],
-    ['punctuation','Punctuation'], ['conditional','Conditionals'],
-    ['passive','Passive Voice'], ['relative clause','Relative Clauses']
-  ];
-  for (var k = 0; k < errorKeywords.length; k++) {
-    if (new RegExp(errorKeywords[k][0], 'i').test(rawText)) {
-      topic = errorKeywords[k][1];
-      break;
-    }
-  }
-
-  // Transfer level
+  // Transfer level (IELTS → B2, otherwise use ecLevel)
   var ecLvl = S.ecLevel === 'IELTS' ? 'B2' : (S.ecLevel || 'B1');
   S.wsLevel = ecLvl;
   setPillActive('ws-level', ecLvl);
@@ -6166,7 +6191,7 @@ function ecToWorksheet() {
 
   // Activate Error Correction exercise type in worksheet
   document.querySelectorAll('#ws-types .wt').forEach(function(wt) {
-    if (wt.dataset.v === 'Error Correction') wt.classList.add('active');
+    wt.classList.toggle('active', wt.dataset.v === 'Error Correction');
   });
 
   // Set topic
@@ -6178,48 +6203,60 @@ function ecToWorksheet() {
   go('worksheet');
 }
 
-// ── Wire next-step bars after each generation ──
-var _origGenerateLesson = generateLesson;
-generateLesson = async function() {
-  var bar = document.getElementById('lp-next');
-  if (bar) bar.classList.remove('visible');
-  await _origGenerateLesson();
-  var out = document.getElementById('lp-out');
-  if (out && out.textContent.trim() && !out.textContent.includes('will appear')) {
-    showToolNextBar('lp-next', [
-      ['📄 Create Worksheet for This Lesson', lpToWorksheet],
-      ['✅ Analyse Student Writing',          function(){ go('error'); }]
-    ]);
-  }
-};
+// 6. Worksheet Builder → Lesson Planner
+function wsToLesson() {
+  // Transfer topic
+  var wsTopicEl = document.getElementById('ws-topic');
+  var lpTopicEl = document.getElementById('lp-topic');
+  if (wsTopicEl && lpTopicEl) lpTopicEl.value = wsTopicEl.value.trim() || S.topic || '';
 
-var _origGenerateIELTS = generateIELTS;
-generateIELTS = async function() {
-  var bar = document.getElementById('ielts-next');
-  if (bar) bar.classList.remove('visible');
-  await _origGenerateIELTS();
-  var out = document.getElementById('ielts-out');
-  if (out && out.textContent.trim() && !out.textContent.includes('will appear')) {
-    showToolNextBar('ielts-next', [
-      ['✅ Check Student Response (IELTS Mode)', ieltsToError],
-      ['🔄 Generate Another Task',               function(){ generateIELTS(); }]
-    ]);
-  }
-};
+  // Transfer CEFR level
+  var wsLvl = S.wsLevel || 'B1';
+  S.lpLevel = wsLvl;
+  setPillActive('lp-level', wsLvl);
 
-var _origGenerateError = generateError;
-generateError = async function() {
-  var bar = document.getElementById('ec-next');
-  if (bar) bar.classList.remove('visible');
-  await _origGenerateError();
-  var out = document.getElementById('ec-out');
-  if (out && out.textContent.trim() && !out.textContent.includes('will appear')) {
-    showToolNextBar('ec-next', [
-      ['📄 Create Practice Worksheet', ecToWorksheet],
-      ['🔄 Re-analyse',                function(){ generateError(); }]
-    ]);
+  go('lesson');
+}
+
+// 4. Lesson Planner → Error Correction (with lesson context)
+function lpToError() {
+  // Transfer topic
+  var lpTopicEl = document.getElementById('lp-topic');
+  var ecTextEl = document.getElementById('ec-text');
+  if (ecTextEl && ecTextEl.value.trim() === '' && lpTopicEl) {
+    ecTextEl.placeholder = 'Paste student writing related to: ' + (lpTopicEl.value.trim() || 'this lesson') + '…';
   }
-};
+
+  // Transfer CEFR level
+  var lpLvl = S.lpLevel || 'B1';
+  S.ecLevel = lpLvl;
+  setPillActive('ec-level', lpLvl);
+
+  go('error');
+}
+
+// 5. IELTS Generator → Worksheet Builder
+function ieltsToWorksheet() {
+  // Transfer topic from IELTS
+  var ieltsTopicEl = document.getElementById('ielts-topic');
+  var wsTopic = document.getElementById('ws-topic');
+  if (ieltsTopicEl && wsTopic) wsTopic.value = ieltsTopicEl.value.trim() || S.topic || '';
+
+  // Transfer IELTS band as CEFR proxy (Band 5-6 → B2, Band 7+ → C1, else B2)
+  var band = S.ieltBand || 6;
+  var wsLvl = band >= 7 ? 'C1' : 'B2';
+  S.wsLevel = wsLvl;
+  setPillActive('ws-level', wsLvl);
+
+  // Set Academic focus if IELTS Academic type
+  S.wsFocus = 'Writing';
+  setChipActive('ws-focus', 'Writing');
+
+  wsImgToggleVisibility();
+  go('worksheet');
+}
+
+// Next-step bars are wired via onComplete callbacks inside generateLesson/IELTS/Error above.
 
 // ══ COPY & SAVE ══
 function copyOut(id){
@@ -6781,6 +6818,7 @@ function wsRender(prompts){
       ${outputSnip ? `<div class="sc-output-preview">${esc(outputSnip)}…</div>` : ''}
       <div class="saved-card-actions">
         <button class="sc-btn" onclick="navigator.clipboard.writeText(window._spMap['${copyTarget}']).then(()=>T('Copied ✓'))">Copy</button>
+        <button class="sc-btn primary" onclick="openSavedInTool('${p.id}','${esc(p.tool||'Prompt Generator')}')">Open in Tool</button>
         <button class="sc-btn" onclick="loadIntoGenerator(window._spMap['${p.id}'])">Use Prompt</button>
         <button class="sc-btn del" onclick="deletePrompt('${p.id}')">Delete</button>
       </div>
@@ -6789,6 +6827,32 @@ function wsRender(prompts){
 }
 
 function wsFilter(){ wsRender(window._wsAllPrompts||[]); }
+
+// Open a saved item in its original tool and restore the output
+function openSavedInTool(id, tool) {
+  var outputText = window._spMap ? (window._spMap['out_'+id] || window._spMap[id] || '') : '';
+  if (!outputText) { T("No output saved for this item."); return; }
+
+  var toolPageMap = {
+    'Lesson Planner':    { page:'lesson',    outId:'lp-out' },
+    'IELTS Generator':   { page:'ielts',     outId:'ielts-out' },
+    'Error Correction':  { page:'error',     outId:'ec-out' },
+    'Worksheet Builder': { page:'worksheet', outId:'ws-out' },
+    'Prompt Generator':  { page:'home',      outId:'prompt-out' }
+  };
+  var target = toolPageMap[tool] || toolPageMap['Prompt Generator'];
+
+  go(target.page);
+  S.last = outputText;
+
+  setTimeout(function() {
+    var outEl = document.getElementById(target.outId);
+    if (outEl) {
+      outEl.innerHTML = (typeof renderMD === 'function') ? renderMD(outputText) : outputText;
+    }
+    T("Output restored in " + tool + " ✓");
+  }, 100);
+}
 
 function wsSetFolder(folder, el){
   window._wsFolder = folder;
