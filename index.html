@@ -4916,7 +4916,8 @@ function dismissSessionBanner() {
         </div>
         <div class="sblock">
           <div class="shdr"><div class="snum">2</div><h3>Paste Student Writing</h3></div>
-          <div class="sbdy"><textarea class="etarea" id="ec-text" placeholder="Paste the student's writing here. e.g. 'Yesterday I go to the market and buyed some vegetable. It was very crowd and I feeling tired after…'"></textarea></div>
+          <div class="sbdy"><textarea class="etarea" id="ec-text" placeholder="Paste the student's writing here. e.g. 'Yesterday I go to the market and buyed some vegetable. It was very crowd and I feeling tired after…'"></textarea>
+          <div id="ec-context-note" style="display:none;font-size:11px;color:var(--muted);margin-top:5px;padding:5px 8px;background:var(--bg3);border-radius:4px;border-left:2px solid var(--gold)"></div></div>
         </div>
         <button class="btn-gen" data-lbl="Analyse &amp; Correct" onclick="generateError()">✦ &nbsp;Analyse &amp; Correct<span class="btn-progress"></span></button>
       </div>
@@ -5956,7 +5957,7 @@ async function generateWorksheet(){
     if(S.wsImages && typeof resolveWorksheetImages==='function') resolveWorksheetImages(text);
     if(!text||text.startsWith('Unable to generate')) return;
     showToolNextBar('ws-next',[
-      ['✅ Check Student Response', function(){ go('error'); }],
+      ['✅ Check Student Response', wsToError],
       ['📖 Plan a Lesson for This Topic', wsToLesson]
     ]);
   });
@@ -6156,18 +6157,33 @@ function lpToWorksheet() {
 // 2. IELTS Generator → Error Correction
 function ieltsToError() {
   // Set Error Correction to IELTS mode
-  var ecLevelPills = document.querySelectorAll('#ec-level .lvl');
-  ecLevelPills.forEach(function(p) {
-    p.classList.toggle('active', p.dataset.v === 'IELTS');
-  });
   S.ecLevel = 'IELTS';
+  setPillActive('ec-level', 'IELTS');
 
-  // Transfer topic as a hint in the textarea placeholder
+  // Transfer task type to ec-type if it maps
+  var ieltType = S.ieltType || '';
+  var ecTypeVal = ieltType.toLowerCase().includes('writing') ? 'Detailed written feedback' : S.ecType || 'Detailed written feedback';
+  S.ecType = ecTypeVal;
+  setChipActive('ec-type', ecTypeVal);
+
+  // Build context note with task type + band
   var ieltsTopicEl = document.getElementById('ielts-topic');
-  var ecText = document.getElementById('ec-text');
-  if (ecText && ecText.value.trim() === '' && ieltsTopicEl) {
-    ecText.placeholder = 'Paste student response to the IELTS task about: ' + (ieltsTopicEl.value.trim() || 'this topic') + '…';
+  var topic  = ieltsTopicEl ? ieltsTopicEl.value.trim() : '';
+  var band   = S.ieltBand || '';
+  var taskLabel = ieltType ? ieltType + (band ? ' · Target ' + band : '') : (band ? 'Target ' + band : 'IELTS');
+  var contextStr = [taskLabel, topic].filter(Boolean).join(' — ');
+
+  // Always update placeholder; show context note
+  var ecTextEl = document.getElementById('ec-text');
+  if (ecTextEl) {
+    ecTextEl.placeholder = 'Paste student IELTS response' + (topic ? ' on: ' + topic : '') + '…';
   }
+  var noteEl = document.getElementById('ec-context-note');
+  if (noteEl && contextStr) {
+    noteEl.textContent = '📋 IELTS context: ' + contextStr;
+    noteEl.style.display = '';
+  }
+
   go('error');
 }
 
@@ -6203,6 +6219,26 @@ function ecToWorksheet() {
   go('worksheet');
 }
 
+// Worksheet Builder → Error Correction
+function wsToError() {
+  // Transfer level
+  var wsLvl = S.wsLevel || 'B1';
+  S.ecLevel = wsLvl;
+  setPillActive('ec-level', wsLvl);
+
+  // Transfer topic as context hint in placeholder (don't overwrite student text)
+  var wsTopicEl = document.getElementById('ws-topic');
+  var ecTextEl  = document.getElementById('ec-text');
+  if (ecTextEl && wsTopicEl) {
+    var topicHint = wsTopicEl.value.trim() || S.topic || 'this worksheet topic';
+    if (!ecTextEl.value.trim()) {
+      ecTextEl.placeholder = 'Paste student response to the ' + (S.wsFocus||'') + ' worksheet about: ' + topicHint + '…';
+    }
+  }
+
+  go('error');
+}
+
 // 6. Worksheet Builder → Lesson Planner
 function wsToLesson() {
   // Transfer topic
@@ -6220,17 +6256,26 @@ function wsToLesson() {
 
 // 4. Lesson Planner → Error Correction (with lesson context)
 function lpToError() {
-  // Transfer topic
   var lpTopicEl = document.getElementById('lp-topic');
-  var ecTextEl = document.getElementById('ec-text');
-  if (ecTextEl && ecTextEl.value.trim() === '' && lpTopicEl) {
-    ecTextEl.placeholder = 'Paste student writing related to: ' + (lpTopicEl.value.trim() || 'this lesson') + '…';
-  }
+  var topicVal  = (lpTopicEl ? lpTopicEl.value.trim() : '') || S.topic || 'this lesson';
 
   // Transfer CEFR level
   var lpLvl = S.lpLevel || 'B1';
   S.ecLevel = lpLvl;
   setPillActive('ec-level', lpLvl);
+
+  // Set placeholder always — it's shown when textarea is empty
+  var ecTextEl = document.getElementById('ec-text');
+  if (ecTextEl) {
+    ecTextEl.placeholder = 'Paste student writing related to the lesson on: ' + topicVal + '…';
+  }
+
+  // Show lesson context note beneath ec-text if one exists
+  var noteEl = document.getElementById('ec-context-note');
+  if (noteEl) {
+    noteEl.textContent = '📋 Lesson context: ' + topicVal + ' (' + lpLvl + ')';
+    noteEl.style.display = '';
+  }
 
   go('error');
 }
@@ -6800,7 +6845,9 @@ function wsRender(prompts){
   if(!window._spMap) window._spMap = {};
   const esc = s => String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
   grid.innerHTML = filtered.map(p=>{
-    window._spMap[p.id] = p.content || '';
+    var _rawContent = p.content || '';
+    window._spMap[p.id] = _rawContent.startsWith('NIRAMETA:') ? _rawContent.substring(_rawContent.indexOf('\n')+1) : _rawContent;
+    window._spMap['meta_'+p.id] = _rawContent; // preserve raw for openSavedInTool meta decode
     window._spMap['out_'+p.id] = p.output || '';
     const date = new Date(p.created_at).toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'});
     const displayTitle = esc(p.title || (p.content||'').substring(0,60) || 'Saved item');
@@ -6828,10 +6875,14 @@ function wsRender(prompts){
 
 function wsFilter(){ wsRender(window._wsAllPrompts||[]); }
 
-// Open a saved item in its original tool and restore the output
+// Open a saved item in its original tool and restore the output + settings
 function openSavedInTool(id, tool) {
   var outputText = window._spMap ? (window._spMap['out_'+id] || window._spMap[id] || '') : '';
   if (!outputText) { T("No output saved for this item."); return; }
+
+  // Decode saved meta state (encoded in raw content field)
+  var contentRaw = window._spMap ? (window._spMap['meta_'+id] || window._spMap[id] || '') : '';
+  var meta = _decodeMeta(contentRaw) || {};
 
   var toolPageMap = {
     'Lesson Planner':    { page:'lesson',    outId:'lp-out' },
@@ -6846,10 +6897,36 @@ function openSavedInTool(id, tool) {
   S.last = outputText;
 
   setTimeout(function() {
+    // Restore output HTML
     var outEl = document.getElementById(target.outId);
-    if (outEl) {
-      outEl.innerHTML = (typeof renderMD === 'function') ? renderMD(outputText) : outputText;
+    if (outEl) outEl.innerHTML = (typeof renderMD === 'function') ? renderMD(outputText) : outputText;
+
+    // Restore tool settings from meta
+    if (meta.topic) {
+      S.topic = meta.topic;
+      var topicInputs = { 'Lesson Planner':'lp-topic', 'IELTS Generator':'ielts-topic', 'Error Correction':null, 'Worksheet Builder':'ws-topic' };
+      var tid = topicInputs[tool];
+      if (tid) { var el = document.getElementById(tid); if (el) el.value = meta.topic; }
     }
+    if (tool === 'Lesson Planner' && meta.level) {
+      S.lpLevel = meta.level; setPillActive('lp-level', meta.level);
+      if (meta.focus) { S.wsFocus = meta.focus; setChipActive('lp-focus', meta.focus); }
+    }
+    if (tool === 'IELTS Generator' && meta.level) {
+      S.ieltBand = meta.level;
+      document.querySelectorAll('#ielts-band .lvl').forEach(function(p){ p.classList.toggle('active', p.dataset.v === meta.level); });
+      if (meta.ieltType) { S.ieltType = meta.ieltType; setChipActive('ielts-type', meta.ieltType); }
+    }
+    if (tool === 'Error Correction' && meta.level) {
+      S.ecLevel = meta.level; setPillActive('ec-level', meta.level);
+      if (meta.ecType) { S.ecType = meta.ecType; setChipActive('ec-type', meta.ecType); }
+      if (meta.studentText) { var ec = document.getElementById('ec-text'); if (ec && !ec.value.trim()) ec.value = meta.studentText; }
+    }
+    if (tool === 'Worksheet Builder' && meta.level) {
+      S.wsLevel = meta.level; setPillActive('ws-level', meta.level);
+      if (meta.focus) { S.wsFocus = meta.focus; setChipActive('ws-focus', meta.focus); wsImgToggleVisibility(); }
+    }
+
     T("Output restored in " + tool + " ✓");
   }, 100);
 }
@@ -6882,12 +6959,13 @@ async function deletePrompt(id){
 }
 
 // ── SAVE OUTPUT TO WORKSPACE ──
-async function saveOutputToDB(title, outputText, tool){
+async function saveOutputToDB(title, outputText, tool, meta){
   if(!currentUser){ openAuth(); return; }
+  const content = meta ? _encodeContent(title, meta) : title;
   const { error } = await SB.from('saved_prompts').insert({
     user_id:    currentUser.id,
     title:      title,
-    content:    title,         // keep content=title for legacy compatibility
+    content:    content,       // encodes meta state for restore; legacy rows have plain title
     output:     outputText,
     tool:       tool,
     folder:     tool,
@@ -6911,7 +6989,25 @@ function saveToWorkspace(outId, tool){
   const ts    = new Date().toLocaleDateString('en-GB',{day:'2-digit',month:'short'});
   const titleParts = [tool, lvl, topic].filter(Boolean);
   const autoTitle = titleParts.join(' · ') + ' — ' + ts;
-  saveOutputToDB(autoTitle, rawText, tool);
+  // Capture tool-specific state for restore
+  var meta = { topic: topic };
+  if (tool === 'Lesson Planner')    { meta.level = S.lpLevel; meta.focus = (document.querySelector('#lp-focus .chip.active')||{}).dataset && document.querySelector('#lp-focus .chip.active').dataset.v; }
+  if (tool === 'IELTS Generator')   { meta.level = S.ieltBand; meta.ieltType = S.ieltType; }
+  if (tool === 'Error Correction')  { meta.level = S.ecLevel; meta.ecType = S.ecType; meta.studentText = (document.getElementById('ec-text')||{}).value||''; }
+  if (tool === 'Worksheet Builder') { meta.level = S.wsLevel; meta.focus = S.wsFocus; }
+  saveOutputToDB(autoTitle, rawText, tool, meta);
+}
+
+// ── encode/decode meta in content field ──
+function _encodeContent(title, meta) {
+  try { return 'NIRAMETA:' + JSON.stringify(meta) + '\n' + title; } catch(e){ return title; }
+}
+function _decodeMeta(content) {
+  if (!content || !content.startsWith('NIRAMETA:')) return null;
+  try {
+    var nl = content.indexOf('\n');
+    return JSON.parse(content.substring(9, nl));
+  } catch(e){ return null; }
 }
 
 async function loadHistory(){
