@@ -172,7 +172,7 @@ const LANGS = {
     qa3h: 'IELTS Task', qa3d: 'IELTS Generator',
     qa4h: 'Check Writing', qa4d: 'Error Correction',
   
-    ast_tab: 'AI Assistant',
+    ast_tab: 'NIRA Chat',
     ast_teacher: 'Teacher Mode',
     ast_teacher_desc: 'Lesson design · Pedagogy · Classroom',
     ast_student: 'Student Mode',
@@ -308,7 +308,7 @@ const LANGS = {
     qa3h: 'IELTS Görevi', qa3d: 'IELTS Generator',
     qa4h: 'Yazıyı Kontrol Et', qa4d: 'Hata Düzeltme',
   
-    ast_tab: 'Yapay Zeka Asistanı',
+    ast_tab: 'NIRA Chat',
     ast_teacher: 'Öğretmen Modu',
     ast_teacher_desc: 'Ders tasarımı · Pedagoji · Sınıf',
     ast_student: 'Öğrenci Modu',
@@ -444,7 +444,7 @@ const LANGS = {
     qa3h: 'مهمة IELTS', qa3d: 'IELTS Generator',
     qa4h: 'مراجعة الكتابة', qa4d: 'تصحيح الأخطاء',
   
-    ast_tab: 'المساعد الذكي',
+    ast_tab: 'NIRA Chat',
     ast_teacher: 'وضع المعلم',
     ast_teacher_desc: 'تصميم الدروس · التربية · الفصل',
     ast_student: 'وضع الطالب',
@@ -580,7 +580,7 @@ const LANGS = {
     qa3h: '雅思任务', qa3d: 'IELTS Generator',
     qa4h: '检查写作', qa4d: '错误纠正',
   
-    ast_tab: 'AI助手',
+    ast_tab: 'NIRA Chat',
     ast_teacher: '教师模式',
     ast_teacher_desc: '课程设计 · 教学法 · 课堂管理',
     ast_student: '学生模式',
@@ -783,7 +783,7 @@ const LANGS = {
     qa4h: 'بررسی نوشتار',
     qa4d: 'تصحیح خطا',
   
-    ast_tab: 'دستیار هوش مصنوعی',
+    ast_tab: 'NIRA Chat',
     ast_teacher: 'حالت معلم',
     ast_teacher_desc: 'طراحی درس · آموزش · مدیریت کلاس',
     ast_student: 'حالت دانش‌آموز',
@@ -991,8 +991,8 @@ window.applyLang = function applyLang(lang) {
     btn.classList.toggle('active', btn.dataset.lang === lang);
   });
     // Tab 7 — AI Assistant translations
-  setT('sb-txt-assistant',   T.ast_tab         || 'AI Assistant');
-  setT('nav-assistant',      T.ast_tab         || 'AI Assistant');
+  setT('sb-txt-assistant',   T.ast_tab         || 'NIRA Chat');
+  setT('nav-assistant',      T.ast_tab         || 'NIRA Chat');
   setT('ast-switch-btn',     T.ast_switch      || 'Switch Mode');
   setT('ast-global-title',   T.ast_global_title|| 'Global Tools');
   setT('ast-g-rescue',       T.ast_rescue      || '⚡ Instant Rescue');
@@ -4381,7 +4381,7 @@ function dismissSessionBanner() {
     <a onclick="go('generator')" id="nav-generator">Generator</a>
     <a onclick="go('library')" id="nav-library">Library</a>
     <a onclick="go('insights')" id="nav-insights">Insights</a>
-          <a onclick="go('assistant')" id="nav-assistant" href="javascript:void(0)">AI Assistant</a>
+          <a onclick="go('assistant')" id="nav-assistant" href="javascript:void(0)">NIRA Chat</a>
     <a href="https://niracademy.com" target="_blank" id="nav-courses">Courses ↗</a>
   </nav>
   <div id="topbar-user-menu-slot"></div>
@@ -4435,7 +4435,7 @@ function dismissSessionBanner() {
     <div class="sb-item" id="sb-ielts" onclick="go('ielts')" title="Create authentic IELTS-style tasks at target band levels — Task 1, Task 2, Reading, Listening, and Speaking with full model answers."><span class="si"><i data-lucide="graduation-cap"></i></span> <span id="sb-txt-ielts">IELTS Generator</span> <span class="sb-new">NEW</span></div>
     <div class="sb-item" id="sb-error" onclick="go('error')" title="Paste student writing and receive detailed corrective feedback: grammar, vocabulary, coherence, CEFR level, and metalinguistic notes."><span class="si"><i data-lucide="scan-text"></i></span> <span id="sb-txt-error">Error Correction</span> <span class="sb-new">NEW</span></div>
     <div class="sb-item" id="sb-worksheet" onclick="go('worksheet')" title="Build print-ready classroom worksheets with grammar, vocabulary, reading, and integrated skills exercises — one click, zero prep."><span class="si"><i data-lucide="layout-template"></i></span> <span id="sb-txt-worksheet">Worksheet Builder</span> <span class="sb-new">NEW</span></div>
-    <div class="sb-item" id="sb-assistant" onclick="go('assistant')" title="Your personal AI teaching companion — lesson delivery, classroom management, IELTS prep, student support, and more across 13 specialised modes."><span class="si"><i data-lucide="bot-message-square"></i></span> <span id="sb-txt-assistant">AI Assistant</span> <span class="sb-badge">NEW</span></div>
+    <div class="sb-item" id="sb-assistant" onclick="go('assistant')" title="Your personal AI teaching companion — lesson delivery, classroom management, IELTS prep, student support, and more across 13 specialised modes."><span class="si"><i data-lucide="bot-message-square"></i></span> <span id="sb-txt-assistant">NIRA Chat</span> <span class="sb-badge">NEW</span></div>
   </div>
   <div class="sb-sec">
     <span class="sb-lbl" id="sb-lbl-resources">Resources</span>
@@ -4642,7 +4642,7 @@ function dismissSessionBanner() {
       <div class="tc" onclick="go('error')" title="Paste student writing and receive detailed corrective feedback: grammar, vocabulary, coherence, CEFR level, and metalinguistic notes."><span class="tc-ico"><i data-lucide="scan-text"></i></span><span class="tc-bdg new">NEW</span><h3>Error Correction</h3><p>Linguistic feedback on student writing.</p><button class="tc-cta">Launch →</button></div>
       <div class="tc" onclick="go('worksheet')" title="Build print-ready classroom worksheets with grammar, vocabulary, reading, and integrated skills exercises — one click, zero prep."><span class="tc-ico"><i data-lucide="layout-template"></i></span><span class="tc-bdg new">NEW</span><h3>Worksheet Builder</h3><p>Print-ready classroom worksheets.</p><button class="tc-cta">Launch →</button></div>
       <div class="tc" onclick="go('library')" title="30+ curated ELT prompts ready to use across all skill areas — tested, TESOL-aligned, and organised by topic and level."><span class="tc-ico"><i data-lucide="library"></i></span><h3>Prompt Library</h3><p>30+ curated ready-to-use prompts.</p><button class="tc-cta">Browse →</button></div>
-      <div class="tc" onclick="go('assistant')" title="Your personal AI teaching companion — lesson delivery, classroom management, IELTS prep, student support, and more across 13 specialised modes."><span class="tc-ico"><i data-lucide="brain-circuit"></i></span><span class="tc-bdg new">NEW</span><h3>AI Assistant</h3><p>Pedagogical AI across 13 teaching modes.</p><button class="tc-cta">Launch →</button></div>
+      <div class="tc" onclick="go('assistant')" title="Your personal AI teaching companion — lesson delivery, classroom management, IELTS prep, student support, and more across 13 specialised modes."><span class="tc-ico"><i data-lucide="brain-circuit"></i></span><span class="tc-bdg new">NEW</span><h3>NIRA Chat</h3><p>Pedagogical AI across 13 teaching modes.</p><button class="tc-cta">Launch →</button></div>
     </div>
 
     <!-- COMING SOON -->
@@ -6674,7 +6674,7 @@ async function updateMostUsedTools(user){
     'ielts_generator':  {icon:'graduation-cap', label:'IELTS Generator',  page:'ielts',     color:'#D97706'},
     'error_correction': {icon:'scan-text',       label:'Error Correction', page:'error',     color:'#DC2626'},
     'worksheet_builder':{icon:'layout-template', label:'Worksheet Builder',page:'worksheet', color:'#059669'},
-    'ai_assistant':     {icon:'bot-message-square',label:'AI Assistant',   page:'assistant', color:'#2563EB'},
+    'ai_assistant':     {icon:'bot-message-square',label:'NIRA Chat',      page:'assistant', color:'#2563EB'},
     'general':          {icon:'zap',             label:'General',          page:'home',      color:'#6B7280'},
   };
   const total = data.length;
@@ -7122,7 +7122,7 @@ async function loadHistory(){
     'ielts_generator':  {icon:'graduation-cap', label:'IELTS Generator',  color:'#D97706', bg:'rgba(217,119,6,0.12)',  border:'rgba(217,119,6,0.35)'},
     'error_correction': {icon:'scan-text',       label:'Error Correction', color:'#DC2626', bg:'rgba(220,38,38,0.12)',  border:'rgba(220,38,38,0.35)'},
     'worksheet_builder':{icon:'layout-template', label:'Worksheet Builder',color:'#059669', bg:'rgba(5,150,105,0.12)',  border:'rgba(5,150,105,0.35)'},
-    'ai_assistant':     {icon:'bot-message-square', label:'AI Assistant', color:'#2563EB', bg:'rgba(37,99,235,0.12)',  border:'rgba(37,99,235,0.35)'},
+    'ai_assistant':     {icon:'bot-message-square', label:'NIRA Chat', color:'#2563EB', bg:'rgba(37,99,235,0.12)',  border:'rgba(37,99,235,0.35)'},
     'general':          {icon:'zap',             label:'General',          color:'#6B7280', bg:'rgba(107,114,128,0.12)',border:'rgba(107,114,128,0.35)'},
   };
   grid.innerHTML = data.map(r=>{
