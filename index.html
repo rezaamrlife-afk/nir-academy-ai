@@ -3580,6 +3580,13 @@ html.light .rp-btn.copied { color: #059669 !important; }
   .nira-aside-t{font-family:'Cinzel',serif;font-size:11px;color:var(--gold);letter-spacing:2px;text-transform:uppercase}
   .nira-aside .ast-clear-btn{text-align:left;width:100%}
 }
+
+/* NIRA: mode cards look clickable */
+.ast-mode-btn{opacity:1;border-color:var(--bdr2);cursor:pointer;transition:transform .2s,border-color .2s,background .2s,box-shadow .2s}
+.ast-mode-btn::after{content:'Start →';margin-top:4px;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--gold)}
+.ast-mode-btn:hover{border-color:var(--gold);background:var(--bg4);transform:translateY(-2px);box-shadow:0 6px 18px var(--gold-glow)}
+.ast-mode-btn:active{transform:translateY(0)}
+@media(prefers-reduced-motion:reduce){.ast-mode-btn{transition:none}.ast-mode-btn:hover{transform:none}}
 </style>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
