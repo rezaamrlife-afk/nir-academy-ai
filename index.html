@@ -3538,6 +3538,48 @@ html.light .btn-gen .btn-progress { background: rgba(255,255,255,.7); }
   transition: color .2s, transform .2s;
 }
 html.light .rp-btn.copied { color: #059669 !important; }
+
+/* NIRA Chat additions */
+.nira-intro{margin:.5rem 0 1rem}
+.nira-intro-sub{font-family:'Cinzel',serif;color:var(--gold);font-size:15px;letter-spacing:1px}
+.nira-intro-txt{color:var(--muted);font-size:13px;margin:.3rem 0 .9rem}
+.nira-cats{display:grid;grid-template-columns:1fr;gap:8px}
+.nira-cat{display:flex;flex-direction:column;gap:2px;background:var(--bg2);border:1px solid var(--bdr);border-radius:var(--r);padding:10px 12px}
+.nira-cat i,.nira-cat svg{color:var(--gold);width:18px;height:18px}
+.nira-cat b{font-size:13px;color:var(--text)}
+.nira-cat span{font-size:11px;color:var(--muted);line-height:1.4}
+@media(min-width:600px){.nira-cats{grid-template-columns:repeat(2,1fr)}}
+@media(min-width:1024px){.nira-cats{grid-template-columns:repeat(3,1fr)}}
+#page-assistant .ast-modes-4{grid-template-columns:1fr}
+@media(min-width:600px){#page-assistant .ast-modes-4{grid-template-columns:repeat(2,1fr)}}
+@media(min-width:1024px){#page-assistant .ast-modes-4{grid-template-columns:repeat(4,1fr)}}
+.ast-mode-btn{min-height:44px}
+.ast-conv-header{flex-wrap:wrap;gap:8px}
+.ast-conv-actions{display:flex;flex-wrap:wrap;gap:6px}
+.ast-clear-btn{min-height:44px;padding:0 12px}
+.ast-msg-assistant{align-items:flex-start}
+.ast-msg-assistant .ast-bubble{background:var(--bg4);color:var(--text);border:1px solid var(--bdr)}
+.ast-bubble{max-width:min(80%,720px);overflow-wrap:anywhere}
+@media(max-width:600px){.ast-bubble{max-width:92%}}
+.ast-history{max-height:min(60vh,520px)}
+.ast-suggest{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px}
+.ast-sug{min-height:44px;background:var(--bg3);border:1px solid var(--bdr);border-radius:20px;color:var(--text);font-size:12px;padding:0 14px}
+.ast-sug:hover{border-color:var(--gold);color:var(--gold)}
+.ast-input-row{position:sticky;bottom:var(--safe-bottom);background:var(--bg);padding:8px 0}
+.ast-input,.ast-send-btn{min-height:44px}
+.ast-input{font-size:16px}
+.nira-note{font-size:11px;color:var(--dim);margin-top:6px}
+#ast-bridge-modal .ast-bridge-box{max-height:90vh;overflow-y:auto}
+
+.ast-bridge-why{font-size:12px;color:var(--muted);line-height:1.5;margin:-4px 0 10px}
+.nira-aside{display:none}
+@media(min-width:1280px){
+  #ast-panel[style*="block"]{display:grid!important;grid-template-columns:minmax(0,1fr) 240px;column-gap:20px;align-items:start}
+  #ast-panel>*{grid-column:1}
+  #ast-panel>.nira-aside{grid-column:2;grid-row:1/span 8;display:flex;flex-direction:column;gap:8px;position:sticky;top:76px;background:var(--bg2);border:1px solid var(--bdr);border-radius:var(--r);padding:12px}
+  .nira-aside-t{font-family:'Cinzel',serif;font-size:11px;color:var(--gold);letter-spacing:2px;text-transform:uppercase}
+  .nira-aside .ast-clear-btn{text-align:left;width:100%}
+}
 </style>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -4191,6 +4233,7 @@ function dismissSessionBanner() {
   <div class="ast-bridge-box">
     <div class="ast-bridge-title">Send to Tool</div>
     <div class="ast-bridge-dest" id="ast-bridge-dest"></div>
+    <div class="ast-bridge-why" id="ast-bridge-why"></div>
     <div class="ast-bridge-row">
       <div class="ast-bridge-label">Topic / Context</div>
       <input type="text" id="ast-bridge-topic" class="ast-bridge-input" placeholder="e.g. Present Perfect, IELTS Task 2, Classroom management…" />
@@ -5176,26 +5219,45 @@ function dismissSessionBanner() {
 <div id="page-assistant" class="page">
   <div class="ph">
     <span class="ph-ey">✦ Tab 7 · Pedagogical AI Engine</span>
-    <h1>AI <span>Assistant</span></h1>
+    <h1>NIRA <span>Chat</span></h1>
     <p>Select your role to begin. Your context stays locked until you choose to switch.</p>
   </div>
 
-  <!-- MODE SELECTOR -->
-  <div id="ast-mode-selector" class="ast-modes">
+  <!-- NIRA INTRO -->
+  <section class="nira-intro" id="nira-intro">
+    <p class="nira-intro-sub">Your AI Teaching Partner</p>
+    <p class="nira-intro-txt">NIRA Chat helps with ELT, teaching, learning and open conversation — pick a role below, or just start chatting.</p>
+    <div class="nira-cats">
+      <div class="nira-cat"><i data-lucide="clipboard-list"></i><b>Lesson Planning &amp; Teaching</b><span>PPP, TBL, ESA lesson ideas</span></div>
+      <div class="nira-cat"><i data-lucide="file-text"></i><b>Teaching Materials</b><span>Worksheets, activities, handouts</span></div>
+      <div class="nira-cat"><i data-lucide="award"></i><b>IELTS &amp; Exam Prep</b><span>IELTS, TOEFL, PTE practice</span></div>
+      <div class="nira-cat"><i data-lucide="book-marked"></i><b>Grammar &amp; Vocabulary</b><span>Clear explanations and examples</span></div>
+      <div class="nira-cat"><i data-lucide="pen-line"></i><b>Writing &amp; Error Correction</b><span>Feedback on student writing</span></div>
+      <div class="nira-cat"><i data-lucide="life-buoy"></i><b>Classroom Problem-Solving</b><span>Engagement and rescue ideas</span></div>
+    </div>
+  </section>
+
+  <!-- MODE SELECTOR (4 modes) -->
+  <div id="ast-mode-selector" class="ast-modes ast-modes-4" role="group" aria-label="Choose a role">
     <button class="ast-mode-btn" id="ast-btn-teacher" onclick="astSelectMode('teacher')">
       <span class="ast-mode-icon"><i data-lucide="graduation-cap"></i></span>
       <span class="ast-mode-name" id="ast-mode-name-teacher">Teacher Mode</span>
-      <span class="ast-mode-desc" id="ast-mode-desc-teacher">Lesson design · Pedagogy · Classroom</span>
+      <span class="ast-mode-desc" id="ast-mode-desc-teacher">For teachers: lesson design · pedagogy · assessment</span>
     </button>
     <button class="ast-mode-btn" id="ast-btn-student" onclick="astSelectMode('student')">
       <span class="ast-mode-icon"><i data-lucide="book-marked"></i></span>
       <span class="ast-mode-name" id="ast-mode-name-student">Student Mode</span>
-      <span class="ast-mode-desc" id="ast-mode-desc-student">IELTS · TOEFL · PTE · General English</span>
+      <span class="ast-mode-desc" id="ast-mode-desc-student">For learners: IELTS · TOEFL · PTE · grammar · writing</span>
     </button>
     <button class="ast-mode-btn" id="ast-btn-kids" onclick="astSelectMode('kids')">
       <span class="ast-mode-icon"><i data-lucide="star"></i></span>
       <span class="ast-mode-name" id="ast-mode-name-kids">Kids Mode</span>
-      <span class="ast-mode-desc" id="ast-mode-desc-kids">Games · Stories · Visual · Rewards</span>
+      <span class="ast-mode-desc" id="ast-mode-desc-kids">For young learners: games · stories · simple explanations</span>
+    </button>
+    <button class="ast-mode-btn" id="ast-btn-free" onclick="astSelectMode('free')">
+      <span class="ast-mode-icon"><i data-lucide="message-circle"></i></span>
+      <span class="ast-mode-name" id="ast-mode-name-free">Free Chat</span>
+      <span class="ast-mode-desc" id="ast-mode-desc-free">Open conversation · no goal needed</span>
     </button>
   </div>
 
@@ -5230,14 +5292,29 @@ function dismissSessionBanner() {
     <!-- CONVERSATION AREA -->
     <div class="ast-conv-header">
       <div id="ast-context-label" class="ast-context-label"></div>
-      <button class="ast-clear-btn" id="ast-clear-btn" onclick="astClearConversation()" title="Clear conversation">🗑 Clear</button>
+      <div class="ast-conv-actions">
+        <button class="ast-clear-btn" onclick="astNewConversation()">＋ New</button>
+        <button class="ast-clear-btn" id="ast-clear-btn" onclick="astClearConversation()" title="Clear conversation">🗑 Clear</button>
+        <button class="ast-clear-btn" onclick="go('history')">History</button>
+        <button class="ast-clear-btn" onclick="go('saved')">Workspace</button>
+      </div>
     </div>
     <div id="ast-history"  class="ast-history"></div>
     <div class="ast-input-row">
       <textarea id="ast-input" class="ast-input" placeholder="Ask anything within your current mode..." rows="3"></textarea>
       <button class="ast-send-btn" id="ast-send" onclick="astSend()">✦ Send</button>
     </div>
-    <div id="ast-thinking" class="ast-thinking" style="display:none">✦ Thinking…</div>
+    <div id="ast-thinking" class="ast-thinking" style="display:none" role="status" aria-live="polite">✦ Thinking…</div>
+    <p class="nira-note" role="note">Review AI-generated teaching content before classroom use. Save useful outputs via “Use in Tool” → Workspace.</p>
+    <aside class="nira-aside" aria-label="History and tools">
+      <div class="nira-aside-t">Tools &amp; History</div>
+      <button class="ast-clear-btn" onclick="astBridgeOpen('lesson')">📋 Lesson Planner</button>
+      <button class="ast-clear-btn" onclick="astBridgeOpen('worksheet')">📄 Worksheet Builder</button>
+      <button class="ast-clear-btn" onclick="astBridgeOpen('error')">✅ Error Correction</button>
+      <button class="ast-clear-btn" onclick="go('history')">History</button>
+      <button class="ast-clear-btn" onclick="go('saved')">Workspace</button>
+      <p class="nira-note">Tool buttons open a review step first — nothing is sent until you confirm.</p>
+    </aside>
 
   </div>
 </div>
@@ -7116,6 +7193,7 @@ window.A = {
 
 // ── SUB-MODE DEFINITIONS ──
 const AST_SUBMODES = {
+  free: [],
   teacher: [
     { id:'lesson-delivery',      label:'Lesson Delivery',     langKey:'ast_t_lesson',
       details: ['PPP','TBL','ESA'] },
@@ -7153,6 +7231,7 @@ const AST_SUBMODES = {
 // ── GLOBAL FEATURE RULES per Mode ──
 // true=active, false=disabled
 const AST_GLOBAL_RULES = {
+  free: { rescue:false, simulate:false, style:false, difficulty:false, fix:false },
   teacher: { rescue:true,  simulate:true,  style:true,  difficulty:true, fix:true  },
   student: { rescue:false, simulate:true,  style:false, difficulty:true, fix:false },
   kids:    { rescue:true,  simulate:true,  style:false, difficulty:true, fix:false }
@@ -7160,6 +7239,7 @@ const AST_GLOBAL_RULES = {
 
 // ── MODE LABELS ──
 const AST_MODE_META = {
+  free: { icon:'💬', name:'Free Chat' },
   teacher: { icon:'👨‍🏫', name:'Teacher Mode' },
   student: { icon:'🎓', name:'Student Mode'  },
   kids:    { icon:'👶', name:'Kids Mode'     }
@@ -7174,6 +7254,7 @@ function astSelectMode(mode) {
 
   // Mode-specific placeholder
   var placeholders = {
+    free: 'Ask anything — teaching, English, or just chat…',
     teacher: 'Describe your lesson, classroom situation, or teaching challenge…',
     student: 'Share your practice task, writing challenge, or exam target…',
     kids:    'Tell me what game, story, or activity you’d like to try…'
@@ -7182,7 +7263,7 @@ function astSelectMode(mode) {
   if (input) input.placeholder = placeholders[mode] || 'Ask anything within your current mode…';
 
   // Update mode buttons
-  ['teacher','student','kids'].forEach(function(m) {
+  ['teacher','student','kids','free'].forEach(function(m) {
     var btn = document.getElementById('ast-btn-' + m);
     if (btn) btn.classList.toggle('active', m === mode);
   });
@@ -7211,6 +7292,7 @@ function astSelectMode(mode) {
   // Clear conversation UI
   astClearHistory();   // also shows empty state
   astUpdateContextLabel();
+  astToggleFreeUI(mode);
 }
 
 // ── RESET MODE (go back to selector) ──
@@ -7227,7 +7309,7 @@ function astResetMode() {
   var sel = document.getElementById('ast-mode-selector');
   if (sel) sel.style.display = 'grid';
 
-  ['teacher','student','kids'].forEach(function(m) {
+  ['teacher','student','kids','free'].forEach(function(m) {
     var btn = document.getElementById('ast-btn-' + m);
     if (btn) btn.classList.remove('active');
   });
@@ -7440,6 +7522,7 @@ function astBuildSystemPrompt() {
   var sub2    = parts[1] ? parts[1].trim() : '';
 
   var base = {
+    free: 'You are NIRA, a friendly and knowledgeable AI teaching partner. Hold natural, open-ended conversations. You are especially strong in English language teaching and learning, but you may discuss any topic helpfully and honestly.',
     teacher: 'You are an expert TESOL/CELTA-trained teaching assistant for professional English teachers. Maintain a peer-level, professional tone at all times. Only respond within the scope of English language teaching and pedagogy.',
     student: 'You are a focused exam preparation assistant for English learners. Provide structured, accurate, exam-specific responses. Only respond within the scope of English language learning and exam practice.',
     kids:    'You are a friendly, encouraging learning companion for young English learners. Use simple language, very short sentences, and a warm playful tone. Keep all content fun, safe, and age-appropriate.'
@@ -7622,6 +7705,12 @@ function astRenderMessage(role, text) {
       dests = [
         ['📄 → Worksheet Builder', 'worksheet']
       ];
+    } else if (mode === 'free') {
+      dests = [
+        ['📋 → Lesson Planner', 'lesson'],
+        ['📄 → Worksheet Builder', 'worksheet'],
+        ['✅ → Error Correction', 'error']
+      ];
     }
     dests.forEach(function(d) {
       var btn = document.createElement('button');
@@ -7658,6 +7747,7 @@ function astShowEmptyState() {
   var history = document.getElementById('ast-history');
   if (!history || !window.A.mode) return;
   var states = {
+    free: { icon:'💬', title:'Free Chat ready.', hint:'Try: “Explain the difference between affect and effect”' },
     teacher: {
       icon: '👨‍🏫',
       title: 'Teacher Mode ready.',
@@ -7715,6 +7805,67 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
 });
+
+// ── NIRA additions (additive only) ──
+function astToggleFreeUI(mode) {
+  var isFree = mode === 'free';
+  var sub = document.getElementById('ast-submodes');
+  var glob = document.querySelector('#page-assistant .ast-global-layer');
+  if (sub)  sub.style.display  = isFree ? 'none' : '';
+  if (glob) glob.style.display = isFree ? 'none' : '';
+  var intro = document.getElementById('nira-intro');
+  if (intro) intro.style.display = mode ? 'none' : '';
+  astRenderSuggestions(mode);
+}
+function astNewConversation() {
+  astClearConversation();
+  var i = document.getElementById('ast-input'); if (i) i.focus();
+}
+var AST_SUGGEST = {
+  teacher:['Create a PPP lesson for B1 on travel','Ideas to re-engage a quiet class'],
+  student:['Give me an IELTS Task 2 prompt','Check my paragraph for errors'],
+  kids:   ['Let’s play an animal vocabulary game','Tell me a short story'],
+  free:   ['Explain present perfect simply','Help me plan my week']
+};
+function astRenderSuggestions(mode) {
+  var host = document.getElementById('ast-suggest');
+  if (!host) {
+    host = document.createElement('div');
+    host.id = 'ast-suggest'; host.className = 'ast-suggest';
+    var row = document.querySelector('#page-assistant .ast-input-row');
+    if (row) row.parentNode.insertBefore(host, row);
+  }
+  host.innerHTML = '';
+  (AST_SUGGEST[mode] || []).forEach(function(t){
+    var b = document.createElement('button');
+    b.type = 'button'; b.className = 'ast-sug'; b.textContent = t;
+    b.onclick = function(){ var i=document.getElementById('ast-input'); i.value=t; i.focus(); };
+    host.appendChild(b);
+  });
+}
+(function(){
+  var _reset = window.astResetMode;
+  window.astResetMode = function(){
+    _reset();
+    var intro = document.getElementById('nira-intro'); if (intro) intro.style.display = '';
+    var s = document.getElementById('ast-suggest'); if (s) s.innerHTML = '';
+  };
+})();
+
+// ── NIRA: bridge reason (wraps existing astBridgeOpen, no logic changed) ──
+(function(){
+  var _open = window.astBridgeOpen;
+  var WHY = {
+    lesson:    'Recommended: turn this reply into a structured lesson plan. Topic and level below will be copied into the Lesson Planner.',
+    worksheet: 'Recommended: build a practice worksheet from this reply. Topic and level below will be copied into the Worksheet Builder.',
+    error:     'Recommended: analyse student writing with this context. Level below will be copied into Error Correction.'
+  };
+  window.astBridgeOpen = function(dest){
+    _open(dest);
+    var w = document.getElementById('ast-bridge-why');
+    if (w) w.textContent = (WHY[dest] || '') + ' Review and edit, then confirm — nothing opens until you press the button.';
+  };
+})();
 </script>
 
 
