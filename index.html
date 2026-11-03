@@ -3590,10 +3590,12 @@ html.light .rp-btn.copied { color: #059669 !important; }
 }
 /* NIRA: sticky composer — let the page (not <main>) be the scroll container on this page only */
 main:has(#page-assistant.active){overflow:clip}
-/* NIRA: 44px touch targets on touch-size screens */
-@media(max-width:768px){
-  #page-assistant .ast-switch-btn,#page-assistant .ast-sub-btn,#page-assistant .ast-detail-pill,#page-assistant .ast-global-btn,#page-assistant .ast-use-btn{min-height:44px;min-width:44px}
-}
+/* NIRA: 44px minimum targets on all screen sizes */
+#page-assistant .ast-switch-btn,#page-assistant .ast-sub-btn,#page-assistant .ast-detail-pill,#page-assistant .ast-global-btn,#page-assistant .ast-use-btn{min-height:44px;min-width:44px}
+/* NIRA: side margins aligned with the page header padding */
+#page-assistant>:not(.ph){margin-left:16px;margin-right:16px}
+@media(min-width:601px){#page-assistant>:not(.ph){margin-left:22.4px;margin-right:22.4px}}
+@media(min-width:769px){#page-assistant>:not(.ph){margin-left:47.6px;margin-right:47.6px}}
 
 /* NIRA: mode cards look clickable */
 .ast-mode-btn{opacity:1;border-color:var(--bdr2);cursor:pointer;transition:transform .2s,border-color .2s,background .2s,box-shadow .2s}
