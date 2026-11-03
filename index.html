@@ -3565,20 +3565,34 @@ html.light .rp-btn.copied { color: #059669 !important; }
 .ast-suggest{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px}
 .ast-sug{min-height:44px;background:var(--bg3);border:1px solid var(--bdr);border-radius:20px;color:var(--text);font-size:12px;padding:0 14px}
 .ast-sug:hover{border-color:var(--gold);color:var(--gold)}
-.ast-input-row{position:sticky;bottom:var(--safe-bottom);background:var(--bg);padding:8px 0}
+.ast-input-row{position:sticky;bottom:var(--nira-nav-h,var(--safe-bottom));background:var(--bg);padding:8px 0;z-index:5}
 .ast-input,.ast-send-btn{min-height:44px}
 .ast-input{font-size:16px}
 .nira-note{font-size:11px;color:var(--dim);margin-top:6px}
 #ast-bridge-modal .ast-bridge-box{max-height:90vh;overflow-y:auto}
 
 .ast-bridge-why{font-size:12px;color:var(--muted);line-height:1.5;margin:-4px 0 10px}
-.nira-aside{display:none}
+.nira-aside{display:block;margin-top:10px;background:var(--bg2);border:1px solid var(--bdr);border-radius:var(--r)}
+.nira-aside summary{list-style:none;min-height:44px;display:flex;align-items:center;gap:8px;padding:0 12px;cursor:pointer;font-family:'Cinzel',serif;font-size:11px;color:var(--gold);letter-spacing:2px;text-transform:uppercase}
+.nira-aside summary::-webkit-details-marker{display:none}
+.nira-aside summary::after{content:'＋';margin-left:auto;font-size:14px}
+.nira-aside[open] summary::after{content:'−'}
+.nira-aside-body{display:flex;flex-wrap:wrap;gap:8px;padding:0 12px 12px}
+.nira-aside-body .nira-note{flex-basis:100%;margin-top:0}
 @media(min-width:1280px){
   #ast-panel[style*="block"]{display:grid!important;grid-template-columns:minmax(0,1fr) 240px;column-gap:20px;align-items:start}
   #ast-panel>*{grid-column:1}
-  #ast-panel>.nira-aside{grid-column:2;grid-row:1/span 8;display:flex;flex-direction:column;gap:8px;position:sticky;top:76px;background:var(--bg2);border:1px solid var(--bdr);border-radius:var(--r);padding:12px}
-  .nira-aside-t{font-family:'Cinzel',serif;font-size:11px;color:var(--gold);letter-spacing:2px;text-transform:uppercase}
+  #ast-panel>.nira-aside{grid-column:2;grid-row:1/span 8;position:sticky;top:76px;margin-top:0}
+  .nira-aside summary{pointer-events:none;cursor:default}
+  .nira-aside summary::after{display:none}
+  .nira-aside-body{flex-direction:column;flex-wrap:nowrap}
   .nira-aside .ast-clear-btn{text-align:left;width:100%}
+}
+/* NIRA: sticky composer — let the page (not <main>) be the scroll container on this page only */
+main:has(#page-assistant.active){overflow:clip}
+/* NIRA: 44px touch targets on touch-size screens */
+@media(max-width:768px){
+  #page-assistant .ast-switch-btn,#page-assistant .ast-sub-btn,#page-assistant .ast-detail-pill,#page-assistant .ast-global-btn,#page-assistant .ast-use-btn{min-height:44px;min-width:44px}
 }
 
 /* NIRA: mode cards look clickable */
@@ -5233,7 +5247,7 @@ function dismissSessionBanner() {
   <!-- NIRA INTRO -->
   <section class="nira-intro" id="nira-intro">
     <p class="nira-intro-sub">Your AI Teaching Partner</p>
-    <p class="nira-intro-txt">NIRA Chat helps with ELT, teaching, learning and open conversation — pick a role below, or just start chatting.</p>
+    <p class="nira-intro-txt">NIRA Chat supports English language teachers and learners with lesson planning, exam preparation, grammar and vocabulary guidance, writing feedback and classroom problem-solving — or simply a good conversation. Choose a role to tailor your session, or start Free Chat for open-ended questions.</p>
     <div class="nira-cats">
       <div class="nira-cat"><i data-lucide="clipboard-list"></i><b>Lesson Planning &amp; Teaching</b><span>PPP, TBL, ESA lesson ideas</span></div>
       <div class="nira-cat"><i data-lucide="file-text"></i><b>Teaching Materials</b><span>Worksheets, activities, handouts</span></div>
@@ -5302,8 +5316,6 @@ function dismissSessionBanner() {
       <div class="ast-conv-actions">
         <button class="ast-clear-btn" onclick="astNewConversation()">＋ New</button>
         <button class="ast-clear-btn" id="ast-clear-btn" onclick="astClearConversation()" title="Clear conversation">🗑 Clear</button>
-        <button class="ast-clear-btn" onclick="go('history')">History</button>
-        <button class="ast-clear-btn" onclick="go('saved')">Workspace</button>
       </div>
     </div>
     <div id="ast-history"  class="ast-history"></div>
@@ -5313,15 +5325,17 @@ function dismissSessionBanner() {
     </div>
     <div id="ast-thinking" class="ast-thinking" style="display:none" role="status" aria-live="polite">✦ Thinking…</div>
     <p class="nira-note" role="note">Review AI-generated teaching content before classroom use. Save useful outputs via “Use in Tool” → Workspace.</p>
-    <aside class="nira-aside" aria-label="History and tools">
-      <div class="nira-aside-t">Tools &amp; History</div>
-      <button class="ast-clear-btn" onclick="astBridgeOpen('lesson')">📋 Lesson Planner</button>
-      <button class="ast-clear-btn" onclick="astBridgeOpen('worksheet')">📄 Worksheet Builder</button>
-      <button class="ast-clear-btn" onclick="astBridgeOpen('error')">✅ Error Correction</button>
-      <button class="ast-clear-btn" onclick="go('history')">History</button>
-      <button class="ast-clear-btn" onclick="go('saved')">Workspace</button>
-      <p class="nira-note">Tool buttons open a review step first — nothing is sent until you confirm.</p>
-    </aside>
+    <details class="nira-aside" id="nira-aside" aria-label="Tools and history">
+      <summary>Tools &amp; History</summary>
+      <div class="nira-aside-body">
+        <button class="ast-clear-btn" onclick="astBridgeOpen('lesson')">📋 Lesson Planner</button>
+        <button class="ast-clear-btn" onclick="astBridgeOpen('worksheet')">📄 Worksheet Builder</button>
+        <button class="ast-clear-btn" onclick="astBridgeOpen('error')">✅ Error Correction</button>
+        <button class="ast-clear-btn" onclick="go('history')">History</button>
+        <button class="ast-clear-btn" onclick="go('saved')">Workspace</button>
+        <p class="nira-note">Tool buttons open a review step first — nothing is sent until you confirm.</p>
+      </div>
+    </details>
 
   </div>
 </div>
@@ -7871,6 +7885,38 @@ function astRenderSuggestions(mode) {
     _open(dest);
     var w = document.getElementById('ast-bridge-why');
     if (w) w.textContent = (WHY[dest] || '') + ' Review and edit, then confirm — nothing opens until you press the button.';
+  };
+})();
+
+// ── NIRA: keep sticky composer above the mobile bottom nav ──
+(function(){
+  function setNavH(){
+    var n=document.getElementById('mob-nav');
+    var h=(n && getComputedStyle(n).display!=='none') ? n.offsetHeight : 0;
+    document.documentElement.style.setProperty('--nira-nav-h', h ? h+'px' : 'var(--safe-bottom)');
+  }
+  setNavH();
+  window.addEventListener('resize', setNavH);
+  window.addEventListener('orientationchange', setNavH);
+  window.addEventListener('load', setNavH);
+})();
+// ── NIRA: collapsible Tools & History (open + fixed on desktop, collapsed on smaller screens) ──
+(function(){
+  var mq = window.matchMedia('(min-width:1280px)');
+  function sync(){ var d=document.getElementById('nira-aside'); if(d) d.open = mq.matches; }
+  sync();
+  if (mq.addEventListener) mq.addEventListener('change', sync); else if (mq.addListener) mq.addListener(sync);
+})();
+// ── NIRA: no "Use in Tool" bar on error/limit notices ──
+(function(){
+  var _r = window.astRenderMessage;
+  var ERR = ['Daily limit reached.','Please sign in to continue.','Connection error.','I could not generate a response.'];
+  window.astRenderMessage = function(role, text){
+    _r(role, text);
+    if (role === 'assistant' && ERR.some(function(e){ return String(text).indexOf(e) === 0; })) {
+      var bars = document.querySelectorAll('#ast-history .ast-use-bar');
+      if (bars.length) bars[bars.length-1].remove();
+    }
   };
 })();
 </script>
