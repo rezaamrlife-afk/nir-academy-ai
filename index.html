@@ -7754,6 +7754,20 @@ function astRenderMessage(role, text) {
       bar.appendChild(btn);
     });
     if (dests.length > 0) bubble.appendChild(bar);
+
+    // Copy button
+    var copyBtn = document.createElement('button');
+    copyBtn.className = 'ast-use-btn ast-copy-btn';
+    copyBtn.textContent = 'Copy';
+    copyBtn.style.cssText = 'margin-top:6px;';
+    copyBtn.onclick = function() {
+      var plain = bubble.innerText.replace(/^Copy$/m,'').trim();
+      navigator.clipboard.writeText(plain).then(function() {
+        copyBtn.textContent = 'Copied!';
+        setTimeout(function(){ copyBtn.textContent = 'Copy'; }, 1800);
+      });
+    };
+    bubble.appendChild(copyBtn);
   }
   msg.appendChild(label);
   msg.appendChild(bubble);
@@ -7994,6 +8008,19 @@ function _niraChatRenderHint(hint, topic) {
   bar.appendChild(btn);
 
   bubble.appendChild(bar);
+
+  var copyBtn2 = document.createElement('button');
+  copyBtn2.className = 'ast-use-btn ast-copy-btn';
+  copyBtn2.textContent = 'Copy';
+  copyBtn2.style.cssText = 'margin-top:6px;';
+  copyBtn2.onclick = function() {
+    navigator.clipboard.writeText(hint.reply).then(function() {
+      copyBtn2.textContent = 'Copied!';
+      setTimeout(function(){ copyBtn2.textContent = 'Copy'; }, 1800);
+    });
+  };
+  bubble.appendChild(copyBtn2);
+
   msg.appendChild(label);
   msg.appendChild(bubble);
   history.appendChild(msg);
