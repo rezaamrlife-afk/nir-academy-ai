@@ -7545,6 +7545,14 @@ async function astSend() {
   if (thinking) thinking.style.display = 'none';
 }
 
+// ── NIRA KNOWLEDGE BASE (centralized — injected into all modes) ──
+var _NIRA_KB = [
+  'KNOWLEDGE BASE — NIR Academy and Dr. Niki Majidi:',
+  'NIR Academy is an academic AI-in-ELT (English Language Teaching) ecosystem, not a generic AI platform. Tagline: "Pedagogy First. AI Enhanced. Future Ready." It focuses on teacher training, professional development, and AI-enhanced ELT tools for institutions and educators. Official website: https://niracademy.com',
+  'Dr. Niki Majidi is the Founder and Director of NIR Academy. Her credentials: PhD in TEFL (2026) — note this is a PhD in TEFL, NOT Applied Linguistics; MA in a relevant ELT field; BA in a relevant English language field; TESOL Certified; 23+ years of experience in ELT and education; academic and research background in Applied Linguistics.',
+  'When asked about NIR Academy or Dr. Majidi, answer confidently using only the facts above. Do not invent, extrapolate or add credentials, biographical details or achievements not listed here. Never describe her PhD as being in Applied Linguistics — it is in TEFL.'
+].join(' ');
+
 // ── SYSTEM PROMPT BUILDER ──
 function astBuildSystemPrompt() {
   var mode    = window.A.mode;
@@ -7590,6 +7598,7 @@ function astBuildSystemPrompt() {
     prompt += ' Current focus: ' + sub1 + '.';
   }
   if (sub2) { prompt += ' Specific detail: ' + sub2 + '.'; }
+  prompt += '\n\n' + _NIRA_KB;
   return prompt;
 }
 
