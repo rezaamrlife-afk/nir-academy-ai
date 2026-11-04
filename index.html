@@ -1591,7 +1591,7 @@ html.light .rm:hover{box-shadow:0 6px 20px rgba(0,0,0,.12);}
   .foot-inner{grid-template-columns:1fr}
   .tb-ghost{display:none}
   #mob-nav{display:block}
-  #shell{padding-bottom:70px}
+  #shell{padding-bottom:calc(var(--mob-nav-h, 70px) + var(--safe-bottom, 0px))}
   .ec-opts{grid-template-columns:1fr}
   .selg{grid-template-columns:1fr}
   .ob-steps{grid-template-columns:1fr}
@@ -1730,7 +1730,11 @@ html.light .ast-bridge-preview{background:#f4f7fb;border-color:#D9E5EE;color:#6B
 }
 .ast-send-btn:hover{background:var(--gold-l);}
 .ast-send-btn:disabled{opacity:.5;cursor:not-allowed;}
-.ast-thinking{font-size:12px;color:#AAAAAA;padding:4px 2px;animation:pulse 1.5s infinite;}
+.ast-thinking{font-size:12px;color:#AAAAAA;padding:4px 8px;display:flex;align-items:center;gap:4px;}
+.ast-thinking-dot{width:6px;height:6px;border-radius:50%;background:#AAAAAA;animation:ast-dot-bounce 1.2s infinite ease-in-out;}
+.ast-thinking-dot:nth-child(2){animation-delay:.2s;}
+.ast-thinking-dot:nth-child(3){animation-delay:.4s;}
+@keyframes ast-dot-bounce{0%,80%,100%{transform:scale(0.6);opacity:.4}40%{transform:scale(1);opacity:1}}
 @keyframes pulse{0%,100%{opacity:.4}50%{opacity:1}}
 @media(max-width:600px){
   .ast-modes{grid-template-columns:1fr;}
@@ -1882,6 +1886,11 @@ html.light .ast-bridge-preview{background:#f4f7fb;border-color:#D9E5EE;color:#6B
   line-height: 1;
 }
 .tb-theme-btn:hover { border-color: var(--gold); }
+/* Mobile-only theme toggle in topbar */
+.tb-theme-mob { display: none; }
+@media (max-width: 600px) {
+  .tb-theme-mob { display: inline-flex; align-items: center; justify-content: center; padding: 6px 8px; min-width: 36px; min-height: 36px; font-size: 16px; }
+}
 
 /* ── Light Mode Variables ── */
 html.light {
@@ -3566,7 +3575,7 @@ html.light .rp-btn.copied { color: #059669 !important; }
 .ast-msg-assistant .ast-bubble{background:var(--bg4);color:var(--text);border:1px solid var(--bdr)}
 .ast-bubble{max-width:min(80%,720px);overflow-wrap:anywhere}
 @media(max-width:600px){.ast-bubble{max-width:92%}}
-.ast-history{max-height:min(60vh,520px)}
+.ast-history{max-height:min(65vh,540px);flex:1 1 auto}
 .ast-suggest{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px}
 .ast-sug{min-height:44px;background:var(--bg3);border:1px solid var(--bdr);border-radius:20px;color:var(--text);font-size:12px;padding:0 14px}
 .ast-sug:hover{border-color:var(--gold);color:var(--gold)}
@@ -3594,7 +3603,7 @@ html.light .rp-btn.copied { color: #059669 !important; }
   .nira-aside .ast-clear-btn{text-align:left;width:100%}
 }
 /* NIRA: sticky composer — let the page (not <main>) be the scroll container on this page only */
-main:has(#page-assistant.active){overflow:clip}
+main:has(#page-assistant.active){overflow:hidden auto}
 /* NIRA: 44px minimum targets on all screen sizes */
 #page-assistant .ast-switch-btn,#page-assistant .ast-sub-btn,#page-assistant .ast-detail-pill,#page-assistant .ast-global-btn,#page-assistant .ast-use-btn{min-height:44px;min-width:44px}
 /* NIRA: side margins aligned with the page header padding */
@@ -3900,6 +3909,7 @@ html.light .profile-field .pf-val { background: #EEF4FF; border-color: #dde6f5; 
 
 /* AI assistant */
 html.light .ast-thinking { color: #6B7FA3; }
+html.light .ast-thinking-dot { background: #6B7FA3; }
 
 /* dim token fix */
 html.light .rp-foot, html.light .sb-lbl, html.light .shint, html.light .rc-time, html.light .rp-empty { color: #6B7FA3; }
@@ -3914,12 +3924,15 @@ html.light .rp-foot, html.light .sb-lbl, html.light .shint, html.light .rc-time,
   function applyTheme(theme) {
     var html = document.documentElement;
     var btn  = document.getElementById('theme-toggle');
+    var mobBtn = document.getElementById('tb-theme-mob-btn');
     if (theme === 'light') {
       html.classList.add('light');
       if (btn) { btn.setAttribute('data-lucide-btn','moon'); btn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>'; }
+      if (mobBtn) mobBtn.textContent = '☀️';
     } else {
       html.classList.remove('light');
       if (btn) { btn.setAttribute('data-lucide-btn','sun'); btn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>'; }
+      if (mobBtn) mobBtn.textContent = '🌙';
     }
   }
 
@@ -4443,6 +4456,7 @@ function dismissSessionBanner() {
 <div class="tb-actions">
     <button class="tb-ghost" onclick="go('dashboard')" id="tb-dashboard-btn">Dashboard</button>
     <button class="tb-solid" onclick="openAuth()" id="tb-signin-btn">Sign In / Join</button>
+    <button class="tb-theme-btn tb-theme-mob" onclick="toggleTheme()" id="tb-theme-mob-btn" title="Toggle Dark / Light" aria-label="Toggle theme">🌙</button>
   </div>
 </header>
 
@@ -5330,7 +5344,7 @@ function dismissSessionBanner() {
       <textarea id="ast-input" class="ast-input" placeholder="Ask anything within your current mode..." rows="3"></textarea>
       <button class="ast-send-btn" id="ast-send" onclick="astSend()">✦ Send</button>
     </div>
-    <div id="ast-thinking" class="ast-thinking" style="display:none" role="status" aria-live="polite">✦ Thinking…</div>
+    <div id="ast-thinking" class="ast-thinking" style="display:none" role="status" aria-live="polite"><span class="ast-thinking-dot"></span><span class="ast-thinking-dot"></span><span class="ast-thinking-dot"></span></div>
     <p class="nira-note" role="note">Review AI-generated teaching content before classroom use. Save useful outputs via “Use in Tool” → Workspace.</p>
     <details class="nira-aside" id="nira-aside" aria-label="Tools and history">
       <summary>Tools &amp; History</summary>
@@ -7933,7 +7947,9 @@ function astRenderSuggestions(mode) {
   function setNavH(){
     var n=document.getElementById('mob-nav');
     var h=(n && getComputedStyle(n).display!=='none') ? n.offsetHeight : 0;
-    document.documentElement.style.setProperty('--nira-nav-h', h ? h+'px' : 'var(--safe-bottom)');
+    var hpx = h ? h+'px' : '0px';
+    document.documentElement.style.setProperty('--nira-nav-h', h ? hpx : 'var(--safe-bottom)');
+    document.documentElement.style.setProperty('--mob-nav-h', hpx);
   }
   setNavH();
   window.addEventListener('resize', setNavH);
@@ -10071,7 +10087,7 @@ if(window.lucide){ lucide.createIcons(); } else { setTimeout(function(){ if(wind
 /* ── 3c. Bottom nav: ensure content doesn't hide behind nav ── */
 @media (max-width: 960px) {
   #shell {
-    padding-bottom: calc(70px + var(--safe-bottom, 0px));
+    padding-bottom: calc(var(--mob-nav-h, 70px) + var(--safe-bottom, 0px));
   }
 }
 
@@ -10414,6 +10430,33 @@ if(window.lucide){ lucide.createIcons(); } else { setTimeout(function(){ if(wind
   #ws-out .ws-fig-attr,
   #ws-out .ws-fig-attr a { color: #888; text-decoration: none; }
   #ws-out .ws-fig + * { clear: both; }
+}
+
+/* ── Small screen fixes: 320px–390px ── */
+@media (max-width: 390px) {
+  .content, .ph { padding: 1.2rem 1rem; }
+  .ph h1 { font-size: 1.3em; }
+  .mn-item .mi-lbl { font-size: 10px; letter-spacing: 0; }
+  .mn-item { padding: .3rem .2rem; }
+  .mn-grid { gap: 0; }
+  .tb-logo-txt .tn { font-size: 13px; }
+  .tb-logo-txt .ts { display: none; }
+  .fstrip { grid-template-columns: repeat(2,1fr); }
+  .sgrid { grid-template-columns: 1fr; }
+  .chip { font-size: 11px; padding: 5px 8px; }
+  .ast-bubble { max-width: 96%; }
+  .nira-cats { grid-template-columns: 1fr; }
+  #page-assistant .ast-modes-4 { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 360px) {
+  .tb-actions { gap: 4px; }
+  #tb-dashboard-btn { display: none; }
+  .tb-theme-mob { padding: 5px 6px; font-size: 14px; }
+}
+@media (max-width: 320px) {
+  #tb-signin-btn { font-size: 11px; padding: 5px 8px; }
+  .mn-item .mi-lbl { display: none; }
+  .mn-item { padding: .5rem; }
 }
 </style>
 
