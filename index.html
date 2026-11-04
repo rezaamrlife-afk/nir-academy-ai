@@ -3603,9 +3603,6 @@ main:has(#page-assistant.active){overflow:clip}
 .ast-mode-btn:hover{border-color:var(--gold);background:var(--bg4);transform:translateY(-2px);box-shadow:0 6px 18px var(--gold-glow)}
 .ast-mode-btn:active{transform:translateY(0)}
 @media(prefers-reduced-motion:reduce){.ast-mode-btn{transition:none}.ast-mode-btn:hover{transform:none}}
-
-.ast-sug-tool{display:flex;flex-wrap:wrap;align-items:center;gap:8px;max-width:min(80%,720px);margin-top:6px;padding:8px 10px;border:1px dashed var(--bdr2);border-radius:var(--r);font-size:12px;color:var(--muted)}
-@media(max-width:600px){.ast-sug-tool{max-width:92%}}
 </style>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -7013,7 +7010,7 @@ function openSavedInTool(id, tool) {
     }
     if (tool === 'Lesson Planner' && meta.level) {
       S.lpLevel = meta.level; setPillActive('lp-level', meta.level);
-      if (meta.focus) { S.wsFocus = meta.focus; setChipActive('lp-focus', meta.focus); }
+      if (meta.focus) { S.lpFocus = meta.focus; setChipActive('lp-focus', meta.focus); }
     }
     if (tool === 'IELTS Generator' && meta.level) {
       S.ieltBand = meta.level;
@@ -7884,9 +7881,7 @@ function astRenderSuggestions(mode) {
   var WHY = {
     lesson:    'Recommended: turn this reply into a structured lesson plan. Topic and level below will be copied into the Lesson Planner.',
     worksheet: 'Recommended: build a practice worksheet from this reply. Topic and level below will be copied into the Worksheet Builder.',
-    error:     'Recommended: analyse student writing with this context. Level below will be copied into Error Correction.',
-    ielts:     'Recommended: generate IELTS tasks with the IELTS Generator. The topic below will be copied over.',
-    generator: 'Recommended: build a ready-to-use AI prompt with the Prompt Generator. The topic below will be copied over.'
+    error:     'Recommended: analyse student writing with this context. Level below will be copied into Error Correction.'
   };
   window.astBridgeOpen = function(dest){
     _open(dest);
@@ -7906,82 +7901,6 @@ function astRenderSuggestions(mode) {
   window.addEventListener('resize', setNavH);
   window.addEventListener('orientationchange', setNavH);
   window.addEventListener('load', setNavH);
-})();
-// ── NIRA: contextual tool recommendations (reuses existing bridge modal + tools) ──
-(function(){
-  var TOOLS = {
-    ielts:     { label:'IELTS Generator',   page:'ielts',     field:'ielts-topic', msg:'Working on IELTS? The IELTS Generator can build exam-style tasks.' },
-    lesson:    { label:'Lesson Planner',    msg:'Planning a lesson? The Lesson Planner can turn this into a full plan.' },
-    worksheet: { label:'Worksheet Builder', msg:'Need practice material? The Worksheet Builder can create a worksheet.' },
-    error:     { label:'Error Correction',  msg:'Checking writing mistakes? Error Correction gives detailed feedback.' },
-    generator: { label:'Prompt Generator',  page:'generator', field:'topic-in', msg:'Creating a prompt? The Prompt Generator can build one for you.' }
-  };
-  var RULES = [
-    ['ielts',     /\bielts\b|band score/i],
-    ['error',     /(grammar|writing|spelling|essay)\s+(mistakes?|errors?)|error correction|(correct|check|proofread|mark)\s+(my|this|the|her|his|their|student)\s*('s)?\s*(essay|writing|paragraph|text|composition)|student writing/i],
-    ['worksheet', /worksheets?|handouts?|practice sheets?|exercise sheets?/i],
-    ['lesson',    /lesson plans?|plan (a|my|the|this) lesson|lesson (ideas?|stages?|framework)|\b(ppp|tbl)\b/i],
-    ['generator', /(create|write|make|build|generate|craft|need|design)\b.{0,30}\bprompts?\b|prompt generator/i]
-  ];
-  var ALLOWED = {
-    teacher: ['ielts','error','worksheet','lesson','generator'],
-    student: ['ielts','error'],
-    kids:    ['worksheet'],
-    free:    ['ielts','error','worksheet','lesson','generator']
-  };
-  var ERR = ['Daily limit reached.','Please sign in to continue.','Connection error.','I could not generate a response.'];
-  function resetShown(){ if (window.A) window.A.sugShown = {}; }
-  function lastUser(){ var h=(window.A&&window.A.history)||[]; for (var i=h.length-1;i>=0;i--) if (h[i].role==='user') return h[i].content; return ''; }
-
-  // reset "already suggested" memory with the conversation
-  ['astClearConversation','astSelectMode','astResetMode'].forEach(function(n){
-    var f = window[n]; if (typeof f !== 'function') return;
-    window[n] = function(){ resetShown(); return f.apply(this, arguments); };
-  });
-
-  // add suggestion card under an assistant reply (never inside the answer text)
-  var _render = window.astRenderMessage;
-  window.astRenderMessage = function(role, text){
-    _render(role, text);
-    if (role !== 'assistant' || !window.A || !window.A.mode) return;
-    if (ERR.some(function(e){ return String(text).indexOf(e) === 0; })) return;
-    var u = lastUser(); if (!u) return;
-    window.A.sugShown = window.A.sugShown || {};
-    var allowed = ALLOWED[window.A.mode] || [], pick = null;
-    for (var i=0;i<RULES.length;i++){
-      var k = RULES[i][0];
-      if (allowed.indexOf(k) > -1 && !window.A.sugShown[k] && RULES[i][1].test(u)) { pick = k; break; }
-    }
-    if (!pick) return;
-    window.A.sugShown[pick] = true;
-    var t = TOOLS[pick], hist = document.getElementById('ast-history'), msg = hist && hist.lastElementChild;
-    if (!msg) return;
-    var card = document.createElement('div'); card.className = 'ast-sug-tool'; card.setAttribute('role','note');
-    var span = document.createElement('span'); span.textContent = t.msg;
-    var b = document.createElement('button'); b.type='button'; b.className='ast-use-btn'; b.textContent = 'Open ' + t.label + ' →';
-    b.onclick = function(){ astBridgeOpen(pick); };
-    card.appendChild(span); card.appendChild(b); msg.appendChild(card);
-    hist.scrollTop = hist.scrollHeight;
-  };
-
-  // bridge modal: labels + confirm handling for the two extra tools (existing logic untouched for the others)
-  var _open = window.astBridgeOpen;
-  window.astBridgeOpen = function(dest){
-    _open(dest);
-    var extra = (dest==='ielts' || dest==='generator');
-    var d = document.getElementById('ast-bridge-dest'); if (extra && d) d.textContent = '→ ' + TOOLS[dest].label;
-    var lv = document.getElementById('ast-bridge-levels'); if (lv && lv.parentNode) lv.parentNode.style.display = extra ? 'none' : '';
-  };
-  var _conf = window.astBridgeConfirm;
-  window.astBridgeConfirm = function(){
-    var dest = window._astBridgeDest;
-    if (dest === 'ielts' || dest === 'generator') {
-      var topic = (document.getElementById('ast-bridge-topic').value || '').trim();
-      var t = TOOLS[dest];
-      if (topic) { S.topic = topic; var el = document.getElementById(t.field); if (el) { el.value = topic; el.dispatchEvent(new Event('input',{bubbles:true})); } }
-      astBridgeClose(); go(t.page);
-    } else { _conf(); }
-  };
 })();
 // ── NIRA: collapsible Tools & History (open + fixed on desktop, collapsed on smaller screens) ──
 (function(){
