@@ -7460,6 +7460,16 @@ async function astSend() {
   var userText = input.value.trim();
   if (!userText) return;
 
+  // Check for short topic-only tool hint
+  var _hint = _niraChatDetectHint(userText);
+  if (_hint) {
+    astRenderMessage('user', userText);
+    window.A.history.push({ role:'user', content: userText });
+    input.value = '';
+    _niraChatRenderHint(_hint, userText);
+    return;
+  }
+
   // Push user message
   window.A.history.push({ role:'user', content: userText });
   astRenderMessage('user', userText);
@@ -7546,8 +7556,8 @@ function astBuildSystemPrompt() {
 
   var base = {
     free:    'You are NIRA, a friendly and knowledgeable AI teaching partner. Engage in natural, open-ended conversation on any topic. Your strongest expertise is English language teaching and learning — including methodology, grammar, exam preparation, and classroom practice — but you can assist helpfully and honestly with any subject the user raises. Keep responses clear, warm, and genuinely useful.',
-    teacher: 'You are NIRA, a specialist AI assistant for professional English language teachers. You hold deep expertise in TESOL, CELTA/DELTA methodology, curriculum design, and classroom practice. Support lesson planning (PPP, TBL, ESA, flipped classroom), materials development, formative and summative assessment, differentiated instruction, error analysis, and evidence-based pedagogy. Communicate as a knowledgeable peer colleague. Provide structured, actionable, professionally worded responses. Stay within the domain of English language teaching and education.',
-    student: 'You are NIRA, a dedicated English language learning assistant. You specialise in IELTS, TOEFL, and PTE exam preparation as well as general English from A1 to C2. Provide accurate, exam-aligned guidance on task types, band descriptors, scoring criteria, grammar, vocabulary, and writing feedback. Give structured practice tasks with model answers and clear explanations. Identify and correct errors constructively. Keep responses focused, encouraging, and exam-ready.',
+    teacher: 'You are NIRA, a specialist AI assistant for professional English language teachers. You hold deep expertise in TESOL, CELTA/DELTA methodology, curriculum design, and classroom practice. Support lesson planning (PPP, TBL, ESA, flipped classroom), materials development, formative and summative assessment, differentiated instruction, error analysis, and evidence-based pedagogy. Communicate as a knowledgeable peer colleague. Provide structured, actionable, professionally worded responses. Stay within the domain of English language teaching and education. When a user asks about lesson planning, suggest the Lesson Planner tool. For worksheets, suggest the Worksheet Builder. For student writing feedback, suggest Error Correction. For exam tasks, suggest the IELTS Generator.',
+    student: 'You are NIRA, a dedicated English language learning assistant. You specialise in IELTS, TOEFL, and PTE exam preparation as well as general English from A1 to C2. Provide accurate, exam-aligned guidance on task types, band descriptors, scoring criteria, grammar, vocabulary, and writing feedback. Give structured practice tasks with model answers and clear explanations. Identify and correct errors constructively. Keep responses focused, encouraging, and exam-ready. When relevant, mention that the IELTS Generator or Error Correction tools can provide deeper practice.',
     kids:    'You are NIRA, a warm and playful English learning companion for young learners. Use very simple vocabulary, short sentences, and an upbeat tone. Make every interaction feel like a game or story — celebrate effort with enthusiasm. Explain grammar and vocabulary through examples, pictures described in words, actions, and imaginative scenarios. Keep all content safe, positive, and age-appropriate. Never use complex academic language.'
   };
 
@@ -7909,6 +7919,87 @@ function astRenderSuggestions(mode) {
   sync();
   if (mq.addEventListener) mq.addEventListener('change', sync); else if (mq.addListener) mq.addListener(sync);
 })();
+// ── NIRA: contextual tool recommendations ──
+var _NIRA_TOOL_HINTS = [
+  {
+    keys: /\b(ielts|toefl|pte|band\s*\d|academic writing|exam prep|writing task|listening test)\b/i,
+    tool: 'ielts', label: '📝 Open IELTS Generator',
+    reply: 'The IELTS Generator creates full Academic and General Training tasks at your target band level.',
+    action: function(topic) {
+      if (topic) { var el = document.getElementById('ielts-topic'); if (el) el.value = topic; }
+      go('ielts');
+    }
+  },
+  {
+    keys: /\b(lesson plan|lesson planning|ppp|tbl|esa|scheme of work|teaching plan|lesson idea)\b/i,
+    tool: 'lesson', label: '📋 Open Lesson Planner',
+    reply: 'The Lesson Planner generates structured lesson plans using PPP, TBL, ESA and other frameworks.',
+    action: function(topic) { astBridgeOpen('lesson'); }
+  },
+  {
+    keys: /\b(worksheet|exercise sheet|practice sheet|handout|fill.?in|gap fill|matching task)\b/i,
+    tool: 'worksheet', label: '📄 Open Worksheet Builder',
+    reply: 'The Worksheet Builder creates ready-to-print classroom worksheets tailored to level and skill focus.',
+    action: function(topic) { astBridgeOpen('worksheet'); }
+  },
+  {
+    keys: /\b(error correction|correct (my|this|student)|writing feedback|check (my|this) (writing|essay|paragraph)|mark (my|this)|proofread)\b/i,
+    tool: 'error', label: '✅ Open Error Correction',
+    reply: 'Error Correction gives detailed feedback on student writing with error analysis and improvement suggestions.',
+    action: function(topic) { astBridgeOpen('error'); }
+  },
+  {
+    keys: /\b(prompt|ai prompt|generate prompt|prompt (for|to)|create (a )?prompt|prompt generator)\b/i,
+    tool: 'generator', label: '✨ Open Prompt Generator',
+    reply: 'The Prompt Generator creates custom AI prompts for any teaching or learning scenario.',
+    action: function(topic) { go('generator'); }
+  }
+];
+
+function _niraChatDetectHint(text) {
+  // Only intercept short, topic-style messages (under 80 chars, no question mark, no long sentence)
+  if (!text || text.length > 80 || text.split(' ').length > 12) return null;
+  for (var i = 0; i < _NIRA_TOOL_HINTS.length; i++) {
+    if (_NIRA_TOOL_HINTS[i].keys.test(text)) return _NIRA_TOOL_HINTS[i];
+  }
+  return null;
+}
+
+function _niraChatRenderHint(hint, topic) {
+  var history = document.getElementById('ast-history');
+  if (!history) return;
+  var empty = document.getElementById('ast-empty-state');
+  if (empty) empty.style.display = 'none';
+
+  var msg = document.createElement('div');
+  msg.className = 'ast-msg ast-msg-assistant';
+
+  var label = document.createElement('span');
+  label.className = 'ast-msg-label';
+  label.textContent = 'Nira';
+
+  var bubble = document.createElement('div');
+  bubble.className = 'ast-bubble';
+  bubble.innerHTML = renderMD(hint.reply);
+
+  var bar = document.createElement('div');
+  bar.className = 'ast-use-bar';
+  bar.style.cssText = 'margin-top:10px;padding-top:10px;';
+
+  var btn = document.createElement('button');
+  btn.className = 'ast-use-btn';
+  btn.style.cssText = 'font-size:12px;padding:6px 16px;border-color:var(--gold);color:var(--gold);font-weight:700;';
+  btn.textContent = hint.label;
+  btn.onclick = function() { hint.action(topic); };
+  bar.appendChild(btn);
+
+  bubble.appendChild(bar);
+  msg.appendChild(label);
+  msg.appendChild(bubble);
+  history.appendChild(msg);
+  history.scrollTop = history.scrollHeight;
+}
+
 // ── NIRA: no "Use in Tool" bar on error/limit notices ──
 (function(){
   var _r = window.astRenderMessage;
