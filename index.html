@@ -5804,7 +5804,17 @@ Structure using this ELT framework:
 6. QUALITY STANDARDS — CEFR alignment, CLT principles, authentic task design
 7. EXTRAS — Answer key, rubric, or teacher notes where appropriate
 
-Output ONLY the final prompt text. No meta-commentary. Ready to paste into ChatGPT, Claude, or Gemini.`;
+CEFR LEVEL GUIDANCE for ${S.level}:
+${{
+  A1:"Simple, familiar everyday expressions. Short controlled tasks, visual support, single words/phrases.",
+  A2:"Basic routine communication. Structured pair work, guided dialogues, simple sentences.",
+  B1:"Independent user. Pair/group tasks, role-play, short discussions. Connected text with opinions.",
+  B2:"Upper intermediate fluency. Debates, extended tasks, peer feedback. Detailed text and argument.",
+  C1:"Advanced expression. Open-ended tasks, critical analysis, student-led work. Extended discourse."
+}[S.level]||"Apply appropriate CEFR expectations for this level."}
+
+Output ONLY the final prompt text. No meta-commentary. Ready to paste into ChatGPT, Claude, or Gemini.
+Before finalising, verify the prompt will produce output appropriate for ${S.level} learners.`;
 }
 
 function buildLesson(){
@@ -5846,6 +5856,7 @@ For EACH stage include:
 End with: homework task, differentiation for mixed levels, and 2 teacher reflection questions.
 Keep each stage concise — practical over exhaustive.
 Format: structured, clearly labelled, immediately teachable.
+Before responding, verify feedback language and corrections are appropriate for ${S.ecLevel} level.
 IMPORTANT: Use only Markdown formatting (##, **, -, |table|). Never use HTML tags like <br>, <p>, <strong>, <div>.`;
 }
 
@@ -5976,6 +5987,17 @@ Format requirements:
 - ${nts}
 
 Make it visually clear and immediately printable.
+
+CEFR LEVEL GUIDANCE for ${S.wsLevel}:
+${{
+  A1:"Controlled tasks only. Single words/short phrases. Visual support. Max 1 instruction per task.",
+  A2:"Structured exercises. Simple sentences. Guided gap-fills, matching, short responses.",
+  B1:"Semi-controlled to guided free practice. Short paragraphs. Opinion questions with sentence starters.",
+  B2:"Freer practice. Extended writing/speaking. Argumentation tasks with scaffolding.",
+  C1:"Open-ended analytical tasks. Complex grammar in authentic contexts. Minimal scaffolding."
+}[${S.wsLevel}]||"Apply appropriate CEFR expectations."}
+
+Before responding, verify: (1) language complexity matches ${S.wsLevel}, (2) all tasks have clear student instructions, (3) content is classroom-ready without editing.
 IMPORTANT: Use only Markdown formatting (##, **, -, |table|). Never use HTML tags like <br>, <p>, <strong>, <div>.${S.wsImages?`
 
 IMAGE PLACEHOLDERS: For up to 4 key vocabulary items in this worksheet, insert an image placeholder using this exact format — a blank line, then the placeholder alone on its own line, then another blank line:
