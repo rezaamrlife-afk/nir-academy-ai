@@ -3856,7 +3856,6 @@ html.light #settings-menu { background: #fff; border-color: #dde6f5; }
   .tb-logo-txt { display: none; }
   .tb-solid { font-size: 11px; padding: 7px 9px; letter-spacing: 0; }
   #settings-toggle { padding: 5px 7px; }
-  #settings-dropdown-wrap { position: static; }
   #settings-menu {
     position: fixed;
     top: 70px;
@@ -8154,7 +8153,17 @@ function toggleFocus() {
 // ── Settings Dropdown ──
 function toggleSettingsMenu() {
   var menu = document.getElementById('settings-menu');
-  if (menu) menu.classList.toggle('open');
+  if (!menu) return;
+  var opening = !menu.classList.contains('open');
+  menu.classList.toggle('open');
+  // On mobile: position fixed menu directly below the gear button
+  if (opening && window.innerWidth <= 600) {
+    var btn = document.getElementById('settings-toggle');
+    if (btn) {
+      var rect = btn.getBoundingClientRect();
+      menu.style.top = (rect.bottom + 6) + 'px';
+    }
+  }
 }
 
 // Close settings menu when clicking outside
