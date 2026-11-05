@@ -3913,6 +3913,30 @@ html.light .ws-folder-chip.active, html.light .ws-folder-chip:hover { border-col
 html.light .saved-card .sc-title { color: #071929; }
 html.light .saved-card .sc-output-preview { color: #4a6070; border-top-color: rgba(0,0,0,.08); }
 
+/* ── Workspace skeleton card ── */
+.ws-skeleton-card {
+  background: var(--bg2); border: 1px solid var(--bdr);
+  border-radius: 12px; padding: 1.3rem;
+}
+.ws-skeleton-card .skeleton-line { margin: 8px 0; }
+.ws-skeleton-card .skeleton-line:first-child { height: 10px; width: 40%; margin-bottom: 12px; }
+.ws-skeleton-card .skeleton-line:nth-child(2) { height: 13px; width: 70%; }
+.ws-skeleton-card .skeleton-line:nth-child(3) { height: 11px; width: 90%; }
+.ws-skeleton-card .skeleton-line:nth-child(4) { height: 11px; width: 55%; }
+.ws-skeleton-card .sk-btn-row { display: flex; gap: 6px; margin-top: 14px; }
+.ws-skeleton-card .sk-btn { height: 28px; border-radius: 6px; flex: 1; }
+
+/* ── Workspace enhanced empty state ── */
+.ws-empty-state {
+  grid-column: 1 / -1; text-align: center;
+  padding: 3rem 1rem; display: flex; flex-direction: column;
+  align-items: center; gap: 10px;
+}
+.ws-empty-icon { font-size: 2.4rem; opacity: .5; }
+.ws-empty-title { font-size: 14px; font-weight: 700; color: var(--text); }
+.ws-empty-sub { font-size: 12px; color: var(--muted); line-height: 1.6; max-width: 280px; }
+.ws-empty-actions { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; margin-top: 8px; }
+
 /* profile fields */
 html.light .profile-field label { color: #6B7FA3; }
 html.light .profile-field .pf-val { background: #EEF4FF; border-color: #dde6f5; color: #1B2A4A; }
@@ -6918,6 +6942,22 @@ async function savePromptToDB(text, tool){
   else T('Could not save — please try again.');
 }
 
+function _wsShowSkeletons(n){
+  var grid = document.getElementById('saved-prompts-grid');
+  if(!grid) return;
+  var html = '';
+  for(var i=0;i<n;i++){
+    html += '<div class="ws-skeleton-card">'
+      +'<div class="skeleton-line"></div>'
+      +'<div class="skeleton-line"></div>'
+      +'<div class="skeleton-line"></div>'
+      +'<div class="skeleton-line"></div>'
+      +'<div class="sk-btn-row"><div class="skeleton-line sk-btn"></div><div class="skeleton-line sk-btn"></div><div class="skeleton-line sk-btn"></div></div>'
+      +'</div>';
+  }
+  grid.innerHTML = html;
+}
+
 async function loadSavedPrompts(){
   // Refresh from live session in case currentUser cache is stale
   if(!currentUser && SB){
@@ -6925,6 +6965,7 @@ async function loadSavedPrompts(){
     if(sd && sd.user) currentUser = sd.user;
   }
   if(!currentUser) return;
+  _wsShowSkeletons(6);
   const { data, error } = await SB.from('saved_prompts')
     .select('id, user_id, content, tool, created_at, title, output, starred, folder')
     .eq('user_id', currentUser.id)
@@ -6965,10 +7006,24 @@ function wsRender(prompts){
     return hay.includes(term);
   });
   if(!filtered.length){
-    const msg = prompts.length===0
-      ? 'Nothing saved yet. Use the <strong>💾 Save</strong> button on any tool output.'
-      : 'No items match your search or filter.';
-    grid.innerHTML = `<p style="font-size:13px;color:var(--muted);text-align:center;padding:3rem;grid-column:1/-1">${msg}</p>`;
+    if(prompts.length===0){
+      grid.innerHTML = `<div class="ws-empty-state">
+        <div class="ws-empty-icon">📂</div>
+        <div class="ws-empty-title">Your Workspace is empty</div>
+        <div class="ws-empty-sub">Save lesson plans, IELTS tasks, worksheets and feedback reports here using the <strong>💾 Save</strong> button on any tool output.</div>
+        <div class="ws-empty-actions">
+          <button class="sc-btn primary" onclick="go('lesson')">📋 Lesson Planner</button>
+          <button class="sc-btn primary" onclick="go('ielts')">📝 IELTS Generator</button>
+          <button class="sc-btn primary" onclick="go('worksheet')">📄 Worksheets</button>
+        </div>
+      </div>`;
+    } else {
+      grid.innerHTML = `<div class="ws-empty-state">
+        <div class="ws-empty-icon">🔍</div>
+        <div class="ws-empty-title">No results</div>
+        <div class="ws-empty-sub">No items match your search or filter. Try a different keyword or category.</div>
+      </div>`;
+    }
     return;
   }
   if(!window._spMap) window._spMap = {};
@@ -7076,15 +7131,17 @@ async function toggleStar(id, btn){
   btn.classList.toggle('on', newVal);
   const card = document.getElementById('scard-'+id);
   if(card) card.classList.toggle('starred', newVal);
-  try { await SB.from('saved_prompts').update({starred:newVal}).eq('id',id).eq('user_id',currentUser.id); }
-  catch(e){ console.warn('Star update failed', e); }
+  try {
+    await SB.from('saved_prompts').update({starred:newVal}).eq('id',id).eq('user_id',currentUser.id);
+    T(newVal ? 'Starred ✓' : 'Unstarred ✓');
+  } catch(e){ console.warn('Star update failed', e); T('Could not update star — try again.'); }
 }
 
 async function deletePrompt(id){
   await SB.from('saved_prompts').delete().eq('id',id).eq('user_id',currentUser.id);
   window._wsAllPrompts = (window._wsAllPrompts||[]).filter(p=>p.id!==id);
   wsRender(window._wsAllPrompts);
-  T('Deleted');
+  T('Item deleted ✓');
 }
 
 // ── SAVE OUTPUT TO WORKSPACE ──
