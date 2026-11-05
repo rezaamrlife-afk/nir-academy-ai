@@ -3856,7 +3856,18 @@ html.light #settings-menu { background: #fff; border-color: #dde6f5; }
   .tb-logo-txt { display: none; }
   .tb-solid { font-size: 11px; padding: 7px 9px; letter-spacing: 0; }
   #settings-toggle { padding: 5px 7px; }
-  #settings-menu { min-width: calc(100vw - 1.6rem); right: -0.8rem; }
+  #settings-dropdown-wrap { position: static; }
+  #settings-menu {
+    position: fixed;
+    top: 70px;
+    right: 0.8rem;
+    left: 0.8rem;
+    min-width: 0;
+    width: auto;
+    max-height: calc(100dvh - 80px);
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
 }
 
 /* ══ MOBILE PERFORMANCE FIX ══ */
