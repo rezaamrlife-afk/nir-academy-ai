@@ -1326,6 +1326,7 @@ html.light button:focus-visible,html.light a:focus-visible{outline-color:#1A3F5C
 .out-txt hr{border:none;border-top:1px solid var(--bdr2);margin:1em 0}
 .out-txt a{color:var(--gold);text-decoration:underline}
 .out-txt table.md-table{border-collapse:collapse;width:100%;margin:.8em 0;font-size:.92em}
+.md-table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:.8em 0}
 .out-txt table.md-table th,.out-txt table.md-table td{border:1px solid var(--bdr2);padding:7px 11px;text-align:left;vertical-align:top}
 .out-txt table.md-table th{background:var(--bg3);color:var(--gold);font-weight:700;font-size:.85em;letter-spacing:.03em}
 .out-txt table.md-table tr:nth-child(even) td{background:rgba(255,255,255,.02)}
@@ -1556,7 +1557,7 @@ html.light .rm:hover{box-shadow:0 6px 20px rgba(0,0,0,.12);}
 /* ══ MOBILE BOTTOM NAV ══ */
 #mob-nav{display:none;position:fixed;bottom:0;left:0;right:0;background:rgba(8,8,8,.97);border-top:1px solid var(--bdr);padding:.55rem 0;padding-bottom:calc(.55rem + var(--safe-bottom));z-index:300;backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px)}
 .mn-grid{display:grid;grid-template-columns:repeat(5,1fr)}
-.mn-item{display:flex;flex-direction:column;align-items:center;gap:2px;padding:.38rem;cursor:pointer;transition:all .2s;background:none;border:none;font-family:'Plus Jakarta Sans',sans-serif}
+.mn-item{display:flex;flex-direction:column;align-items:center;gap:2px;padding:.5rem .6rem;cursor:pointer;transition:all .2s;background:none;border:none;font-family:'Plus Jakarta Sans',sans-serif}
 .mn-item .mi-ico{font-size:17px;line-height:1}
 .mn-item .mi-lbl{font-size:11px;color:var(--muted);letter-spacing:.2px;font-weight:600}
 .mn-item.active .mi-lbl{color:var(--gold)}
@@ -1603,7 +1604,7 @@ html.light .rm:hover{box-shadow:0 6px 20px rgba(0,0,0,.12);}
   #pwa-banner.show{flex-wrap:wrap}
   /* Mobile: bigger output, comfortable spacing */
   .rpanel{min-height:520px;border-radius:12px}
-  .out-txt{min-height:460px;font-size:15px;padding:1rem 1.1rem}
+  .out-txt{min-height:200px;font-size:15px;padding:1rem 1.1rem}
   .ph{padding:1.2rem 1rem .8rem}
   .sblock{border-radius:10px}
   .content{padding:1.2rem 1rem}
@@ -6081,7 +6082,7 @@ function renderMD(raw){
   // 4. Tables  (must come before paragraph processing)
   s = s.replace(/((?:^\|.+\|\s*\n)+)/gm, function(block){
     const rows = block.trim().split('\n');
-    let html = '<table class="md-table"><tbody>';
+    let html = '<div class="md-table-wrap"><table class="md-table"><tbody>';
     let inHead = true;
     rows.forEach((row, ri) => {
       // Skip separator row  |---|---|
@@ -6097,7 +6098,7 @@ function renderMD(raw){
         return `<${tag}>${v}</${tag}>`;
       }).join('') + '</tr>';
     });
-    html += '</tbody></table>';
+    html += '</tbody></table></div>';
     return html;
   });
 
