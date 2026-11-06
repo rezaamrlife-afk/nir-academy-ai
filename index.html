@@ -10979,10 +10979,63 @@ html.light #page-home .tc{background:#fff !important}
 @media(max-width:360px){.hh-orbit{width:min(84vw,290px)}.hh-orbit .nd text{font-size:17px}}
 @media(prefers-reduced-motion:reduce){.h-rv{opacity:1;transform:none;transition:none}.hh-orbit .rg,.hh-orbit .nd{animation:none}#page-home *{transition:none !important}}
 </style>
+<style id="nir-shell-redesign-v3">
+/* ═══ NIR SHELL REDESIGN v3 — visual only: topbar, sidebar, mobile nav, footer + warm dark palette. Delete this block to revert. ═══ */
+html:not(.light){--bg:#171410 !important;--bg2:#1D1914 !important;--bg3:#2B251D !important;--bg4:#332B21 !important;--bg5:#3B3227 !important;--bg6:#453B2E !important;--text:#F4F0E6 !important;--muted:#A89F8C !important;--dim:#857D6C !important;--bdr:rgba(212,175,55,.16) !important;--bdr2:rgba(212,175,55,.26) !important;--bdr3:rgba(212,175,55,.45) !important}
+html:not(.light) body{background:#171410 !important;color:#F4F0E6 !important}
+#topbar,#sidebar,#mob-nav,#footer{--s-gt:#E6C65C;--s-line:rgba(212,175,55,.16);--s-line2:rgba(212,175,55,.4);--s-glow:rgba(212,175,55,.12);--s-ease:cubic-bezier(.2,.8,.2,1)}
+html.light #topbar,html.light #sidebar,html.light #mob-nav,html.light #footer{--s-gt:#8F6B14;--s-line:rgba(177,138,37,.22);--s-line2:rgba(177,138,37,.5);--s-glow:rgba(177,138,37,.1)}
+/* topbar */
+html:not(.light) #topbar{background:rgba(23,20,16,.82) !important;border-color:var(--s-line) !important;backdrop-filter:blur(20px) saturate(1.2);-webkit-backdrop-filter:blur(20px) saturate(1.2)}
+html.light #topbar{backdrop-filter:blur(20px) saturate(1.2);-webkit-backdrop-filter:blur(20px) saturate(1.2)}
+#topbar{transition:box-shadow .3s}#topbar.is-scrolled{box-shadow:0 10px 30px rgba(0,0,0,.28)}html.light #topbar.is-scrolled{box-shadow:0 10px 28px rgba(60,45,10,.1)}
+#topbar .tb-logo-txt .tn{color:var(--s-gt)}
+#topbar .tb-nav{gap:.3rem}
+#topbar .tb-nav a{padding:7px 12px;border:0;border-radius:99px;letter-spacing:.8px;transition:background .2s,color .2s}
+#topbar .tb-nav a:hover{background:var(--s-glow);color:var(--s-gt)}
+#topbar .tb-nav a.active{background:var(--s-glow);color:var(--s-gt);box-shadow:inset 0 0 0 1px var(--s-line)}
+#topbar .tb-ghost,#topbar .tb-solid,#topbar .tb-theme-btn{border-radius:11px;transition:transform .2s var(--s-ease),background .2s,border-color .2s}
+#topbar .tb-solid{background:linear-gradient(110deg,#E6C65C,#D4AF37) !important;color:#1d1604 !important}
+#topbar .tb-ghost:hover,#topbar .tb-solid:hover,#topbar .tb-theme-btn:hover{transform:translateY(-1px)}
+#topbar .tb-ghost:active,#topbar .tb-solid:active{transform:scale(.97)}
+/* sidebar */
+html:not(.light) #sidebar{background:linear-gradient(180deg,#1D1914,#181510) !important;border-color:var(--s-line) !important}
+#sidebar{padding-top:1rem;scrollbar-width:thin}
+#sidebar .sb-lbl{color:var(--dim) !important;letter-spacing:2px;font-size:10.5px;padding:0 1.5rem}
+#sidebar .sb-item{margin:2px 10px;padding:.6rem .85rem;border:1px solid transparent !important;border-radius:12px;transition:background .2s,color .2s,border-color .2s,transform .2s var(--s-ease)}
+html:not(.light) #sidebar .sb-item:hover{background:var(--s-glow) !important;color:var(--s-gt) !important;border-color:transparent !important}
+#sidebar .sb-item:hover{transform:translateX(2px)}
+html:not(.light) #sidebar .sb-item.active{background:linear-gradient(110deg,rgba(230,198,92,.18),rgba(212,175,55,.07)) !important;border-color:var(--s-line2) !important;color:var(--s-gt) !important}
+html.light #sidebar .sb-item.active{background:linear-gradient(110deg,rgba(212,175,55,.2),rgba(212,175,55,.06)) !important;border-color:var(--s-line2) !important;color:var(--s-gt) !important}
+#sidebar .sb-item.active:before{display:none}
+#sidebar .sb-item .si{display:grid;place-items:center;width:30px;height:30px;border-radius:9px;background:rgba(212,175,55,.08);transition:background .2s}
+#sidebar .sb-item.active .si,#sidebar .sb-item:hover .si{background:rgba(212,175,55,.18)}
+#sidebar .sb-item .si svg{width:16px;height:16px}
+#sidebar .sb-badge,#sidebar .sb-new{background:linear-gradient(110deg,#E6C65C,#D4AF37);color:#1d1604;border-radius:6px;font-size:9.5px;letter-spacing:.4px}
+#sidebar .sb-pro{border-radius:16px;border-color:var(--s-line2);background:radial-gradient(160px 90px at 100% 0,rgba(212,175,55,.2),transparent),linear-gradient(145deg,rgba(212,175,55,.1),rgba(212,175,55,.03))}
+#sidebar .sb-pro button{background:linear-gradient(110deg,#E6C65C,#D4AF37);color:#1d1604;border-radius:10px;transition:transform .2s var(--s-ease)}#sidebar .sb-pro button:hover{transform:translateY(-1px)}
+/* footer */
+html:not(.light) #footer{background:#1D1914 !important;border-top:1px solid var(--s-line) !important}
+#footer a{transition:color .2s}#footer a:hover{color:var(--s-gt)}
+/* mobile bottom nav: floating glass bar */
+@media(max-width:960px){
+html:not(.light) #mob-nav{background:rgba(29,25,20,.9) !important;border:1px solid var(--s-line2) !important;box-shadow:0 14px 40px rgba(0,0,0,.5)}
+html.light #mob-nav{background:rgba(255,255,255,.92) !important;border:1px solid var(--s-line2) !important;box-shadow:0 12px 32px rgba(60,45,10,.14)}
+#mob-nav{left:10px !important;right:10px !important;bottom:calc(8px + var(--safe-bottom,0px)) !important;border-radius:22px;padding:.35rem .3rem !important;backdrop-filter:blur(22px) saturate(1.2);-webkit-backdrop-filter:blur(22px) saturate(1.2)}
+#mob-nav .mn-item{position:relative;border-radius:16px;padding:.5rem .2rem;transition:background .25s,transform .2s var(--s-ease)}
+#mob-nav .mn-item:active{transform:scale(.93)}
+#mob-nav .mn-item.active{background:var(--s-glow);box-shadow:inset 0 0 0 1px var(--s-line)}
+#mob-nav .mn-item.active .mi-lbl{color:var(--s-gt) !important}
+#mob-nav .mn-item.active:after{content:"";position:absolute;top:3px;left:50%;width:16px;height:3px;margin-left:-8px;border-radius:3px;background:linear-gradient(90deg,#E6C65C,#D4AF37)}
+body{padding-bottom:calc(84px + var(--safe-bottom,0px))}
+}
+@media(prefers-reduced-motion:reduce){#topbar,#sidebar *,#mob-nav *{transition:none !important}}
+</style>
 <script>
 /* NIR home redesign v3: purely visual (reveal + card spotlight). No app logic touched. */
 (function(){var h=document.getElementById('page-home');if(!h)return;
 h.addEventListener('pointermove',function(e){var t=e.target.closest&&e.target.closest('.tc');if(!t)return;var r=t.getBoundingClientRect();t.style.setProperty('--mx',(e.clientX-r.left)+'px');t.style.setProperty('--my',(e.clientY-r.top)+'px')},{passive:true});
+var tb=document.getElementById('topbar');if(tb)addEventListener('scroll',function(){tb.classList.toggle('is-scrolled',scrollY>8)},{passive:true});
 if(!('IntersectionObserver' in window)||matchMedia('(prefers-reduced-motion:reduce)').matches)return;
 var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('h-in');io.unobserve(e.target)}})},{threshold:.06});
 h.querySelectorAll('.onboard,.ob-step,.home-tools .tc,.iband,.hcta,.rm').forEach(function(el,i){el.classList.add('h-rv');el.style.transitionDelay=(i%3)*60+'ms';io.observe(el)});
