@@ -5818,13 +5818,13 @@ Structure using this ELT framework:
 7. EXTRAS — Answer key, rubric, or teacher notes where appropriate
 
 CEFR LEVEL GUIDANCE for ${S.level}:
-${{
+$({
   A1:"Simple, familiar everyday expressions. Short controlled tasks, visual support, single words/phrases.",
   A2:"Basic routine communication. Structured pair work, guided dialogues, simple sentences.",
   B1:"Independent user. Pair/group tasks, role-play, short discussions. Connected text with opinions.",
   B2:"Upper intermediate fluency. Debates, extended tasks, peer feedback. Detailed text and argument.",
   C1:"Advanced expression. Open-ended tasks, critical analysis, student-led work. Extended discourse."
-}[S.level]||"Apply appropriate CEFR expectations for this level."}
+})[S.level]||"Apply appropriate CEFR expectations for this level."}
 
 Output ONLY the final prompt text. No meta-commentary. Ready to paste into ChatGPT, Claude, or Gemini.
 Before finalising, verify the prompt will produce output appropriate for ${S.level} learners.`;
@@ -5849,13 +5849,13 @@ CLASS SIZE: ${sz}
 STAGES TO INCLUDE: ${stages}${unitSection}
 
 CEFR LEVEL GUIDANCE for ${S.lpLevel}:
-${{
+$({
   A1:"Can-do: understand and use familiar everyday expressions. Activities: short controlled tasks, visual support, minimal writing. Expected output: single words, short phrases.",
   A2:"Can-do: communicate in simple routine tasks on familiar topics. Activities: structured pair work, guided dialogues. Expected output: simple sentences, short exchanges.",
   B1:"Can-do: deal with most situations likely to arise whilst travelling. Activities: pair/group tasks, role-play, short discussions. Expected output: connected text, opinions with reasons.",
   B2:"Can-do: interact with a degree of fluency and spontaneity. Activities: debates, extended tasks, peer feedback. Expected output: clear detailed text, argument development.",
   C1:"Can-do: express ideas fluently and spontaneously. Activities: open-ended tasks, student-led discussion, critical analysis. Expected output: well-structured extended discourse."
-}[S.lpLevel]||"Apply appropriate CEFR expectations for this level."}
+})[S.lpLevel]||"Apply appropriate CEFR expectations for this level."}
 
 For EACH stage include:
 - Stage name, exact timing, and interaction pattern (T→S whole class / S↔S pair / group work / individual)
