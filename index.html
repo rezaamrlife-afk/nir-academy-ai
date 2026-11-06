@@ -5748,7 +5748,7 @@ function SC(el,id){
 function SP(el,id){
   document.querySelectorAll("#"+id+" .lvl").forEach(p=>p.classList.remove("active"));
   el.classList.add("active");
-  if(id==="level-pills")S.level=el.dataset.v;
+  if(id==="level-pills")S.level=el.dataset.v;syncLevel(el.dataset.v);
   if(id==="lp-level")S.lpLevel=el.dataset.v;
   if(id==="ec-level")S.ecLevel=el.dataset.v;
   if(id==="ws-level"){S.wsLevel=el.dataset.v;wsImgToggleVisibility();}
@@ -5757,7 +5757,20 @@ function selectBand(el){
   document.querySelectorAll("#band-pills .bp").forEach(p=>p.classList.remove("active"));
   el.classList.add("active");S.ieltBand=el.dataset.v;
 }
-function setT(t){document.getElementById("topic-in").value=t;S.topic=t;}
+function setT(t){
+  S.topic=t;
+  ['topic-in','lp-topic','ws-topic','ielts-topic'].forEach(function(id){
+    var el=document.getElementById(id);
+    if(el && !el.value) el.value=t;
+  });
+}
+function syncLevel(lv){
+  S.level=lv;
+  // Update each tool's level selector pill if not already set
+  var toolLevels={lpLevel:'lp-level',wsLevel:'ws-level'};
+  if(!S.lpLevel) S.lpLevel=lv;
+  if(!S.wsLevel) S.wsLevel=lv;
+}
 function selIELTS(el,v){
   document.querySelectorAll(".ic").forEach(c=>c.style.borderColor="");
   el.style.borderColor="var(--gold)";S.ieltType=v;
@@ -5988,16 +6001,9 @@ Format requirements:
 
 Make it visually clear and immediately printable.
 
-CEFR LEVEL GUIDANCE for ${S.wsLevel}:
-${{
-  A1:"Controlled tasks only. Single words/short phrases. Visual support. Max 1 instruction per task.",
-  A2:"Structured exercises. Simple sentences. Guided gap-fills, matching, short responses.",
-  B1:"Semi-controlled to guided free practice. Short paragraphs. Opinion questions with sentence starters.",
-  B2:"Freer practice. Extended writing/speaking. Argumentation tasks with scaffolding.",
-  C1:"Open-ended analytical tasks. Complex grammar in authentic contexts. Minimal scaffolding."
-}[${S.wsLevel}]||"Apply appropriate CEFR expectations."}
+CEFR LEVEL GUIDANCE for \${S.wsLevel}:\${({A1:"Controlled tasks only. Single words/short phrases. Visual support.",A2:"Structured exercises. Simple sentences. Guided gap-fills, matching.",B1:"Semi-controlled to free practice. Short paragraphs, sentence starters.",B2:"Freer practice. Extended tasks, argumentation with scaffolding.",C1:"Open-ended analytical tasks. Complex grammar, minimal scaffolding."})[S.wsLevel]||"Apply appropriate CEFR expectations."}
 
-Before responding, verify: (1) language complexity matches ${S.wsLevel}, (2) all tasks have clear student instructions, (3) content is classroom-ready without editing.
+Before responding, verify: (1) language matches \${S.wsLevel}, (2) tasks have clear instructions, (3) content is classroom-ready.
 IMPORTANT: Use only Markdown formatting (##, **, -, |table|). Never use HTML tags like <br>, <p>, <strong>, <div>.${S.wsImages?`
 
 IMAGE PLACEHOLDERS: For up to 4 key vocabulary items in this worksheet, insert an image placeholder using this exact format — a blank line, then the placeholder alone on its own line, then another blank line:
