@@ -4937,16 +4937,16 @@ function dismissSessionBanner() {
           <div class="sbdy">
             <input class="tin" type="text" id="topic-in" placeholder="e.g. Family, Technology, Climate Change, Daily Life…">
             <div class="ttags">
-              <span class="ttag" onclick="setT('Family')">Family</span>
-              <span class="ttag" onclick="setT('Technology')">Technology</span>
-              <span class="ttag" onclick="setT('Education')">Education</span>
-              <span class="ttag" onclick="setT('Environment')">Environment</span>
-              <span class="ttag" onclick="setT('Travel')">Travel</span>
-              <span class="ttag" onclick="setT('Health')">Health</span>
-              <span class="ttag" onclick="setT('Work & Careers')">Work</span>
-              <span class="ttag" onclick="setT('Culture & Society')">Culture</span>
-              <span class="ttag" onclick="setT('Media')">Media</span>
-              <span class="ttag" onclick="setT('Science')">Science</span>
+              <span class="ttag" onclick=\"pickTopic('Family')\">Family</span>
+              <span class="ttag" onclick=\"pickTopic('Technology')\">Technology</span>
+              <span class="ttag" onclick=\"pickTopic('Education')\">Education</span>
+              <span class="ttag" onclick=\"pickTopic('Environment')\">Environment</span>
+              <span class="ttag" onclick=\"pickTopic('Travel')\">Travel</span>
+              <span class="ttag" onclick=\"pickTopic('Health')\">Health</span>
+              <span class="ttag" onclick=\"pickTopic('Work & Careers')\">Work</span>
+              <span class="ttag" onclick=\"pickTopic('Culture & Society')\">Culture</span>
+              <span class="ttag" onclick=\"pickTopic('Media')\">Media</span>
+              <span class="ttag" onclick=\"pickTopic('Science')\">Science</span>
             </div>
           </div>
         </div>
@@ -5775,6 +5775,13 @@ function setT(t){
     var el=document.getElementById(id);
     if(el && !el.value) el.value=t;
   });
+}
+// Topic tag click in Prompt Generator: always replaces the current topic
+function pickTopic(t){
+  var el=document.getElementById('topic-in');
+  if(el){ el.value=t; el.dispatchEvent(new Event('input',{bubbles:true})); }
+  S.topic=t;
+  setT(t); // still pre-fills the other tools' empty topic fields
 }
 function syncLevel(lv){
   S.level=lv;
