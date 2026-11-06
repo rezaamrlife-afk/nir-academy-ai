@@ -4969,22 +4969,23 @@ function dismissSessionBanner() {
           <div class="rp-hdr">
             <span class="rp-lbl"><span id="rp-lbl-txt">Your AI Prompt</span></span>
             <div class="rp-acts">
+              <button class="rp-btn" onclick="saveP()">💾 <span id="save-btn-txt">Save</span></button>
               <button class="rp-btn" id="copy-btn" onclick="copyOut('prompt-out')"><span id="copy-btn-txt">Copy</span></button>
               <button class="rp-btn" onclick="generate()"><span id="regen-btn-txt">Regenerate</span></button>
-              <button class="rp-btn" onclick="saveP()"><span id="save-btn-txt">Save</span></button>
-              <button class="rp-btn" id="print-btn" onclick="nirPrint('prompt-out')" title="Print output">🖨</button>
+              <button class="rp-btn" id="print-btn" onclick="nirPrint('prompt-out')" title="Print">🖨</button>
+              <button class="rp-btn" onclick="nirDownloadDocx('prompt-out')" title="Download Word">📄</button>
             </div>
           </div>
           <div id="elt-meta-strip" role="status" aria-live="polite"></div>
-          <div id="wc-strip" style="font-size:11px;color:var(--muted);text-align:right;min-height:16px;padding-right:2px;"></div>
+          <div id="prompt-wc" style="font-size:11px;color:var(--muted);text-align:right;min-height:16px;padding-right:2px;"></div>
+          <div id="next-step-bar" role="complementary" aria-label="Suggested next steps" style="margin:6px 0 4px"></div>
           <div id="prompt-out" class="out-txt">
             <div class="rp-empty">
-  <div class="re-ico">✦</div>
+  <div class="re-ico"><i data-lucide="wand-sparkles"></i></div>
   <p>Configure options on the left and click <strong style="color:var(--gold)">Generate</strong> to build your professional ELT prompt.</p>
   <p style="margin-top:0.75rem;font-size:11px;opacity:0.7">Try: <em>Topic: "Present Perfect" · Level: B1 · Mode: Grammar Focus</em></p>
 </div>
           </div>
-          <div id="next-step-bar" role="complementary" aria-label="Suggested next steps"></div>
           <div class="rp-foot">
             <img src="" class="nir-logo" alt="">
             NIR Academy · Dr. Niki Majidi · <a href="https://niracademy.com" target="_blank">niracademy.com</a>
@@ -5015,7 +5016,7 @@ function dismissSessionBanner() {
     <div class="glayout">
       <div>
         <div class="sblock">
-          <div class="shdr"><div class="snum">1</div><h3>Lesson Focus</h3></div>
+          <div class="shdr"><div class="snum">1</div><h3>Lesson Focus</h3><span class="shint">Skill to teach</span></div>
           <div class="sbdy">
             <div class="cgrid" id="lp-focus">
               <div class="chip active" data-v="Grammar" onclick="SC(this,'lp-focus')"><i data-lucide="square-function"></i> Grammar</div>
@@ -5029,7 +5030,7 @@ function dismissSessionBanner() {
           </div>
         </div>
         <div class="sblock">
-          <div class="shdr"><div class="snum">2</div><h3>Level &amp; Class</h3></div>
+          <div class="shdr"><div class="snum">2</div><h3>Level &amp; Class</h3><span class="shint">CEFR, time &amp; group</span></div>
           <div class="sbdy">
             <div class="lpills" id="lp-level" style="margin-bottom:.9rem">
               <div class="lvl active" data-v="A1" onclick="SP(this,'lp-level')">A1</div>
@@ -5045,11 +5046,11 @@ function dismissSessionBanner() {
           </div>
         </div>
         <div class="sblock">
-          <div class="shdr"><div class="snum">3</div><h3>Topic</h3></div>
+          <div class="shdr"><div class="snum">3</div><h3>Topic</h3><span class="shint">What the lesson covers</span></div>
           <div class="sbdy"><input class="tin" type="text" id="lp-topic" placeholder="e.g. Present Perfect, Travel Vocabulary, Conditionals…"></div>
         </div>
         <div class="sblock">
-          <div class="shdr"><div class="snum">4</div><h3>Unit Content <span style="font-weight:400;font-size:.85em;opacity:.6">(optional)</span></h3></div>
+          <div class="shdr"><div class="snum">4</div><h3>Unit Content <span style="font-weight:400;font-size:.85em;opacity:.6">(optional)</span></h3><span class="shint">Coursebook text</span></div>
           <div class="sbdy"><textarea id="lp-unit" class="tin" rows="5" style="resize:vertical;width:100%;font-size:.93em" placeholder="Paste text from your coursebook unit here — vocabulary lists, grammar notes, dialogue, reading text, etc. NIRA will build the lesson plan around this content."></textarea></div>
         </div>
         <button class="btn-gen" data-lbl="Generate Lesson Plan" onclick="generateLesson()">✦ &nbsp;Generate Lesson Plan<span class="btn-progress"></span></button>
@@ -5057,6 +5058,7 @@ function dismissSessionBanner() {
       <div>
         <div class="rpanel">
           <div class="rp-hdr"><span class="rp-lbl">Lesson Plan</span><div class="rp-acts"><button class="rp-btn save-ws" onclick="saveToWorkspace('lp-out','Lesson Planner')">💾 Save</button><button class="rp-btn" onclick="copyOut('lp-out')">Copy</button><button class="rp-btn" onclick="generateLesson()">Regenerate</button><button class="rp-btn" onclick="nirPrint('lp-out')" title="Print">🖨</button><button class="rp-btn" onclick="nirDownloadDocx('lp-out')" title="Download Word">📄</button></div></div>
+          <div class="nir-meta" id="lp-meta" role="status" aria-live="polite"></div>
           <div id="lp-wc" style="font-size:11px;color:var(--muted);text-align:right;min-height:16px;padding-right:2px;"></div>
           <div id="lp-next" class="tool-next-bar"></div>
           <div id="lp-out" class="out-txt"><div class="rp-empty">
@@ -5082,7 +5084,7 @@ function dismissSessionBanner() {
   <div class="content" style="max-width:none">
     <div class="stitle"><span class="stg">Task Type</span></div>
     <div class="igrid">
-      <div class="ic" id="ic-1" style="border-color:var(--gold)" onclick="selIELTS(this,'Academic Writing Task 1 (data description — chart, graph, diagram)')"><div class="ic-n">1</div><h3>Academic Writing Task 1</h3><p>Data description: charts, graphs, diagrams, process maps</p></div>
+      <div class="ic active" id="ic-1" style="border-color:var(--gold)" onclick="selIELTS(this,'Academic Writing Task 1 (data description — chart, graph, diagram)')"><div class="ic-n">1</div><h3>Academic Writing Task 1</h3><p>Data description: charts, graphs, diagrams, process maps</p></div>
       <div class="ic" id="ic-2" onclick="selIELTS(this,'Academic Writing Task 2 (discursive essay — opinion, discussion, problem-solution)')"><div class="ic-n">2</div><h3>Academic Writing Task 2</h3><p>Essay: opinion, discussion, problem-solution, two-part question</p></div>
       <div class="ic" id="ic-3" onclick="selIELTS(this,'General Training Writing Task 1 (letter — formal, semi-formal or informal)')"><div class="ic-n">GT1</div><h3>GT Writing Task 1</h3><p>Letter writing: formal, semi-formal, informal</p></div>
       <div class="ic" id="ic-4" onclick="selIELTS(this,'IELTS Academic Reading passage with True/False/Not Given, Multiple Choice and Matching questions')"><div class="ic-n">R</div><h3>Reading Passage</h3><p>Academic reading with TFNG, MCQ, matching and summary tasks</p></div>
@@ -5100,7 +5102,7 @@ function dismissSessionBanner() {
     <div class="glayout">
       <div>
         <div class="sblock">
-          <div class="shdr"><div class="snum">1</div><h3>Topic</h3></div>
+          <div class="shdr"><div class="snum">1</div><h3>Topic</h3><span class="shint">Subject area</span></div>
           <div class="sbdy">
             <input class="tin" type="text" id="ielts-topic" placeholder="e.g. Renewable energy, Urbanisation, Digital technology…">
             <div class="ttags">
@@ -5114,7 +5116,7 @@ function dismissSessionBanner() {
           </div>
         </div>
         <div class="sblock">
-          <div class="shdr"><div class="snum">2</div><h3>Include in Output</h3></div>
+          <div class="shdr"><div class="snum">2</div><h3>Include in Output</h3><span class="shint">Customise output</span></div>
           <div class="sbdy">
             <div class="cgrid" id="ielts-inc">
               <div class="chip active" data-v="model answer" onclick="SC(this,'ielts-inc')"><i data-lucide="check-circle-2"></i> Model Answer</div>
@@ -5131,10 +5133,11 @@ function dismissSessionBanner() {
       <div>
         <div class="rpanel">
           <div class="rp-hdr"><span class="rp-lbl">IELTS Task</span><div class="rp-acts"><button class="rp-btn save-ws" onclick="saveToWorkspace('ielts-out','IELTS Generator')">💾 Save</button><button class="rp-btn" onclick="copyOut('ielts-out')">Copy</button><button class="rp-btn" onclick="generateIELTS()">Regenerate</button><button class="rp-btn" onclick="nirPrint('ielts-out')" title="Print">🖨</button><button class="rp-btn" onclick="nirDownloadDocx('ielts-out')" title="Download Word">📄</button></div></div>
+          <div class="nir-meta" id="ielts-meta" role="status" aria-live="polite"></div>
           <div id="ielts-wc" style="font-size:11px;color:var(--muted);text-align:right;min-height:16px;padding-right:2px;"></div>
           <div id="ielts-next" class="tool-next-bar"></div>
           <div id="ielts-out" class="out-txt"><div class="rp-empty">
-  <div class="re-ico">📘</div>
+  <div class="re-ico"><i data-lucide="graduation-cap"></i></div>
   <p>Your IELTS task with full model answer will appear here.</p>
   <p style="margin-top:0.75rem;font-size:11px;opacity:0.7">Task 1 · Task 2 · Reading · Listening · Speaking — band-targeted output</p>
 </div></div>
@@ -5151,18 +5154,19 @@ function dismissSessionBanner() {
     <span class="ph-ey">✦ AI Tool · Corrective Feedback</span>
     <h1>Error <span>Correction Tool</span></h1>
     <p>Paste student writing and receive detailed linguistic feedback — direct correction, coded feedback, or metalinguistic commentary for teacher training.</p>
+    <div class="ph-tags"><span class="ph-tag">Direct Correction</span><span class="ph-tag">Coded Feedback</span><span class="ph-tag">Metalinguistic</span><span class="ph-tag">CEFR A1–C1</span></div>
   </div>
   <div class="content" style="max-width:none">
-    <div class="glayout">
-      <div>
-        <div class="stitle"><span class="stg">Feedback Type</span></div>
+    <div class="stitle"><span class="stg">Feedback Type — click to select</span></div>
         <div class="ec-opts" id="ec-type">
           <div class="eo active" data-v="direct correction with clear explanations for each error" onclick="selEC(this)"><div class="ei"><i data-lucide="check-circle-2"></i></div><h4>Direct Correction</h4><p>Corrected text + explanations</p></div>
           <div class="eo" data-v="coded feedback using standard ELT correction codes: WW (wrong word), WF (word form), T (tense), Sp (spelling), P (punctuation), Agr (agreement)" onclick="selEC(this)"><div class="ei"><i data-lucide="tag"></i></div><h4>Coded Feedback</h4><p>WW, WF, T, Sp, P codes</p></div>
           <div class="eo" data-v="metalinguistic commentary at teacher-training level — explain the linguistic rule behind each error" onclick="selEC(this)"><div class="ei"><i data-lucide="graduation-cap"></i></div><h4>Metalinguistic</h4><p>Teacher training depth</p></div>
         </div>
-        <div class="sblock" style="margin-top:1rem">
-          <div class="shdr"><div class="snum">1</div><h3>Student Level</h3></div>
+    <div class="glayout">
+      <div>
+        <div class="sblock">
+          <div class="shdr"><div class="snum">1</div><h3>Student Level</h3><span class="shint">CEFR or IELTS</span></div>
           <div class="sbdy">
             <div class="lpills" id="ec-level">
               <div class="lvl" data-v="A1" onclick="SP(this,'ec-level')">A1</div>
@@ -5175,7 +5179,7 @@ function dismissSessionBanner() {
           </div>
         </div>
         <div class="sblock">
-          <div class="shdr"><div class="snum">2</div><h3>Paste Student Writing</h3></div>
+          <div class="shdr"><div class="snum">2</div><h3>Paste Student Writing</h3><span class="shint">Max 400 words</span></div>
           <div class="sbdy"><textarea class="etarea" id="ec-text" placeholder="Paste the student's writing here. e.g. 'Yesterday I go to the market and buyed some vegetable. It was very crowd and I feeling tired after…'"></textarea>
           <div id="ec-context-note" style="display:none;font-size:11px;color:var(--muted);margin-top:5px;padding:5px 8px;background:var(--bg3);border-radius:4px;border-left:2px solid var(--gold)"></div></div>
         </div>
@@ -5184,6 +5188,7 @@ function dismissSessionBanner() {
       <div>
         <div class="rpanel">
           <div class="rp-hdr"><span class="rp-lbl">Feedback Report</span><div class="rp-acts"><button class="rp-btn save-ws" onclick="saveToWorkspace('ec-out','Error Correction')">💾 Save</button><button class="rp-btn" onclick="copyOut('ec-out')">Copy</button><button class="rp-btn" onclick="generateError()">Re-analyse</button><button class="rp-btn" onclick="nirPrint('ec-out')" title="Print">🖨</button><button class="rp-btn" onclick="nirDownloadDocx('ec-out')" title="Download Word">📄</button></div></div>
+          <div class="nir-meta" id="ec-meta" role="status" aria-live="polite"></div>
           <div id="ec-wc" style="font-size:11px;color:var(--muted);text-align:right;min-height:16px;padding-right:2px;"></div>
           <div id="ec-next" class="tool-next-bar"></div>
           <div id="ec-out" class="out-txt"><div class="rp-empty">
@@ -5204,11 +5209,10 @@ function dismissSessionBanner() {
     <span class="ph-ey">✦ AI Tool · ELT Materials Design</span>
     <h1>Worksheet <span>Builder</span></h1>
     <p>Create print-ready classroom worksheets with multiple exercise types, answer keys, and teacher notes — ready to use immediately.</p>
+    <div class="ph-tags"><span class="ph-tag">Gap Fill</span><span class="ph-tag">Answer Keys</span><span class="ph-tag">Print-Ready</span><span class="ph-tag">CEFR A1–C1</span></div>
   </div>
   <div class="content" style="max-width:none">
-    <div class="glayout">
-      <div>
-        <div class="stitle"><span class="stg">Exercise Types — toggle to include</span></div>
+    <div class="stitle"><span class="stg">Exercise Types — toggle to include</span></div>
         <div class="wtypes" id="ws-types">
           <div class="wt active" data-v="Gap-fill" onclick="this.classList.toggle('active')"><div class="wt-ico"><i data-lucide="minus-square"></i></div><h4>Gap Fill</h4></div>
           <div class="wt active" data-v="Multiple Choice" onclick="this.classList.toggle('active')"><div class="wt-ico"><i data-lucide="list-checks"></i></div><h4>Multiple Choice</h4></div>
@@ -5219,8 +5223,10 @@ function dismissSessionBanner() {
           <div class="wt" data-v="Translation" onclick="this.classList.toggle('active')"><div class="wt-ico"><i data-lucide="globe-2"></i></div><h4>Translation</h4></div>
           <div class="wt" data-v="Writing Task" onclick="this.classList.toggle('active')"><div class="wt-ico"><i data-lucide="pen-line"></i></div><h4>Writing Task</h4></div>
         </div>
+    <div class="glayout">
+      <div>
         <div class="sblock">
-          <div class="shdr"><div class="snum">1</div><h3>Focus &amp; Level</h3></div>
+          <div class="shdr"><div class="snum">1</div><h3>Focus &amp; Level</h3><span class="shint">Skill &amp; CEFR</span></div>
           <div class="sbdy">
             <div class="cgrid" id="ws-focus" style="margin-bottom:.9rem">
               <div class="chip active" data-v="Grammar" onclick="SC(this,'ws-focus')"><i data-lucide="square-function"></i> Grammar</div>
@@ -5239,7 +5245,7 @@ function dismissSessionBanner() {
           </div>
         </div>
         <div class="sblock">
-          <div class="shdr"><div class="snum">2</div><h3>Topic &amp; Options</h3></div>
+          <div class="shdr"><div class="snum">2</div><h3>Topic &amp; Options</h3><span class="shint">Subject &amp; extras</span></div>
           <div class="sbdy">
             <input class="tin" type="text" id="ws-topic" placeholder="e.g. Present Perfect, Conditionals, Travel Vocabulary…" style="margin-bottom:.9rem">
             <div class="selg" style="grid-template-columns:1fr 1fr">
@@ -5261,10 +5267,11 @@ function dismissSessionBanner() {
       <div>
         <div class="rpanel">
           <div class="rp-hdr"><span class="rp-lbl">Worksheet</span><div class="rp-acts"><button class="rp-btn save-ws" onclick="saveToWorkspace('ws-out','Worksheet Builder')">💾 Save</button><button class="rp-btn" onclick="copyOut('ws-out')">Copy</button><button class="rp-btn" onclick="generateWorksheet()">Regenerate</button><button class="rp-btn" onclick="nirPrint('ws-out')" title="Print">🖨</button><button class="rp-btn" onclick="nirDownloadDocx('ws-out')" title="Download Word">📄</button></div></div>
+          <div class="nir-meta" id="ws-meta" role="status" aria-live="polite"></div>
           <div id="ws-wc" style="font-size:11px;color:var(--muted);text-align:right;min-height:16px;padding-right:2px;"></div>
           <div id="ws-next" class="tool-next-bar"></div>
           <div id="ws-out" class="out-txt"><div class="rp-empty">
-  <div class="re-ico">📄</div>
+  <div class="re-ico"><i data-lucide="layout-template"></i></div>
   <p>Your print-ready worksheet will appear here.</p>
   <p style="margin-top:0.75rem;font-size:11px;opacity:0.7">Ready to copy, print, or share directly with your class</p>
 </div></div>
@@ -5777,8 +5784,8 @@ function syncLevel(lv){
   if(!S.wsLevel) S.wsLevel=lv;
 }
 function selIELTS(el,v){
-  document.querySelectorAll(".ic").forEach(c=>c.style.borderColor="");
-  el.style.borderColor="var(--gold)";S.ieltType=v;
+  document.querySelectorAll(".ic").forEach(c=>{c.style.borderColor="";c.classList.remove("active");});
+  el.style.borderColor="var(--gold)";el.classList.add("active");S.ieltType=v;
 }
 function selEC(el){
   document.querySelectorAll("#ec-type .eo").forEach(o=>o.classList.remove("active"));
@@ -6310,10 +6317,11 @@ async function callAPI(prompt,outId,btn,onComplete){
 async function generate(){window._lastToolUsed='prompt_generator';await callAPI(buildGen(),"prompt-out",document.getElementById("gen-btn"));}
 async function generateLesson(){
   window._lastToolUsed='lesson_planner';
-  var bar=document.getElementById('lp-next'); if(bar) bar.classList.remove('visible');
+  var bar=document.getElementById('lp-next'); if(bar) bar.classList.remove('visible'); nirToolMeta('lp-meta');
   const btns=document.querySelectorAll("#page-lesson .btn-gen");
   await callAPI(buildLesson(),"lp-out",btns[0]||null, function(text){
     if(!text||text.startsWith('Unable to generate')) return;
+    nirToolMeta('lp-meta',[['CEFR Level',S.lpLevel],['Focus',((document.querySelector('#lp-focus .chip.active')||{dataset:{}}).dataset.v)||''],['Duration',nirVal('lp-dur')],['Topic',nirVal('lp-topic')]]);
     showToolNextBar('lp-next',[
       ['📄 Create Worksheet for This Lesson', lpToWorksheet],
       ['✅ Analyse Student Writing', function(){ go('error'); }],
@@ -6323,10 +6331,11 @@ async function generateLesson(){
 }
 async function generateIELTS(){
   window._lastToolUsed='ielts_generator';
-  var bar=document.getElementById('ielts-next'); if(bar) bar.classList.remove('visible');
+  var bar=document.getElementById('ielts-next'); if(bar) bar.classList.remove('visible'); nirToolMeta('ielts-meta');
   const btns=document.querySelectorAll("#page-ielts .btn-gen");
   await callAPI(buildIELTS(),"ielts-out",btns[0]||null, function(text){
     if(!text||text.startsWith('Unable to generate')) return;
+    nirToolMeta('ielts-meta',[['Band',S.ieltBand],['Task',nirIeltsShort(S.ieltType)],['Topic',nirVal('ielts-topic')]]);
     showToolNextBar('ielts-next',[
       ['✅ Check Student Response (IELTS Mode)', ieltsToError],
       ['📄 Build Worksheet from This Task', ieltsToWorksheet],
@@ -6336,11 +6345,12 @@ async function generateIELTS(){
 }
 async function generateWorksheet(){
   window._lastToolUsed='worksheet_builder';
-  var bar=document.getElementById('ws-next'); if(bar) bar.classList.remove('visible');
+  var bar=document.getElementById('ws-next'); if(bar) bar.classList.remove('visible'); nirToolMeta('ws-meta');
   const btns=document.querySelectorAll("#page-worksheet .btn-gen");
   await callAPI(buildWorksheet(),"ws-out",btns[0]||null, function(text){
     if(S.wsImages && typeof resolveWorksheetImages==='function') resolveWorksheetImages(text);
     if(!text||text.startsWith('Unable to generate')) return;
+    nirToolMeta('ws-meta',[['CEFR Level',S.wsLevel],['Focus',S.wsFocus],['Topic',nirVal('ws-topic')]]);
     showToolNextBar('ws-next',[
       ['✅ Check Student Response', wsToError],
       ['📖 Plan a Lesson for This Topic', wsToLesson]
@@ -6473,10 +6483,11 @@ async function generateError(){
   window._lastToolUsed='error_correction';
   const p=buildError();
   if(!p){T("Please paste student writing first.");return;}
-  var bar=document.getElementById('ec-next'); if(bar) bar.classList.remove('visible');
+  var bar=document.getElementById('ec-next'); if(bar) bar.classList.remove('visible'); nirToolMeta('ec-meta');
   const btns=document.querySelectorAll("#page-error .btn-gen");
   await callAPI(p,"ec-out",btns[0]||null, function(text){
     if(!text||text.startsWith('Unable to generate')) return;
+    nirToolMeta('ec-meta',[['CEFR Level',S.ecLevel],['Feedback',((document.querySelector('#ec-type .eo.active h4')||{}).textContent)||''],['Words',String(nirVal('ec-text').split(/\s+/).filter(Boolean).length)]]);
     showToolNextBar('ec-next',[
       ['📄 Create Practice Worksheet', ecToWorksheet],
       ['🔄 Re-analyse', function(){ generateError(); }]
@@ -6485,6 +6496,25 @@ async function generateError(){
 }
 
 // ══ CROSS-TOOL NEXT STEPS ══
+
+// ── Meta strip (CEFR / focus / topic) shown above the output of each tool ──
+function nirToolMeta(id, pairs) {
+  var el = document.getElementById(id);
+  if (!el) return;
+  if (!pairs || !pairs.length) { el.classList.remove('visible'); el.innerHTML = ''; return; }
+  var esc = function(v){ return String(v).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); };
+  var parts = pairs.filter(function(p){ return p[1]; }).map(function(p){ return '<strong>' + esc(p[0]) + ':</strong> ' + esc(p[1]); });
+  if (!parts.length) { el.classList.remove('visible'); el.innerHTML = ''; return; }
+  el.innerHTML = parts.join('&nbsp;&nbsp;·&nbsp;&nbsp;');
+  el.classList.add('visible');
+}
+function nirIeltsShort(t) {
+  var m = String(t||'').match(/(Academic Writing Task [12]|General Training Writing Task 1|Speaking Part [123])/);
+  if (m) return m[1];
+  if (/Reading/.test(t||'')) return 'Academic Reading';
+  return String(t||'').split(' (')[0];
+}
+function nirVal(id){ var e = document.getElementById(id); return e ? (e.value||'').trim() : ''; }
 
 // ── Helper: render a tool-next-bar with buttons ──
 function showToolNextBar(barId, steps) {
@@ -11283,6 +11313,317 @@ html.light #page-lesson .rpanel{box-shadow:0 18px 40px rgba(60,45,10,.1)}
 }
 @media(max-width:600px){#page-lesson .lpills{grid-template-columns:repeat(5,minmax(0,1fr))}#page-lesson .lvl{padding:12px 2px}#page-lesson .selg{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}}
 @media(max-width:380px){#page-lesson .selg{grid-template-columns:minmax(0,1fr)}}
+</style>
+<style id="nir-tools-meta-v3">
+/* shared meta strip for IELTS / Lesson / Error / Worksheet (matches #elt-meta-strip) */
+.nir-meta{display:none;padding:7px 12px;margin-bottom:8px;background:var(--bg4);border:1px solid var(--bdr);border-radius:6px;font-size:10.5px;color:var(--muted);line-height:1.7}
+.nir-meta strong{color:var(--text);font-weight:600}
+.nir-meta.visible{display:block}
+html.light .nir-meta{background:#EEF4FF;border-color:#dde6f5}
+html.light .nir-meta strong{color:#1B2A4A}
+</style>
+<style id="nir-ielts-redesign-v3">
+/* ═══ NIR IELTS GENERATOR REDESIGN v3 — scoped to #page-ielts. Same system as Prompt Generator / Lesson Planner. Visual only. ═══ */
+#page-ielts{--g-card:#2B251D;--g-card2:#211D18;--g-gold:#D4AF37;--g-gt:#E6C65C;--g-ink:#F4F0E6;--g-mut:#A89F8C;--g-line:rgba(212,175,55,.16);--g-line2:rgba(212,175,55,.42);--g-ease:cubic-bezier(.2,.8,.2,1)}
+html.light #page-ielts{--g-card:#FFFFFF;--g-card2:#FBF8EF;--g-gold:#B18A25;--g-gt:#8F6B14;--g-ink:#25221B;--g-mut:#6B6554;--g-line:rgba(177,138,37,.22);--g-line2:rgba(177,138,37,.5)}
+/* header */
+#page-ielts .ph{margin:clamp(10px,2vw,22px) clamp(10px,2vw,22px) 0;padding:clamp(1.4rem,3.5vw,2.4rem) clamp(1.1rem,3vw,2.2rem);border:1px solid var(--g-line2);border-radius:24px;background:radial-gradient(520px 260px at 92% 0,rgba(212,175,55,.18),transparent 65%),linear-gradient(125deg,var(--g-card2),var(--g-card)) !important}
+#page-ielts .ph-ey{color:var(--g-gt) !important;font-weight:700;letter-spacing:2.2px}
+#page-ielts .ph h1{color:var(--g-ink) !important;font-size:clamp(1.6rem,3.4vw,2.5rem);letter-spacing:-.01em;line-height:1.1}
+#page-ielts .ph h1 span,#page-ielts .ph h1 span{color:var(--g-gt) !important}
+#page-ielts .ph p{color:var(--g-mut) !important;max-width:620px}
+#page-ielts .ph-tags{gap:6px}
+#page-ielts .ph-tag{border-color:var(--g-line2);color:var(--g-gt);background:rgba(212,175,55,.07);border-radius:99px;padding:4px 12px;font-weight:600}
+#page-ielts .content{padding:clamp(10px,2vw,22px) !important}
+#page-ielts .glayout{gap:clamp(.9rem,2vw,1.6rem);grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr)}
+/* step cards */
+#page-ielts .sblock{background:linear-gradient(150deg,var(--g-card),var(--g-card2)) !important;border:1px solid var(--g-line) !important;border-radius:20px;margin-bottom:12px;transition:border-color .25s,box-shadow .25s}
+#page-ielts .sblock:focus-within,#page-ielts .sblock:hover{border-color:var(--g-line2) !important}
+#page-ielts .sblock:focus-within{box-shadow:0 10px 30px rgba(0,0,0,.25)}
+#page-ielts .shdr{background:none !important;border:0 !important;padding:1rem 1.2rem .2rem;gap:12px}
+#page-ielts .snum{width:30px;height:30px;border:0;background:linear-gradient(145deg,#E6C65C,#B18A25);color:#1d1604;font-size:12px;font-weight:800;box-shadow:0 4px 14px rgba(212,175,55,.3)}
+#page-ielts .shdr h3{color:var(--g-ink) !important;font-size:15px;letter-spacing:.2px}
+#page-ielts .shint{color:var(--g-mut) !important;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#page-ielts .sbdy{padding:.8rem 1.2rem 1.2rem}
+/* chips / levels / topic */
+#page-ielts .cgrid{gap:8px}
+#page-ielts .chip{min-height:38px;border-radius:99px;padding:7px 14px;font-size:12px;background:rgba(212,175,55,.05) !important;border:1px solid var(--g-line) !important;color:var(--g-mut) !important;transition:background .2s,border-color .2s,color .2s,transform .2s var(--g-ease),box-shadow .2s}
+html.light #page-ielts .chip{background:#fff !important}
+#page-ielts .chip:hover{border-color:var(--g-line2) !important;color:var(--g-ink) !important}
+#page-ielts .chip:active{transform:scale(.95)}
+#page-ielts .chip.active{background:linear-gradient(110deg,rgba(230,198,92,.22),rgba(212,175,55,.1)) !important;border-color:var(--g-gold) !important;color:var(--g-gt) !important;box-shadow:0 0 0 3px rgba(212,175,55,.1)}
+#page-ielts .lpills{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:6px;padding:4px;border:1px solid var(--g-line);border-radius:16px;background:rgba(0,0,0,.14)}
+html.light #page-ielts .lpills{background:#F5F1E4}
+#page-ielts .lvl{text-align:center;border:0 !important;border-radius:12px;padding:10px 4px;background:none !important;color:var(--g-mut) !important;transition:background .2s,color .2s,transform .2s var(--g-ease)}
+#page-ielts .lvl:hover{color:var(--g-ink) !important}
+#page-ielts .lvl.active{background:linear-gradient(110deg,#E6C65C,#D4AF37) !important;color:#1d1604 !important;box-shadow:0 4px 14px rgba(212,175,55,.3)}
+#page-ielts .tin{height:50px;border-radius:14px;padding:0 16px;background:rgba(0,0,0,.16) !important;border:1px solid var(--g-line) !important;color:var(--g-ink) !important;font-size:15px}
+html.light #page-ielts .tin{background:#fff !important}
+#page-ielts .tin:focus{border-color:var(--g-gold) !important;box-shadow:0 0 0 4px rgba(212,175,55,.14)}
+#page-ielts .ttags{gap:6px;margin-top:10px}
+#page-ielts .ttag{border-radius:99px;padding:5px 12px;min-height:30px;display:inline-flex;align-items:center;border-color:var(--g-line);color:var(--g-mut)}
+#page-ielts .ttag:hover{border-color:var(--g-gold);color:var(--g-gt);background:rgba(212,175,55,.08)}
+#page-ielts .selg{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+#page-ielts .sg label{color:var(--g-mut) !important;font-size:10.5px}
+#page-ielts .sg select{height:46px;border-radius:12px;background-color:rgba(0,0,0,.16) !important;border:1px solid var(--g-line) !important;color:var(--g-ink) !important}
+html.light #page-ielts .sg select{background-color:#fff !important}
+#page-ielts .sg select:focus{border-color:var(--g-gold) !important;box-shadow:0 0 0 4px rgba(212,175,55,.14)}
+/* generate button */
+#page-ielts .btn-gen{height:56px;border-radius:16px;background:linear-gradient(110deg,#E6C65C,#D4AF37 55%,#B18A25) !important;color:#1d1604 !important;font-size:13px;box-shadow:0 10px 30px rgba(212,175,55,.28);position:relative;overflow:hidden;transition:transform .25s var(--g-ease),box-shadow .25s}
+#page-ielts .btn-gen:before{content:"";position:absolute;inset:0;background:linear-gradient(110deg,transparent 30%,rgba(255,255,255,.35) 50%,transparent 70%);transform:translateX(-120%);transition:transform .7s var(--g-ease)}
+#page-ielts .btn-gen:hover{transform:translateY(-2px);box-shadow:0 14px 38px rgba(212,175,55,.4)}#page-ielts .btn-gen:hover:before{transform:translateX(120%)}
+#page-ielts .btn-gen:active{transform:scale(.98)}
+/* result panel */
+#page-ielts .rpanel{background:linear-gradient(160deg,var(--g-card),var(--g-card2)) !important;border:1px solid var(--g-line2) !important;border-radius:22px;box-shadow:0 20px 50px rgba(0,0,0,.28)}
+html.light #page-ielts .rpanel{box-shadow:0 18px 40px rgba(60,45,10,.1)}
+#page-ielts .rp-lbl{color:var(--g-gt) !important}
+#page-ielts .rp-acts{gap:6px;flex-wrap:wrap;justify-content:flex-end}
+#page-ielts .rp-btn{border-radius:10px;min-height:34px;background:rgba(212,175,55,.06) !important;border:1px solid var(--g-line) !important;color:var(--g-mut) !important;transition:background .2s,color .2s,border-color .2s,transform .2s var(--g-ease)}
+#page-ielts .rp-btn:hover{border-color:var(--g-line2) !important;color:var(--g-gt) !important;transform:translateY(-1px)}
+#page-ielts .rp-btn.ok{color:#6cc870 !important;border-color:rgba(108,200,112,.5) !important}
+#page-ielts .out-txt{border-left-color:var(--g-line2);color:var(--g-ink) !important}
+#page-ielts .out-txt h1,#page-ielts .out-txt h2,#page-ielts .out-txt h3,#page-ielts .out-txt h4{color:var(--g-gt) !important}
+#page-ielts .rp-empty{display:grid;place-items:center;text-align:center;padding:1.5rem .5rem;color:var(--g-mut)}
+#page-ielts .re-ico{display:grid;place-items:center;width:64px;height:64px;margin:0 auto .8rem;border-radius:20px;font-size:26px;color:var(--g-gt);background:radial-gradient(circle,rgba(212,175,55,.25),rgba(212,175,55,.05));border:1px solid var(--g-line2);animation:gFloat 5s ease-in-out infinite}
+#page-ielts .rp-foot{color:var(--g-mut)}
+@media(max-width:1100px){#page-ielts .glayout{grid-template-columns:minmax(0,1fr)}#page-ielts .rpanel{position:static;max-height:none}}
+@media(max-width:600px){
+#page-ielts .ph{border-radius:20px;padding:1.2rem 1.1rem}
+#page-ielts .ph-tags{flex-wrap:nowrap;overflow-x:auto;margin:.9rem -1.1rem 0;padding:0 1.1rem;scrollbar-width:none}#page-ielts .ph-tags::-webkit-scrollbar{display:none}#page-ielts .ph-tag{white-space:nowrap}
+#page-ielts .sblock{border-radius:18px}#page-ielts .sbdy{padding:.7rem 1rem 1rem}#page-ielts .shdr{padding:.9rem 1rem .1rem}
+#page-ielts .chip{min-height:42px;padding:8px 14px;font-size:12.5px}
+#page-ielts .lpills{grid-template-columns:repeat(3,minmax(0,1fr))}#page-ielts .lvl{padding:12px 4px;font-size:12.5px}
+#page-ielts .ttag{min-height:36px;padding:6px 13px}
+#page-ielts .selg{grid-template-columns:minmax(0,1fr)}
+#page-ielts .btn-gen{position:sticky;bottom:calc(var(--mob-nav-h,88px) + var(--safe-bottom,0px) + 8px);z-index:20;height:58px;box-shadow:0 12px 32px rgba(0,0,0,.45),0 6px 24px rgba(212,175,55,.3)}
+#page-ielts .rp-btn{min-height:40px;padding:6px 14px}
+}
+@media(prefers-reduced-motion:reduce){#page-ielts *{transition:none !important;animation:none !important}}
+
+#page-ielts .stitle{color:var(--g-ink) !important;margin:.2rem 0 1rem}#page-ielts .stitle:after{background:var(--g-line) !important}
+#page-ielts .stitle .stg{color:var(--g-gt) !important}
+
+#page-ielts .ic{position:relative;display:flex;flex-direction:column;align-items:center;border-radius:18px;background:linear-gradient(150deg,var(--g-card),var(--g-card2)) !important;border:1px solid var(--g-line) !important;user-select:none;-webkit-user-select:none;transition:opacity .25s,transform .25s var(--g-ease),border-color .25s,box-shadow .25s}
+#page-ielts .ic:hover{border-color:var(--g-line2) !important;transform:translateY(-2px)}
+#page-ielts .ic:active{transform:scale(.97)}
+#page-ielts .ic.active{border:1px solid var(--g-gold) !important;box-shadow:0 10px 26px rgba(0,0,0,.22),0 0 0 3px rgba(212,175,55,.08)}
+#page-ielts .ic.active:before{content:"";position:absolute;top:0;left:18%;right:18%;height:2px;border-radius:2px;background:linear-gradient(90deg,transparent,#E6C65C,transparent)}
+
+#page-ielts .igrid{grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-bottom:clamp(1rem,2.5vw,1.6rem)}
+#page-ielts .ic{padding:1.1rem .9rem;text-align:center;cursor:pointer}
+#page-ielts .ic-n{display:grid !important;place-items:center;width:46px;height:46px;margin:0 0 .6rem !important;border-radius:14px;font-size:1rem !important;color:var(--g-gt) !important;background:rgba(212,175,55,.08);border:1px solid var(--g-line)}
+#page-ielts .ic.active .ic-n{background:linear-gradient(145deg,rgba(230,198,92,.3),rgba(212,175,55,.1))}
+#page-ielts .ic h3{color:var(--g-ink) !important;font-size:13px !important;letter-spacing:.3px;margin-bottom:.35rem}
+#page-ielts .ic p{color:var(--g-mut) !important;font-size:11px;line-height:1.5}
+#page-ielts .bpills{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;padding:4px;max-width:560px;border:1px solid var(--g-line);border-radius:16px;background:rgba(0,0,0,.14);margin-bottom:clamp(1rem,2.5vw,1.6rem)}
+html.light #page-ielts .bpills{background:#F5F1E4}
+#page-ielts .bp{text-align:center;border:0 !important;border-radius:12px;padding:10px 4px;background:none !important;color:var(--g-mut) !important;transition:background .2s,color .2s}
+#page-ielts .bp:hover{color:var(--g-ink) !important}
+#page-ielts .bp.active{background:linear-gradient(110deg,#E6C65C,#D4AF37) !important;color:#1d1604 !important;box-shadow:0 4px 14px rgba(212,175,55,.3)}
+@media(max-width:1100px){#page-ielts .igrid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:520px){#page-ielts .igrid{grid-template-columns:minmax(0,1fr)}#page-ielts .bpills{max-width:none}}
+</style>
+<style id="nir-error-redesign-v3">
+/* ═══ NIR ERROR CORRECTION REDESIGN v3 — scoped to #page-error. Same system as Prompt Generator / Lesson Planner. Visual only. ═══ */
+#page-error{--g-card:#2B251D;--g-card2:#211D18;--g-gold:#D4AF37;--g-gt:#E6C65C;--g-ink:#F4F0E6;--g-mut:#A89F8C;--g-line:rgba(212,175,55,.16);--g-line2:rgba(212,175,55,.42);--g-ease:cubic-bezier(.2,.8,.2,1)}
+html.light #page-error{--g-card:#FFFFFF;--g-card2:#FBF8EF;--g-gold:#B18A25;--g-gt:#8F6B14;--g-ink:#25221B;--g-mut:#6B6554;--g-line:rgba(177,138,37,.22);--g-line2:rgba(177,138,37,.5)}
+/* header */
+#page-error .ph{margin:clamp(10px,2vw,22px) clamp(10px,2vw,22px) 0;padding:clamp(1.4rem,3.5vw,2.4rem) clamp(1.1rem,3vw,2.2rem);border:1px solid var(--g-line2);border-radius:24px;background:radial-gradient(520px 260px at 92% 0,rgba(212,175,55,.18),transparent 65%),linear-gradient(125deg,var(--g-card2),var(--g-card)) !important}
+#page-error .ph-ey{color:var(--g-gt) !important;font-weight:700;letter-spacing:2.2px}
+#page-error .ph h1{color:var(--g-ink) !important;font-size:clamp(1.6rem,3.4vw,2.5rem);letter-spacing:-.01em;line-height:1.1}
+#page-error .ph h1 span,#page-error .ph h1 span{color:var(--g-gt) !important}
+#page-error .ph p{color:var(--g-mut) !important;max-width:620px}
+#page-error .ph-tags{gap:6px}
+#page-error .ph-tag{border-color:var(--g-line2);color:var(--g-gt);background:rgba(212,175,55,.07);border-radius:99px;padding:4px 12px;font-weight:600}
+#page-error .content{padding:clamp(10px,2vw,22px) !important}
+#page-error .glayout{gap:clamp(.9rem,2vw,1.6rem);grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr)}
+/* step cards */
+#page-error .sblock{background:linear-gradient(150deg,var(--g-card),var(--g-card2)) !important;border:1px solid var(--g-line) !important;border-radius:20px;margin-bottom:12px;transition:border-color .25s,box-shadow .25s}
+#page-error .sblock:focus-within,#page-error .sblock:hover{border-color:var(--g-line2) !important}
+#page-error .sblock:focus-within{box-shadow:0 10px 30px rgba(0,0,0,.25)}
+#page-error .shdr{background:none !important;border:0 !important;padding:1rem 1.2rem .2rem;gap:12px}
+#page-error .snum{width:30px;height:30px;border:0;background:linear-gradient(145deg,#E6C65C,#B18A25);color:#1d1604;font-size:12px;font-weight:800;box-shadow:0 4px 14px rgba(212,175,55,.3)}
+#page-error .shdr h3{color:var(--g-ink) !important;font-size:15px;letter-spacing:.2px}
+#page-error .shint{color:var(--g-mut) !important;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#page-error .sbdy{padding:.8rem 1.2rem 1.2rem}
+/* chips / levels / topic */
+#page-error .cgrid{gap:8px}
+#page-error .chip{min-height:38px;border-radius:99px;padding:7px 14px;font-size:12px;background:rgba(212,175,55,.05) !important;border:1px solid var(--g-line) !important;color:var(--g-mut) !important;transition:background .2s,border-color .2s,color .2s,transform .2s var(--g-ease),box-shadow .2s}
+html.light #page-error .chip{background:#fff !important}
+#page-error .chip:hover{border-color:var(--g-line2) !important;color:var(--g-ink) !important}
+#page-error .chip:active{transform:scale(.95)}
+#page-error .chip.active{background:linear-gradient(110deg,rgba(230,198,92,.22),rgba(212,175,55,.1)) !important;border-color:var(--g-gold) !important;color:var(--g-gt) !important;box-shadow:0 0 0 3px rgba(212,175,55,.1)}
+#page-error .lpills{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:6px;padding:4px;border:1px solid var(--g-line);border-radius:16px;background:rgba(0,0,0,.14)}
+html.light #page-error .lpills{background:#F5F1E4}
+#page-error .lvl{text-align:center;border:0 !important;border-radius:12px;padding:10px 4px;background:none !important;color:var(--g-mut) !important;transition:background .2s,color .2s,transform .2s var(--g-ease)}
+#page-error .lvl:hover{color:var(--g-ink) !important}
+#page-error .lvl.active{background:linear-gradient(110deg,#E6C65C,#D4AF37) !important;color:#1d1604 !important;box-shadow:0 4px 14px rgba(212,175,55,.3)}
+#page-error .tin{height:50px;border-radius:14px;padding:0 16px;background:rgba(0,0,0,.16) !important;border:1px solid var(--g-line) !important;color:var(--g-ink) !important;font-size:15px}
+html.light #page-error .tin{background:#fff !important}
+#page-error .tin:focus{border-color:var(--g-gold) !important;box-shadow:0 0 0 4px rgba(212,175,55,.14)}
+#page-error .ttags{gap:6px;margin-top:10px}
+#page-error .ttag{border-radius:99px;padding:5px 12px;min-height:30px;display:inline-flex;align-items:center;border-color:var(--g-line);color:var(--g-mut)}
+#page-error .ttag:hover{border-color:var(--g-gold);color:var(--g-gt);background:rgba(212,175,55,.08)}
+#page-error .selg{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+#page-error .sg label{color:var(--g-mut) !important;font-size:10.5px}
+#page-error .sg select{height:46px;border-radius:12px;background-color:rgba(0,0,0,.16) !important;border:1px solid var(--g-line) !important;color:var(--g-ink) !important}
+html.light #page-error .sg select{background-color:#fff !important}
+#page-error .sg select:focus{border-color:var(--g-gold) !important;box-shadow:0 0 0 4px rgba(212,175,55,.14)}
+/* generate button */
+#page-error .btn-gen{height:56px;border-radius:16px;background:linear-gradient(110deg,#E6C65C,#D4AF37 55%,#B18A25) !important;color:#1d1604 !important;font-size:13px;box-shadow:0 10px 30px rgba(212,175,55,.28);position:relative;overflow:hidden;transition:transform .25s var(--g-ease),box-shadow .25s}
+#page-error .btn-gen:before{content:"";position:absolute;inset:0;background:linear-gradient(110deg,transparent 30%,rgba(255,255,255,.35) 50%,transparent 70%);transform:translateX(-120%);transition:transform .7s var(--g-ease)}
+#page-error .btn-gen:hover{transform:translateY(-2px);box-shadow:0 14px 38px rgba(212,175,55,.4)}#page-error .btn-gen:hover:before{transform:translateX(120%)}
+#page-error .btn-gen:active{transform:scale(.98)}
+/* result panel */
+#page-error .rpanel{background:linear-gradient(160deg,var(--g-card),var(--g-card2)) !important;border:1px solid var(--g-line2) !important;border-radius:22px;box-shadow:0 20px 50px rgba(0,0,0,.28)}
+html.light #page-error .rpanel{box-shadow:0 18px 40px rgba(60,45,10,.1)}
+#page-error .rp-lbl{color:var(--g-gt) !important}
+#page-error .rp-acts{gap:6px;flex-wrap:wrap;justify-content:flex-end}
+#page-error .rp-btn{border-radius:10px;min-height:34px;background:rgba(212,175,55,.06) !important;border:1px solid var(--g-line) !important;color:var(--g-mut) !important;transition:background .2s,color .2s,border-color .2s,transform .2s var(--g-ease)}
+#page-error .rp-btn:hover{border-color:var(--g-line2) !important;color:var(--g-gt) !important;transform:translateY(-1px)}
+#page-error .rp-btn.ok{color:#6cc870 !important;border-color:rgba(108,200,112,.5) !important}
+#page-error .out-txt{border-left-color:var(--g-line2);color:var(--g-ink) !important}
+#page-error .out-txt h1,#page-error .out-txt h2,#page-error .out-txt h3,#page-error .out-txt h4{color:var(--g-gt) !important}
+#page-error .rp-empty{display:grid;place-items:center;text-align:center;padding:1.5rem .5rem;color:var(--g-mut)}
+#page-error .re-ico{display:grid;place-items:center;width:64px;height:64px;margin:0 auto .8rem;border-radius:20px;font-size:26px;color:var(--g-gt);background:radial-gradient(circle,rgba(212,175,55,.25),rgba(212,175,55,.05));border:1px solid var(--g-line2);animation:gFloat 5s ease-in-out infinite}
+#page-error .rp-foot{color:var(--g-mut)}
+@media(max-width:1100px){#page-error .glayout{grid-template-columns:minmax(0,1fr)}#page-error .rpanel{position:static;max-height:none}}
+@media(max-width:600px){
+#page-error .ph{border-radius:20px;padding:1.2rem 1.1rem}
+#page-error .ph-tags{flex-wrap:nowrap;overflow-x:auto;margin:.9rem -1.1rem 0;padding:0 1.1rem;scrollbar-width:none}#page-error .ph-tags::-webkit-scrollbar{display:none}#page-error .ph-tag{white-space:nowrap}
+#page-error .sblock{border-radius:18px}#page-error .sbdy{padding:.7rem 1rem 1rem}#page-error .shdr{padding:.9rem 1rem .1rem}
+#page-error .chip{min-height:42px;padding:8px 14px;font-size:12.5px}
+#page-error .lpills{grid-template-columns:repeat(3,minmax(0,1fr))}#page-error .lvl{padding:12px 4px;font-size:12.5px}
+#page-error .ttag{min-height:36px;padding:6px 13px}
+#page-error .selg{grid-template-columns:minmax(0,1fr)}
+#page-error .btn-gen{position:sticky;bottom:calc(var(--mob-nav-h,88px) + var(--safe-bottom,0px) + 8px);z-index:20;height:58px;box-shadow:0 12px 32px rgba(0,0,0,.45),0 6px 24px rgba(212,175,55,.3)}
+#page-error .rp-btn{min-height:40px;padding:6px 14px}
+}
+@media(prefers-reduced-motion:reduce){#page-error *{transition:none !important;animation:none !important}}
+
+#page-error .stitle{color:var(--g-ink) !important;margin:.2rem 0 1rem}#page-error .stitle:after{background:var(--g-line) !important}
+#page-error .stitle .stg{color:var(--g-gt) !important}
+
+#page-error .eo{position:relative;display:flex;flex-direction:column;align-items:center;border-radius:18px;background:linear-gradient(150deg,var(--g-card),var(--g-card2)) !important;border:1px solid var(--g-line) !important;user-select:none;-webkit-user-select:none;transition:opacity .25s,transform .25s var(--g-ease),border-color .25s,box-shadow .25s}
+#page-error .eo:hover{border-color:var(--g-line2) !important;transform:translateY(-2px)}
+#page-error .eo:active{transform:scale(.97)}
+#page-error .eo.active{border:1px solid var(--g-gold) !important;box-shadow:0 10px 26px rgba(0,0,0,.22),0 0 0 3px rgba(212,175,55,.08)}
+#page-error .eo.active:before{content:"";position:absolute;top:0;left:18%;right:18%;height:2px;border-radius:2px;background:linear-gradient(90deg,transparent,#E6C65C,transparent)}
+#page-error .eo .ei{display:grid;place-items:center;width:42px;height:42px;margin:0 0 .5rem;border-radius:13px;color:var(--g-gt);background:rgba(212,175,55,.08);border:1px solid var(--g-line);transition:background .25s}
+#page-error .eo.active .eo .ei{background:linear-gradient(145deg,rgba(230,198,92,.3),rgba(212,175,55,.1))}
+#page-error .eo h4{color:var(--g-ink) !important;font-size:12px;letter-spacing:.4px;line-height:1.3}
+#page-error .eo p{color:var(--g-mut) !important;font-size:11px;line-height:1.5}
+#page-error .etarea{min-height:210px;border-radius:14px;padding:14px 16px !important;line-height:1.65 !important;font-size:14px !important;background:rgba(0,0,0,.16) !important;border:1px solid var(--g-line) !important;color:var(--g-ink) !important;resize:vertical}
+html.light #page-error .etarea{background:#fff !important}
+#page-error .etarea:focus{border-color:var(--g-gold) !important;box-shadow:0 0 0 4px rgba(212,175,55,.14);outline:none}
+#page-error .etarea::placeholder{color:var(--g-mut)}
+
+#page-error .ec-opts{grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:0 0 clamp(1rem,2.5vw,1.6rem)}
+#page-error .eo{padding:1rem .8rem;text-align:center}
+@media(max-width:700px){#page-error .ec-opts{grid-template-columns:minmax(0,1fr)}}
+</style>
+<style id="nir-worksheet-redesign-v3">
+/* ═══ NIR WORKSHEET BUILDER REDESIGN v3 — scoped to #page-worksheet. Same system as Prompt Generator / Lesson Planner. Visual only. ═══ */
+#page-worksheet{--g-card:#2B251D;--g-card2:#211D18;--g-gold:#D4AF37;--g-gt:#E6C65C;--g-ink:#F4F0E6;--g-mut:#A89F8C;--g-line:rgba(212,175,55,.16);--g-line2:rgba(212,175,55,.42);--g-ease:cubic-bezier(.2,.8,.2,1)}
+html.light #page-worksheet{--g-card:#FFFFFF;--g-card2:#FBF8EF;--g-gold:#B18A25;--g-gt:#8F6B14;--g-ink:#25221B;--g-mut:#6B6554;--g-line:rgba(177,138,37,.22);--g-line2:rgba(177,138,37,.5)}
+/* header */
+#page-worksheet .ph{margin:clamp(10px,2vw,22px) clamp(10px,2vw,22px) 0;padding:clamp(1.4rem,3.5vw,2.4rem) clamp(1.1rem,3vw,2.2rem);border:1px solid var(--g-line2);border-radius:24px;background:radial-gradient(520px 260px at 92% 0,rgba(212,175,55,.18),transparent 65%),linear-gradient(125deg,var(--g-card2),var(--g-card)) !important}
+#page-worksheet .ph-ey{color:var(--g-gt) !important;font-weight:700;letter-spacing:2.2px}
+#page-worksheet .ph h1{color:var(--g-ink) !important;font-size:clamp(1.6rem,3.4vw,2.5rem);letter-spacing:-.01em;line-height:1.1}
+#page-worksheet .ph h1 span,#page-worksheet .ph h1 span{color:var(--g-gt) !important}
+#page-worksheet .ph p{color:var(--g-mut) !important;max-width:620px}
+#page-worksheet .ph-tags{gap:6px}
+#page-worksheet .ph-tag{border-color:var(--g-line2);color:var(--g-gt);background:rgba(212,175,55,.07);border-radius:99px;padding:4px 12px;font-weight:600}
+#page-worksheet .content{padding:clamp(10px,2vw,22px) !important}
+#page-worksheet .glayout{gap:clamp(.9rem,2vw,1.6rem);grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr)}
+/* step cards */
+#page-worksheet .sblock{background:linear-gradient(150deg,var(--g-card),var(--g-card2)) !important;border:1px solid var(--g-line) !important;border-radius:20px;margin-bottom:12px;transition:border-color .25s,box-shadow .25s}
+#page-worksheet .sblock:focus-within,#page-worksheet .sblock:hover{border-color:var(--g-line2) !important}
+#page-worksheet .sblock:focus-within{box-shadow:0 10px 30px rgba(0,0,0,.25)}
+#page-worksheet .shdr{background:none !important;border:0 !important;padding:1rem 1.2rem .2rem;gap:12px}
+#page-worksheet .snum{width:30px;height:30px;border:0;background:linear-gradient(145deg,#E6C65C,#B18A25);color:#1d1604;font-size:12px;font-weight:800;box-shadow:0 4px 14px rgba(212,175,55,.3)}
+#page-worksheet .shdr h3{color:var(--g-ink) !important;font-size:15px;letter-spacing:.2px}
+#page-worksheet .shint{color:var(--g-mut) !important;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#page-worksheet .sbdy{padding:.8rem 1.2rem 1.2rem}
+/* chips / levels / topic */
+#page-worksheet .cgrid{gap:8px}
+#page-worksheet .chip{min-height:38px;border-radius:99px;padding:7px 14px;font-size:12px;background:rgba(212,175,55,.05) !important;border:1px solid var(--g-line) !important;color:var(--g-mut) !important;transition:background .2s,border-color .2s,color .2s,transform .2s var(--g-ease),box-shadow .2s}
+html.light #page-worksheet .chip{background:#fff !important}
+#page-worksheet .chip:hover{border-color:var(--g-line2) !important;color:var(--g-ink) !important}
+#page-worksheet .chip:active{transform:scale(.95)}
+#page-worksheet .chip.active{background:linear-gradient(110deg,rgba(230,198,92,.22),rgba(212,175,55,.1)) !important;border-color:var(--g-gold) !important;color:var(--g-gt) !important;box-shadow:0 0 0 3px rgba(212,175,55,.1)}
+#page-worksheet .lpills{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:6px;padding:4px;border:1px solid var(--g-line);border-radius:16px;background:rgba(0,0,0,.14)}
+html.light #page-worksheet .lpills{background:#F5F1E4}
+#page-worksheet .lvl{text-align:center;border:0 !important;border-radius:12px;padding:10px 4px;background:none !important;color:var(--g-mut) !important;transition:background .2s,color .2s,transform .2s var(--g-ease)}
+#page-worksheet .lvl:hover{color:var(--g-ink) !important}
+#page-worksheet .lvl.active{background:linear-gradient(110deg,#E6C65C,#D4AF37) !important;color:#1d1604 !important;box-shadow:0 4px 14px rgba(212,175,55,.3)}
+#page-worksheet .tin{height:50px;border-radius:14px;padding:0 16px;background:rgba(0,0,0,.16) !important;border:1px solid var(--g-line) !important;color:var(--g-ink) !important;font-size:15px}
+html.light #page-worksheet .tin{background:#fff !important}
+#page-worksheet .tin:focus{border-color:var(--g-gold) !important;box-shadow:0 0 0 4px rgba(212,175,55,.14)}
+#page-worksheet .ttags{gap:6px;margin-top:10px}
+#page-worksheet .ttag{border-radius:99px;padding:5px 12px;min-height:30px;display:inline-flex;align-items:center;border-color:var(--g-line);color:var(--g-mut)}
+#page-worksheet .ttag:hover{border-color:var(--g-gold);color:var(--g-gt);background:rgba(212,175,55,.08)}
+#page-worksheet .selg{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+#page-worksheet .sg label{color:var(--g-mut) !important;font-size:10.5px}
+#page-worksheet .sg select{height:46px;border-radius:12px;background-color:rgba(0,0,0,.16) !important;border:1px solid var(--g-line) !important;color:var(--g-ink) !important}
+html.light #page-worksheet .sg select{background-color:#fff !important}
+#page-worksheet .sg select:focus{border-color:var(--g-gold) !important;box-shadow:0 0 0 4px rgba(212,175,55,.14)}
+/* generate button */
+#page-worksheet .btn-gen{height:56px;border-radius:16px;background:linear-gradient(110deg,#E6C65C,#D4AF37 55%,#B18A25) !important;color:#1d1604 !important;font-size:13px;box-shadow:0 10px 30px rgba(212,175,55,.28);position:relative;overflow:hidden;transition:transform .25s var(--g-ease),box-shadow .25s}
+#page-worksheet .btn-gen:before{content:"";position:absolute;inset:0;background:linear-gradient(110deg,transparent 30%,rgba(255,255,255,.35) 50%,transparent 70%);transform:translateX(-120%);transition:transform .7s var(--g-ease)}
+#page-worksheet .btn-gen:hover{transform:translateY(-2px);box-shadow:0 14px 38px rgba(212,175,55,.4)}#page-worksheet .btn-gen:hover:before{transform:translateX(120%)}
+#page-worksheet .btn-gen:active{transform:scale(.98)}
+/* result panel */
+#page-worksheet .rpanel{background:linear-gradient(160deg,var(--g-card),var(--g-card2)) !important;border:1px solid var(--g-line2) !important;border-radius:22px;box-shadow:0 20px 50px rgba(0,0,0,.28)}
+html.light #page-worksheet .rpanel{box-shadow:0 18px 40px rgba(60,45,10,.1)}
+#page-worksheet .rp-lbl{color:var(--g-gt) !important}
+#page-worksheet .rp-acts{gap:6px;flex-wrap:wrap;justify-content:flex-end}
+#page-worksheet .rp-btn{border-radius:10px;min-height:34px;background:rgba(212,175,55,.06) !important;border:1px solid var(--g-line) !important;color:var(--g-mut) !important;transition:background .2s,color .2s,border-color .2s,transform .2s var(--g-ease)}
+#page-worksheet .rp-btn:hover{border-color:var(--g-line2) !important;color:var(--g-gt) !important;transform:translateY(-1px)}
+#page-worksheet .rp-btn.ok{color:#6cc870 !important;border-color:rgba(108,200,112,.5) !important}
+#page-worksheet .out-txt{border-left-color:var(--g-line2);color:var(--g-ink) !important}
+#page-worksheet .out-txt h1,#page-worksheet .out-txt h2,#page-worksheet .out-txt h3,#page-worksheet .out-txt h4{color:var(--g-gt) !important}
+#page-worksheet .rp-empty{display:grid;place-items:center;text-align:center;padding:1.5rem .5rem;color:var(--g-mut)}
+#page-worksheet .re-ico{display:grid;place-items:center;width:64px;height:64px;margin:0 auto .8rem;border-radius:20px;font-size:26px;color:var(--g-gt);background:radial-gradient(circle,rgba(212,175,55,.25),rgba(212,175,55,.05));border:1px solid var(--g-line2);animation:gFloat 5s ease-in-out infinite}
+#page-worksheet .rp-foot{color:var(--g-mut)}
+@media(max-width:1100px){#page-worksheet .glayout{grid-template-columns:minmax(0,1fr)}#page-worksheet .rpanel{position:static;max-height:none}}
+@media(max-width:600px){
+#page-worksheet .ph{border-radius:20px;padding:1.2rem 1.1rem}
+#page-worksheet .ph-tags{flex-wrap:nowrap;overflow-x:auto;margin:.9rem -1.1rem 0;padding:0 1.1rem;scrollbar-width:none}#page-worksheet .ph-tags::-webkit-scrollbar{display:none}#page-worksheet .ph-tag{white-space:nowrap}
+#page-worksheet .sblock{border-radius:18px}#page-worksheet .sbdy{padding:.7rem 1rem 1rem}#page-worksheet .shdr{padding:.9rem 1rem .1rem}
+#page-worksheet .chip{min-height:42px;padding:8px 14px;font-size:12.5px}
+#page-worksheet .lpills{grid-template-columns:repeat(3,minmax(0,1fr))}#page-worksheet .lvl{padding:12px 4px;font-size:12.5px}
+#page-worksheet .ttag{min-height:36px;padding:6px 13px}
+#page-worksheet .selg{grid-template-columns:minmax(0,1fr)}
+#page-worksheet .btn-gen{position:sticky;bottom:calc(var(--mob-nav-h,88px) + var(--safe-bottom,0px) + 8px);z-index:20;height:58px;box-shadow:0 12px 32px rgba(0,0,0,.45),0 6px 24px rgba(212,175,55,.3)}
+#page-worksheet .rp-btn{min-height:40px;padding:6px 14px}
+}
+@media(prefers-reduced-motion:reduce){#page-worksheet *{transition:none !important;animation:none !important}}
+
+#page-worksheet .stitle{color:var(--g-ink) !important;margin:.2rem 0 1rem}#page-worksheet .stitle:after{background:var(--g-line) !important}
+#page-worksheet .stitle .stg{color:var(--g-gt) !important}
+
+#page-worksheet .wt{position:relative;display:flex;flex-direction:column;align-items:center;border-radius:18px;background:linear-gradient(150deg,var(--g-card),var(--g-card2)) !important;border:1px solid var(--g-line) !important;user-select:none;-webkit-user-select:none;transition:opacity .25s,transform .25s var(--g-ease),border-color .25s,box-shadow .25s}
+#page-worksheet .wt:hover{border-color:var(--g-line2) !important;transform:translateY(-2px)}
+#page-worksheet .wt:active{transform:scale(.97)}
+#page-worksheet .wt.active{border:1px solid var(--g-gold) !important;box-shadow:0 10px 26px rgba(0,0,0,.22),0 0 0 3px rgba(212,175,55,.08)}
+#page-worksheet .wt.active:before{content:"";position:absolute;top:0;left:18%;right:18%;height:2px;border-radius:2px;background:linear-gradient(90deg,transparent,#E6C65C,transparent)}
+#page-worksheet .wt .wt-ico{display:grid;place-items:center;width:42px;height:42px;margin:0 0 .5rem;border-radius:13px;color:var(--g-gt);background:rgba(212,175,55,.08);border:1px solid var(--g-line);transition:background .25s}
+#page-worksheet .wt.active .wt .wt-ico{background:linear-gradient(145deg,rgba(230,198,92,.3),rgba(212,175,55,.1))}
+#page-worksheet .wt h4{color:var(--g-ink) !important;font-size:12px;letter-spacing:.4px;line-height:1.3}
+#page-worksheet .wt-x{color:var(--g-mut) !important;font-size:11px;line-height:1.5}
+
+#page-worksheet .wtypes{grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-bottom:clamp(1rem,2.5vw,1.6rem)}
+#page-worksheet .wt{padding:1rem .6rem;text-align:center;border-style:dashed !important;opacity:.62}
+#page-worksheet .wt:hover{opacity:.9}
+#page-worksheet .wt.active{opacity:1;border-style:solid !important}
+#page-worksheet .lpills{grid-template-columns:repeat(5,minmax(0,1fr))}
+@media(max-width:1100px){#page-worksheet .wtypes{grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}}
+@media(max-width:700px){
+#page-worksheet .wtypes{display:flex;overflow-x:auto;gap:9px;margin:0 -1rem 1.1rem;padding:2px 1rem 10px;scroll-snap-type:x proximity;scrollbar-width:none}#page-worksheet .wtypes::-webkit-scrollbar{display:none}
+#page-worksheet .wt{flex:0 0 118px;scroll-snap-align:start}
+}
+@media(max-width:600px){#page-worksheet .lpills{grid-template-columns:repeat(5,minmax(0,1fr))}#page-worksheet .lvl{padding:12px 2px}}
 </style>
 <script>
 /* NIR home redesign v3: purely visual (reveal + card spotlight). No app logic touched. */
