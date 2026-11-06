@@ -5785,6 +5785,47 @@ function selEC(el){
   el.classList.add("active");S.ecType=el.dataset.v;
 }
 
+// ══ SHARED LEVEL GUIDANCE — IELTS band + feedback level (used by IELTS Generator, Error Correction) ══
+const NIR_BAND_GUIDE = {
+  "Band 5.0–5.5": {
+    general: "Modest user: copes with familiar, concrete topics; basic structures and vocabulary with frequent but mostly non-blocking errors.",
+    writing: "Model answer features: mostly simple sentences with some attempts at complex ones; limited vocabulary with some repetition; basic linking (and, but, because); ideas present but not always fully developed.",
+    speaking: "Model answer features: keeps going but with noticeable pauses and self-correction; basic vocabulary with some paraphrasing; mainly simple grammar with errors in complex forms; generally understandable pronunciation.",
+    reading: "Passage design: concrete, familiar content, straightforward paragraph structure, limited abstract vocabulary; most questions test explicitly stated information."
+  },
+  "Band 6.0–6.5": {
+    general: "Competent user: generally effective command despite some inaccuracies; handles fairly complex language in familiar situations.",
+    writing: "Model answer features: mix of simple and complex structures with some errors; adequate vocabulary with a few less common items; clear paragraphing with a mix of cohesive devices; position clear but some ideas under-developed.",
+    speaking: "Model answer features: willing to speak at length with some hesitation or repetition; adequate vocabulary with some flexibility; mix of simple and complex structures; pronunciation generally clear.",
+    reading: "Passage design: moderately abstract content, some topic-specific vocabulary, mixed question types including paraphrase matching and some inference."
+  },
+  "Band 7.0–7.5": {
+    general: "Good user: operational command with only occasional inaccuracies; handles complex language well.",
+    writing: "Model answer features: variety of complex structures with frequent error-free sentences; less common vocabulary with awareness of style and collocation; logical paragraphs using a range of cohesive devices; clear, well-developed position.",
+    speaking: "Model answer features: speaks at length with only occasional hesitation; flexible, precise vocabulary including idiomatic language; range of complex structures with good control; features of pronunciation sustained.",
+    reading: "Passage design: dense, abstract or argumentative content, academic vocabulary, heavy paraphrase and inference; distractors that require careful reading."
+  },
+  "Band 8.0+": {
+    general: "Very good user: fully operational command with only rare unsystematic errors.",
+    writing: "Model answer features: wide range of structures used flexibly with rare errors; sophisticated, precise vocabulary and natural collocation; seamless cohesion; fully developed, nuanced ideas.",
+    speaking: "Model answer features: fluent with rare hesitation; wide, precise vocabulary used naturally including less common idiom; wide range of structures with rare errors; easy to understand throughout.",
+    reading: "Passage design: complex, abstract text with nuanced argument and implicit attitudes; subtle paraphrase; questions that distinguish close alternatives."
+  }
+};
+function nirBandGuide(band, skill){
+  var g = NIR_BAND_GUIDE[band];
+  if(!g) return "Apply the official IELTS band descriptors for the target band.";
+  return g.general + " " + (g[skill] || g.writing);
+}
+const NIR_FEEDBACK_GUIDE = {
+  A1: "Use very short, simple explanations (one sentence per error) and avoid grammar terminology; show the correct form with a model example. List only the 6–8 most important errors, and praise successful communication of meaning.",
+  A2: "Use simple explanations with one example each. Prioritise high-frequency errors (verb forms, word order, articles, prepositions) and use only basic terms (past, plural, verb). List only the 8–10 most important errors.",
+  B1: "Give clear explanations with a brief rule statement. Group recurring errors into patterns (e.g. tense consistency). Introduce basic terminology (past simple, article, collocation) and suggest 1–2 stylistic upgrades.",
+  B2: "Give concise, rule-based explanations. Distinguish slips from systematic errors. Address collocation, register, cohesion and complex-sentence accuracy, and offer more natural alternatives.",
+  C1: "Focus on precision, nuance, register, collocation and discourse-level cohesion rather than basic accuracy. Metalinguistic terminology is fine. Suggest stylistic refinements and more sophisticated alternatives.",
+  IELTS: "Use IELTS-aligned terminology and link errors to the four assessment criteria, explaining how they limit the band score and what would move the writing to the next band."
+};
+
 // ══ PROMPT BUILDERS ══
 function buildGen(){
   const topic=document.getElementById("topic-in").value.trim()||"General English";
@@ -5823,13 +5864,13 @@ Structure using this ELT framework:
 7. EXTRAS — Answer key, rubric, or teacher notes where appropriate
 
 CEFR LEVEL GUIDANCE for ${S.level}:
-$({
+${({
   A1:"Simple, familiar everyday expressions. Short controlled tasks, visual support, single words/phrases.",
   A2:"Basic routine communication. Structured pair work, guided dialogues, simple sentences.",
   B1:"Independent user. Pair/group tasks, role-play, short discussions. Connected text with opinions.",
   B2:"Upper intermediate fluency. Debates, extended tasks, peer feedback. Detailed text and argument.",
   C1:"Advanced expression. Open-ended tasks, critical analysis, student-led work. Extended discourse."
-})[S.level]||"Apply appropriate CEFR expectations for this level."}
+})[(S.level||"").split(" ")[0]]||"Apply appropriate CEFR expectations for this level."}
 
 Output ONLY the final prompt text. No meta-commentary. Ready to paste into ChatGPT, Claude, or Gemini.
 Before finalising, verify the prompt will produce output appropriate for ${S.level} learners.`;
@@ -5854,7 +5895,7 @@ CLASS SIZE: ${sz}
 STAGES TO INCLUDE: ${stages}${unitSection}
 
 CEFR LEVEL GUIDANCE for ${S.lpLevel}:
-$({
+${({
   A1:"Can-do: understand and use familiar everyday expressions. Activities: short controlled tasks, visual support, minimal writing. Expected output: single words, short phrases.",
   A2:"Can-do: communicate in simple routine tasks on familiar topics. Activities: structured pair work, guided dialogues. Expected output: simple sentences, short exchanges.",
   B1:"Can-do: deal with most situations likely to arise whilst travelling. Activities: pair/group tasks, role-play, short discussions. Expected output: connected text, opinions with reasons.",
@@ -5874,7 +5915,7 @@ For EACH stage include:
 End with: homework task, differentiation for mixed levels, and 2 teacher reflection questions.
 Keep each stage concise — practical over exhaustive.
 Format: structured, clearly labelled, immediately teachable.
-Before responding, verify feedback language and corrections are appropriate for ${S.ecLevel} level.
+Before responding, verify that stage timings add up to ${dur}, every activity suits ${S.lpLevel} learners, and the plan is immediately teachable.
 IMPORTANT: Use only Markdown formatting (##, **, -, |table|). Never use HTML tags like <br>, <p>, <strong>, <div>.`;
 }
 
@@ -5882,6 +5923,13 @@ function buildIELTS(){
   const topic=document.getElementById("ielts-topic").value.trim()||"Technology and society";
   const inc=Array.from(document.querySelectorAll("#ielts-inc .chip.active")).map(c=>c.dataset.v).join(", ");
   const isSpeaking = S.ieltType.includes('Speaking Part');
+  const _t = S.ieltType||"";
+  const _skill = isSpeaking ? "speaking" : (_t.includes("Reading") ? "reading" : "writing");
+  let taskNotes = "";
+  if(_t.includes("Academic Writing Task 1")) taskNotes = "\n- Academic Task 1: no image can be shown, so present the chart/graph data as a clearly labelled Markdown table (title, units, time period) — or, for a process or map, as a numbered list of stages/features. Include the exam wording, 20-minute timing and 150-word minimum.";
+  else if(_t.includes("Academic Writing Task 2")) taskNotes = "\n- Academic Task 2: include the exam wording, 40-minute timing and 250-word minimum, and state the essay type (opinion / discussion / problem-solution / two-part question).";
+  else if(_t.includes("General Training Writing Task 1")) taskNotes = "\n- GT Task 1 letter: give the situation plus three bullet points to cover, state the register (formal / semi-formal / informal), 20-minute timing and 150-word minimum.";
+  else if(_t.includes("Reading")) taskNotes = "\n- Reading: label each question group by type with exam-style instructions, number questions 1–13, and in the answer key give the paragraph evidence for every True/False/Not Given item.";
   if(isSpeaking){
     const part = S.ieltType.includes('Part 1')?1:S.ieltType.includes('Part 2')?2:3;
     const partInstructions = {
@@ -5895,6 +5943,9 @@ Generate authentic IELTS Speaking Part ${part} material at ${S.ieltBand}.
 TOPIC: ${topic}
 INCLUDE: ${inc}
 
+BAND LEVEL GUIDANCE for ${S.ieltBand}:
+${nirBandGuide(S.ieltBand,_skill)}
+
 ${partInstructions[part]}
 
 ## Assessment Criteria Feedback
@@ -5907,6 +5958,7 @@ For each sample answer, provide brief feedback on all 4 criteria:
 ## Band Progression Note
 Show how the answer could be improved from ${S.ieltBand} to the next band up — one concrete tip per criterion.
 
+Before responding, verify the language of every sample answer genuinely reflects ${S.ieltBand} (not higher or lower) and the commentary matches the official criteria.
 IMPORTANT: Use only Markdown formatting (##, **, -, |table|). Never use HTML tags.`;
   }
   return `You are an experienced IELTS examiner and trainer for NIR Academy by Dr. Niki Majidi.
@@ -5915,12 +5967,17 @@ Generate an authentic ${S.ieltType} at ${S.ieltBand}.
 TOPIC: ${topic}
 INCLUDE: ${inc}
 
+BAND LEVEL GUIDANCE for ${S.ieltBand}:
+${nirBandGuide(S.ieltBand,_skill)}
+
 Requirements:
 - Authentic IELTS exam format, rubric, and instructions
 - Lexical and syntactic complexity appropriate for ${S.ieltBand}
 - If Writing Task 2: full task prompt, complete model answer, paragraph-by-paragraph analysis
 - If Reading: 600–700 word passage + 13 questions with answer key
-- Band descriptor commentary aligned to official IELTS criteria
+- Band descriptor commentary aligned to official IELTS criteria${taskNotes}
+
+Before responding, verify the task format, difficulty and any model answer genuinely match ${S.ieltBand}, and that the answer key (if any) is correct.
 IMPORTANT: Use only Markdown formatting (##, **, -, |table|). Never use HTML tags like <br>, <p>, <strong>, <div>.`;
 }
 
@@ -5955,6 +6012,9 @@ Estimate a band score (e.g. Band 6.0) and justify it.`:"";
 Student level: ${S.ecLevel}
 Feedback type: ${S.ecType}${codedNote}${ieltsCriteria}
 
+LEVEL GUIDANCE for ${S.ecLevel} feedback:
+${NIR_FEEDBACK_GUIDE[S.ecLevel]||"Match explanation depth and terminology to the student's level."}
+
 Student writing:
 "${text}"
 
@@ -5976,6 +6036,8 @@ Full corrected text only — no commentary.
 
 ## 6. Teacher Notes
 Key linguistic rules illustrated by this student's errors + 2 follow-up activity suggestions.
+
+Before responding, verify feedback language and corrections are appropriate for ${S.ecLevel} level, and that every correction is accurate.
 IMPORTANT: Use only Markdown formatting (##, **, -, |table|). Never use HTML tags.`;
 }
 
@@ -6006,9 +6068,10 @@ Format requirements:
 
 Make it visually clear and immediately printable.
 
-CEFR LEVEL GUIDANCE for \${S.wsLevel}:\${({A1:"Controlled tasks only. Single words/short phrases. Visual support.",A2:"Structured exercises. Simple sentences. Guided gap-fills, matching.",B1:"Semi-controlled to free practice. Short paragraphs, sentence starters.",B2:"Freer practice. Extended tasks, argumentation with scaffolding.",C1:"Open-ended analytical tasks. Complex grammar, minimal scaffolding."})[S.wsLevel]||"Apply appropriate CEFR expectations."}
+CEFR LEVEL GUIDANCE for ${S.wsLevel}:
+${({A1:"Controlled tasks only. Single words/short phrases. Visual support.",A2:"Structured exercises. Simple sentences. Guided gap-fills, matching.",B1:"Semi-controlled to free practice. Short paragraphs, sentence starters.",B2:"Freer practice. Extended tasks, argumentation with scaffolding.",C1:"Open-ended analytical tasks. Complex grammar, minimal scaffolding."})[S.wsLevel]||"Apply appropriate CEFR expectations."}
 
-Before responding, verify: (1) language matches \${S.wsLevel}, (2) tasks have clear instructions, (3) content is classroom-ready.
+Before responding, verify: (1) language matches ${S.wsLevel}, (2) tasks have clear instructions, (3) content is classroom-ready.
 IMPORTANT: Use only Markdown formatting (##, **, -, |table|). Never use HTML tags like <br>, <p>, <strong>, <div>.${S.wsImages?`
 
 IMAGE PLACEHOLDERS: For up to 4 key vocabulary items in this worksheet, insert an image placeholder using this exact format — a blank line, then the placeholder alone on its own line, then another blank line:
@@ -7854,6 +7917,16 @@ function astBuildSystemPrompt() {
     prompt += ' Current focus: ' + sub1 + '.';
   }
   if (sub2) { prompt += ' Specific detail: ' + sub2 + '.'; }
+  var _std = [
+    'RESPONSE STANDARDS:',
+    (mode === 'kids')
+      ? '- Language level: pre-A1 to A2 — very short sentences, common words, one idea at a time.'
+      : "- Language level: match explanation depth and task difficulty to the learner's CEFR level (A1–C2). Use the level if stated or evident from their writing; if it matters and is unknown, assume B1 and say so in one short line rather than interrogating the user.",
+    '- Accuracy: do not invent grammar rules, exam formats, band descriptors or scoring rules. If unsure, say so briefly.',
+    '- Format: use only Markdown (##, **, -, |table|). Never output HTML tags such as <br>, <p>, <strong> or <div>.',
+    '- Before responding, verify the language level, accuracy and tone suit this mode.'
+  ].join('\n');
+  prompt += '\n\n' + _std;
   prompt += '\n\n' + _NIRA_KB;
   return prompt;
 }
