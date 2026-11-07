@@ -78,6 +78,7 @@ const LANGS = {
     sb_pro_title: '✦ Go Pro',
     sb_pro_desc: 'Unlimited prompts, saved library, priority AI & all tools.',
     sb_pro_btn: 'Upgrade to Pro →',
+    mob_home:'Home', mob_gen:'Generator', mob_tools:'Tools', mob_lib:'Library', mob_dash:'Dashboard',
     // HOME HERO
     hero_pill: 'AI-Powered · TESOL & ELT · Professional Development',
     hero_h1a: 'The AI Platform',
@@ -226,6 +227,7 @@ const LANGS = {
     sb_pro_title: '✦ Pro\'ya Geç',
     sb_pro_desc: 'Sınırsız prompt, kayıtlı kütüphane, öncelikli AI ve tüm araçlar.',
     sb_pro_btn: 'Pro\'ya Yükselt →',
+    mob_home:'Ana Sayfa', mob_gen:'Oluşturucu', mob_tools:'Araçlar', mob_lib:'Kütüphane', mob_dash:'Panel',
     hero_pill: 'AI Destekli · TESOL & ELT · Mesleki Gelişim',
     hero_h1a: 'İngilizce Öğretmenleri için',
     hero_h1b: 'AI Platformu',
@@ -362,6 +364,7 @@ const LANGS = {
     sb_pro_title: '✦ الترقية إلى Pro',
     sb_pro_desc: 'بروبتات غير محدودة، مكتبة محفوظة، ذكاء اصطناعي بأولوية وجميع الأدوات.',
     sb_pro_btn: 'ترقية إلى Pro ←',
+    mob_home:'الرئيسية', mob_gen:'المولّد', mob_tools:'الأدوات', mob_lib:'المكتبة', mob_dash:'لوحة التحكم',
     hero_pill: 'مدعوم بالذكاء الاصطناعي · TESOL & ELT · التطوير المهني',
     hero_h1a: 'منصة الذكاء الاصطناعي',
     hero_h1b: 'لمعلمي اللغة الإنجليزية',
@@ -498,6 +501,7 @@ const LANGS = {
     sb_pro_title: '✦ 升级 Pro',
     sb_pro_desc: '无限 Prompt、保存的资源库、优先 AI 及所有工具。',
     sb_pro_btn: '升级到 Pro →',
+    mob_home:'首页', mob_gen:'生成器', mob_tools:'工具', mob_lib:'资源库', mob_dash:'控制台',
     hero_pill: 'AI 驱动 · TESOL & ELT · 专业发展',
     hero_h1a: '英语教师的',
     hero_h1b: 'AI 平台',
@@ -649,6 +653,7 @@ const LANGS = {
     sb_pro_title: '✦ نسخه حرفه‌ای',
     sb_pro_desc: 'پرامپت نامحدود، کتابخانه ذخیره، هوش مصنوعی اولویت‌دار و تمام ابزارها.',
     sb_pro_btn: 'ارتقا به حرفه‌ای ←',
+    mob_home:'خانه', mob_gen:'سازنده', mob_tools:'ابزارها', mob_lib:'کتابخانه', mob_dash:'داشبورد',
     hero_pill: 'مبتنی بر هوش مصنوعی · TESOL و ELT · توسعه حرفه‌ای',
     hero_h1a: 'پلتفرم هوش مصنوعی',
     hero_h1b: 'برای معلمان زبان انگلیسی',
@@ -1015,6 +1020,34 @@ window.applyLang = function applyLang(lang) {
   setT('ast-mode-desc-student',  T.ast_student_desc  || 'IELTS · TOEFL · PTE · General English');
   setT('ast-mode-name-kids',     T.ast_kids          || 'Kids Mode');
   setT('ast-mode-desc-kids',     T.ast_kids_desc     || 'Games · Stories · Visual · Rewards');
+  // ── Mobile nav labels ──
+  var _mnIds = ['mn-home','mn-generator','mn-lesson','mn-library','mn-dashboard'];
+  var _mnKeys = ['mob_home','mob_gen','mob_tools','mob_lib','mob_dash'];
+  _mnIds.forEach(function(id, i){
+    var btn = document.getElementById(id);
+    if(!btn) return;
+    var lbl = btn.querySelector('.mi-lbl');
+    if(lbl) lbl.textContent = T[_mnKeys[i]] || lbl.textContent;
+    // Apply RTL font to mob-nav items for fa/ar
+    if(T.dir === 'rtl') {
+      btn.style.fontFamily = T.font;
+      var lblEl = btn.querySelector('.mi-lbl');
+      if(lblEl) lblEl.style.fontFamily = T.font;
+    } else {
+      btn.style.fontFamily = '';
+      var lblEl2 = btn.querySelector('.mi-lbl');
+      if(lblEl2) lblEl2.style.fontFamily = '';
+    }
+  });
+  // Mobile nav RTL: prevent double-reverse (CSS already handles order via flex-direction)
+  var _mn = document.getElementById('mob-nav');
+  if(_mn) {
+    if(T.dir === 'rtl') {
+      _mn.style.direction = 'ltr'; // keep visual L→R order; RTL text renders correctly per item
+    } else {
+      _mn.style.direction = '';
+    }
+  }
 // Restore auth UI after language change
   if(typeof window.currentUser !== 'undefined' && window.currentUser){
     const _sec=document.getElementById('sb-account-sec');
@@ -3780,6 +3813,13 @@ html.light .ps-lbl{color:#6B7A8D}
 [dir="rtl"] .tb-spacer { order: -1; }
 [dir="rtl"] /* tb-spacer order managed by RTL only */
 [dir="rtl"] .tb-logo { flex-direction: row-reverse; }
+/* RTL mobile: hamburger stays at visual right edge, do not re-reverse */
+@media(max-width:600px){
+  [dir="rtl"] #topbar { flex-direction: row; }
+  [dir="rtl"] #topbar .hamburger { margin-left: auto; order: 10; }
+  [dir="rtl"] #topbar .tb-logo { margin-right: 0; flex-direction: row; }
+  [dir="rtl"] #topbar .tb-logo .tb-logo-txt { text-align: left; }
+}
 
 /* ═══ LANGUAGE SWITCHER ═══ */
 #lang-switcher {
