@@ -824,6 +824,7 @@ let currentLang = localStorage.getItem('nir_lang') || 'en';
 window.applyLang = function applyLang(lang) {
   if (!LANGS[lang]) lang = 'en';
   currentLang = lang;
+  window._nirLang = lang;
   localStorage.setItem('nir_lang', lang);
   const T = LANGS[lang];
 
@@ -6263,7 +6264,12 @@ async function callAPI(prompt,outId,btn,onComplete){
     if(token) headers["Authorization"]="Bearer "+token;
     const res=await fetch("/api/generate",{
       method:"POST",headers,
-      body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:2500,messages:[{role:"user",content:prompt}]})
+      body:JSON.stringify((function(){
+      var _lmap={en:'English',tr:'Turkish',ar:'Arabic',zh:'Chinese (Simplified)',fa:'Persian (Farsi)'};
+      var _ln=_lmap[window._nirLang||currentLang||'en']||'English';
+      var _p=(_ln!=='English')?prompt+'\n\n[IMPORTANT: Respond entirely in '+_ln+'. All headings, labels, explanations, and content must be in '+_ln+'.]':prompt;
+      return {model:"claude-sonnet-4-20250514",max_tokens:2500,messages:[{role:"user",content:_p}]};
+    })())
     });
     if(res.status===429){showLimitMsg(outId,btn);return;}
     if(res.status===401){
