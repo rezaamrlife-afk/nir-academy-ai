@@ -3763,15 +3763,15 @@ main:has(#page-assistant.active){overflow:hidden auto}
 .rp-btn.save-ws:hover{color:var(--gold);border-color:var(--gold)}
 
 /* ══ PROFILE PAGE ══ */
-.profile-card{background:#161616;border:1px solid rgba(201,168,76,.2);border-radius:16px;padding:2rem;max-width:500px}
-.profile-avatar{width:70px;height:70px;border-radius:50%;background:linear-gradient(135deg,#C9A84C,#E8C96A);display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:700;color:#080808;font-family:'Cinzel',serif;margin-bottom:1rem}
-.profile-field{margin-bottom:1rem}
-.profile-field label{display:block;font-size:9px;color:#787878;letter-spacing:2px;text-transform:uppercase;margin-bottom:5px;font-weight:700}
-.profile-field .pf-val{font-size:13px;color:#e4e4e4;padding:8px 12px;background:#252525;border:1px solid rgba(201,168,76,.17);border-radius:6px}
+.profile-card{background:#161616;border:1px solid rgba(201,168,76,.2);border-radius:16px;padding:2rem 2rem 1.75rem;max-width:540px}
+.profile-avatar{width:76px;height:76px;border-radius:50%;background:linear-gradient(135deg,#C9A84C,#E8C96A);display:flex;align-items:center;justify-content:center;font-size:30px;font-weight:700;color:#080808;font-family:'Cinzel',serif;margin-bottom:1.25rem;box-shadow:0 0 0 3px rgba(201,168,76,.18),0 4px 16px rgba(201,168,76,.12)}
+.profile-field{margin-bottom:.9rem}
+.profile-field label{display:block;font-size:9px;color:#888;letter-spacing:2px;text-transform:uppercase;margin-bottom:5px;font-weight:700}
+.profile-field .pf-val{font-size:13px;color:#e4e4e4;padding:9px 13px;background:#252525;border:1px solid rgba(201,168,76,.17);border-radius:8px}
 .profile-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:.8rem;margin-top:1.5rem}
-.ps-item{background:#1E1E1E;border:1px solid rgba(201,168,76,.15);border-radius:10px;padding:1rem;text-align:center}
+.ps-item{background:#1E1E1E;border:1px solid rgba(201,168,76,.15);border-radius:10px;padding:1rem .75rem;text-align:center}
 .ps-val{font-family:'Cinzel',serif;font-size:1.5rem;color:#C9A84C;font-weight:700}
-.ps-lbl{font-size:10px;color:#787878;margin-top:3px}
+.ps-lbl{font-size:10px;color:#9a9a9a;margin-top:4px;letter-spacing:.4px}
 /* ── Light mode overrides ── */
 html.light .profile-card{background:#ffffff;border:1px solid rgba(26,63,92,.15);box-shadow:0 4px 24px rgba(26,63,92,.08)}
 html.light .profile-field label{color:#6B7A8D}
@@ -5468,7 +5468,7 @@ function dismissSessionBanner() {
         <div class="ps-item"><div class="ps-val">6</div><div class="ps-lbl">Tools Available</div></div>
         <div class="ps-item"><div class="ps-val">FREE</div><div class="ps-lbl">Current Plan</div></div>
       </div>
-      <div style="margin-top:1.5rem;display:flex;gap:.8rem;flex-wrap:wrap">
+      <div style="margin-top:1.75rem;display:flex;gap:.75rem;flex-wrap:wrap">
         <button class="btn-p" onclick="window.open('https://niracademy.com','_blank')">Upgrade to Pro</button>
         <button class="btn-o" onclick="doLogout()">Sign Out</button>
       </div>
