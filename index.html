@@ -11894,5 +11894,30 @@ function sync(){var a=document.querySelector('.page.active'),id=a?a.id.replace('
 if(window.MutationObserver){var mo=new MutationObserver(sync);document.querySelectorAll('.page').forEach(function(p){mo.observe(p,{attributes:true,attributeFilter:['class']})});sync()}
 })();
 </script>
+<style id="nir-result-panel-v3">
+/* ═══ NIR RESULT PANEL v3 — larger output panel + Expand (full-screen) on all 5 tool pages. Visual only. ═══ */
+@media(min-width:1101px){#page-generator .glayout,#page-lesson .glayout,#page-ielts .glayout,#page-error .glayout,#page-worksheet .glayout{grid-template-columns:minmax(340px,.8fr) minmax(0,1.2fr)}}
+#page-generator .rpanel,#page-lesson .rpanel,#page-ielts .rpanel,#page-error .rpanel,#page-worksheet .rpanel{min-height:min(660px,calc(100vh - 120px));max-height:calc(100vh - 100px);padding:clamp(1.2rem,2vw,1.9rem)}
+#page-generator .out-txt,#page-lesson .out-txt,#page-ielts .out-txt,#page-error .out-txt,#page-worksheet .out-txt{font-size:15.5px;line-height:1.85}
+@media(max-width:1100px){#page-generator .rpanel,#page-lesson .rpanel,#page-ielts .rpanel,#page-error .rpanel,#page-worksheet .rpanel{max-height:none;min-height:min(72vh,600px)}#page-generator .out-txt,#page-lesson .out-txt,#page-ielts .out-txt,#page-error .out-txt,#page-worksheet .out-txt{min-height:min(52vh,400px)}}
+.page.rp-lock{animation:none !important;transform:none !important}
+html.rp-lock-scroll{overflow:hidden !important}
+#page-generator .rpanel.rp-full,#page-lesson .rpanel.rp-full,#page-ielts .rpanel.rp-full,#page-error .rpanel.rp-full,#page-worksheet .rpanel.rp-full{position:fixed !important;inset:0;z-index:9300;width:auto;max-height:none !important;min-height:0 !important;margin:0;border-radius:0 !important;border:0 !important;overflow-y:auto !important;padding:calc(14px + env(safe-area-inset-top,0px)) clamp(14px,4vw,40px) calc(22px + env(safe-area-inset-bottom,0px)) !important;background:#171410 !important;box-shadow:none !important}
+html.light #page-generator .rpanel.rp-full,html.light #page-lesson .rpanel.rp-full,html.light #page-ielts .rpanel.rp-full,html.light #page-error .rpanel.rp-full,html.light #page-worksheet .rpanel.rp-full{background:#F7F7F5 !important}
+#page-generator .rpanel.rp-full > *,#page-lesson .rpanel.rp-full > *,#page-ielts .rpanel.rp-full > *,#page-error .rpanel.rp-full > *,#page-worksheet .rpanel.rp-full > *{width:100%;max-width:900px;margin-left:auto;margin-right:auto}
+#page-generator .rpanel.rp-full .rp-hdr,#page-lesson .rpanel.rp-full .rp-hdr,#page-ielts .rpanel.rp-full .rp-hdr,#page-error .rpanel.rp-full .rp-hdr,#page-worksheet .rpanel.rp-full .rp-hdr{position:sticky;top:calc(-14px - env(safe-area-inset-top,0px));z-index:3;padding:calc(14px + env(safe-area-inset-top,0px)) 0 .7rem;background:inherit;margin-top:calc(-14px - env(safe-area-inset-top,0px))}
+#page-generator .rpanel.rp-full .out-txt,#page-lesson .rpanel.rp-full .out-txt,#page-ielts .rpanel.rp-full .out-txt,#page-error .rpanel.rp-full .out-txt,#page-worksheet .rpanel.rp-full .out-txt{font-size:16px;min-height:0;flex:1 0 auto;max-height:none;overflow:visible}
+.rp-expand{white-space:nowrap}
+.rp-full .rp-expand{order:-1;background:linear-gradient(110deg,#E6C65C,#D4AF37) !important;color:#1d1604 !important;border-color:#E6C65C !important}
+</style>
+<script>
+/* NIR result panel: adds an Expand (full-screen reading view) button to the five tool result panels. Additive; existing buttons/IDs untouched. */
+(function(){var pages=['generator','lesson','ielts','error','worksheet'],cur=null;
+function setFull(rp,on){var pg=rp.closest('.page');rp.classList.toggle('rp-full',on);if(pg)pg.classList.toggle('rp-lock',on);document.documentElement.classList.toggle('rp-lock-scroll',on);var b=rp.querySelector('.rp-expand');if(b){b.textContent=on?'\u2715 Close':'\u2922 Expand';b.setAttribute('aria-label',on?'Close full view':'Expand result')}cur=on?rp:null;if(on)rp.scrollTop=0}
+pages.forEach(function(id){var pg=document.getElementById('page-'+id);if(!pg)return;var rp=pg.querySelector('.rpanel');if(!rp)return;var acts=rp.querySelector('.rp-acts');if(!acts||acts.querySelector('.rp-expand'))return;var b=document.createElement('button');b.type='button';b.className='rp-btn rp-expand';b.textContent='\u2922 Expand';b.setAttribute('aria-label','Expand result');b.addEventListener('click',function(){setFull(rp,!rp.classList.contains('rp-full'))});acts.appendChild(b)});
+addEventListener('keydown',function(e){if(e.key==='Escape'&&cur)setFull(cur,false)});
+var _go=window.go;if(typeof _go==='function')window.go=function(){if(cur)setFull(cur,false);return _go.apply(this,arguments)};
+})();
+</script>
 </body>
 </html>
