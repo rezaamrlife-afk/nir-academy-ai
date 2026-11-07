@@ -3778,16 +3778,20 @@ html.light .ps-lbl{color:#6B7A8D}
 <style>
 /* ═══ RTL SUPPORT ═══ */
 [dir="rtl"] #sidebar {
-  left: auto !important;
-  right: 0 !important;
   border-right: none !important;
   border-left: 1px solid var(--bdr) !important;
-  transform: translateX(100%);
-}
-[dir="rtl"] #sidebar.open {
-  transform: translateX(0);
 }
 [dir="rtl"] #shell { flex-direction: row-reverse; }
+@media(max-width:960px){
+  [dir="rtl"] #sidebar {
+    left: auto !important;
+    right: 0 !important;
+    transform: translateX(100%);
+  }
+  [dir="rtl"] #sidebar.open {
+    transform: translateX(0);
+  }
+}
 [dir="rtl"] .sb-item { border-left: none !important; border-right: 2px solid transparent; flex-direction: row-reverse; justify-content: flex-end; }
 [dir="rtl"] .sb-item.active { border-right-color: var(--gold) !important; }
 [dir="rtl"] .sb-item .si { order: 2; }
