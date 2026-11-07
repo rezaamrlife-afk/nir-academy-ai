@@ -4773,6 +4773,16 @@ function dismissSessionBanner() {
   </section>
 
   <!-- ONBOARDING -->
+  <section class="wf" aria-labelledby="wf-t">
+    <div class="wf-head"><h2 id="wf-t" data-i18n="wf">NIRA Teaching Workflow</h2><p data-i18n="wf_sub">From planning to improvement — in four steps</p></div>
+    <div class="wf-steps">
+      <button type="button" class="wf-step" onclick="go('lesson')"><span class="wf-n">1</span><b data-i18n="plan">Plan</b><small data-i18n="t_lesson">Lesson Planner</small></button>
+      <button type="button" class="wf-step" onclick="go('worksheet')"><span class="wf-n">2</span><b data-i18n="create">Create</b><small data-i18n="t_worksheet">Worksheet Builder</small></button>
+      <button type="button" class="wf-step" onclick="go('ielts')"><span class="wf-n">3</span><b data-i18n="assess">Assess</b><small data-i18n="t_ielts">IELTS Generator</small></button>
+      <button type="button" class="wf-step" onclick="go('error')"><span class="wf-n">4</span><b data-i18n="improve">Improve</b><small data-i18n="t_feedback">Writing Feedback</small></button>
+    </div>
+  </section>
+
   <section class="onboard">
     <h2 id="ob-title">New to NIR Academy?</h2>
     <p class="os" id="ob-sub">Get started in four simple steps and access all AI tools instantly.</p>
@@ -4830,12 +4840,32 @@ function dismissSessionBanner() {
   </section>
 
   <!-- ROADMAP -->
-  <section class="roadmap">
-    <h2 id="rm-title">Product Roadmap</h2>
-    <div class="rm-grid">
-      <div class="rm"><span class="rm-ph" id="rm-p1">Phase 1 — Live Now</span><h3 id="rm-h1">Core AI Platform</h3><ul><li>AI Prompt Generator</li><li>IELTS Task Generator</li><li>Lesson Planner</li><li>Writing Feedback Tool</li><li>Worksheet Builder</li><li>Prompt Library</li></ul><span class="rm-st live rm-live">✓ Live</span></div>
-      <div class="rm"><span class="rm-ph" id="rm-p2">Phase 2 — Building</span><h3 id="rm-h2">Accounts &amp; Saves</h3><ul><li>Login / Register system</li><li>Saved prompt library</li><li>Prompt history</li><li>Favourites system</li><li>Personal dashboard</li><li>Free &amp; Pro tiers</li></ul><span class="rm-st bld rm-bld">⚙ In Development</span></div>
-      <div class="rm"><span class="rm-ph" id="rm-p3">Phase 3 — Planned</span><h3 id="rm-h3">Mobile App &amp; Scale</h3><ul><li>PWA installable</li><li>Android (Play Store)</li><li>iOS (App Store)</li><li>Analytics dashboard</li><li>Subscription model</li><li>Teacher community</li></ul><span class="rm-st plan rm-plan">◷ Planned</span></div>
+  <section class="pst" aria-labelledby="pst-t">
+    <div class="pst-head"><h2 id="pst-t" data-i18n="pst_title">NIR Academy Platform</h2><span class="pst-live"><i></i><span data-i18n="pst_live">Core platform live</span></span></div>
+    <div class="pst-grid">
+      <div class="pst-card pst-main">
+        <div class="pst-top"><h3 data-i18n="pst_now">Available Now</h3><span class="pst-pill ok" data-i18n="st_live">Live</span></div>
+        <p data-i18n="pst_now_d">AI-powered tools for ELT professionals</p>
+        <div class="pst-chips">
+          <button type="button" class="pst-chip" onclick="go('generator')" data-i18n="t_generator">Prompt Generator</button>
+          <button type="button" class="pst-chip" onclick="go('lesson')" data-i18n="t_lesson">Lesson Planner</button>
+          <button type="button" class="pst-chip" onclick="go('ielts')" data-i18n="t_ielts">IELTS Generator</button>
+          <button type="button" class="pst-chip" onclick="go('error')" data-i18n="t_feedback">Writing Feedback</button>
+          <button type="button" class="pst-chip" onclick="go('worksheet')" data-i18n="t_worksheet">Worksheet Builder</button>
+          <button type="button" class="pst-chip" onclick="go('library')" data-i18n="t_library">Prompt Library</button>
+          <button type="button" class="pst-chip" onclick="go('assistant')">NIRA Chat</button>
+        </div>
+      </div>
+      <div class="pst-card">
+        <div class="pst-top"><h3 data-i18n="pst_dev">Platform Development</h3><span class="pst-pill" data-i18n="st_prog">In progress</span></div>
+        <p data-i18n="pst_dev_d">Continuous improvements and upcoming capabilities</p>
+        <ul><li data-i18n="d_analytics">Advanced analytics</li><li data-i18n="d_personal">Personalisation</li><li data-i18n="d_subs">Subscription improvements</li><li data-i18n="d_community">Teacher community</li></ul>
+      </div>
+      <div class="pst-card">
+        <div class="pst-top"><h3 data-i18n="pst_mob">Mobile Expansion</h3><span class="pst-pill" data-i18n="st_prog">In progress</span></div>
+        <p data-i18n="pst_mob_d">Mobile ecosystem development</p>
+        <ul><li data-i18n="m_android">Android: closed testing</li><li data-i18n="m_ios">iOS: planned</li><li data-i18n="m_pwa">PWA: installable experience</li></ul>
+      </div>
     </div>
   </section>
 
@@ -5614,45 +5644,17 @@ function dismissSessionBanner() {
 
 
 <footer id="footer">
-  <div class="foot-inner">
-    <div class="foot-brand">
-      <div class="fl-row">
-        <img class="fl-logo nir-logo" src="" alt="NIR Academy">
-        <div><span class="fl-n">NIR Academy</span><span class="fl-s">TESOL &amp; ELT Training</span></div>
-      </div>
-      <p class="ft-about-txt">AI-powered professional development platform for English Language Teaching. Next Generation Instructional Resources for ELT.</p>
-      <p class="foot-dr"><span class="ft-founded-txt">Founded by</span> <strong>Dr. Niki Majidi</strong> &nbsp;·&nbsp; <a href="https://niracademy.com" target="_blank">niracademy.com</a></p>
-      <p class="foot-motto">Pedagogy First. AI Enhanced. Future Ready.</p>
+  <div class="nf-row">
+    <div class="nf-brand">
+      <img class="nf-logo nir-logo" src="" alt="NIR Academy">
+      <div><b>NIR Academy</b><span data-i18n="nf_tag">AI-Powered ELT Platform</span><em data-i18n="nf_motto">Pedagogy First. AI Enhanced. Future Ready.</em></div>
     </div>
-    <div class="foot-col">
-      <h5 id="ft-tools-h">AI Tools</h5>
-      <a onclick="go('generator')">Prompt Generator</a>
-      <a onclick="go('lesson')">Lesson Planner</a>
-      <a onclick="go('ielts')">IELTS Generator</a>
-      <a onclick="go('error')">Feedback</a>
-      <a onclick="go('worksheet')">Worksheet Builder</a>
-    </div>
-    <div class="foot-col">
-      <h5 id="ft-resources-h">Resources</h5>
-      <a onclick="go('library')">Prompt Library</a>
-      <a onclick="go('insights')"><span id="ft-blog-lnk">Blog &amp; Insights</span></a>
-      <a onclick="go('dashboard')">Dashboard</a>
-      <a href="https://niracademy.com" target="_blank"><span id="ft-courses-lnk">All Courses</span></a>
-    </div>
-    <div class="foot-col">
-      <h5 id="ft-connect-h">Connect</h5>
-      <a href="https://niracademy.com" target="_blank">niracademy.com</a>
-      <a href="https://niracademy.com/contact-us/" target="_blank"><span id="ft-contact-lnk">Contact Us</span></a>
-      <a href="https://www.instagram.com/niki.niracademy" target="_blank">Instagram</a>
-      <a href="https://www.youtube.com/@niracademyofficial" target="_blank">YouTube</a>
-      <a href="https://t.me/niracademyofficial" target="_blank">Telegram</a>
-      <a href="https://www.linkedin.com/in/nir-academy-80406b40a/" target="_blank">LinkedIn</a>
-    </div>
+    <nav class="nf-links" aria-label="Help &amp; Support">
+      <span class="nf-h" data-i18n="nf_help">Help &amp; Support</span>
+      <div><a href="https://niracademy.com/contact-us/" target="_blank" rel="noopener" data-i18n="nf_contact">Contact</a><a href="https://niracademy.com/privacy-policy/" target="_blank" rel="noopener" data-i18n="nf_privacy">Privacy</a><a href="https://niracademy.com/terms-and-conditions/" target="_blank" rel="noopener" data-i18n="nf_terms">Terms</a></div>
+    </nav>
   </div>
-  <div class="foot-bot">
-    <span class="foot-copy" id="ft-copy-txt">© 2025 NIR Academy · Dr. Niki Majidi · All rights reserved.</span>
-    <div class="foot-pow"><span class="fdot"></span> <span id="ft-pow-txt">Powered by NIR Academy · TESOL &amp; ELT Training</span></div>
-  </div>
+  <div class="nf-bot"><span><span data-i18n="nf_founded">Founded by</span> <strong>Dr. Niki Majidi</strong> · <a href="https://niracademy.com" target="_blank" rel="noopener">niracademy.com</a></span><span data-i18n="nf_rights">© 2026 NIR Academy. All rights reserved.</span></div>
 </footer>
 
 <!-- MOBILE BOTTOM NAV -->
@@ -6299,6 +6301,24 @@ function showLimitMsg(outId,btn){
   if(btn){btn.classList.remove("loading");btn.textContent="✦  "+(btn.dataset.lbl||"Generate");}
 }
 
+/* NIRA: UI language vs ELT content language — applies ONLY to the four tools below; every other tool keeps the original blanket instruction. */
+function nirEltLangNote(outId, L){
+  var K={
+    'lp-out':{ui:'section headings, aims explained to the teacher, stage descriptions, teacher instructions, timing notes, reflection prompts and assessment notes',
+      en:'all target language and learner-facing content: example sentences, model language, student task instructions and prompts, classroom phrases the teacher says to students, dialogues, reading texts, vocabulary items, and grammar or vocabulary exercises'},
+    'ielts-out':{ui:'section headings, band notes, examiner tips, commentary, assessment-criteria feedback and explanations',
+      en:'all IELTS task wording in authentic exam format (Writing Task 1 and 2 prompts, letter situations and bullet points, cue cards, examiner questions), reading passages and questions, every sample, model and Band 6/7/8 answer, vocabulary lists, and official IELTS terms (task names, criteria names, band scores)'},
+    'ec-out':{ui:'section headings, the overview, the explanation of each correction, strengths, improvement suggestions and the band-score justification',
+      en:'the learner\u2019s original text (quote it exactly as written; never translate or alter it), every corrected sentence or phrase, coded annotations and error codes (WW, WF, T, Sp, P, Agr, WO, Art), and all example sentences'},
+    'ws-out':{ui:'teacher notes and any explanations meant for the teacher only',
+      en:'the worksheet title, learning objective, student instructions, every exercise item, text, option and example sentence, and the answer-key answers'}
+  }[outId];
+  if(!K) return '';
+  return '\n\n[OUTPUT LANGUAGE RULES: the interface language is '+L+'. Write ONLY the following in '+L+': '+K.ui+'. '
+    +'Keep ALL English-learning and assessment content in English, never translated, whatever the interface language: '+K.en+'. '
+    +'Do not translate English source texts, test questions, model answers or learner-facing practice content. '
+    +'Keep codes, band scores, CEFR levels, Markdown structure and any {{IMAGE:word}} placeholders exactly as specified above.]';
+}
 async function callAPI(prompt,outId,btn,onComplete){
   if(btn){btn.classList.add("loading");const lbl=btn.dataset.lbl||"Generate";btn.textContent="⟳  Generating…";}
   const out=document.getElementById(outId);
@@ -6313,7 +6333,7 @@ async function callAPI(prompt,outId,btn,onComplete){
       body:JSON.stringify((function(){
       var _lmap={en:'English',tr:'Turkish',ar:'Arabic',zh:'Chinese (Simplified)',fa:'Persian (Farsi)'};
       var _ln=_lmap[window._nirLang||currentLang||'en']||'English';
-      var _p=(_ln!=='English')?prompt+'\n\n[IMPORTANT: Respond entirely in '+_ln+'. All headings, labels, explanations, and content must be in '+_ln+'.]':prompt;
+      var _p=(_ln!=='English')?prompt+(nirEltLangNote(outId,_ln)||'\n\n[IMPORTANT: Respond entirely in '+_ln+'. All headings, labels, explanations, and content must be in '+_ln+'.]'):prompt;
       return {model:"claude-sonnet-4-20250514",max_tokens:2500,messages:[{role:"user",content:_p}]};
     })())
     });
@@ -11990,6 +12010,132 @@ root.style.setProperty('--sb-bottom',off+'px')}
 upd();addEventListener('load',upd);addEventListener('scroll',upd,{passive:true});addEventListener('resize',upd);addEventListener('orientationchange',function(){setTimeout(upd,250)});
 if(window.visualViewport)visualViewport.addEventListener('resize',upd);
 var sb=document.getElementById('sidebar');if(sb&&window.MutationObserver)new MutationObserver(upd).observe(sb,{attributes:true,attributeFilter:['class']});
+})();
+</script>
+<style id="nir-compact-home-v3">
+/* ═══ NIR COMPACT HOME — Platform Status, Teaching Workflow, compact footer. Visual + markup only; no tool logic touched. ═══ */
+#page-home .wf,#page-home .pst{max-width:1240px;margin:clamp(1.4rem,3.5vw,2.6rem) auto 0;padding:0 clamp(1rem,3vw,2rem)}
+#page-home .wf-head h2,#page-home .pst-head h2{margin:0;font-size:clamp(1.15rem,2.2vw,1.5rem);color:var(--h-ink);letter-spacing:-.01em}
+#page-home .wf-head p{margin:.25rem 0 .9rem;color:var(--h-mut);font-size:12.5px}
+#page-home .wf-steps{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;position:relative}
+#page-home .wf-step{position:relative;display:flex;flex-direction:column;align-items:flex-start;gap:2px;text-align:start;padding:1rem 1.1rem;border:1px solid var(--h-line);border-radius:18px;background:linear-gradient(150deg,var(--h-card),var(--h-bg2));color:var(--h-ink);font-family:inherit;cursor:pointer;transition:transform .3s var(--h-ease),border-color .3s,box-shadow .3s}
+html.light #page-home .wf-step{background:#fff}
+#page-home .wf-step:hover{transform:translateY(-3px);border-color:var(--h-line2);box-shadow:0 14px 32px rgba(0,0,0,.25)}
+#page-home .wf-step:active{transform:scale(.98)}
+#page-home .wf-step:not(:last-child):after{content:"→";position:absolute;inset-inline-end:-11px;top:50%;margin-top:-10px;width:12px;color:var(--h-gt);font-size:15px;line-height:1;z-index:2;pointer-events:none}
+html[dir="rtl"] #page-home .wf-step:not(:last-child):after{content:"←"}
+#page-home .wf-n{display:grid;place-items:center;width:26px;height:26px;margin-bottom:.45rem;border-radius:50%;background:linear-gradient(145deg,#E6C65C,#B18A25);color:#1d1604;font-size:12px;font-weight:800}
+#page-home .wf-step b{font-size:15px}#page-home .wf-step small{color:var(--h-mut);font-size:11.5px}
+#page-home .pst-head{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:.9rem}
+#page-home .pst-live{display:inline-flex;align-items:center;gap:7px;padding:5px 12px;border:1px solid rgba(108,200,112,.45);border-radius:99px;background:rgba(108,200,112,.08);color:#6cc870;font-size:11.5px;font-weight:600}
+html.light #page-home .pst-live{color:#2f7d33}
+#page-home .pst-live i{width:7px;height:7px;border-radius:50%;background:#6cc870;box-shadow:0 0 0 3px rgba(108,200,112,.2)}
+#page-home .pst-grid{display:grid;grid-template-columns:1.5fr 1fr 1fr;gap:12px}
+#page-home .pst-card{padding:1.15rem 1.2rem;border:1px solid var(--h-line);border-radius:20px;background:linear-gradient(150deg,var(--h-card),var(--h-bg2));min-width:0}
+html.light #page-home .pst-card{background:#fff}
+#page-home .pst-main{border-color:var(--h-line2);background:radial-gradient(420px 180px at 100% 0,rgba(212,175,55,.16),transparent),linear-gradient(150deg,var(--h-card),var(--h-bg2))}
+html.light #page-home .pst-main{background:radial-gradient(420px 180px at 100% 0,rgba(212,175,55,.2),transparent),#fff}
+#page-home .pst-top{display:flex;align-items:center;justify-content:space-between;gap:10px}
+#page-home .pst-top h3{margin:0;font-size:15px;color:var(--h-ink)}
+#page-home .pst-pill{padding:3px 10px;border-radius:99px;border:1px solid var(--h-line2);background:rgba(212,175,55,.08);color:var(--h-gt);font-size:10.5px;font-weight:700;white-space:nowrap}
+#page-home .pst-pill.ok{border-color:rgba(108,200,112,.45);background:rgba(108,200,112,.1);color:#6cc870}
+html.light #page-home .pst-pill.ok{color:#2f7d33}
+#page-home .pst-card>p{margin:.35rem 0 .8rem;color:var(--h-mut);font-size:12.5px;line-height:1.6}
+#page-home .pst-card ul{margin:0;padding:0;list-style:none;display:grid;gap:7px}
+#page-home .pst-card li{position:relative;padding-inline-start:16px;color:var(--h-ink);font-size:12.5px}
+#page-home .pst-card li:before{content:"";position:absolute;inset-inline-start:0;top:.5em;width:6px;height:6px;border-radius:50%;background:var(--h-gold)}
+#page-home .pst-chips{display:flex;flex-wrap:wrap;gap:7px}
+#page-home .pst-chip{min-height:36px;padding:7px 13px;border:1px solid var(--h-line);border-radius:99px;background:rgba(212,175,55,.06);color:var(--h-ink);font-size:12px;font-weight:600;font-family:inherit;cursor:pointer;transition:background .2s,border-color .2s,color .2s,transform .2s var(--h-ease)}
+#page-home .pst-chip:hover{border-color:var(--h-line2);color:var(--h-gt);background:rgba(212,175,55,.12)}
+#page-home .pst-chip:active{transform:scale(.96)}
+/* compact footer */
+#footer{--f-ink:#F4F0E6;--f-mut:#A89F8C;--f-gt:#E6C65C;--f-line:rgba(212,175,55,.16);padding:1.1rem clamp(1rem,3vw,2.2rem) calc(1rem + var(--safe-bottom,0px)) !important}
+html.light #footer{--f-ink:#25221B;--f-mut:#6B6554;--f-gt:#8F6B14;--f-line:rgba(177,138,37,.22)}
+#footer .nf-row,#footer .nf-bot{max-width:1240px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:1rem 2rem;flex-wrap:wrap}
+#footer .nf-brand{display:flex;align-items:center;gap:12px;min-width:0}
+#footer .nf-logo{height:38px;width:auto;flex:none;border-radius:8px}
+#footer .nf-brand b{display:block;color:var(--f-gt);font-family:'Cinzel',serif;font-size:13px;letter-spacing:.6px}
+#footer .nf-brand span{display:block;color:var(--f-ink);font-size:11.5px}
+#footer .nf-brand em{display:block;color:var(--f-mut);font-size:10.5px;font-style:normal;margin-top:1px}
+#footer .nf-links{display:flex;align-items:center;gap:1rem}
+#footer .nf-links .nf-h{display:block;margin:0;color:var(--f-mut);font-family:inherit;font-size:10.5px;font-weight:600;letter-spacing:1.4px;text-transform:uppercase}
+#footer .nf-links div{display:flex;gap:6px;flex-wrap:wrap}
+#footer .nf-links a{padding:7px 12px;border:1px solid var(--f-line);border-radius:99px;color:var(--f-ink);font-size:12px;transition:border-color .2s,color .2s}
+#footer .nf-links a:hover{border-color:var(--f-gt);color:var(--f-gt)}
+#footer .nf-bot{margin-top:.9rem;padding-top:.8rem;border-top:1px solid var(--f-line);color:var(--f-mut);font-size:10.5px}
+#footer .nf-bot strong{color:var(--f-gt);font-weight:600}#footer .nf-bot a{color:var(--f-mut);border-bottom:1px solid var(--f-line)}#footer .nf-bot a:hover{color:var(--f-gt)}
+#topbar .tb-solid,#topbar .tb-ghost{white-space:nowrap}
+@media(max-width:1100px){#page-home .pst-grid{grid-template-columns:1fr 1fr}#page-home .pst-main{grid-column:1/-1}}
+@media(max-width:700px){
+#page-home .wf,#page-home .pst{margin-top:1.3rem}
+#page-home .wf-steps{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+#page-home .wf-step{padding:.9rem}#page-home .wf-step:not(:last-child):after{display:none}
+#page-home .pst-grid{grid-template-columns:1fr;gap:9px}
+#footer .nf-row{align-items:flex-start;flex-direction:column;gap:.9rem}
+#footer .nf-links{flex-direction:column;align-items:flex-start;gap:.5rem}
+#footer .nf-bot{flex-direction:column;align-items:flex-start;gap:.35rem}
+}
+@media(max-width:600px){#footer{padding-bottom:calc(var(--mob-nav-h,88px) + var(--safe-bottom,0px) + 8px) !important}}
+
+/* Top bar fit: nav pills were too wide between 961-1180px and pushed "Sign In / Join" out of view */
+@media(min-width:961px) and (max-width:1180px){
+  html body #topbar .tb-nav{gap:.1rem}
+  html body #topbar .tb-nav a{padding:6px 8px !important;letter-spacing:.3px}
+  html body #topbar .tb-actions{gap:.35rem}
+}
+@media(min-width:961px) and (max-width:1180px){
+  html body #topbar .tb-ghost,html body #topbar .tb-solid{padding:7px 11px !important;font-size:13px !important}
+  html body #topbar #focus-btn{padding:5px 8px !important;font-size:13px !important}
+  html body #topbar #tb-tesol{display:none}
+  html body #topbar{gap:8px}
+}
+@media(min-width:961px) and (max-width:1010px){
+  html body #topbar .tb-nav a{padding:6px 5px !important;font-size:10px !important;letter-spacing:.2px}
+  html body #topbar .tb-ghost,html body #topbar .tb-solid{padding:7px 8px !important;font-size:12px !important}
+}
+</style>
+<script>
+/* NIR compact home/footer: translations for the new strings in all 5 app languages (hooks into applyLang). */
+(function(){var D={"en":{"wf":"NIRA Teaching Workflow","wf_sub":"From planning to improvement — in four steps","plan":"Plan","create":"Create","assess":"Assess","improve":"Improve","t_generator":"Prompt Generator","t_lesson":"Lesson Planner","t_ielts":"IELTS Generator","t_feedback":"Writing Feedback","t_worksheet":"Worksheet Builder","t_library":"Prompt Library","pst_title":"NIR Academy Platform","pst_live":"Core platform live","pst_now":"Available Now","pst_now_d":"AI-powered tools for ELT professionals","st_live":"Live","st_prog":"In progress","pst_dev":"Platform Development","pst_dev_d":"Continuous improvements and upcoming capabilities","d_analytics":"Advanced analytics","d_personal":"Personalisation","d_subs":"Subscription improvements","d_community":"Teacher community","pst_mob":"Mobile Expansion","pst_mob_d":"Mobile ecosystem development","m_android":"Android: closed testing","m_ios":"iOS: planned","m_pwa":"PWA: installable experience","nf_tag":"AI-Powered ELT Platform","nf_motto":"Pedagogy First. AI Enhanced. Future Ready.","nf_help":"Help & Support","nf_contact":"Contact","nf_privacy":"Privacy","nf_terms":"Terms","nf_founded":"Founded by","nf_rights":"© 2026 NIR Academy. All rights reserved."},"tr":{"wf":"NIRA Öğretim Akışı","wf_sub":"Planlamadan iyileştirmeye, dört adımda","plan":"Planla","create":"Oluştur","assess":"Değerlendir","improve":"Geliştir","t_generator":"Prompt Üretici","t_lesson":"Ders Planlayıcı","t_ielts":"IELTS Üretici","t_feedback":"Yazma Geri Bildirimi","t_worksheet":"Çalışma Kâğıdı Oluşturucu","t_library":"Prompt Kütüphanesi","pst_title":"NIR Academy Platformu","pst_live":"Ana platform yayında","pst_now":"Şu An Kullanılabilir","pst_now_d":"ELT profesyonelleri için yapay zekâ destekli araçlar","st_live":"Yayında","st_prog":"Devam ediyor","pst_dev":"Platform Geliştirme","pst_dev_d":"Sürekli iyileştirmeler ve yaklaşan özellikler","d_analytics":"Gelişmiş analizler","d_personal":"Kişiselleştirme","d_subs":"Abonelik iyileştirmeleri","d_community":"Öğretmen topluluğu","pst_mob":"Mobil Genişleme","pst_mob_d":"Mobil ekosistem geliştirme","m_android":"Android: kapalı test","m_ios":"iOS: planlandı","m_pwa":"PWA: yüklenebilir deneyim","nf_tag":"Yapay Zekâ Destekli ELT Platformu","nf_motto":"Önce Pedagoji. Yapay Zekâ ile Güçlü. Geleceğe Hazır.","nf_help":"Yardım ve Destek","nf_contact":"İletişim","nf_privacy":"Gizlilik","nf_terms":"Şartlar","nf_founded":"Kurucu:","nf_rights":"© 2026 NIR Academy. Tüm hakları saklıdır."},"ar":{"wf":"مسار التدريس في NIRA","wf_sub":"من التخطيط إلى التحسين في أربع خطوات","plan":"خطّط","create":"أنشئ","assess":"قيّم","improve":"حسّن","t_generator":"مولّد البرومبت","t_lesson":"مخطّط الدروس","t_ielts":"مولّد IELTS","t_feedback":"تغذية راجعة للكتابة","t_worksheet":"منشئ أوراق العمل","t_library":"مكتبة البرومبت","pst_title":"منصة NIR Academy","pst_live":"المنصة الأساسية متاحة","pst_now":"متاح الآن","pst_now_d":"أدوات مدعومة بالذكاء الاصطناعي لمحترفي تعليم اللغة الإنجليزية","st_live":"متاح","st_prog":"قيد التنفيذ","pst_dev":"تطوير المنصة","pst_dev_d":"تحسينات مستمرة وإمكانات قادمة","d_analytics":"تحليلات متقدمة","d_personal":"التخصيص","d_subs":"تحسينات الاشتراك","d_community":"مجتمع المعلمين","pst_mob":"التوسع على الجوّال","pst_mob_d":"تطوير منظومة الجوّال","m_android":"Android: اختبار مغلق","m_ios":"iOS: مخطّط له","m_pwa":"PWA: تجربة قابلة للتثبيت","nf_tag":"منصة ELT مدعومة بالذكاء الاصطناعي","nf_motto":"التربية أولاً. معزَّز بالذكاء الاصطناعي. جاهز للمستقبل.","nf_help":"المساعدة والدعم","nf_contact":"اتصل بنا","nf_privacy":"الخصوصية","nf_terms":"الشروط","nf_founded":"تأسيس:","nf_rights":"© 2026 NIR Academy. جميع الحقوق محفوظة."},"zh":{"wf":"NIRA 教学流程","wf_sub":"从规划到改进，四步完成","plan":"规划","create":"创建","assess":"评估","improve":"改进","t_generator":"提示词生成器","t_lesson":"教案规划器","t_ielts":"IELTS 生成器","t_feedback":"写作反馈","t_worksheet":"练习表生成器","t_library":"提示词库","pst_title":"NIR Academy 平台","pst_live":"核心平台已上线","pst_now":"现已可用","pst_now_d":"面向英语教学专业人士的 AI 工具","st_live":"已上线","st_prog":"进行中","pst_dev":"平台开发","pst_dev_d":"持续改进与即将推出的功能","d_analytics":"高级数据分析","d_personal":"个性化","d_subs":"订阅功能优化","d_community":"教师社区","pst_mob":"移动端拓展","pst_mob_d":"移动生态建设","m_android":"Android：封闭测试","m_ios":"iOS：计划中","m_pwa":"PWA：可安装体验","nf_tag":"AI 驱动的 ELT 平台","nf_motto":"教学为先 · AI 赋能 · 面向未来","nf_help":"帮助与支持","nf_contact":"联系我们","nf_privacy":"隐私","nf_terms":"条款","nf_founded":"创始人：","nf_rights":"© 2026 NIR Academy。保留所有权利。"},"fa":{"wf":"مسیر تدریس NIRA","wf_sub":"از برنامه‌ریزی تا بهبود، در چهار گام","plan":"برنامه‌ریزی","create":"ساخت","assess":"ارزیابی","improve":"بهبود","t_generator":"تولیدکنندهٔ پرامپت","t_lesson":"برنامه‌ریز درس","t_ielts":"تولیدکنندهٔ IELTS","t_feedback":"بازخورد نوشتار","t_worksheet":"سازندهٔ کاربرگ","t_library":"کتابخانهٔ پرامپت","pst_title":"پلتفرم NIR Academy","pst_live":"پلتفرم اصلی فعال است","pst_now":"هم‌اکنون در دسترس","pst_now_d":"ابزارهای هوش مصنوعی برای متخصصان آموزش زبان انگلیسی","st_live":"فعال","st_prog":"در حال توسعه","pst_dev":"توسعهٔ پلتفرم","pst_dev_d":"بهبودهای مستمر و قابلیت‌های آینده","d_analytics":"تحلیل‌های پیشرفته","d_personal":"شخصی‌سازی","d_subs":"بهبود اشتراک","d_community":"جامعهٔ معلمان","pst_mob":"توسعهٔ موبایل","pst_mob_d":"توسعهٔ اکوسیستم موبایل","m_android":"Android: تست بسته","m_ios":"iOS: برنامه‌ریزی‌شده","m_pwa":"PWA: تجربهٔ قابل نصب","nf_tag":"پلتفرم ELT مبتنی بر هوش مصنوعی","nf_motto":"آموزش‌محور. تقویت‌شده با هوش مصنوعی. آماده برای آینده.","nf_help":"راهنما و پشتیبانی","nf_contact":"تماس","nf_privacy":"حریم خصوصی","nf_terms":"شرایط","nf_founded":"بنیان‌گذار:","nf_rights":"© 2026 NIR Academy. تمامی حقوق محفوظ است."}};
+function ap(l){var d=D[l]||D.en;document.querySelectorAll('[data-i18n]').forEach(function(e){var v=d[e.getAttribute('data-i18n')];if(v==null)v=D.en[e.getAttribute('data-i18n')];if(v!=null)e.textContent=v})}
+var cur='en';try{cur=localStorage.getItem('nir_lang')||'en'}catch(e){}
+ap(cur);
+var _a=window.applyLang;if(typeof _a==='function')window.applyLang=function(l){var r=_a.apply(this,arguments);ap(D[l]?l:'en');return r};
+})();
+</script>
+<script id="nir-tool-pages-i18n">
+(function(){var D={"✦ AI Tool · ELT Lesson Design": ["✦ ابزار هوش مصنوعی · طراحی درس ELT", "✦ Yapay Zekâ Aracı · ELT Ders Tasarımı", "✦ أداة ذكاء اصطناعي · تصميم دروس ELT", "✦ AI 工具 · ELT 课程设计"], "Lesson": ["طرح", "Ders", "مخطط", "课程"], "Planner": ["درس", "Planlayıcı", "الدروس", "规划器"], "Generate complete TESOL-aligned lesson plans with PPP/TBL stages, clear aims, teacher instructions, and reflection prompts.": ["طرح درس کامل منطبق بر TESOL با مراحل PPP/TBL، اهداف روشن، راهنمای معلم و پرسش‌های بازاندیشی تولید کنید.", "PPP/TBL aşamaları, net hedefler, öğretmen yönergeleri ve yansıtma soruları içeren, TESOL uyumlu eksiksiz ders planları oluşturun.", "أنشئ خطط دروس كاملة متوافقة مع TESOL بمراحل PPP/TBL وأهداف واضحة وتعليمات للمعلم وأسئلة للتأمل.", "生成符合 TESOL 标准的完整教案，包含 PPP/TBL 阶段、明确目标、教师指导和反思提示。"], "PPP Framework": ["چارچوب PPP", "PPP Çerçevesi", "إطار PPP", "PPP 框架"], "CEFR Aligned": ["مطابق CEFR", "CEFR Uyumlu", "متوافق مع CEFR", "符合 CEFR"], "ELT Lesson Design": ["طراحی درس ELT", "ELT Ders Tasarımı", "تصميم دروس ELT", "ELT 课程设计"], "Lesson Stages — click to toggle": ["مراحل درس — برای فعال/غیرفعال‌سازی کلیک کنید", "Ders Aşamaları — açmak/kapatmak için tıklayın", "مراحل الدرس — انقر للتفعيل/الإيقاف", "课堂阶段 — 点击切换"], "Warm-Up": ["گرم‌کردن", "Isınma", "الإحماء", "热身"], "Presentation": ["ارائه", "Sunum", "العرض", "呈现"], "Practice": ["تمرین", "Uygulama", "التدريب", "练习"], "Production": ["تولید", "Üretim", "الإنتاج", "产出"], "Wrap-Up": ["جمع‌بندی", "Kapanış", "الختام", "总结"], "5–10 min": ["۵–۱۰ دقیقه", "5–10 dk", "5–10 دقائق", "5–10 分钟"], "10–15 min": ["۱۰–۱۵ دقیقه", "10–15 dk", "10–15 دقيقة", "10–15 分钟"], "5 min": ["۵ دقیقه", "5 dk", "5 دقائق", "5 分钟"], "Lesson Focus": ["تمرکز درس", "Ders Odağı", "محور الدرس", "课程重点"], "Skill to teach": ["مهارت موردنظر برای تدریس", "Öğretilecek beceri", "المهارة المراد تدريسها", "要教授的技能"], "Grammar": ["گرامر", "Dilbilgisi", "القواعد", "语法"], "Vocabulary": ["واژگان", "Kelime", "المفردات", "词汇"], "Speaking": ["صحبت کردن", "Konuşma", "المحادثة", "口语"], "Writing": ["نوشتن", "Yazma", "الكتابة", "写作"], "Reading": ["خواندن", "Okuma", "القراءة", "阅读"], "Listening": ["شنیدن", "Dinleme", "الاستماع", "听力"], "Integrated": ["یکپارچه", "Entegre", "متكامل", "综合"], "Mixed": ["ترکیبی", "Karma", "مختلط", "混合"], "Level & Class": ["سطح و کلاس", "Seviye ve Sınıf", "المستوى والصف", "水平与班级"], "CEFR, time & group": ["CEFR، زمان و گروه", "CEFR, süre ve grup", "CEFR والمدة والمجموعة", "CEFR、时长与分组"], "Duration": ["مدت", "Süre", "المدة", "时长"], "45 minutes": ["۴۵ دقیقه", "45 dakika", "45 دقيقة", "45 分钟"], "60 minutes": ["۶۰ دقیقه", "60 dakika", "60 دقيقة", "60 分钟"], "90 minutes": ["۹۰ دقیقه", "90 dakika", "90 دقيقة", "90 分钟"], "120 minutes": ["۱۲۰ دقیقه", "120 dakika", "120 دقيقة", "120 分钟"], "Class Size": ["اندازه کلاس", "Sınıf Mevcudu", "حجم الصف", "班级规模"], "Small (5–10)": ["کوچک (۵–۱۰)", "Küçük (5–10)", "صغير (5–10)", "小班 (5–10)"], "Standard (15–20)": ["استاندارد (۱۵–۲۰)", "Standart (15–20)", "عادي (15–20)", "标准 (15–20)"], "Large (25–30)": ["بزرگ (۲۵–۳۰)", "Büyük (25–30)", "كبير (25–30)", "大班 (25–30)"], "Online 1-to-1": ["آنلاین، خصوصی", "Çevrimiçi birebir", "فردي عبر الإنترنت", "在线一对一"], "Topic": ["موضوع", "Konu", "الموضوع", "主题"], "What the lesson covers": ["درس چه موضوعی را پوشش می‌دهد", "Dersin kapsadığı konu", "ما يغطيه الدرس", "课程涵盖内容"], "Unit Content": ["محتوای واحد", "Ünite İçeriği", "محتوى الوحدة", "单元内容"], "(optional)": ["(اختیاری)", "(isteğe bağlı)", "(اختياري)", "(可选)"], "Coursebook text": ["متن کتاب درسی", "Ders kitabı metni", "نص الكتاب المدرسي", "教材文本"], "✦ Generate Lesson Plan": ["✦ تولید طرح درس", "✦ Ders Planı Oluştur", "✦ إنشاء خطة الدرس", "✦ 生成教案"], "Lesson Plan": ["طرح درس", "Ders Planı", "خطة الدرس", "教案"], "💾 Save": ["💾 ذخیره", "💾 Kaydet", "💾 حفظ", "💾 保存"], "Copy": ["کپی", "Kopyala", "نسخ", "复制"], "Regenerate": ["تولید دوباره", "Yeniden Oluştur", "إعادة الإنشاء", "重新生成"], "Your complete TESOL-aligned lesson plan will appear here.": ["طرح درس کامل شما، منطبق بر TESOL، اینجا نمایش داده می‌شود.", "TESOL uyumlu eksiksiz ders planınız burada görünecek.", "ستظهر هنا خطة الدرس الكاملة المتوافقة مع TESOL.", "符合 TESOL 标准的完整教案将显示在这里。"], "Includes: objectives · staged activities · timing · materials · assessment": ["شامل: اهداف · فعالیت‌های مرحله‌ای · زمان‌بندی · مواد · ارزیابی", "İçerik: hedefler · aşamalı etkinlikler · zamanlama · materyaller · değerlendirme", "تشمل: الأهداف · الأنشطة المرحلية · التوقيت · المواد · التقييم", "包含：目标 · 分阶段活动 · 时间安排 · 材料 · 评估"], "e.g. Present Perfect, Travel Vocabulary, Conditionals…": ["مثلاً Present Perfect، واژگان سفر، Conditionals…", "örn. Present Perfect, Seyahat Kelimeleri, Conditionals…", "مثال: Present Perfect، مفردات السفر، Conditionals…", "例如：Present Perfect、旅行词汇、Conditionals…"], "Paste text from your coursebook unit here — vocabulary lists, grammar notes, dialogue, reading text, etc. NIRA will build the lesson plan around this content.": ["متن واحد کتاب درسی را اینجا بچسبانید — فهرست واژگان، نکات گرامری، مکالمه، متن خواندن و غیره. NIRA طرح درس را بر پایه این محتوا می‌سازد.", "Ders kitabı ünitesinden metni buraya yapıştırın — kelime listeleri, dilbilgisi notları, diyalog, okuma metni vb. NIRA ders planını bu içeriğe göre oluşturur.", "الصق هنا نص وحدة من كتابك المدرسي — قوائم المفردات وملاحظات القواعد والحوار ونص القراءة وغيرها. سيبني NIRA خطة الدرس حول هذا المحتوى.", "在此粘贴教材单元文本 — 词汇表、语法笔记、对话、阅读文章等。NIRA 将围绕这些内容设计教案。"], "Print": ["چاپ", "Yazdır", "طباعة", "打印"], "Download Word": ["دانلود Word", "Word indir", "تنزيل Word", "下载 Word"], "✦ IELTS Tool · Band Targeting": ["✦ ابزار IELTS · هدف‌گذاری نمره", "✦ IELTS Aracı · Band Hedefleme", "✦ أداة IELTS · استهداف الدرجة", "✦ IELTS 工具 · 分数目标"], "IELTS Task": ["سازنده", "IELTS Görev", "مهام", "IELTS 任务"], "Generator": ["تمرین IELTS", "Üretici", "مولّد", "生成器"], "Generate authentic IELTS-style tasks for Academic and General Training — Writing Task 1 & 2, Reading passages, and Speaking questions.": ["تمرین‌های اصیل به سبک IELTS برای Academic و General Training تولید کنید — Writing Task 1 و 2، متن‌های Reading و سؤال‌های Speaking.", "Academic ve General Training için özgün IELTS tarzı görevler oluşturun — Writing Task 1 ve 2, Reading metinleri ve Speaking soruları.", "أنشئ مهام أصيلة بنمط IELTS للأكاديمي والعام — Writing Task 1 و2 ونصوص Reading وأسئلة Speaking.", "生成地道的 IELTS 风格任务，适用于学术类和培训类 — 写作 Task 1 和 2、阅读文章及口语题目。"], "IELTS Academic": ["IELTS آکادمیک", "IELTS Academic", "IELTS الأكاديمي", "IELTS 学术类"], "Band 5–8": ["نمره ۵–۸", "Band 5–8", "Band 5–8", "Band 5–8"], "Task 1 & 2": ["Task 1 و 2", "Task 1 ve 2", "Task 1 و2", "Task 1 和 2"], "Task Type": ["نوع تمرین", "Görev Türü", "نوع المهمة", "任务类型"], "Data description: charts, graphs, diagrams, process maps": ["توصیف داده: نمودارها، گراف‌ها، دیاگرام‌ها، نقشه‌های فرایند", "Veri tanımı: grafikler, çizelgeler, diyagramlar, süreç haritaları", "وصف البيانات: مخططات ورسوم بيانية وخرائط عمليات", "数据描述：图表、曲线图、示意图、流程图"], "Essay: opinion, discussion, problem-solution, two-part question": ["مقاله: نظر، بحث، مسئله-راه‌حل، سؤال دوبخشی", "Deneme: görüş, tartışma, sorun-çözüm, iki bölümlü soru", "مقال: رأي، نقاش، مشكلة وحل، سؤال من جزأين", "议论文：观点、讨论、问题与解决、双问题"], "Letter writing: formal, semi-formal, informal": ["نامه‌نگاری: رسمی، نیمه‌رسمی، غیررسمی", "Mektup yazma: resmî, yarı resmî, gayriresmî", "كتابة الرسائل: رسمية، شبه رسمية، غير رسمية", "书信写作：正式、半正式、非正式"], "Reading Passage": ["متن Reading", "Okuma Metni", "نص القراءة", "阅读文章"], "Academic reading with TFNG, MCQ, matching and summary tasks": ["Reading آکادمیک با TFNG، چندگزینه‌ای، تطبیق و خلاصه‌نویسی", "TFNG, çoktan seçmeli, eşleştirme ve özet görevleriyle akademik okuma", "قراءة أكاديمية مع أسئلة TFNG والاختيار من متعدد والمطابقة والتلخيص", "学术阅读，含 TFNG、选择题、匹配题和摘要题"], "Familiar topic questions: home, work, hobbies, daily routines": ["سؤال‌های موضوعات آشنا: خانه، کار، سرگرمی، روال روزانه", "Tanıdık konu soruları: ev, iş, hobiler, günlük rutinler", "أسئلة عن مواضيع مألوفة: المنزل، العمل، الهوايات، الروتين اليومي", "熟悉话题问题：家庭、工作、爱好、日常生活"], "Cue card: 1-min prep, 2-min individual talk": ["کارت راهنما: ۱ دقیقه آماده‌سازی، ۲ دقیقه صحبت فردی", "Konu kartı: 1 dk hazırlık, 2 dk bireysel konuşma", "بطاقة الموضوع: دقيقة تحضير، دقيقتان حديث فردي", "话题卡：准备 1 分钟，个人发言 2 分钟"], "Two-way discussion: abstract and analytical follow-up questions": ["بحث دوطرفه: سؤال‌های پیگیری انتزاعی و تحلیلی", "İki yönlü tartışma: soyut ve analitik devam soruları", "نقاش ثنائي: أسئلة متابعة مجردة وتحليلية", "双向讨论：抽象与分析性的后续问题"], "Target Band": ["نمره هدف", "Hedef Band", "الدرجة المستهدفة", "目标分数"], "Subject area": ["حوزه موضوعی", "Konu alanı", "المجال", "主题领域"], "Include in Output": ["موارد خروجی", "Çıktıya Dahil Et", "ما يتضمنه الناتج", "输出内容"], "Customise output": ["سفارشی‌سازی خروجی", "Çıktıyı özelleştir", "تخصيص الناتج", "自定义输出"], "Model Answer": ["پاسخ نمونه", "Örnek Cevap", "إجابة نموذجية", "范文答案"], "Band Notes": ["نکات نمره‌دهی", "Band Notları", "ملاحظات الدرجة", "分数说明"], "Examiner Tips": ["نکات ممتحن", "Sınav Görevlisi İpuçları", "نصائح الممتحن", "考官提示"], "Band 6/7/8 Answers": ["پاسخ‌های نمره ۶/۷/۸", "Band 6/7/8 Cevapları", "إجابات Band 6/7/8", "Band 6/7/8 答案"], "Assessment Criteria": ["معیارهای ارزیابی", "Değerlendirme Ölçütleri", "معايير التقييم", "评分标准"], "✦ Generate IELTS Task": ["✦ تولید تمرین IELTS", "✦ IELTS Görevi Oluştur", "✦ إنشاء مهمة IELTS", "✦ 生成 IELTS 任务"], "Your IELTS task with full model answer will appear here.": ["تمرین IELTS شما همراه با پاسخ نمونه کامل اینجا نمایش داده می‌شود.", "Tam örnek cevaplı IELTS göreviniz burada görünecek.", "ستظهر هنا مهمة IELTS مع الإجابة النموذجية الكاملة.", "IELTS 任务及完整范文答案将显示在这里。"], "Task 1 · Task 2 · Reading · Listening · Speaking — band-targeted output": ["Task 1 · Task 2 · Reading · Listening · Speaking — خروجی هدف‌گذاری‌شده بر اساس نمره", "Task 1 · Task 2 · Reading · Listening · Speaking — band hedefli çıktı", "Task 1 · Task 2 · Reading · Listening · Speaking — مخرجات موجّهة حسب الدرجة", "Task 1 · Task 2 · Reading · Listening · Speaking — 按分数目标输出"], "e.g. Renewable energy, Urbanisation, Digital technology…": ["مثلاً انرژی تجدیدپذیر، شهرنشینی، فناوری دیجیتال…", "örn. Yenilenebilir enerji, Kentleşme, Dijital teknoloji…", "مثال: الطاقة المتجددة، التوسع الحضري، التكنولوجيا الرقمية…", "例如：可再生能源、城市化、数字技术…"], "✦ AI Tool · Corrective Feedback": ["✦ ابزار هوش مصنوعی · بازخورد اصلاحی", "✦ Yapay Zekâ Aracı · Düzeltici Geri Bildirim", "✦ أداة ذكاء اصطناعي · التغذية الراجعة التصحيحية", "✦ AI 工具 · 纠正性反馈"], "Error": ["ابزار", "Hata", "أداة", "错误"], "Correction Tool": ["تصحیح خطا", "Düzeltme Aracı", "تصحيح الأخطاء", "纠正工具"], "Paste student writing and receive detailed linguistic feedback — direct correction, coded feedback, or metalinguistic commentary for teacher training.": ["نوشته‌ی زبان‌آموز را بچسبانید و بازخورد زبانی دقیق بگیرید — تصحیح مستقیم، بازخورد رمزی یا تفسیر فرازبانی برای آموزش معلمان.", "Öğrenci yazısını yapıştırın ve ayrıntılı dilbilimsel geri bildirim alın — doğrudan düzeltme, kodlu geri bildirim veya öğretmen eğitimi için üstdilsel yorum.", "الصق كتابة الطالب واحصل على ملاحظات لغوية مفصلة — تصحيح مباشر أو ملاحظات مرمّزة أو تعليق فوق لغوي لتدريب المعلمين.", "粘贴学生作文，获得详细的语言反馈 — 直接纠正、编码反馈，或用于教师培训的元语言评述。"], "Direct Correction": ["تصحیح مستقیم", "Doğrudan Düzeltme", "تصحيح مباشر", "直接纠正"], "Coded Feedback": ["بازخورد رمزی", "Kodlu Geri Bildirim", "ملاحظات مرمّزة", "编码反馈"], "Metalinguistic": ["فرازبانی", "Üstdilsel", "فوق لغوي", "元语言"], "Feedback Type — click to select": ["نوع بازخورد — برای انتخاب کلیک کنید", "Geri Bildirim Türü — seçmek için tıklayın", "نوع الملاحظات — انقر للاختيار", "反馈类型 — 点击选择"], "Corrected text + explanations": ["متن اصلاح‌شده + توضیحات", "Düzeltilmiş metin + açıklamalar", "النص المصحح + الشرح", "订正文本 + 解释"], "WW, WF, T, Sp, P codes": ["کدهای WW, WF, T, Sp, P", "WW, WF, T, Sp, P kodları", "رموز WW, WF, T, Sp, P", "WW、WF、T、Sp、P 编码"], "Teacher training depth": ["عمق مناسب آموزش معلم", "Öğretmen eğitimi derinliği", "عمق مناسب لتدريب المعلمين", "教师培训深度"], "Student Level": ["سطح زبان‌آموز", "Öğrenci Seviyesi", "مستوى الطالب", "学生水平"], "CEFR or IELTS": ["CEFR یا IELTS", "CEFR veya IELTS", "CEFR أو IELTS", "CEFR 或 IELTS"], "Paste Student Writing": ["نوشته زبان‌آموز را بچسبانید", "Öğrenci Yazısını Yapıştırın", "الصق كتابة الطالب", "粘贴学生作文"], "Max 400 words": ["حداکثر ۴۰۰ کلمه", "En fazla 400 kelime", "الحد الأقصى 400 كلمة", "最多 400 词"], "✦ Analyse & Correct": ["✦ تحلیل و تصحیح", "✦ Analiz Et ve Düzelt", "✦ تحليل وتصحيح", "✦ 分析并纠正"], "Feedback Report": ["گزارش بازخورد", "Geri Bildirim Raporu", "تقرير الملاحظات", "反馈报告"], "Re-analyse": ["تحلیل دوباره", "Yeniden Analiz Et", "إعادة التحليل", "重新分析"], "Paste student writing above and click": ["نوشته زبان‌آموز را بالا بچسبانید و روی", "Öğrenci yazısını yukarı yapıştırın ve", "الصق كتابة الطالب أعلاه ثم انقر على", "在上方粘贴学生作文，然后点击"], "Analyse": ["تحلیل", "Analiz", "تحليل", "分析"], "for detailed linguistic feedback.": ["بزنید تا بازخورد زبانی دقیق بگیرید.", "düğmesine tıklayarak ayrıntılı dilbilimsel geri bildirim alın.", "للحصول على ملاحظات لغوية مفصلة.", "以获得详细的语言反馈。"], "Identifies: grammar errors · vocabulary · coherence · CEFR level · improvement suggestions": ["شناسایی: خطاهای گرامری · واژگان · انسجام · سطح CEFR · پیشنهادهای بهبود", "Belirler: dilbilgisi hataları · kelime · tutarlılık · CEFR seviyesi · iyileştirme önerileri", "يحدد: الأخطاء النحوية · المفردات · الترابط · مستوى CEFR · اقتراحات التحسين", "识别：语法错误 · 词汇 · 连贯性 · CEFR 水平 · 改进建议"], "Paste the student's writing here. e.g. 'Yesterday I go to the market and buyed some vegetable. It was very crowd and I feeling tired after…'": ["نوشته زبان‌آموز را اینجا بچسبانید. مثلاً: 'Yesterday I go to the market and buyed some vegetable. It was very crowd and I feeling tired after…'", "Öğrenci yazısını buraya yapıştırın. örn. 'Yesterday I go to the market and buyed some vegetable. It was very crowd and I feeling tired after…'", "الصق كتابة الطالب هنا. مثال: 'Yesterday I go to the market and buyed some vegetable. It was very crowd and I feeling tired after…'", "在此粘贴学生作文。例如：'Yesterday I go to the market and buyed some vegetable. It was very crowd and I feeling tired after…'"], "✦ AI Tool · ELT Materials Design": ["✦ ابزار هوش مصنوعی · طراحی مواد ELT", "✦ Yapay Zekâ Aracı · ELT Materyal Tasarımı", "✦ أداة ذكاء اصطناعي · تصميم مواد ELT", "✦ AI 工具 · ELT 教材设计"], "Worksheet": ["سازنده", "Çalışma", "منشئ", "练习单"], "Builder": ["کاربرگ", "Kâğıdı Oluşturucu", "أوراق العمل", "制作器"], "Create print-ready classroom worksheets with multiple exercise types, answer keys, and teacher notes — ready to use immediately.": ["کاربرگ‌های آماده چاپ برای کلاس با انواع تمرین، کلید پاسخ و یادداشت معلم بسازید — آماده استفاده فوری.", "Çeşitli alıştırma türleri, cevap anahtarları ve öğretmen notlarıyla yazdırmaya hazır sınıf çalışma kâğıtları oluşturun — hemen kullanıma hazır.", "أنشئ أوراق عمل صفية جاهزة للطباعة بأنواع تمارين متعددة ومفاتيح إجابة وملاحظات للمعلم — جاهزة للاستخدام فوراً.", "创建可直接打印的课堂练习单，含多种练习类型、答案与教师笔记 — 即刻可用。"], "Gap Fill": ["جای‌خالی", "Boşluk Doldurma", "ملء الفراغات", "填空"], "Answer Keys": ["کلید پاسخ", "Cevap Anahtarı", "مفاتيح الإجابة", "答案"], "Print-Ready": ["آماده چاپ", "Yazdırmaya Hazır", "جاهز للطباعة", "可直接打印"], "Exercise Types — toggle to include": ["انواع تمرین — برای افزودن/حذف کلیک کنید", "Alıştırma Türleri — eklemek/çıkarmak için tıklayın", "أنواع التمارين — انقر للإضافة/الإزالة", "练习类型 — 点击添加/移除"], "Multiple Choice": ["چندگزینه‌ای", "Çoktan Seçmeli", "اختيار من متعدد", "选择题"], "Feedback Practice": ["تمرین بازخورد", "Geri Bildirim Alıştırması", "تدريب على التغذية الراجعة", "反馈练习"], "Matching": ["تطبیق", "Eşleştirme", "المطابقة", "匹配"], "Word Order": ["ترتیب کلمات", "Kelime Sıralama", "ترتيب الكلمات", "词序"], "Short Answer": ["پاسخ کوتاه", "Kısa Cevap", "إجابة قصيرة", "简答"], "Translation": ["ترجمه", "Çeviri", "الترجمة", "翻译"], "Writing Task": ["تمرین نوشتن", "Yazma Görevi", "مهمة كتابة", "写作任务"], "Focus & Level": ["تمرکز و سطح", "Odak ve Seviye", "المحور والمستوى", "重点与水平"], "Skill & CEFR": ["مهارت و CEFR", "Beceri ve CEFR", "المهارة وCEFR", "技能与 CEFR"], "Topic & Options": ["موضوع و گزینه‌ها", "Konu ve Seçenekler", "الموضوع والخيارات", "主题与选项"], "Subject & extras": ["موضوع و موارد اضافی", "Konu ve ekstralar", "الموضوع والإضافات", "主题与附加项"], "Answer Key": ["کلید پاسخ", "Cevap Anahtarı", "مفتاح الإجابة", "答案"], "Include answer key": ["با کلید پاسخ", "Cevap anahtarı dahil", "مع مفتاح الإجابة", "包含答案"], "No answer key": ["بدون کلید پاسخ", "Cevap anahtarı yok", "بدون مفتاح الإجابة", "不含答案"], "Separate page": ["صفحه جداگانه", "Ayrı sayfa", "في صفحة منفصلة", "单独一页"], "Teacher Notes": ["یادداشت معلم", "Öğretmen Notları", "ملاحظات المعلم", "教师笔记"], "Include notes": ["با یادداشت", "Notlar dahil", "مع الملاحظات", "包含笔记"], "No notes": ["بدون یادداشت", "Not yok", "بدون ملاحظات", "不含笔记"], "Add vocabulary images": ["افزودن تصویر واژگان", "Kelime görselleri ekle", "إضافة صور للمفردات", "添加词汇图片"], "(A1/A2 only · optional)": ["(فقط A1/A2 · اختیاری)", "(yalnızca A1/A2 · isteğe bağlı)", "(A1/A2 فقط · اختياري)", "(仅限 A1/A2 · 可选)"], "✦ Build Worksheet": ["✦ ساخت کاربرگ", "✦ Çalışma Kâğıdı Oluştur", "✦ إنشاء ورقة العمل", "✦ 制作练习单"], "Your print-ready worksheet will appear here.": ["کاربرگ آماده چاپ شما اینجا نمایش داده می‌شود.", "Yazdırmaya hazır çalışma kâğıdınız burada görünecek.", "ستظهر هنا ورقة العمل الجاهزة للطباعة.", "可直接打印的练习单将显示在这里。"], "Ready to copy, print, or share directly with your class": ["آماده کپی، چاپ یا اشتراک‌گذاری مستقیم با کلاس", "Kopyalamaya, yazdırmaya veya doğrudan sınıfla paylaşmaya hazır", "جاهزة للنسخ أو الطباعة أو المشاركة مباشرة مع صفك", "可直接复制、打印或与班级分享"], "e.g. Present Perfect, Conditionals, Travel Vocabulary…": ["مثلاً Present Perfect، Conditionals، واژگان سفر…", "örn. Present Perfect, Conditionals, Seyahat Kelimeleri…", "مثال: Present Perfect، Conditionals، مفردات السفر…", "例如：Present Perfect、Conditionals、旅行词汇…"], "CEFR Level:": ["سطح CEFR:", "CEFR Seviyesi:", "مستوى CEFR:", "CEFR 水平："], "Focus:": ["تمرکز:", "Odak:", "المحور:", "重点："], "Duration:": ["مدت:", "Süre:", "المدة:", "时长："], "Topic:": ["موضوع:", "Konu:", "الموضوع:", "主题："], "Band:": ["نمره:", "Band:", "الدرجة:", "分数："], "Task:": ["تمرین:", "Görev:", "المهمة:", "任务："], "Feedback:": ["بازخورد:", "Geri Bildirim:", "الملاحظات:", "反馈："], "Words:": ["کلمات:", "Kelime:", "الكلمات:", "词数："], "Next step:": ["قدم بعدی:", "Sonraki adım:", "الخطوة التالية:", "下一步："], "✅ Analyse Student Writing": ["✅ تحلیل نوشته زبان‌آموز", "✅ Öğrenci Yazısını Analiz Et", "✅ تحليل كتابة الطالب", "✅ 分析学生作文"], "✅ Check Student Response (IELTS Mode)": ["✅ بررسی پاسخ زبان‌آموز (حالت IELTS)", "✅ Öğrenci Cevabını Kontrol Et (IELTS Modu)", "✅ تقييم إجابة الطالب (وضع IELTS)", "✅ 检查学生答案（IELTS 模式）"], "✅ Check Student Response": ["✅ بررسی پاسخ زبان‌آموز", "✅ Öğrenci Cevabını Kontrol Et", "✅ تقييم إجابة الطالب", "✅ 检查学生答案"], "📄 Build Worksheet from This Task": ["📄 ساخت کاربرگ از روی این تمرین", "📄 Bu Görevden Çalışma Kâğıdı Oluştur", "📄 إنشاء ورقة عمل من هذه المهمة", "📄 根据此任务制作练习单"], "📄 Create Practice Worksheet": ["📄 ساخت کاربرگ تمرینی", "📄 Alıştırma Çalışma Kâğıdı Oluştur", "📄 إنشاء ورقة عمل تدريبية", "📄 制作练习用练习单"], "📄 Create Worksheet for This Lesson": ["📄 ساخت کاربرگ برای این درس", "📄 Bu Ders İçin Çalışma Kâğıdı Oluştur", "📄 إنشاء ورقة عمل لهذا الدرس", "📄 为本课制作练习单"], "📖 Plan a Lesson for This Topic": ["📖 طرح درس برای این موضوع", "📖 Bu Konu İçin Ders Planla", "📖 تخطيط درس لهذا الموضوع", "📖 为此主题设计课程"], "📝 Send to Feedback with Context": ["📝 ارسال به بخش بازخورد همراه با زمینه", "📝 Bağlamla Geri Bildirime Gönder", "📝 إرسال إلى الملاحظات مع السياق", "📝 连同背景发送至反馈"], "🔄 Generate Another Task": ["🔄 تولید تمرین دیگر", "🔄 Başka Bir Görev Oluştur", "🔄 إنشاء مهمة أخرى", "🔄 生成另一个任务"], "🔄 Re-analyse": ["🔄 تحلیل دوباره", "🔄 Yeniden Analiz Et", "🔄 إعادة التحليل", "🔄 重新分析"], "⟳ Generating…": ["⟳ در حال تولید…", "⟳ Oluşturuluyor…", "⟳ جارٍ الإنشاء…", "⟳ 生成中…"]};
+var IDS=['page-lesson','page-ielts','page-error','page-worksheet'],ATT=['placeholder','title'];
+function n(s){return s.replace(/\s+/g,' ').trim();}
+function run(lang){
+  lang=lang||window._nirLang||localStorage.getItem('nir_lang')||'en';
+  var i={fa:0,tr:1,ar:2,zh:3}[lang]; if(i===undefined) i=-1;
+  IDS.forEach(function(id){
+    var root=document.getElementById(id); if(!root) return;
+    var w=document.createTreeWalker(root,NodeFilter.SHOW_TEXT,null),t,list=[];
+    while((t=w.nextNode())) list.push(t);
+    list.forEach(function(t){
+      var p=t.parentNode; if(!p||/^(SCRIPT|STYLE|TEXTAREA)$/.test(p.nodeName)) return;
+      if(p.nodeName==='OPTION'&&!p.hasAttribute('value')) return;
+      var o=t.__nirO; if(o===undefined){ if(!D[n(t.nodeValue)]) return; o=t.__nirO=t.nodeValue; }
+      var k=n(o), tr=D[k]; if(!tr) return;
+      t.nodeValue=i<0?o:o.match(/^\s*/)[0]+tr[i]+o.match(/\s*$/)[0];
+    });
+    root.querySelectorAll('[placeholder],[title]').forEach(function(el){
+      ATT.forEach(function(a){
+        if(!el.hasAttribute(a)) return;
+        var key='__nirA_'+a, o=el[key]; if(o===undefined){ if(!D[n(el.getAttribute(a))]) return; o=el[key]=el.getAttribute(a); }
+        var tr=D[n(o)]; if(tr) el.setAttribute(a,i<0?o:tr[i]);
+      });
+    });
+  });
+}
+window.nirTranslateToolPages=run;
+var tmr,mo=new MutationObserver(function(){clearTimeout(tmr);tmr=setTimeout(function(){mo.disconnect();try{run();}catch(e){}watch();},30);});
+function watch(){IDS.forEach(function(id){var r=document.getElementById(id);if(r)mo.observe(r,{childList:true,subtree:true,characterData:true});});}
+var oa=window.applyLang;
+if(typeof oa==='function') window.applyLang=function(){ var r=oa.apply(this,arguments); try{run(window._nirLang);}catch(e){} return r; };
+if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',function(){run();watch();}); else {run();watch();}
 })();
 </script>
 </body>
