@@ -356,7 +356,7 @@ const LANGS = {
     sb_main: 'القائمة الرئيسية', sb_home: 'الرئيسية', sb_dashboard: 'لوحة التحكم',
     sb_tools: 'أدوات الذكاء الاصطناعي', sb_generator: 'Prompt Generator',
     sb_lesson: 'Lesson Planner', sb_ielts: 'IELTS Generator',
-    sb_error: 'تصحيح الأخطاء', sb_worksheet: 'Worksheet Builder',
+    sb_error: 'التغذية الراجعة', sb_worksheet: 'Worksheet Builder',
     sb_resources: 'الموارد', sb_library: 'مكتبة البروبت',
     sb_insights: 'مقالات ومدونة',
     sb_account: 'حسابي', sb_profile: 'ملفي الشخصي',
@@ -640,7 +640,7 @@ const LANGS = {
     sb_generator: 'تولیدکننده پرامپت',
     sb_lesson: 'برنامه‌ریز درس',
     sb_ielts: 'تولیدکننده IELTS',
-    sb_error: 'تصحیح خطا',
+    sb_error: 'بازخورد',
     sb_worksheet: 'سازنده کاربرگ',
     sb_resources: 'منابع',
     sb_library: 'کتابخانه پرامپت',
@@ -3788,7 +3788,7 @@ html.light .ps-lbl{color:#6B7A8D}
   transform: translateX(0);
 }
 [dir="rtl"] #shell { flex-direction: row-reverse; }
-[dir="rtl"] .sb-item { border-left: none !important; border-right: 2px solid transparent; }
+[dir="rtl"] .sb-item { border-left: none !important; border-right: 2px solid transparent; flex-direction: row-reverse; }
 [dir="rtl"] .sb-item.active { border-right-color: var(--gold) !important; }
 [dir="rtl"] .sb-badge, [dir="rtl"] .sb-new { margin-left: 0; margin-right: auto; }
 [dir="rtl"] .ib-r { text-align: left; }
