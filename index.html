@@ -11919,5 +11919,26 @@ addEventListener('keydown',function(e){if(e.key==='Escape'&&cur)setFull(cur,fals
 var _go=window.go;if(typeof _go==='function')window.go=function(){if(cur)setFull(cur,false);return _go.apply(this,arguments)};
 })();
 </script>
+<style id="nir-sidebar-mobile-v3">
+/* NIR mobile sidebar: drawer sits exactly between the top bar and the floating bottom nav (measured live, so it never overlaps) */
+@media(max-width:960px){
+#sidebar{top:var(--sb-top,72px) !important;bottom:var(--sb-bottom,0px) !important;height:auto !important;overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
+}
+@media(max-width:600px){
+#sidebar{padding-top:14px !important;padding-bottom:24px !important}
+}
+</style>
+<script>
+/* NIR mobile sidebar: measures the sticky top bar and the floating bottom nav and fits the drawer between them. Visual only. */
+(function(){var root=document.documentElement;
+function upd(){var t=document.getElementById('topbar'),n=document.getElementById('mob-nav');
+if(t)root.style.setProperty('--sb-top',Math.max(0,Math.round(t.getBoundingClientRect().bottom))+'px');
+var off=0;if(n&&getComputedStyle(n).display!=='none'){var r=n.getBoundingClientRect();off=Math.max(0,Math.round(root.clientHeight-r.top+8))}
+root.style.setProperty('--sb-bottom',off+'px')}
+upd();addEventListener('load',upd);addEventListener('scroll',upd,{passive:true});addEventListener('resize',upd);addEventListener('orientationchange',function(){setTimeout(upd,250)});
+if(window.visualViewport)visualViewport.addEventListener('resize',upd);
+var sb=document.getElementById('sidebar');if(sb&&window.MutationObserver)new MutationObserver(upd).observe(sb,{attributes:true,attributeFilter:['class']});
+})();
+</script>
 </body>
 </html>
