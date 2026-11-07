@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="description" content="NIR Academy – AI-powered ELT SaaS platform. Prompt Generator, IELTS Tasks, Lesson Planner, Error Correction, Worksheet Builder. By Dr. Niki Majidi.">
+<meta name="description" content="NIR Academy – AI-powered ELT SaaS platform. Prompt Generator, IELTS Tasks, Lesson Planner, Writing Feedback, Worksheet Builder. By Dr. Niki Majidi.">
 <meta name="keywords" content="AI in ELT, Prompt Engineering for Teachers, ELT AI Tools, TESOL AI, IELTS AI, English Teaching Platform">
 <meta name="theme-color" content="#080808">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -70,7 +70,7 @@ const LANGS = {
     sb_main: 'Main', sb_home: 'Home', sb_dashboard: 'Dashboard',
     sb_tools: 'AI Tools', sb_generator: 'Prompt Generator',
     sb_lesson: 'Lesson Planner', sb_ielts: 'IELTS Generator',
-    sb_error: 'Error Correction', sb_worksheet: 'Worksheet Builder',
+    sb_error: 'Feedback', sb_worksheet: 'Worksheet Builder',
     sb_resources: 'Resources', sb_library: 'Prompt Library',
     sb_insights: 'Insights & Blog',
     sb_account: 'Account', sb_profile: 'My Profile',
@@ -84,7 +84,7 @@ const LANGS = {
     hero_h1b: 'for English Teachers',
     hero_tag: 'Next Generation Instructional Resources for ELT',
     hero_sub: 'Pedagogy First · AI Enhanced · Future Ready',
-    hero_desc: 'Six professional AI tools for lesson planning, IELTS prep, error correction, worksheet building and prompt engineering — built for teachers, by teachers.',
+    hero_desc: 'Six professional AI tools for lesson planning, IELTS prep, writing feedback, worksheet building and prompt engineering — built for teachers, by teachers.',
     hero_by: 'By', hero_by2: 'Dr. Niki Majidi',
     hero_cta1: '✦ Build Your First Lesson', hero_cta2: 'View Dashboard', hero_cta3: 'Prompt Library',
     // FEAT STRIP
@@ -171,7 +171,7 @@ const LANGS = {
     qa1h: 'New Prompt', qa1d: 'AI Prompt Generator',
     qa2h: 'Plan Lesson', qa2d: 'Lesson Planner',
     qa3h: 'IELTS Task', qa3d: 'IELTS Generator',
-    qa4h: 'Check Writing', qa4d: 'Error Correction',
+    qa4h: 'Check Writing', qa4d: 'AI Writing Feedback',
   
     ast_tab: 'NIRA Chat',
     ast_teacher: 'Teacher Mode',
@@ -4439,7 +4439,7 @@ function dismissSessionBanner() {
         </div>
         <div class="nira-ob-feat">
           <div class="nira-ob-feat-icon">✅</div>
-          <div class="nira-ob-feat-name">Error Correction</div>
+          <div class="nira-ob-feat-name">Feedback</div>
           <div class="nira-ob-feat-desc">Detailed feedback on student writing</div>
         </div>
         <div class="nira-ob-feat">
@@ -4646,7 +4646,7 @@ function dismissSessionBanner() {
     <div class="sb-item" id="sb-generator" onclick="go('generator')" title="Build structured, pedagogically-sound AI prompts for any ELT task — grammar, vocabulary, skills, and exams. 5-step guided process."><span class="si"><i data-lucide="wand-sparkles"></i></span> <span id="sb-txt-generator">Prompt Generator</span></div>
     <div class="sb-item" id="sb-lesson" onclick="go('lesson')" title="Generate complete TESOL-aligned lesson plans with PPP/TBL stages, clear aims, timed activities, and materials — ready to teach."><span class="si"><i data-lucide="calendar-days"></i></span> <span id="sb-txt-lesson">Lesson Planner</span> <span class="sb-new">NEW</span></div>
     <div class="sb-item" id="sb-ielts" onclick="go('ielts')" title="Create authentic IELTS-style tasks at target band levels — Task 1, Task 2, Reading, Listening, and Speaking with full model answers."><span class="si"><i data-lucide="graduation-cap"></i></span> <span id="sb-txt-ielts">IELTS Generator</span> <span class="sb-new">NEW</span></div>
-    <div class="sb-item" id="sb-error" onclick="go('error')" title="Paste student writing and receive detailed corrective feedback: grammar, vocabulary, coherence, CEFR level, and metalinguistic notes."><span class="si"><i data-lucide="scan-text"></i></span> <span id="sb-txt-error">Error Correction</span> <span class="sb-new">NEW</span></div>
+    <div class="sb-item" id="sb-error" onclick="go('error')" title="Paste student writing and receive detailed corrective feedback: grammar, vocabulary, coherence, CEFR level, and metalinguistic notes."><span class="si"><i data-lucide="scan-text"></i></span> <span id="sb-txt-error">Feedback</span> <span class="sb-new">NEW</span></div>
     <div class="sb-item" id="sb-worksheet" onclick="go('worksheet')" title="Build print-ready classroom worksheets with grammar, vocabulary, reading, and integrated skills exercises — one click, zero prep."><span class="si"><i data-lucide="layout-template"></i></span> <span id="sb-txt-worksheet">Worksheet Builder</span> <span class="sb-new">NEW</span></div>
     <div class="sb-item" id="sb-assistant" onclick="go('assistant')" title="Your personal AI teaching companion — lesson delivery, classroom management, IELTS prep, student support, and more across 13 specialised modes."><span class="si"><i data-lucide="bot-message-square"></i></span> <span id="sb-txt-assistant">NIRA Chat</span> <span class="sb-badge">NEW</span></div>
   </div>
@@ -4706,7 +4706,7 @@ function dismissSessionBanner() {
       <h1><span id="hero-h1a">The AI Platform</span><span class="hh-gold" id="hero-h1b">for English Teachers</span></h1>
       <span class="hh-tag" id="hero-tag">Next Generation Instructional Resources for ELT</span>
       <span class="hh-sub" id="hero-sub">Pedagogy First &nbsp;·&nbsp; AI Enhanced &nbsp;·&nbsp; Future Ready</span>
-      <p class="hh-desc" id="hero-desc">Six professional AI tools for lesson planning, IELTS prep, error correction, worksheet building and prompt engineering — built for teachers, by teachers.</p>
+      <p class="hh-desc" id="hero-desc">Six professional AI tools for lesson planning, IELTS prep, writing feedback, worksheet building and prompt engineering — built for teachers, by teachers.</p>
       <div class="hh-by"><span id="hero-by">By</span> <strong id="hero-by2">Dr. Niki Majidi</strong> &nbsp;·&nbsp; <a href="https://niracademy.com" target="_blank">niracademy.com</a></div>
       <div class="hero-btns">
         <button class="btn-p" onclick="go('generator')"><span id="hero-cta1">✦ &nbsp;Build Your First Lesson</span></button>
@@ -4747,7 +4747,7 @@ function dismissSessionBanner() {
       <div class="tc" onclick="go('generator')" title="Build structured, pedagogically-sound AI prompts for any ELT task — grammar, vocabulary, skills, and exams. 5-step guided process."><span class="tc-ico"><i data-lucide="wand-sparkles"></i></span><span class="tc-bdg core">CORE</span><h3>Prompt Generator</h3><span style="display:block;font-size:10.5px;color:var(--dim);margin:2px 0 4px;font-style:italic">Build structured, pedagogically-sound prompts — ready for Nira AI or any assistant.</span><p id="tc-gen-d">Build pedagogically-structured ELT prompts in 5 steps — ready for Nira AI or any external assistant.</p><button class="tc-cta"><span class="tc-open">Open Tool →</span></button></div>
       <div class="tc" onclick="go('lesson')" title="Generate complete TESOL-aligned lesson plans with PPP/TBL stages, clear aims, timed activities, and materials — ready to teach."><span class="tc-ico"><i data-lucide="calendar-days"></i></span><span class="tc-bdg new">NEW</span><h3>Lesson Planner</h3><span style="display:block;font-size:10.5px;color:var(--dim);margin:2px 0 4px;font-style:italic">TESOL-aligned lesson plans with PPP/TBL stages, timings, and materials.</span><p id="tc-les-d">Generate complete TESOL-aligned lesson plans with all stages included.</p><button class="tc-cta"><span class="tc-open">Open Tool →</span></button></div>
       <div class="tc" onclick="go('ielts')" title="Create authentic IELTS-style tasks at target band levels — Task 1, Task 2, Reading, Listening, and Speaking with full model answers."><span class="tc-ico"><i data-lucide="graduation-cap"></i></span><span class="tc-bdg new">NEW</span><h3>IELTS Generator</h3><span style="display:block;font-size:10.5px;color:var(--dim);margin:2px 0 4px;font-style:italic">Band-targeted IELTS tasks: Task 1, Task 2, Reading, Listening & Speaking.</span><p id="tc-iel-d">Task 1, Task 2, Reading passages and Speaking at target band levels.</p><button class="tc-cta"><span class="tc-open">Open Tool →</span></button></div>
-      <div class="tc" onclick="go('error')" title="Paste student writing and receive detailed corrective feedback: grammar, vocabulary, coherence, CEFR level, and metalinguistic notes."><span class="tc-ico"><i data-lucide="scan-text"></i></span><span class="tc-bdg new">NEW</span><h3>Error Correction</h3><span style="display:block;font-size:10.5px;color:var(--dim);margin:2px 0 4px;font-style:italic">Detailed corrective feedback with CEFR level, grammar, vocabulary & coherence notes.</span><p id="tc-err-d">Detailed linguistic feedback on student writing with metalinguistic notes.</p><button class="tc-cta"><span class="tc-open">Open Tool →</span></button></div>
+      <div class="tc" onclick="go('error')" title="Paste student writing and receive detailed corrective feedback: grammar, vocabulary, coherence, CEFR level, and metalinguistic notes."><span class="tc-ico"><i data-lucide="scan-text"></i></span><span class="tc-bdg new">NEW</span><h3>Feedback</h3><span style="display:block;font-size:10.5px;color:var(--dim);margin:2px 0 4px;font-style:italic">AI-powered writing feedback and assessment with CEFR level, grammar, vocabulary & coherence notes.</span><p id="tc-err-d">Instant AI-powered feedback on student writing with error analysis and improvement suggestions.</p><button class="tc-cta"><span class="tc-open">Open Tool →</span></button></div>
       <div class="tc" onclick="go('worksheet')" title="Build print-ready classroom worksheets with grammar, vocabulary, reading, and integrated skills exercises — one click, zero prep."><span class="tc-ico"><i data-lucide="layout-template"></i></span><span class="tc-bdg new">NEW</span><h3>Worksheet Builder</h3><span style="display:block;font-size:10.5px;color:var(--dim);margin:2px 0 4px;font-style:italic">Print-ready classroom worksheets with grammar, vocabulary & integrated skills.</span><p id="tc-ws-d">Print-ready worksheets with grammar, vocabulary and integrated skills.</p><button class="tc-cta"><span class="tc-open">Open Tool →</span></button></div>
       <div class="tc" onclick="go('library')" title="30+ curated ELT prompts ready to use across all skill areas — tested, TESOL-aligned, and organised by topic and level."><span class="tc-ico"><i data-lucide="book-marked"></i></span><span class="tc-bdg free">FREE</span><h3>Prompt Library</h3><span style="display:block;font-size:10.5px;color:var(--dim);margin:2px 0 4px;font-style:italic">30+ curated ELT prompts — tested, TESOL-aligned, organised by topic and level.</span><p id="tc-lib-d">Curated bank of 30+ ready-to-use ELT prompts across all skill areas.</p><button class="tc-cta"><span class="tc-browse">Browse Library →</span></button></div>
     </div>
@@ -4786,7 +4786,7 @@ function dismissSessionBanner() {
   <section class="roadmap">
     <h2 id="rm-title">Product Roadmap</h2>
     <div class="rm-grid">
-      <div class="rm"><span class="rm-ph" id="rm-p1">Phase 1 — Live Now</span><h3 id="rm-h1">Core AI Platform</h3><ul><li>AI Prompt Generator</li><li>IELTS Task Generator</li><li>Lesson Planner</li><li>Error Correction Tool</li><li>Worksheet Builder</li><li>Prompt Library</li></ul><span class="rm-st live rm-live">✓ Live</span></div>
+      <div class="rm"><span class="rm-ph" id="rm-p1">Phase 1 — Live Now</span><h3 id="rm-h1">Core AI Platform</h3><ul><li>AI Prompt Generator</li><li>IELTS Task Generator</li><li>Lesson Planner</li><li>Writing Feedback Tool</li><li>Worksheet Builder</li><li>Prompt Library</li></ul><span class="rm-st live rm-live">✓ Live</span></div>
       <div class="rm"><span class="rm-ph" id="rm-p2">Phase 2 — Building</span><h3 id="rm-h2">Accounts &amp; Saves</h3><ul><li>Login / Register system</li><li>Saved prompt library</li><li>Prompt history</li><li>Favourites system</li><li>Personal dashboard</li><li>Free &amp; Pro tiers</li></ul><span class="rm-st bld rm-bld">⚙ In Development</span></div>
       <div class="rm"><span class="rm-ph" id="rm-p3">Phase 3 — Planned</span><h3 id="rm-h3">Mobile App &amp; Scale</h3><ul><li>PWA installable</li><li>Android (Play Store)</li><li>iOS (App Store)</li><li>Analytics dashboard</li><li>Subscription model</li><li>Teacher community</li></ul><span class="rm-st plan rm-plan">◷ Planned</span></div>
     </div>
@@ -4839,7 +4839,7 @@ function dismissSessionBanner() {
       <div class="qa" onclick="go('generator')"><div class="qa-ico"><i data-lucide="zap"></i></div><h4 id="qa1h">New Prompt</h4><p id="qa1d">AI Prompt Generator</p></div>
       <div class="qa" onclick="go('lesson')"><div class="qa-ico"><i data-lucide="clipboard-list"></i></div><h4 id="qa2h">Plan Lesson</h4><p id="qa2d">Lesson Planner</p></div>
       <div class="qa" onclick="go('ielts')"><div class="qa-ico"><i data-lucide="book-open"></i></div><h4 id="qa3h">IELTS Task</h4><p id="qa3d">IELTS Generator</p></div>
-      <div class="qa" onclick="go('error')"><div class="qa-ico"><i data-lucide="check-circle"></i></div><h4 id="qa4h">Check Writing</h4><p id="qa4d">Error Correction</p></div>
+      <div class="qa" onclick="go('error')"><div class="qa-ico"><i data-lucide="check-circle"></i></div><h4 id="qa4h">Check Writing</h4><p id="qa4d">AI Writing Feedback</p></div>
     </div>
 
     <!-- RECENT PROMPTS (sample) -->
@@ -4856,7 +4856,7 @@ function dismissSessionBanner() {
       <div class="tc" onclick="go('generator')" title="Build structured, pedagogically-sound AI prompts for any ELT task — grammar, vocabulary, skills, and exams. 5-step guided process."><span class="tc-ico"><i data-lucide="zap"></i></span><h3>Prompt Generator</h3><p>Structured AI prompts for any ELT task.</p><button class="tc-cta">Launch →</button></div>
       <div class="tc" onclick="go('lesson')" title="Generate complete TESOL-aligned lesson plans with PPP/TBL stages, clear aims, timed activities, and materials — ready to teach."><span class="tc-ico"><i data-lucide="calendar-days"></i></span><span class="tc-bdg new">NEW</span><h3>Lesson Planner</h3><p>TESOL-aligned lesson plans in seconds.</p><button class="tc-cta">Launch →</button></div>
       <div class="tc" onclick="go('ielts')" title="Create authentic IELTS-style tasks at target band levels — Task 1, Task 2, Reading, Listening, and Speaking with full model answers."><span class="tc-ico"><i data-lucide="graduation-cap"></i></span><span class="tc-bdg new">NEW</span><h3>IELTS Generator</h3><p>Task 1 &amp; 2 at target band level.</p><button class="tc-cta">Launch →</button></div>
-      <div class="tc" onclick="go('error')" title="Paste student writing and receive detailed corrective feedback: grammar, vocabulary, coherence, CEFR level, and metalinguistic notes."><span class="tc-ico"><i data-lucide="scan-text"></i></span><span class="tc-bdg new">NEW</span><h3>Error Correction</h3><p>Linguistic feedback on student writing.</p><button class="tc-cta">Launch →</button></div>
+      <div class="tc" onclick="go('error')" title="Paste student writing and receive detailed corrective feedback: grammar, vocabulary, coherence, CEFR level, and metalinguistic notes."><span class="tc-ico"><i data-lucide="scan-text"></i></span><span class="tc-bdg new">NEW</span><h3>Feedback</h3><p>AI-powered writing feedback and assessment.</p><button class="tc-cta">Launch →</button></div>
       <div class="tc" onclick="go('worksheet')" title="Build print-ready classroom worksheets with grammar, vocabulary, reading, and integrated skills exercises — one click, zero prep."><span class="tc-ico"><i data-lucide="layout-template"></i></span><span class="tc-bdg new">NEW</span><h3>Worksheet Builder</h3><p>Print-ready classroom worksheets.</p><button class="tc-cta">Launch →</button></div>
       <div class="tc" onclick="go('library')" title="30+ curated ELT prompts ready to use across all skill areas — tested, TESOL-aligned, and organised by topic and level."><span class="tc-ico"><i data-lucide="library"></i></span><h3>Prompt Library</h3><p>30+ curated ready-to-use prompts.</p><button class="tc-cta">Browse →</button></div>
       <div class="tc" onclick="go('assistant')" title="Your personal AI teaching companion — lesson delivery, classroom management, IELTS prep, student support, and more across 13 specialised modes."><span class="tc-ico"><i data-lucide="brain-circuit"></i></span><span class="tc-bdg new">NEW</span><h3>NIRA Chat</h3><p>Pedagogical AI across 13 teaching modes.</p><button class="tc-cta">Launch →</button></div>
@@ -5187,7 +5187,7 @@ function dismissSessionBanner() {
       </div>
       <div>
         <div class="rpanel">
-          <div class="rp-hdr"><span class="rp-lbl">Feedback Report</span><div class="rp-acts"><button class="rp-btn save-ws" onclick="saveToWorkspace('ec-out','Error Correction')">💾 Save</button><button class="rp-btn" onclick="copyOut('ec-out')">Copy</button><button class="rp-btn" onclick="generateError()">Re-analyse</button><button class="rp-btn" onclick="nirPrint('ec-out')" title="Print">🖨</button><button class="rp-btn" onclick="nirDownloadDocx('ec-out')" title="Download Word">📄</button></div></div>
+          <div class="rp-hdr"><span class="rp-lbl">Feedback Report</span><div class="rp-acts"><button class="rp-btn save-ws" onclick="saveToWorkspace('ec-out','Feedback')">💾 Save</button><button class="rp-btn" onclick="copyOut('ec-out')">Copy</button><button class="rp-btn" onclick="generateError()">Re-analyse</button><button class="rp-btn" onclick="nirPrint('ec-out')" title="Print">🖨</button><button class="rp-btn" onclick="nirDownloadDocx('ec-out')" title="Download Word">📄</button></div></div>
           <div class="nir-meta" id="ec-meta" role="status" aria-live="polite"></div>
           <div id="ec-wc" style="font-size:11px;color:var(--muted);text-align:right;min-height:16px;padding-right:2px;"></div>
           <div id="ec-next" class="tool-next-bar"></div>
@@ -5216,7 +5216,7 @@ function dismissSessionBanner() {
         <div class="wtypes" id="ws-types">
           <div class="wt active" data-v="Gap-fill" onclick="this.classList.toggle('active')"><div class="wt-ico"><i data-lucide="minus-square"></i></div><h4>Gap Fill</h4></div>
           <div class="wt active" data-v="Multiple Choice" onclick="this.classList.toggle('active')"><div class="wt-ico"><i data-lucide="list-checks"></i></div><h4>Multiple Choice</h4></div>
-          <div class="wt" data-v="Error Correction" onclick="this.classList.toggle('active')"><div class="wt-ico"><i data-lucide="spell-check-2"></i></div><h4>Error Correction</h4></div>
+          <div class="wt" data-v="Feedback Practice" onclick="this.classList.toggle('active')"><div class="wt-ico"><i data-lucide="spell-check-2"></i></div><h4>Feedback Practice</h4></div>
           <div class="wt" data-v="Matching" onclick="this.classList.toggle('active')"><div class="wt-ico"><i data-lucide="link-2"></i></div><h4>Matching</h4></div>
           <div class="wt" data-v="Word Order" onclick="this.classList.toggle('active')"><div class="wt-ico"><i data-lucide="arrow-left-right"></i></div><h4>Word Order</h4></div>
           <div class="wt" data-v="Short Answer" onclick="this.classList.toggle('active')"><div class="wt-ico"><i data-lucide="message-circle"></i></div><h4>Short Answer</h4></div>
@@ -5317,7 +5317,7 @@ function dismissSessionBanner() {
   <div class="content">
     <div class="blog-grid">
       <div class="blog-card"><span class="blog-cat">Pedagogy</span><h3>AI as Teaching Assistant — Not Replacement</h3><p>Why AI should support — not replace — the teacher. A pedagogy-first perspective on AI tools in the ELT classroom.</p><button class="blog-read" onclick="window.open('https://niracademy.com','_blank')">Read Article →</button></div>
-      <div class="blog-card"><span class="blog-cat">Prompt Engineering</span><h3>Prompt Engineering for English Teachers</h3><p>A practical guide to writing effective AI prompts for lesson planning, writing tasks, and error correction in ELT.</p><button class="blog-read" onclick="window.open('https://niracademy.com','_blank')">Read Article →</button></div>
+      <div class="blog-card"><span class="blog-cat">Prompt Engineering</span><h3>Prompt Engineering for English Teachers</h3><p>A practical guide to writing effective AI prompts for lesson planning, writing tasks, and writing feedback in ELT.</p><button class="blog-read" onclick="window.open('https://niracademy.com','_blank')">Read Article →</button></div>
       <div class="blog-card"><span class="blog-cat">IELTS</span><h3>IELTS Preparation with AI Tools</h3><p>How to use AI to prepare students for IELTS Writing Task 1 and Task 2 at specific band targets.</p><button class="blog-read" onclick="window.open('https://niracademy.com','_blank')">Read Article →</button></div>
       <div class="blog-card"><span class="blog-cat">Future of ELT</span><h3>Where is English Language Teaching Heading?</h3><p>Technology, methodology, and the next decade of ELT — an evidence-based perspective.</p><button class="blog-read" onclick="window.open('https://niracademy.com','_blank')">Read Article →</button></div>
       <div class="blog-card"><span class="blog-cat">Lesson Design</span><h3>AI-Assisted Lesson Planning Without Losing Pedagogy</h3><p>A step-by-step guide to using AI for TESOL lesson planning while maintaining pedagogical quality.</p><button class="blog-read" onclick="window.open('https://niracademy.com','_blank')">Read Article →</button></div>
@@ -5341,7 +5341,7 @@ function dismissSessionBanner() {
       <button class="ws-folder-chip" id="ws-chip-Starred" onclick="wsSetFolder('Starred',this)">★ Starred</button>
       <button class="ws-folder-chip" id="ws-chip-Lesson Planner" onclick="wsSetFolder('Lesson Planner',this)">Lessons</button>
       <button class="ws-folder-chip" id="ws-chip-IELTS Generator" onclick="wsSetFolder('IELTS Generator',this)">IELTS</button>
-      <button class="ws-folder-chip" id="ws-chip-Error Correction" onclick="wsSetFolder('Error Correction',this)">Error Correction</button>
+      <button class="ws-folder-chip" id="ws-chip-Feedback" onclick="wsSetFolder('Feedback',this)">Feedback</button>
       <button class="ws-folder-chip" id="ws-chip-Worksheet Builder" onclick="wsSetFolder('Worksheet Builder',this)">Worksheets</button>
       <button class="ws-folder-chip" id="ws-chip-Prompt Generator" onclick="wsSetFolder('Prompt Generator',this)">Prompts</button>
     </div>
@@ -5456,7 +5456,7 @@ function dismissSessionBanner() {
       <div class="nira-cat"><i data-lucide="file-text"></i><b>Teaching Materials</b><span>Worksheets, activities, handouts</span></div>
       <div class="nira-cat"><i data-lucide="award"></i><b>IELTS &amp; Exam Prep</b><span>IELTS, TOEFL, PTE practice</span></div>
       <div class="nira-cat"><i data-lucide="book-marked"></i><b>Grammar &amp; Vocabulary</b><span>Clear explanations and examples</span></div>
-      <div class="nira-cat"><i data-lucide="pen-line"></i><b>Writing &amp; Error Correction</b><span>Feedback on student writing</span></div>
+      <div class="nira-cat"><i data-lucide="pen-line"></i><b>Writing &amp; Feedback</b><span>AI-powered student writing feedback</span></div>
       <div class="nira-cat"><i data-lucide="life-buoy"></i><b>Classroom Problem-Solving</b><span>Engagement and rescue ideas</span></div>
     </div>
   </section>
@@ -5533,7 +5533,7 @@ function dismissSessionBanner() {
       <div class="nira-aside-body">
         <button class="ast-clear-btn" onclick="astBridgeOpen('lesson')">📋 Lesson Planner</button>
         <button class="ast-clear-btn" onclick="astBridgeOpen('worksheet')">📄 Worksheet Builder</button>
-        <button class="ast-clear-btn" onclick="astBridgeOpen('error')">✅ Error Correction</button>
+        <button class="ast-clear-btn" onclick="astBridgeOpen('error')">✅ Feedback</button>
         <button class="ast-clear-btn" onclick="go('history')">History</button>
         <button class="ast-clear-btn" onclick="go('saved')">Workspace</button>
         <p class="nira-note">Tool buttons open a review step first — nothing is sent until you confirm.</p>
@@ -5582,7 +5582,7 @@ function dismissSessionBanner() {
       <a onclick="go('generator')">Prompt Generator</a>
       <a onclick="go('lesson')">Lesson Planner</a>
       <a onclick="go('ielts')">IELTS Generator</a>
-      <a onclick="go('error')">Error Correction</a>
+      <a onclick="go('error')">Feedback</a>
       <a onclick="go('worksheet')">Worksheet Builder</a>
     </div>
     <div class="foot-col">
@@ -6332,7 +6332,7 @@ async function generateLesson(){
     showToolNextBar('lp-next',[
       ['📄 Create Worksheet for This Lesson', lpToWorksheet],
       ['✅ Analyse Student Writing', function(){ go('error'); }],
-      ['📝 Send to Error Correction with Context', lpToError]
+      ['📝 Send to Feedback with Context', lpToError]
     ]);
   });
 }
@@ -6616,7 +6616,7 @@ function ecToWorksheet() {
   var studentText = ecTextEl ? ecTextEl.value.trim() : '';
   var topic = studentText
     ? studentText.substring(0, 60).replace(/\s+\S*$/, '').trim() + (studentText.length > 60 ? '…' : '')
-    : 'Error correction practice';
+    : 'Feedback practice';
 
   // Transfer level (IELTS → B2, otherwise use ecLevel)
   var ecLvl = S.ecLevel === 'IELTS' ? 'B2' : (S.ecLevel || 'B1');
@@ -6629,7 +6629,7 @@ function ecToWorksheet() {
 
   // Activate Error Correction exercise type in worksheet
   document.querySelectorAll('#ws-types .wt').forEach(function(wt) {
-    wt.classList.toggle('active', wt.dataset.v === 'Error Correction');
+    wt.classList.toggle('active', wt.dataset.v === 'Feedback Practice');
   });
 
   // Set topic
@@ -7018,7 +7018,7 @@ async function updateMostUsedTools(user){
     'prompt_generator': {icon:'wand-sparkles', label:'Prompt Generator', page:'generator', color:'#7C3AED'},
     'lesson_planner':   {icon:'calendar-days',  label:'Lesson Planner',   page:'lesson',    color:'#0891B2'},
     'ielts_generator':  {icon:'graduation-cap', label:'IELTS Generator',  page:'ielts',     color:'#D97706'},
-    'error_correction': {icon:'scan-text',       label:'Error Correction', page:'error',     color:'#DC2626'},
+    'error_correction': {icon:'scan-text',       label:'Feedback', page:'error',     color:'#DC2626'},
     'worksheet_builder':{icon:'layout-template', label:'Worksheet Builder',page:'worksheet', color:'#059669'},
     'ai_assistant':     {icon:'bot-message-square',label:'NIRA Chat',      page:'assistant', color:'#2563EB'},
     'general':          {icon:'zap',             label:'General',          page:'home',      color:'#6B7280'},
@@ -7341,7 +7341,7 @@ function openSavedInTool(id, tool) {
   var toolPageMap = {
     'Lesson Planner':    { page:'lesson',    outId:'lp-out' },
     'IELTS Generator':   { page:'ielts',     outId:'ielts-out' },
-    'Error Correction':  { page:'error',     outId:'ec-out' },
+    'Feedback':  { page:'error',     outId:'ec-out' },
     'Worksheet Builder': { page:'worksheet', outId:'ws-out' },
     'Prompt Generator':  { page:'home',      outId:'prompt-out' }
   };
@@ -7358,7 +7358,7 @@ function openSavedInTool(id, tool) {
     // Restore tool settings from meta
     if (meta.topic) {
       S.topic = meta.topic;
-      var topicInputs = { 'Lesson Planner':'lp-topic', 'IELTS Generator':'ielts-topic', 'Error Correction':null, 'Worksheet Builder':'ws-topic' };
+      var topicInputs = { 'Lesson Planner':'lp-topic', 'IELTS Generator':'ielts-topic', 'Feedback':null, 'Worksheet Builder':'ws-topic' };
       var tid = topicInputs[tool];
       if (tid) { var el = document.getElementById(tid); if (el) el.value = meta.topic; }
     }
@@ -7371,7 +7371,7 @@ function openSavedInTool(id, tool) {
       document.querySelectorAll('#ielts-band .lvl').forEach(function(p){ p.classList.toggle('active', p.dataset.v === meta.level); });
       if (meta.ieltType) { S.ieltType = meta.ieltType; setChipActive('ielts-type', meta.ieltType); }
     }
-    if (tool === 'Error Correction' && meta.level) {
+    if (tool === 'Feedback' && meta.level) {
       S.ecLevel = meta.level; setPillActive('ec-level', meta.level);
       if (meta.ecType) { S.ecType = meta.ecType; setChipActive('ec-type', meta.ecType); }
       if (meta.studentText) { var ec = document.getElementById('ec-text'); if (ec && !ec.value.trim()) ec.value = meta.studentText; }
@@ -7449,7 +7449,7 @@ function saveToWorkspace(outId, tool){
   var meta = { topic: topic };
   if (tool === 'Lesson Planner')    { meta.level = S.lpLevel; meta.focus = (document.querySelector('#lp-focus .chip.active')||{}).dataset && document.querySelector('#lp-focus .chip.active').dataset.v; }
   if (tool === 'IELTS Generator')   { meta.level = S.ieltBand; meta.ieltType = S.ieltType; }
-  if (tool === 'Error Correction')  { meta.level = S.ecLevel; meta.ecType = S.ecType; meta.studentText = (document.getElementById('ec-text')||{}).value||''; }
+  if (tool === 'Feedback')  { meta.level = S.ecLevel; meta.ecType = S.ecType; meta.studentText = (document.getElementById('ec-text')||{}).value||''; }
   if (tool === 'Worksheet Builder') { meta.level = S.wsLevel; meta.focus = S.wsFocus; }
   saveOutputToDB(autoTitle, rawText, tool, meta);
 }
@@ -7499,7 +7499,7 @@ async function loadHistory(){
     'prompt_generator': {icon:'wand-sparkles', label:'Prompt Generator', color:'#7C3AED', bg:'rgba(124,58,237,0.12)', border:'rgba(124,58,237,0.35)'},
     'lesson_planner':   {icon:'calendar-days',  label:'Lesson Planner',   color:'#0891B2', bg:'rgba(8,145,178,0.12)',  border:'rgba(8,145,178,0.35)'},
     'ielts_generator':  {icon:'graduation-cap', label:'IELTS Generator',  color:'#D97706', bg:'rgba(217,119,6,0.12)',  border:'rgba(217,119,6,0.35)'},
-    'error_correction': {icon:'scan-text',       label:'Error Correction', color:'#DC2626', bg:'rgba(220,38,38,0.12)',  border:'rgba(220,38,38,0.35)'},
+    'error_correction': {icon:'scan-text',       label:'Feedback', color:'#DC2626', bg:'rgba(220,38,38,0.12)',  border:'rgba(220,38,38,0.35)'},
     'worksheet_builder':{icon:'layout-template', label:'Worksheet Builder',color:'#059669', bg:'rgba(5,150,105,0.12)',  border:'rgba(5,150,105,0.35)'},
     'ai_assistant':     {icon:'bot-message-square', label:'NIRA Chat', color:'#2563EB', bg:'rgba(37,99,235,0.12)',  border:'rgba(37,99,235,0.35)'},
     'general':          {icon:'zap',             label:'General',          color:'#6B7280', bg:'rgba(107,114,128,0.12)',border:'rgba(107,114,128,0.35)'},
@@ -7581,7 +7581,7 @@ const AST_SUBMODES = {
     { id:'language-focus',       label:'Language Focus',       langKey:'ast_t_lang',
       details: ['Grammar','Vocabulary','Explanation'] },
     { id:'feedback',             label:'Feedback',             langKey:'ast_t_feedback',
-      details: ['Error Correction','Scaffolding','Student Feedback'] }
+      details: ['Feedback','Scaffolding','Student Feedback'] }
   ],
   student: [
     { id:'ielts',            label:'IELTS',           langKey:'ast_s_ielts',
@@ -7920,8 +7920,8 @@ function astBuildSystemPrompt() {
 
   var base = {
     free:    'You are NIRA, a friendly and knowledgeable AI teaching partner. Engage in natural, open-ended conversation on any topic. Your strongest expertise is English language teaching and learning — including methodology, grammar, exam preparation, and classroom practice — but you can assist helpfully and honestly with any subject the user raises. Keep responses clear, warm, and genuinely useful.',
-    teacher: 'You are NIRA, a specialist AI assistant for professional English language teachers. You hold deep expertise in TESOL, CELTA/DELTA methodology, curriculum design, and classroom practice. Support lesson planning (PPP, TBL, ESA, flipped classroom), materials development, formative and summative assessment, differentiated instruction, error analysis, and evidence-based pedagogy. Communicate as a knowledgeable peer colleague. Provide structured, actionable, professionally worded responses. Stay within the domain of English language teaching and education. When a user asks about lesson planning, suggest the Lesson Planner tool. For worksheets, suggest the Worksheet Builder. For student writing feedback, suggest Error Correction. For exam tasks, suggest the IELTS Generator.',
-    student: 'You are NIRA, a dedicated English language learning assistant. You specialise in IELTS, TOEFL, and PTE exam preparation as well as general English from A1 to C2. Provide accurate, exam-aligned guidance on task types, band descriptors, scoring criteria, grammar, vocabulary, and writing feedback. Give structured practice tasks with model answers and clear explanations. Identify and correct errors constructively. Keep responses focused, encouraging, and exam-ready. When relevant, mention that the IELTS Generator or Error Correction tools can provide deeper practice.',
+    teacher: 'You are NIRA, a specialist AI assistant for professional English language teachers. You hold deep expertise in TESOL, CELTA/DELTA methodology, curriculum design, and classroom practice. Support lesson planning (PPP, TBL, ESA, flipped classroom), materials development, formative and summative assessment, differentiated instruction, error analysis, and evidence-based pedagogy. Communicate as a knowledgeable peer colleague. Provide structured, actionable, professionally worded responses. Stay within the domain of English language teaching and education. When a user asks about lesson planning, suggest the Lesson Planner tool. For worksheets, suggest the Worksheet Builder. For student writing feedback, suggest the Feedback tool. For exam tasks, suggest the IELTS Generator.',
+    student: 'You are NIRA, a dedicated English language learning assistant. You specialise in IELTS, TOEFL, and PTE exam preparation as well as general English from A1 to C2. Provide accurate, exam-aligned guidance on task types, band descriptors, scoring criteria, grammar, vocabulary, and writing feedback. Give structured practice tasks with model answers and clear explanations. Identify and correct errors constructively. Keep responses focused, encouraging, and exam-ready. When relevant, mention that the IELTS Generator or Feedback tool can provide deeper practice.',
     kids:    'You are NIRA, a warm and playful English learning companion for young learners. Use very simple vocabulary, short sentences, and an upbeat tone. Make every interaction feel like a game or story — celebrate effort with enthusiasm. Explain grammar and vocabulary through examples, pictures described in words, actions, and imaginative scenarios. Keep all content safe, positive, and age-appropriate. Never use complex academic language.'
   };
 
@@ -7987,7 +7987,7 @@ function astBridgeOpen(dest) {
   var topicHint = lastUser.length > 60 ? lastUser.slice(0, 60) + '…' : lastUser;
 
   // Dest label
-  var destLabels = { lesson:'Lesson Planner', worksheet:'Worksheet Builder', error:'Error Correction' };
+  var destLabels = { lesson:'Lesson Planner', worksheet:'Worksheet Builder', error:'Feedback' };
   document.getElementById('ast-bridge-dest').textContent = '→ ' + (destLabels[dest] || dest);
 
   // Pre-fill topic input
@@ -8102,11 +8102,11 @@ function astRenderMessage(role, text) {
       dests = [
         ['📋 → Lesson Planner', 'lesson'],
         ['📄 → Worksheet Builder', 'worksheet'],
-        ['✅ → Error Correction', 'error']
+        ['✅ → Feedback', 'error']
       ];
     } else if (mode === 'student') {
       dests = [
-        ['✅ → Error Correction', 'error'],
+        ['✅ → Feedback', 'error'],
         ['📄 → Worksheet Builder', 'worksheet']
       ];
     } else if (mode === 'kids') {
@@ -8117,7 +8117,7 @@ function astRenderMessage(role, text) {
       dests = [
         ['📋 → Lesson Planner', 'lesson'],
         ['📄 → Worksheet Builder', 'worksheet'],
-        ['✅ → Error Correction', 'error']
+        ['✅ → Feedback', 'error']
       ];
     }
     dests.forEach(function(d) {
@@ -8280,7 +8280,7 @@ function astRenderSuggestions(mode) {
   var WHY = {
     lesson:    'Recommended: turn this reply into a structured lesson plan. Topic and level below will be copied into the Lesson Planner.',
     worksheet: 'Recommended: build a practice worksheet from this reply. Topic and level below will be copied into the Worksheet Builder.',
-    error:     'Recommended: analyse student writing with this context. Level below will be copied into Error Correction.'
+    error:     'Recommended: analyse student writing with this context. Level below will be copied into Feedback.'
   };
   window.astBridgeOpen = function(dest){
     _open(dest);
@@ -8335,8 +8335,8 @@ var _NIRA_TOOL_HINTS = [
   },
   {
     keys: /\b(error correction|correct (my|this|student)|writing feedback|check (my|this) (writing|essay|paragraph)|mark (my|this)|proofread)\b/i,
-    tool: 'error', label: '✅ Open Error Correction',
-    reply: 'Error Correction gives detailed feedback on student writing with error analysis and improvement suggestions.',
+    tool: 'error', label: '✅ Open Feedback',
+    reply: 'Feedback gives detailed AI-powered assessment on student writing with error analysis and improvement suggestions.',
     action: function(topic) { astBridgeOpen('error'); }
   },
   {
