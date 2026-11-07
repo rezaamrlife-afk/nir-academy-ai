@@ -3788,9 +3788,11 @@ html.light .ps-lbl{color:#6B7A8D}
   transform: translateX(0);
 }
 [dir="rtl"] #shell { flex-direction: row-reverse; }
-[dir="rtl"] .sb-item { border-left: none !important; border-right: 2px solid transparent; flex-direction: row-reverse; }
+[dir="rtl"] .sb-item { border-left: none !important; border-right: 2px solid transparent; flex-direction: row-reverse; justify-content: flex-end; }
 [dir="rtl"] .sb-item.active { border-right-color: var(--gold) !important; }
-[dir="rtl"] .sb-badge, [dir="rtl"] .sb-new { margin-left: 0; margin-right: auto; }
+[dir="rtl"] .sb-item .si { order: 2; }
+[dir="rtl"] .sb-item > span:not(.si):not(.sb-badge):not(.sb-new) { order: 1; flex: 1; text-align: right; }
+[dir="rtl"] .sb-badge, [dir="rtl"] .sb-new { order: 0; margin-left: 0; margin-right: 0; }
 [dir="rtl"] .ib-r { text-align: left; }
 [dir="rtl"] .ib-l { flex-direction: row; }
 [dir="rtl"] .foot-inner { direction: rtl; }
