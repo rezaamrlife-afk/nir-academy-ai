@@ -5613,7 +5613,7 @@ function dismissSessionBanner() {
   <div class="mn-grid">
     <button class="mn-item active" id="mn-home" onclick="go('home')"><span class="mi-ico"><i data-lucide="house"></i></span><span class="mi-lbl">Home</span></button>
     <button class="mn-item" id="mn-generator" onclick="go('generator')"><span class="mi-ico"><i data-lucide="wand-sparkles"></i></span><span class="mi-lbl">Generator</span></button>
-    <button class="mn-item" id="mn-lesson" onclick="go('lesson')"><span class="mi-ico"><i data-lucide="calendar-days"></i></span><span class="mi-lbl">Tools</span></button>
+    <button class="mn-item" id="mn-lesson" onclick="openToolsSheet()" aria-haspopup="dialog"><span class="mi-ico"><i data-lucide="calendar-days"></i></span><span class="mi-lbl">Tools</span></button>
     <button class="mn-item" id="mn-library" onclick="go('library')"><span class="mi-ico"><i data-lucide="book-marked"></i></span><span class="mi-lbl">Library</span></button>
     <button class="mn-item" id="mn-dashboard" onclick="go('dashboard')"><span class="mi-ico"><i data-lucide="chart-no-axes-combined"></i></span><span class="mi-lbl">Dashboard</span></button>
   </div>
@@ -11847,5 +11847,52 @@ html.light #page-dashboard .tc{background:#fff !important}
 }
 @media(prefers-reduced-motion:reduce){#page-dashboard *{transition:none !important}}
 </style>
+<!-- NIR Tools tab: bottom sheet hub (additive) -->
+<div id="tools-sheet-ov" aria-hidden="true"></div>
+<div id="tools-sheet" role="dialog" aria-modal="true" aria-labelledby="tools-sheet-t" aria-hidden="true">
+  <div class="ts-handle"></div>
+  <div class="ts-head"><div><h3 id="tools-sheet-t">All Tools</h3><p>Pick a tool to open</p></div><button type="button" id="tools-sheet-x" aria-label="Close">✕</button></div>
+  <div class="ts-grid">
+    <button type="button" class="ts-item" onclick="go('generator')"><span class="ts-ico"><i data-lucide="zap"></i></span><b>Prompt Generator</b><small>Structured ELT prompts</small></button>
+    <button type="button" class="ts-item" onclick="go('lesson')"><span class="ts-ico"><i data-lucide="calendar-days"></i></span><b>Lesson Planner</b><small>TESOL lesson plans</small></button>
+    <button type="button" class="ts-item" onclick="go('ielts')"><span class="ts-ico"><i data-lucide="graduation-cap"></i></span><b>IELTS Generator</b><small>Tasks by band level</small></button>
+    <button type="button" class="ts-item" onclick="go('error')"><span class="ts-ico"><i data-lucide="scan-text"></i></span><b>Error Correction</b><small>Writing feedback</small></button>
+    <button type="button" class="ts-item" onclick="go('worksheet')"><span class="ts-ico"><i data-lucide="layout-template"></i></span><b>Worksheet Builder</b><small>Print-ready sheets</small></button>
+    <button type="button" class="ts-item" onclick="go('assistant')"><span class="ts-ico"><i data-lucide="brain-circuit"></i></span><b>NIRA Chat</b><small>AI teaching assistant</small></button>
+  </div>
+</div>
+<style id="nir-tools-sheet-v3">
+#tools-sheet,#tools-sheet-ov{--t-card:#2B251D;--t-bg:#1D1914;--t-ink:#F4F0E6;--t-mut:#A89F8C;--t-gt:#E6C65C;--t-line:rgba(212,175,55,.2);--t-line2:rgba(212,175,55,.45)}
+html.light #tools-sheet{--t-card:#FBF8EF;--t-bg:#FFFFFF;--t-ink:#25221B;--t-mut:#6B6554;--t-gt:#8F6B14;--t-line:rgba(177,138,37,.24);--t-line2:rgba(177,138,37,.5)}
+#tools-sheet-ov{position:fixed;inset:0;z-index:9400;background:rgba(0,0,0,.55);opacity:0;visibility:hidden;transition:opacity .25s,visibility .25s;-webkit-backdrop-filter:blur(3px);backdrop-filter:blur(3px)}
+#tools-sheet-ov.open{opacity:1;visibility:visible}
+#tools-sheet{position:fixed;left:0;right:0;bottom:0;z-index:9500;max-height:86vh;overflow-y:auto;overscroll-behavior:contain;padding:10px 14px calc(18px + env(safe-area-inset-bottom,0px));border:1px solid var(--t-line2);border-bottom:0;border-radius:26px 26px 0 0;background:var(--t-bg);box-shadow:0 -20px 60px rgba(0,0,0,.5);transform:translateY(105%);visibility:hidden;transition:transform .32s cubic-bezier(.2,.8,.2,1),visibility .32s}
+#tools-sheet.open{transform:none;visibility:visible}
+.ts-handle{width:42px;height:4px;margin:2px auto 12px;border-radius:4px;background:var(--t-line2)}
+.ts-head{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin-bottom:12px}
+.ts-head h3{margin:0;color:var(--t-ink);font-size:18px}.ts-head p{margin:2px 0 0;color:var(--t-mut);font-size:12px}
+#tools-sheet-x{width:38px;height:38px;border-radius:12px;border:1px solid var(--t-line);background:var(--t-card);color:var(--t-gt);font-size:15px;cursor:pointer}
+.ts-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+.ts-item{display:flex;flex-direction:column;align-items:flex-start;gap:3px;text-align:left;padding:13px;min-height:104px;border:1px solid var(--t-line);border-radius:18px;background:var(--t-card);color:var(--t-ink);font-family:inherit;cursor:pointer;transition:transform .2s,border-color .2s}
+.ts-item:active{transform:scale(.96);border-color:var(--t-line2)}
+.ts-ico{display:grid;place-items:center;width:38px;height:38px;margin-bottom:6px;border-radius:12px;color:var(--t-gt);background:linear-gradient(145deg,rgba(212,175,55,.26),rgba(212,175,55,.08));border:1px solid var(--t-line)}
+.ts-ico svg{width:19px;height:19px}
+#tools-sheet .ts-item b{font-size:13px !important;font-weight:700}#tools-sheet .ts-item small{display:block;color:var(--t-mut) !important;font-size:11.5px !important;line-height:1.35 !important;font-weight:400}
+#mob-nav .mn-item.sheet-open .mi-lbl{color:var(--t-gt,#E6C65C) !important}
+html:not(.light) #mob-nav{background:rgba(29,25,20,.97) !important}html.light #mob-nav{background:rgba(255,255,255,.98) !important}
+@media(prefers-reduced-motion:reduce){#tools-sheet,#tools-sheet-ov{transition:none}}
+</style>
+<script>
+/* NIR Tools tab → bottom sheet. Additive: wraps go() only to close the sheet; a MutationObserver keeps the Tools tab highlighted on tool pages. */
+(function(){var sh=document.getElementById('tools-sheet'),ov=document.getElementById('tools-sheet-ov'),x=document.getElementById('tools-sheet-x'),tab=document.getElementById('mn-lesson'),last=null;if(!sh||!ov)return;
+function open(){last=document.activeElement;sh.classList.add('open');ov.classList.add('open');sh.setAttribute('aria-hidden','false');ov.setAttribute('aria-hidden','false');document.documentElement.style.overflow='hidden';if(tab)tab.classList.add('sheet-open');try{window.lucide&&lucide.createIcons()}catch(e){}setTimeout(function(){x.focus()},60)}
+function close(){if(!sh.classList.contains('open'))return;sh.classList.remove('open');ov.classList.remove('open');sh.setAttribute('aria-hidden','true');ov.setAttribute('aria-hidden','true');document.documentElement.style.overflow='';if(tab)tab.classList.remove('sheet-open');if(last&&last.focus)try{last.focus()}catch(e){}}
+window.openToolsSheet=open;window.closeToolsSheet=close;ov.addEventListener('click',close);x.addEventListener('click',close);addEventListener('keydown',function(e){if(e.key==='Escape')close()});
+var T={lesson:1,ielts:1,error:1,worksheet:1,assistant:1},_go=window.go;
+if(typeof _go==='function')window.go=function(id){close();return _go.apply(this,arguments)};
+function sync(){var a=document.querySelector('.page.active'),id=a?a.id.replace('page-',''):'';if(tab&&T[id]&&!tab.classList.contains('active'))tab.classList.add('active')}
+if(window.MutationObserver){var mo=new MutationObserver(sync);document.querySelectorAll('.page').forEach(function(p){mo.observe(p,{attributes:true,attributeFilter:['class']})});sync()}
+})();
+</script>
 </body>
 </html>
