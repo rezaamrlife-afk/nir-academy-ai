@@ -5470,9 +5470,23 @@ function dismissSessionBanner() {
       </div>
       <div style="margin-top:1.75rem;display:flex;gap:.75rem;flex-wrap:wrap">
         <button class="btn-p" onclick="window.open('https://niracademy.com','_blank')">Upgrade to Pro</button>
+        <button class="btn-o" onclick="showPwdResetModal()">Change Password</button>
         <button class="btn-o" onclick="doLogout()">Sign Out</button>
       </div>
     </div>
+  </div>
+</div>
+
+<!-- ═══ PASSWORD RESET MODAL ═══ -->
+<div id="pwd-reset-modal" style="display:none;position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,.65);backdrop-filter:blur(4px);align-items:center;justify-content:center">
+  <div style="background:var(--bg2);border:1px solid rgba(201,168,76,.25);border-radius:16px;padding:2rem;width:90%;max-width:380px;position:relative">
+    <button onclick="hidePwdResetModal()" style="position:absolute;top:.75rem;right:.9rem;background:none;border:none;color:var(--muted);font-size:1.3rem;cursor:pointer;line-height:1">×</button>
+    <div style="font-family:'Cinzel',serif;font-size:1rem;color:var(--gold);margin-bottom:.4rem">Change Password</div>
+    <p style="font-size:12px;color:var(--muted);margin-bottom:1.2rem">We'll send a password reset link to your email address.</p>
+    <div style="font-size:9px;color:var(--muted);letter-spacing:2px;text-transform:uppercase;margin-bottom:5px;font-weight:700">Email</div>
+    <input id="pwd-reset-email" type="email" readonly style="width:100%;box-sizing:border-box;padding:9px 13px;background:var(--bg3);border:1px solid rgba(201,168,76,.17);border-radius:8px;color:var(--txt);font-size:13px;margin-bottom:1.2rem">
+    <div id="pwd-reset-msg" style="font-size:12px;min-height:18px;margin-bottom:.8rem"></div>
+    <button class="btn-p" onclick="doPwdReset()" style="width:100%">Send Reset Link</button>
   </div>
 </div>
 
@@ -7262,6 +7276,26 @@ async function doGoogleLogin(){
 async function doLogout(){
   await SB.auth.signOut();
   toggleUserMenu();
+}
+
+function showPwdResetModal(){
+  var el = document.getElementById('pwd-reset-email');
+  if(el) el.value = document.getElementById('profile-email').textContent || '';
+  document.getElementById('pwd-reset-msg').textContent = '';
+  document.getElementById('pwd-reset-modal').style.display = 'flex';
+}
+function hidePwdResetModal(){
+  document.getElementById('pwd-reset-modal').style.display = 'none';
+}
+async function doPwdReset(){
+  var email = (document.getElementById('pwd-reset-email').value || '').trim();
+  var msg = document.getElementById('pwd-reset-msg');
+  if(!email){ msg.style.color='#e57373'; msg.textContent='Email not found.'; return; }
+  msg.style.color='var(--muted)'; msg.textContent='Sending…';
+  var redirectUrl = window.location.origin + window.location.pathname;
+  var res = await SB.auth.resetPasswordForEmail(email, {redirectTo: redirectUrl});
+  if(res.error){ msg.style.color='#e57373'; msg.textContent=res.error.message; }
+  else { msg.style.color='#81c784'; msg.textContent='Reset link sent! Check your email.'; }
 }
 
 function toggleUserMenu(){
