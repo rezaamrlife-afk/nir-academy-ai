@@ -130,7 +130,7 @@ const LANGS = {
     ib_m3: 'Future Ready.', ib_m3d: 'Next generation educators.',
     // GENERATOR PAGE
     gen_ey: '✦ Core Tool · AI in ELT', gen_h1a: 'AI', gen_h1b: 'Prompt Generator',
-    gen_desc: 'Build expert-level, pedagogically-sound AI prompts for any ELT task in five structured steps.',
+    gen_desc: 'Build pedagogically-structured ELT prompts in five steps — use directly in Nira AI or export to ChatGPT, Claude, Gemini and more.',
     step1: 'Select Mode', step1h: 'Your teaching role',
     step2: 'Choose Goal', step2h: 'What to generate',
     step3: 'Language Level', step3h: 'CEFR or IELTS',
@@ -270,7 +270,7 @@ const LANGS = {
     ib_m2: 'AI Destekli.', ib_m2d: 'Teknolojiyi öğretmen asistanı olarak kullanın.',
     ib_m3: 'Geleceğe Hazır.', ib_m3d: 'Yeni nesil eğitimciler.',
     gen_ey: '✦ Temel Araç · AI in ELT', gen_h1a: 'AI', gen_h1b: 'Prompt Generator',
-    gen_desc: 'Herhangi bir ELT görevi için beş adımda uzman düzeyinde, pedagojik açıdan sağlam AI promptları oluşturun.',
+    gen_desc: 'Pedagojik açıdan yapılandırılmış ELT promptlarını beş adımda oluşturun — doğrudan Nira AI içinde kullanın veya ChatGPT, Claude, Gemini ve daha fazlasına aktarın.',
     step1: 'Mod Seç', step1h: 'Öğretim rolünüz',
     step2: 'Hedef Seç', step2h: 'Ne oluşturmak istiyorsunuz',
     step3: 'Dil Seviyesi', step3h: 'CEFR veya IELTS',
@@ -407,7 +407,7 @@ const LANGS = {
     ib_m2: 'مُعزَّز بالذكاء الاصطناعي.', ib_m2d: 'التكنولوجيا كمساعد تعليمي.',
     ib_m3: 'جاهز للمستقبل.', ib_m3d: 'جيل المعلمين القادم.',
     gen_ey: '✦ الأداة الأساسية · AI in ELT', gen_h1a: 'مولّد البروبت', gen_h1b: 'بالذكاء الاصطناعي',
-    gen_desc: 'أنشئ بروبتات ذكاء اصطناعي احترافية وتربوية لأي مهمة ELT في خمس خطوات منظمة.',
+    gen_desc: 'أنشئ بروبتات ELT منظّمة تربوياً في خمس خطوات — استخدمها مباشرة في Nira AI أو صدّرها إلى ChatGPT وClaude وGemini وغيرها.',
     step1: 'اختر النمط', step1h: 'دورك التعليمي',
     step2: 'اختر الهدف', step2h: 'ما الذي تريد إنشاءه',
     step3: 'مستوى اللغة', step3h: 'CEFR أو IELTS',
@@ -544,7 +544,7 @@ const LANGS = {
     ib_m2: 'AI 赋能。', ib_m2d: '技术作为教学助手。',
     ib_m3: '面向未来。', ib_m3d: '培养下一代教育工作者。',
     gen_ey: '✦ 核心工具 · AI in ELT', gen_h1a: 'AI', gen_h1b: 'Prompt Generator',
-    gen_desc: '通过五个结构化步骤为任何 ELT 任务构建专家级、教学合理的 AI Prompt。',
+    gen_desc: '通过五个步骤构建具有教学结构的 ELT Prompt — 可直接在 Nira AI 中使用，或导出到 ChatGPT、Claude、Gemini 等。',
     step1: '选择模式', step1h: '您的教学角色',
     step2: '选择目标', step2h: '要生成什么',
     step3: '语言级别', step3h: 'CEFR 或雅思',
@@ -723,7 +723,7 @@ const LANGS = {
     gen_ey: '✦ ابزار اصلی · هوش مصنوعی در ELT',
     gen_h1a: 'تولیدکننده پرامپت',
     gen_h1b: 'هوش مصنوعی',
-    gen_desc: 'پرامپت‌های حرفه‌ای و آموزش‌محور هوش مصنوعی برای هر وظیفه ELT در پنج مرحله ساختارمند بسازید.',
+    gen_desc: 'پرامپت‌های ELT با ساختار آموزشی را در پنج مرحله بسازید — مستقیم در Nira AI استفاده کنید یا به ChatGPT، Claude، Gemini و غیره صادر کنید.',
     step1: 'انتخاب حالت',
     step1h: 'نقش آموزشی شما',
     step2: 'انتخاب هدف',
@@ -888,6 +888,7 @@ window.applyLang = function applyLang(lang) {
   setT('sb-pro-title', T.sb_pro_title);
   setT('sb-pro-desc', T.sb_pro_desc);
   setT('sb-pro-btn', T.sb_pro_btn);
+  setT('analytics-pro-btn', T.sb_pro_btn);
 
   // HOME HERO
   set('hero-pill', T.hero_pill);
@@ -928,6 +929,10 @@ window.applyLang = function applyLang(lang) {
   setT('ib-m1',T.ib_m1); setT('ib-m1d',T.ib_m1d);
   setT('ib-m2',T.ib_m2); setT('ib-m2d',T.ib_m2d);
   setT('ib-m3',T.ib_m3); setT('ib-m3d',T.ib_m3d);
+  // Assistant-page copy of the info band (unique ids; English keeps its original wording for m1d)
+  setT('ib-m1-b',T.ib_m1); setT('ib-m1d-b', lang==='en' ? 'Evidence-based ELT at the core.' : T.ib_m1d);
+  setT('ib-m2-b',T.ib_m2); setT('ib-m2d-b',T.ib_m2d);
+  setT('ib-m3-b',T.ib_m3); setT('ib-m3d-b',T.ib_m3d);
 
   // CTA
   setT('cta-title', T.cta_title); set('cta-span', T.cta_span); setT('cta-title2', T.cta_title2);
@@ -4576,7 +4581,7 @@ function dismissSessionBanner() {
       <div style="text-align:right;margin:-8px 0 12px">
         <button id="forgot-pw-btn" onclick="showForgotPw()" style="background:none;border:none;color:var(--muted);font-size:11px;cursor:pointer;padding:0;text-decoration:underline">Forgot password?</button>
       </div>
-      <button class="auth-submit" onclick="doLogin()">✦ &nbsp;Sign In</button>
+      <button class="auth-submit" id="auth-signin-btn" onclick="doLogin()">✦ &nbsp;Sign In</button>
       <div class="auth-divider">OR</div>
       <button class="auth-submit" style="background:#1E1E1E;color:#C9A84C;border:1px solid rgba(201,168,76,.35)" onclick="doGoogleLogin()"><span id="auth-google-btn">Continue with Google</span></button>
     </div>
@@ -4590,7 +4595,7 @@ function dismissSessionBanner() {
       <div class="auth-field"><label>Full Name</label><input type="text" id="reg-name" placeholder="Dr. Jane Smith"></div>
       <div class="auth-field"><label>Email</label><input type="email" id="reg-email" placeholder="your@email.com"></div>
       <div class="auth-field"><label>Password</label><div class="pw-wrap"><input type="password" id="reg-pass" placeholder="Min 6 characters"><button type="button" class="pw-toggle" onclick="togglePw('reg-pass',this)" aria-label="Show password">👁</button></div></div>
-      <button class="auth-submit" onclick="doRegister()">✦ &nbsp;Create Account</button>
+      <button class="auth-submit" id="auth-signup-btn" onclick="doRegister()">✦ &nbsp;Create Account</button>
     </div>
   </div>
 </div>
@@ -4893,7 +4898,7 @@ function dismissSessionBanner() {
       <img class="dw-logo nir-logo" src="" alt="NIR Academy">
       <div class="dw-text">
         <h2 id="dash-welcome-h">Welcome to NIR Academy</h2>
-        <p>AI-powered ELT platform by Dr. Niki Majidi &nbsp;·&nbsp; Pedagogy First. AI Enhanced. Future Ready.<br>
+        <p><span id="dash-welcome-p">AI-powered ELT platform by Dr. Niki Majidi &nbsp;·&nbsp; Pedagogy First. AI Enhanced. Future Ready.</span><br>
         Next Generation Instructional Resources for ELT &nbsp;·&nbsp; <a href="https://niracademy.com" target="_blank" style="color:var(--gold-dim);border-bottom:1px solid var(--bdr2)">niracademy.com</a></p>
       </div>
       <div class="dw-btns">
@@ -4955,7 +4960,7 @@ function dismissSessionBanner() {
   <div class="ph">
     <span class="ph-ey" id="gen-ey">✦ Core Tool · AI in ELT</span>
     <h1><span id="gen-h1a">AI</span> <span id="gen-h1b" style="color:var(--gold)">Prompt Generator</span></h1>
-    <p>Build pedagogically-structured ELT prompts in five steps — use directly in Nira AI or export to ChatGPT, Claude, Gemini and more.</p>
+    <p id="gen-desc">Build pedagogically-structured ELT prompts in five steps — use directly in Nira AI or export to ChatGPT, Claude, Gemini and more.</p>
     <div class="ph-tags">
       <span class="ph-tag">AI in ELT</span><span class="ph-tag">Prompt Engineering for Teachers</span>
       <span class="ph-tag">ELT AI Tools</span><span class="ph-tag">TESOL AI</span><span class="ph-tag">CEFR A1–C1</span>
@@ -5509,7 +5514,7 @@ function dismissSessionBanner() {
     <div style="background:linear-gradient(135deg,rgba(201,168,76,.12),rgba(201,168,76,.05));border:1px solid var(--bdr2);border-radius:var(--rl);padding:2rem;text-align:center">
       <div style="font-family:'Cinzel',serif;font-size:1.3rem;color:var(--gold);margin-bottom:.6rem">✦ NIR Academy Pro</div>
       <p style="font-size:13px;color:var(--muted);max-width:400px;margin:0 auto 1.5rem">Unlimited prompts, full history, advanced analytics, priority AI access, and all future tools.</p>
-      <button class="btn-p" onclick="window.open('https://niracademy.com','_blank')" id="sb-pro-btn">Upgrade to Pro →</button>
+      <button class="btn-p" onclick="window.open('https://niracademy.com','_blank')" id="analytics-pro-btn">Upgrade to Pro →</button>
     </div>
   </div>
 </div>
@@ -5634,9 +5639,9 @@ function dismissSessionBanner() {
     </div>
   </div>
   <div class="ib-r">
-    <span><strong>Pedagogy First.</strong> Evidence-based ELT at the core.</span>
-    <span><strong id="ib-m2">AI Enhanced.</strong> <span id="ib-m2d">Technology as teaching assistant.</span></span>
-    <span><strong id="ib-m3">Future Ready.</strong> <span id="ib-m3d">Next generation educators.</span></span>
+    <span><strong id="ib-m1-b">Pedagogy First.</strong> <span id="ib-m1d-b">Evidence-based ELT at the core.</span></span>
+    <span><strong id="ib-m2-b">AI Enhanced.</strong> <span id="ib-m2d-b">Technology as teaching assistant.</span></span>
+    <span><strong id="ib-m3-b">Future Ready.</strong> <span id="ib-m3d-b">Next generation educators.</span></span>
   </div>
 </div>
 
@@ -7182,7 +7187,7 @@ async function doLogin(){
 
   const btn = document.querySelector('#auth-form-login .auth-submit');
   // Store original text for reset
-  const origText = '✦  Sign In';
+  const origText = nirAuthLbl('auth_signin_btn','✦  Sign In');
 
   // Set loading state
   if(btn){ btn.disabled = true; btn.textContent = 'Signing in…'; }
@@ -7206,6 +7211,8 @@ async function doLogin(){
   }
 }
 
+// Active-language label for auth buttons (falls back to the original English text)
+function nirAuthLbl(k,fb){ try{ var T=LANGS[window._nirLang||(typeof currentLang!=='undefined'?currentLang:'en')]||LANGS.en; return T[k]||fb; }catch(e){ return fb; } }
 async function doRegister(){
   if(!SB){ showAuthError('Service not ready. Please refresh and try again.'); return; }
   const name = document.getElementById('reg-name').value.trim();
@@ -7225,7 +7232,7 @@ async function doRegister(){
         emailRedirectTo: 'https://nir-ai-platform-new.vercel.app'
       } 
     });
-    if(btn){ btn.disabled = false; btn.textContent = '✦ \u00a0Create Account'; }
+    if(btn){ btn.disabled = false; btn.textContent = nirAuthLbl('auth_signup_btn','✦ \u00a0Create Account'); }
     if(error){
       if(error.message.includes('already registered')) showAuthError('This email is already registered. Please sign in instead.');
       else showAuthError(error.message);
@@ -7238,7 +7245,7 @@ async function doRegister(){
       }
     }
   }catch(e){
-    if(btn){ btn.disabled = false; btn.textContent = '✦ \u00a0Create Account'; }
+    if(btn){ btn.disabled = false; btn.textContent = nirAuthLbl('auth_signup_btn','✦ \u00a0Create Account'); }
     showAuthError('Connection error. Please try again.');
   }
 }
