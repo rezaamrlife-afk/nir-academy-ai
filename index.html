@@ -4973,22 +4973,11 @@ function dismissSessionBanner() {
         <div class="sblock">
           <div class="shdr"><div class="snum">1</div><h3 id="step1-lbl">Select Mode</h3><span class="shint" id="step1-hint">Your teaching role</span></div>
           <div class="sbdy">
-            <div class="cgrid" id="role-chips" style="margin-bottom:.75rem">
+            <div class="cgrid" id="role-chips">
               <div class="chip active" data-role="teacher" onclick="genSelectRole(this,'teacher')">👩‍🏫 Teacher</div>
               <div class="chip" data-role="student" onclick="genSelectRole(this,'student')"><i data-lucide="graduation-cap"></i> Student</div>
             </div>
-            <div class="cgrid" id="mode-chips">
-              <div class="chip active" data-v="experienced EFL/ESL Teacher" data-role="teacher" onclick="SC(this,'mode-chips')">👩‍🏫 EFL/ESL</div>
-              <div class="chip" data-v="IELTS Examiner and Trainer" data-role="teacher" onclick="SC(this,'mode-chips')">📘 IELTS</div>
-              <div class="chip" data-v="Academic Writing Tutor" data-role="teacher" onclick="SC(this,'mode-chips')"><i data-lucide="pen-line"></i> Writing</div>
-              <div class="chip" data-v="English Speaking Coach" data-role="teacher" onclick="SC(this,'mode-chips')"><i data-lucide="mic-2"></i> Speaking</div>
-              <div class="chip" data-v="Reading Skills Instructor" data-role="teacher" onclick="SC(this,'mode-chips')"><i data-lucide="book-open"></i> Reading</div>
-              <div class="chip" data-v="TESOL-certified Lesson Planner" data-role="teacher" onclick="SC(this,'mode-chips')">🧑‍🏫 Lesson Plan</div>
-              <div class="chip" data-v="Student Language Tutor" data-role="student" onclick="SC(this,'mode-chips')"><i data-lucide="graduation-cap"></i> General</div>
-              <div class="chip" data-v="IELTS Candidate preparing for the exam" data-role="student" onclick="SC(this,'mode-chips')">🏅 IELTS Prep</div>
-              <div class="chip" data-v="English language learner improving writing skills" data-role="student" onclick="SC(this,'mode-chips')"><i data-lucide="pen-line"></i> Writing</div>
-              <div class="chip" data-v="English conversation learner" data-role="student" onclick="SC(this,'mode-chips')"><i data-lucide="mic-2"></i> Speaking</div>
-            </div>
+            <div id="mode-chips" style="display:none"></div>
           </div>
         </div>
         <div class="sblock">
@@ -5718,7 +5707,7 @@ function dismissSessionBanner() {
 <script>
 // ══ STATE ══
 const S={
-  mode:"experienced EFL/ESL Teacher",
+  mode:"teacher",
   goals:["Create a detailed lesson plan"],
   get goal(){ return this.goals.join(' + '); },
   set goal(v){ this.goals=[v]; },
@@ -5735,7 +5724,6 @@ const S={
 
 // Hide student chips on load (teacher is default role)
 document.addEventListener('DOMContentLoaded',function(){
-  document.querySelectorAll('#mode-chips .chip[data-role="student"]').forEach(c=>c.style.display='none');
   document.querySelectorAll('#goal-chips .chip[data-role="student"]').forEach(c=>c.style.display='none');
 });
 
@@ -5841,23 +5829,15 @@ function closeSB(){
 function genSelectRole(el, role){
   document.querySelectorAll('#role-chips .chip').forEach(c=>c.classList.remove('active'));
   el.classList.add('active');
-  // Filter mode-chips
-  document.querySelectorAll('#mode-chips .chip').forEach(c=>{
-    var show = c.dataset.role===role;
-    c.style.display = show ? '' : 'none';
-    if(show && c.classList.contains('active') && c.dataset.role!==role) c.classList.remove('active');
-  });
-  // Auto-activate first visible mode chip
-  var firstMode = document.querySelector('#mode-chips .chip[data-role="'+role+'"]');
-  if(firstMode){ document.querySelectorAll('#mode-chips .chip').forEach(c=>c.classList.remove('active')); firstMode.classList.add('active'); S.mode=firstMode.dataset.v; }
-  // Filter goal-chips
+  S.mode = role;
+  // Filter goal-chips by role
   document.querySelectorAll('#goal-chips .chip').forEach(c=>{
-    var show = c.dataset.role===role;
-    c.style.display = show ? '' : 'none';
+    c.style.display = c.dataset.role===role ? '' : 'none';
+    c.classList.remove('active');
   });
   // Auto-activate first visible goal chip
   var firstGoal = document.querySelector('#goal-chips .chip[data-role="'+role+'"]');
-  if(firstGoal){ document.querySelectorAll('#goal-chips .chip').forEach(c=>c.classList.remove('active')); firstGoal.classList.add('active'); S.goals=[firstGoal.dataset.v]; }
+  if(firstGoal){ firstGoal.classList.add('active'); S.goals=[firstGoal.dataset.v]; }
   var badge=document.getElementById('goal-count-badge'); if(badge) badge.textContent='';
 }
 
@@ -5969,19 +5949,26 @@ function buildGen(){
   const len=document.getElementById("out-len").value;
   const style=document.getElementById("out-style").value;
   const classSize=(document.getElementById("out-classsize")?.value)||"a standard class of 15–20 adult learners";
-  // Reconcile Mode + Goal: if goal implies a specific role, let goal lead
+  // Derive role from selected role chip + goals
+  var _selectedRole = (document.querySelector('#role-chips .chip.active')||{}).dataset?.role || 'teacher';
   const goalRoleMap={
     "Create a detailed lesson plan":"TESOL-certified Lesson Planner",
-    "Design a grammar worksheet":"experienced EFL/ESL Teacher",
-    "Generate IELTS practice material":"IELTS Examiner and Trainer",
-    "Write a reading comprehension":"Reading Skills Instructor",
-    "Create a writing task":"Academic Writing Tutor",
-    "Build a speaking activity":"English Speaking Coach",
+    "Generate an engaging classroom activity":"experienced EFL/ESL Teacher",
+    "Design a printable worksheet":"experienced EFL/ESL Teacher",
+    "Build a test or quiz":"experienced EFL/ESL Teacher",
+    "Correct student errors with detailed feedback":"experienced EFL/ESL Teacher",
+    "Generate an academic writing task":"Academic Writing Tutor",
+    "Create speaking discussion questions":"English Speaking Coach",
+    "Design a vocabulary practice set":"experienced EFL/ESL Teacher",
+    "Create a reading comprehension passage":"Reading Skills Instructor",
+    "Generate an IELTS-style exam task":"IELTS Examiner and Trainer",
   };
-  const effectiveRole = goalRoleMap[S.goal] || S.mode;
+  const effectiveRole = _selectedRole==='student'
+    ? 'English Language Student'
+    : (goalRoleMap[S.goals[0]] || 'experienced EFL/ESL Teacher');
   return `You are an expert AI prompt engineer for NIR Academy (niracademy.com) — the AI-powered ELT platform by Dr. Niki Majidi.
 
-Create a ${type} for an English language teacher:
+Create a ${type} for an ${_selectedRole==='student'?'English language learner':'English language teacher'}:
 ROLE: ${effectiveRole}
 GOAL: ${S.goal}
 LEVEL: ${S.level}
