@@ -4973,31 +4973,44 @@ function dismissSessionBanner() {
         <div class="sblock">
           <div class="shdr"><div class="snum">1</div><h3 id="step1-lbl">Select Mode</h3><span class="shint" id="step1-hint">Your teaching role</span></div>
           <div class="sbdy">
+            <div class="cgrid" id="role-chips" style="margin-bottom:.75rem">
+              <div class="chip active" data-role="teacher" onclick="genSelectRole(this,'teacher')">👩‍🏫 Teacher</div>
+              <div class="chip" data-role="student" onclick="genSelectRole(this,'student')"><i data-lucide="graduation-cap"></i> Student</div>
+            </div>
             <div class="cgrid" id="mode-chips">
-              <div class="chip active" data-v="experienced EFL/ESL Teacher" onclick="SC(this,'mode-chips')">👩‍🏫 Teacher</div>
-              <div class="chip" data-v="IELTS Examiner and Trainer" onclick="SC(this,'mode-chips')">📘 IELTS</div>
-              <div class="chip" data-v="Academic Writing Tutor" onclick="SC(this,'mode-chips')"><i data-lucide="pen-line"></i> Writing</div>
-              <div class="chip" data-v="English Speaking Coach" onclick="SC(this,'mode-chips')"><i data-lucide="mic-2"></i> Speaking</div>
-              <div class="chip" data-v="Reading Skills Instructor" onclick="SC(this,'mode-chips')"><i data-lucide="book-open"></i> Reading</div>
-              <div class="chip" data-v="TESOL-certified Lesson Planner" onclick="SC(this,'mode-chips')">🧑‍🏫 Lesson Plan</div>
-              <div class="chip" data-v="Student Language Tutor" onclick="SC(this,'mode-chips')"><i data-lucide="graduation-cap"></i> Student</div>
+              <div class="chip active" data-v="experienced EFL/ESL Teacher" data-role="teacher" onclick="SC(this,'mode-chips')">👩‍🏫 EFL/ESL</div>
+              <div class="chip" data-v="IELTS Examiner and Trainer" data-role="teacher" onclick="SC(this,'mode-chips')">📘 IELTS</div>
+              <div class="chip" data-v="Academic Writing Tutor" data-role="teacher" onclick="SC(this,'mode-chips')"><i data-lucide="pen-line"></i> Writing</div>
+              <div class="chip" data-v="English Speaking Coach" data-role="teacher" onclick="SC(this,'mode-chips')"><i data-lucide="mic-2"></i> Speaking</div>
+              <div class="chip" data-v="Reading Skills Instructor" data-role="teacher" onclick="SC(this,'mode-chips')"><i data-lucide="book-open"></i> Reading</div>
+              <div class="chip" data-v="TESOL-certified Lesson Planner" data-role="teacher" onclick="SC(this,'mode-chips')">🧑‍🏫 Lesson Plan</div>
+              <div class="chip" data-v="Student Language Tutor" data-role="student" onclick="SC(this,'mode-chips')"><i data-lucide="graduation-cap"></i> General</div>
+              <div class="chip" data-v="IELTS Candidate preparing for the exam" data-role="student" onclick="SC(this,'mode-chips')">🏅 IELTS Prep</div>
+              <div class="chip" data-v="English language learner improving writing skills" data-role="student" onclick="SC(this,'mode-chips')"><i data-lucide="pen-line"></i> Writing</div>
+              <div class="chip" data-v="English conversation learner" data-role="student" onclick="SC(this,'mode-chips')"><i data-lucide="mic-2"></i> Speaking</div>
             </div>
           </div>
         </div>
         <div class="sblock">
-          <div class="shdr"><div class="snum">2</div><h3 id="step2-lbl">Choose Goal</h3><span class="shint" id="step2-hint">What to generate</span></div>
+          <div class="shdr"><div class="snum">2</div><h3 id="step2-lbl">Choose Goal</h3><span class="shint" id="step2-hint">What to generate</span><span id="goal-count-badge" style="margin-left:.6rem;font-size:10px;background:rgba(201,168,76,.18);color:var(--gold);border-radius:20px;padding:2px 8px;font-weight:600"></span></div>
           <div class="sbdy">
             <div class="cgrid" id="goal-chips">
-              <div class="chip active" data-v="Create a detailed lesson plan" onclick="SC(this,'goal-chips')"><i data-lucide="calendar-days"></i> Lesson Plan</div>
-              <div class="chip" data-v="Generate an engaging classroom activity" onclick="SC(this,'goal-chips')">🎮 Activity</div>
-              <div class="chip" data-v="Design a printable worksheet" onclick="SC(this,'goal-chips')">📄 Worksheet</div>
-              <div class="chip" data-v="Build a test or quiz" onclick="SC(this,'goal-chips')"><i data-lucide="clipboard-list"></i> Test / Quiz</div>
-              <div class="chip" data-v="Correct student errors with detailed feedback" onclick="SC(this,'goal-chips')"><i data-lucide="spell-check"></i> Error Fix</div>
-              <div class="chip" data-v="Generate an academic writing task" onclick="SC(this,'goal-chips')"><i data-lucide="pen-line"></i> Writing Task</div>
-              <div class="chip" data-v="Create speaking discussion questions" onclick="SC(this,'goal-chips')"><i data-lucide="mic-2"></i> Speaking</div>
-              <div class="chip" data-v="Design a vocabulary practice set" onclick="SC(this,'goal-chips')"><i data-lucide="book-a"></i> Vocabulary</div>
-              <div class="chip" data-v="Create a reading comprehension passage" onclick="SC(this,'goal-chips')"><i data-lucide="book-open"></i> Reading</div>
-              <div class="chip" data-v="Generate an IELTS-style exam task" onclick="SC(this,'goal-chips')">🏅 IELTS</div>
+              <div class="chip active" data-v="Create a detailed lesson plan" data-role="teacher" onclick="SC(this,'goal-chips')"><i data-lucide="calendar-days"></i> Lesson Plan</div>
+              <div class="chip" data-v="Generate an engaging classroom activity" data-role="teacher" onclick="SC(this,'goal-chips')">🎮 Activity</div>
+              <div class="chip" data-v="Design a printable worksheet" data-role="teacher" onclick="SC(this,'goal-chips')">📄 Worksheet</div>
+              <div class="chip" data-v="Build a test or quiz" data-role="teacher" onclick="SC(this,'goal-chips')"><i data-lucide="clipboard-list"></i> Test / Quiz</div>
+              <div class="chip" data-v="Correct student errors with detailed feedback" data-role="teacher" onclick="SC(this,'goal-chips')"><i data-lucide="spell-check"></i> Error Fix</div>
+              <div class="chip" data-v="Generate an academic writing task" data-role="teacher" onclick="SC(this,'goal-chips')"><i data-lucide="pen-line"></i> Writing Task</div>
+              <div class="chip" data-v="Create speaking discussion questions" data-role="teacher" onclick="SC(this,'goal-chips')"><i data-lucide="mic-2"></i> Speaking</div>
+              <div class="chip" data-v="Design a vocabulary practice set" data-role="teacher" onclick="SC(this,'goal-chips')"><i data-lucide="book-a"></i> Vocabulary</div>
+              <div class="chip" data-v="Create a reading comprehension passage" data-role="teacher" onclick="SC(this,'goal-chips')"><i data-lucide="book-open"></i> Reading</div>
+              <div class="chip" data-v="Generate an IELTS-style exam task" data-role="teacher" onclick="SC(this,'goal-chips')">🏅 IELTS</div>
+              <div class="chip" data-v="Practice IELTS Writing Task 2 essay" data-role="student" onclick="SC(this,'goal-chips')"><i data-lucide="pen-line"></i> IELTS Writing</div>
+              <div class="chip" data-v="Practice IELTS Speaking Part 2 cue card" data-role="student" onclick="SC(this,'goal-chips')"><i data-lucide="mic-2"></i> IELTS Speaking</div>
+              <div class="chip" data-v="Improve everyday English conversation skills" data-role="student" onclick="SC(this,'goal-chips')"><i data-lucide="message-circle"></i> Conversation</div>
+              <div class="chip" data-v="Expand vocabulary with example sentences" data-role="student" onclick="SC(this,'goal-chips')"><i data-lucide="book-a"></i> Vocabulary</div>
+              <div class="chip" data-v="Practice English grammar with exercises" data-role="student" onclick="SC(this,'goal-chips')"><i data-lucide="clipboard-list"></i> Grammar</div>
+              <div class="chip" data-v="Get feedback on my English writing" data-role="student" onclick="SC(this,'goal-chips')"><i data-lucide="spell-check"></i> Writing Feedback</div>
             </div>
           </div>
         </div>
@@ -5706,7 +5719,9 @@ function dismissSessionBanner() {
 // ══ STATE ══
 const S={
   mode:"experienced EFL/ESL Teacher",
-  goal:"Create a detailed lesson plan",
+  goals:["Create a detailed lesson plan"],
+  get goal(){ return this.goals.join(' + '); },
+  set goal(v){ this.goals=[v]; },
   level:"A1 (Beginner)",
   topic:"",
   ieltType:"Academic Writing Task 1 (data description — chart, graph, diagram)",
@@ -5717,6 +5732,12 @@ const S={
   wsImages:false,
   saved:[], deferredPrompt:null
 };
+
+// Hide student chips on load (teacher is default role)
+document.addEventListener('DOMContentLoaded',function(){
+  document.querySelectorAll('#mode-chips .chip[data-role="student"]').forEach(c=>c.style.display='none');
+  document.querySelectorAll('#goal-chips .chip[data-role="student"]').forEach(c=>c.style.display='none');
+});
 
 // ══ NAVIGATION ══
 function go(id){
@@ -5816,12 +5837,45 @@ function closeSB(){
   document.body.style.overflow = "";
 }
 
+// ══ GENERATOR ROLE SELECTOR ══
+function genSelectRole(el, role){
+  document.querySelectorAll('#role-chips .chip').forEach(c=>c.classList.remove('active'));
+  el.classList.add('active');
+  // Filter mode-chips
+  document.querySelectorAll('#mode-chips .chip').forEach(c=>{
+    var show = c.dataset.role===role;
+    c.style.display = show ? '' : 'none';
+    if(show && c.classList.contains('active') && c.dataset.role!==role) c.classList.remove('active');
+  });
+  // Auto-activate first visible mode chip
+  var firstMode = document.querySelector('#mode-chips .chip[data-role="'+role+'"]');
+  if(firstMode){ document.querySelectorAll('#mode-chips .chip').forEach(c=>c.classList.remove('active')); firstMode.classList.add('active'); S.mode=firstMode.dataset.v; }
+  // Filter goal-chips
+  document.querySelectorAll('#goal-chips .chip').forEach(c=>{
+    var show = c.dataset.role===role;
+    c.style.display = show ? '' : 'none';
+  });
+  // Auto-activate first visible goal chip
+  var firstGoal = document.querySelector('#goal-chips .chip[data-role="'+role+'"]');
+  if(firstGoal){ document.querySelectorAll('#goal-chips .chip').forEach(c=>c.classList.remove('active')); firstGoal.classList.add('active'); S.goals=[firstGoal.dataset.v]; }
+  var badge=document.getElementById('goal-count-badge'); if(badge) badge.textContent='';
+}
+
 // ══ CHIP / PILL SELECTION ══
 function SC(el,id){
+  if(id==="goal-chips"){
+    var v=el.dataset.v;
+    var idx=S.goals.indexOf(v);
+    if(idx===-1){ S.goals.push(v); el.classList.add("active"); }
+    else if(S.goals.length>1){ S.goals.splice(idx,1); el.classList.remove("active"); }
+    // show count badge
+    var badge=document.getElementById('goal-count-badge');
+    if(badge) badge.textContent=S.goals.length>1?S.goals.length+' selected':'';
+    return;
+  }
   document.querySelectorAll("#"+id+" .chip").forEach(c=>c.classList.remove("active"));
   el.classList.add("active");
   if(id==="mode-chips")S.mode=el.dataset.v;
-  if(id==="goal-chips")S.goal=el.dataset.v;
   if(id==="lp-focus")S.lpFocus=el.dataset.v;
   if(id==="ws-focus"){S.wsFocus=el.dataset.v;wsImgToggleVisibility();}
 }
