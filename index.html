@@ -80,8 +80,21 @@ const LANGS = {
     sb_account: 'Account', sb_profile: 'My Profile',
     sb_saved: 'Workspace', sb_history: 'History', sb_analytics: 'Analytics',
     sb_pro_title: '✦ Go Pro',
-    sb_pro_desc: 'Unlimited prompts, saved library, priority AI & all tools.',
+    sb_pro_desc: '$5/month · 100 generations per day, saved library, priority AI & all tools.',
     sb_pro_btn: 'Upgrade to Pro →',
+    // Upgrade / daily-limit messages
+    lim_label: 'Daily Usage',
+    lim_remaining: '{n} / {lim} remaining today',
+    lim_free_plan: 'Free plan · 5 generations per day',
+    lim_pro_plan: 'Pro plan · 100 generations per day',
+    lim_free_reset: 'Resets at midnight UTC · Upgrade to Pro for 100/day ($5/month)',
+    lim_pro_reset: 'Pro plan · Resets at midnight UTC',
+    lim_reached_free: 'Daily limit reached (5/day). Upgrade to Pro ($5/month) for 100 generations/day.',
+    lim_reached_pro: 'Daily limit reached (100/day). Resets at midnight UTC.',
+    upg_title: 'Upgrade to Pro',
+    upg_card_desc: '$5/month · 100 generations per day, full history, advanced analytics, priority AI access, and all future tools.',
+    upg_btn: 'Upgrade to Pro',
+    upg_more: 'Upgrade for more',
     mob_home:'Home', mob_gen:'Generator', mob_tools:'Tools', mob_lib:'Library', mob_dash:'Dashboard',
     // HOME HERO
     hero_pill: 'AI-Powered · TESOL & ELT · Professional Development',
@@ -229,8 +242,21 @@ const LANGS = {
     sb_account: 'Hesabım', sb_profile: 'Profilim',
     sb_saved: 'Çalışma Alanı', sb_history: 'Geçmiş', sb_analytics: 'Analitik',
     sb_pro_title: '✦ Pro\'ya Geç',
-    sb_pro_desc: 'Sınırsız prompt, kayıtlı kütüphane, öncelikli AI ve tüm araçlar.',
+    sb_pro_desc: 'Ayda $5 · Günde 100 üretim, kayıtlı kütüphane, öncelikli AI ve tüm araçlar.',
     sb_pro_btn: 'Pro\'ya Yükselt →',
+    // Upgrade / daily-limit messages
+    lim_label: 'Günlük Kullanım',
+    lim_remaining: '{n} / {lim} bugün kaldı',
+    lim_free_plan: 'Ücretsiz plan · günde 5 üretim',
+    lim_pro_plan: 'Pro plan · günde 100 üretim',
+    lim_free_reset: 'UTC gece yarısı sıfırlanır · Günde 100 üretim için Pro planına yükseltin (ayda $5)',
+    lim_pro_reset: 'Pro plan · UTC gece yarısı sıfırlanır',
+    lim_reached_free: 'Günlük limite ulaşıldı (günde 5). Günde 100 üretim için Pro planına yükseltin (ayda $5).',
+    lim_reached_pro: 'Günlük limite ulaşıldı (günde 100). UTC gece yarısı sıfırlanır.',
+    upg_title: 'Pro Plana Yükselt',
+    upg_card_desc: 'Ayda $5 · Günde 100 üretim, tam geçmiş, gelişmiş analizler, öncelikli AI erişimi ve gelecekteki tüm araçlar.',
+    upg_btn: 'Pro Plana Yükselt',
+    upg_more: 'Daha fazlası için yükseltin',
     mob_home:'Ana Sayfa', mob_gen:'Oluşturucu', mob_tools:'Araçlar', mob_lib:'Kütüphane', mob_dash:'Panel',
     hero_pill: 'AI Destekli · TESOL & ELT · Mesleki Gelişim',
     hero_h1a: 'İngilizce Öğretmenleri için',
@@ -366,8 +392,21 @@ const LANGS = {
     sb_account: 'حسابي', sb_profile: 'ملفي الشخصي',
     sb_saved: 'مساحة العمل', sb_history: 'السجل', sb_analytics: 'التحليلات',
     sb_pro_title: '✦ الترقية إلى Pro',
-    sb_pro_desc: 'بروبتات غير محدودة، مكتبة محفوظة، ذكاء اصطناعي بأولوية وجميع الأدوات.',
+    sb_pro_desc: '$5 شهريًا · 100 عملية إنشاء يوميًا، مكتبة محفوظة، ذكاء اصطناعي بأولوية وجميع الأدوات.',
     sb_pro_btn: 'ترقية إلى Pro ←',
+    // Upgrade / daily-limit messages
+    lim_label: 'الاستخدام اليومي',
+    lim_remaining: '{n} / {lim} متبقية اليوم',
+    lim_free_plan: 'الخطة المجانية · 5 عمليات إنشاء يوميًا',
+    lim_pro_plan: 'خطة Pro · 100 عملية إنشاء يوميًا',
+    lim_free_reset: 'يُعاد التعيين عند منتصف الليل UTC · رقِّ إلى Pro للحصول على 100 يوميًا ($5 شهريًا)',
+    lim_pro_reset: 'خطة Pro · يُعاد التعيين عند منتصف الليل UTC',
+    lim_reached_free: 'تم بلوغ الحد اليومي (5 يوميًا). رقِّ إلى Pro ($5 شهريًا) للحصول على 100 عملية إنشاء يوميًا.',
+    lim_reached_pro: 'تم بلوغ الحد اليومي (100 يوميًا). يُعاد التعيين عند منتصف الليل UTC.',
+    upg_title: 'الترقية إلى Pro',
+    upg_card_desc: '$5 شهريًا · 100 عملية إنشاء يوميًا، سجل كامل، تحليلات متقدمة، وصول بأولوية إلى الذكاء الاصطناعي وجميع الأدوات المستقبلية.',
+    upg_btn: 'الترقية إلى Pro',
+    upg_more: 'رقِّ للحصول على المزيد',
     mob_home:'الرئيسية', mob_gen:'المولّد', mob_tools:'الأدوات', mob_lib:'المكتبة', mob_dash:'لوحة التحكم',
     hero_pill: 'مدعوم بالذكاء الاصطناعي · TESOL & ELT · التطوير المهني',
     hero_h1a: 'منصة الذكاء الاصطناعي',
@@ -503,8 +542,21 @@ const LANGS = {
     sb_account: '我的账户', sb_profile: '我的资料',
     sb_saved: '工作区', sb_history: '历史记录', sb_analytics: '数据分析',
     sb_pro_title: '✦ 升级 Pro',
-    sb_pro_desc: '无限 Prompt、保存的资源库、优先 AI 及所有工具。',
+    sb_pro_desc: '每月 $5 · 每天 100 次生成、保存的资源库、优先 AI 及所有工具。',
     sb_pro_btn: '升级到 Pro →',
+    // Upgrade / daily-limit messages
+    lim_label: '今日用量',
+    lim_remaining: '{n} / {lim} 今日剩余',
+    lim_free_plan: '免费版 · 每天 5 次生成',
+    lim_pro_plan: 'Pro 版 · 每天 100 次生成',
+    lim_free_reset: 'UTC 午夜重置 · 升级 Pro 可享每天 100 次（每月 $5）',
+    lim_pro_reset: 'Pro 版 · UTC 午夜重置',
+    lim_reached_free: '已达到每日上限（每天 5 次）。升级 Pro（每月 $5）可享每天 100 次生成。',
+    lim_reached_pro: '已达到每日上限（每天 100 次）。UTC 午夜重置。',
+    upg_title: '升级到 Pro',
+    upg_card_desc: '每月 $5 · 每天 100 次生成、完整历史记录、高级分析、优先 AI 访问以及所有未来工具。',
+    upg_btn: '升级到 Pro',
+    upg_more: '升级获取更多',
     mob_home:'首页', mob_gen:'生成器', mob_tools:'工具', mob_lib:'资源库', mob_dash:'控制台',
     hero_pill: 'AI 驱动 · TESOL & ELT · 专业发展',
     hero_h1a: '英语教师的',
@@ -655,8 +707,21 @@ const LANGS = {
     sb_history: 'تاریخچه',
     sb_analytics: 'آمار و تحلیل',
     sb_pro_title: '✦ نسخه حرفه‌ای',
-    sb_pro_desc: 'پرامپت نامحدود، کتابخانه ذخیره، هوش مصنوعی اولویت‌دار و تمام ابزارها.',
+    sb_pro_desc: 'ماهانه $5 · ۱۰۰ تولید در روز، کتابخانه ذخیره، هوش مصنوعی اولویت‌دار و تمام ابزارها.',
     sb_pro_btn: 'ارتقا به حرفه‌ای ←',
+    // Upgrade / daily-limit messages
+    lim_label: 'مصرف روزانه',
+    lim_remaining: '{n} / {lim} باقی‌مانده امروز',
+    lim_free_plan: 'پلن رایگان · ۵ تولید در روز',
+    lim_pro_plan: 'پلن حرفه‌ای · ۱۰۰ تولید در روز',
+    lim_free_reset: 'بازنشانی نیمه‌شب UTC · برای ۱۰۰ تولید در روز به نسخه حرفه‌ای ارتقا دهید (ماهانه $5)',
+    lim_pro_reset: 'پلن حرفه‌ای · بازنشانی نیمه‌شب UTC',
+    lim_reached_free: 'سقف روزانه تمام شد (۵ در روز). برای ۱۰۰ تولید در روز به نسخه حرفه‌ای ارتقا دهید (ماهانه $5).',
+    lim_reached_pro: 'سقف روزانه تمام شد (۱۰۰ در روز). نیمه‌شب UTC بازنشانی می‌شود.',
+    upg_title: 'ارتقا به حرفه‌ای',
+    upg_card_desc: 'ماهانه $5 · ۱۰۰ تولید در روز، تاریخچه کامل، تحلیل‌های پیشرفته، دسترسی اولویت‌دار به هوش مصنوعی و همه ابزارهای آینده.',
+    upg_btn: 'ارتقا به حرفه‌ای',
+    upg_more: 'برای امکانات بیشتر ارتقا دهید',
     mob_home:'خانه', mob_gen:'سازنده', mob_tools:'ابزارها', mob_lib:'کتابخانه', mob_dash:'داشبورد',
     hero_pill: 'مبتنی بر هوش مصنوعی · TESOL و ELT · توسعه حرفه‌ای',
     hero_h1a: 'پلتفرم هوش مصنوعی',
@@ -893,6 +958,9 @@ window.applyLang = function applyLang(lang) {
   setT('sb-pro-desc', T.sb_pro_desc);
   setT('sb-pro-btn', T.sb_pro_btn);
   setT('analytics-pro-btn', T.sb_pro_btn);
+  setT('prof-upg-btn', T.upg_btn); setT('an-upg-more', T.upg_more);
+  setT('an-upg-title', T.upg_title); setT('an-upg-desc', T.upg_card_desc);
+  if (typeof window._nirLastUsed === 'number' && window.updateUsageCounter) window.updateUsageCounter(window._nirLastUsed);
 
   // HOME HERO
   set('hero-pill', T.hero_pill);
@@ -4147,7 +4215,42 @@ html.light .rp-foot, html.light .sb-lbl, html.light .shint, html.light .rc-time,
 // Reads usage from Supabase after auth — display only, no enforcement
 (function() {
 
-  var DAILY_LIMIT = 8;
+  var FREE_LIMIT = 5;
+  var PRO_LIMIT  = 100;
+  var DAILY_LIMIT = FREE_LIMIT; // active limit for the current plan (set in updateUsageCounter)
+
+  // Plan comes from app_metadata (server-controlled) — same source api/generate.js trusts.
+  function nirPlanOf(user) {
+    return (user && user.app_metadata && user.app_metadata.plan === 'pro') ? 'pro' : 'free';
+  }
+  window.nirIsPro = function() { return nirPlanOf(window.currentUser) === 'pro'; };
+
+  // Active-language text for upgrade / daily-limit messages (falls back to English)
+  function nirLim(k) {
+    try { var T = LANGS[window._nirLang || (typeof currentLang !== 'undefined' ? currentLang : 'en')] || LANGS.en; return T[k] || LANGS.en[k] || ''; }
+    catch (e) { return ''; }
+  }
+  function nirLimCount(n, lim) { return nirLim('lim_remaining').replace('{n}', n).replace('{lim}', lim); }
+
+  // Read the server's { error } message from a failed /api/generate response.
+  window._nirApiErrorMsg = async function(res, fallback) {
+    try {
+      var d = await res.clone().json();
+      if (d && typeof d.error === 'string' && d.error) return d.error;
+      if (d && d.error && typeof d.error.message === 'string' && d.error.message) return d.error.message;
+    } catch(_) {}
+    return fallback;
+  };
+  window._nirLimitMsg = function() {
+    return window.nirIsPro()
+      ? nirLim('lim_reached_pro')
+      : nirLim('lim_reached_free');
+  };
+  // A 429 body from the server is English: show the localized daily-limit message instead.
+  // Any other server message (or an empty one) is passed through unchanged / falls back to the local message.
+  window._nirLocalizeLimit = function(msg) {
+    return (!msg || /^\s*Daily limit reached/i.test(msg)) ? window._nirLimitMsg() : msg;
+  };
 
   window.updateUsageCounter = function(used) {
     var block  = document.getElementById('sb-usage-block');
@@ -4163,30 +4266,26 @@ html.light .rp-foot, html.light .sb-lbl, html.light .shint, html.light .rc-time,
     // Always show block for logged-in users
     if (!user) { block.style.display = 'none'; return; }
 
-    var isPro = user.user_metadata && user.user_metadata.plan === 'pro';
+    var isPro = nirPlanOf(user) === 'pro';
+    DAILY_LIMIT = isPro ? PRO_LIMIT : FREE_LIMIT;
 
     block.style.display = 'block';
+    if (bar)   bar.style.display   = 'block';
+    if (label) label.style.display = 'block';
+    count.style.color = isPro ? 'var(--gold)' : '';
 
-    if (isPro) {
-      // Pro: show status badge, hide bar
-      if (bar)    bar.style.display    = 'none';
-      if (label)  label.style.display  = 'none';
-      count.textContent = '✦ Pro plan active';
-      count.style.color = 'var(--gold)';
-      if (plan_el) plan_el.textContent = 'Unlimited · No daily limit';
-    } else {
-      // Explore: show bar + counter
-      if (bar)    bar.style.display    = 'block';
-      if (label)  label.style.display  = 'block';
-      count.style.color = '';
-      var safeUsed  = Math.min(typeof used === 'number' ? used : 0, DAILY_LIMIT);
-      var remaining = DAILY_LIMIT - safeUsed;
-      var pct       = Math.min((safeUsed / DAILY_LIMIT) * 100, 100);
-      fill.style.width  = pct + '%';
-      fill.className    = 'sb-usage-fill' +
-        (remaining <= 0 ? ' used' : remaining <= 2 ? ' low' : '');
-      count.textContent = remaining + ' / ' + DAILY_LIMIT + ' remaining today';
-      if (plan_el) plan_el.textContent = remaining <= 0 ? 'Resets at midnight UTC · Upgrade for unlimited' : 'Free plan · 8 generations per day';
+    if (typeof used === 'number') window._nirLastUsed = used;
+    if (label) label.textContent = nirLim('lim_label');
+    var safeUsed  = Math.min(typeof used === 'number' ? used : 0, DAILY_LIMIT);
+    var remaining = DAILY_LIMIT - safeUsed;
+    var pct       = Math.min((safeUsed / DAILY_LIMIT) * 100, 100);
+    fill.style.width  = pct + '%';
+    fill.className    = 'sb-usage-fill' +
+      (remaining <= 0 ? ' used' : remaining <= Math.max(2, Math.round(DAILY_LIMIT * 0.1)) ? ' low' : '');
+    count.textContent = nirLimCount(remaining, DAILY_LIMIT);
+    if (plan_el) {
+      if (isPro) plan_el.textContent = remaining <= 0 ? nirLim('lim_pro_reset') : nirLim('lim_pro_plan');
+      else       plan_el.textContent = remaining <= 0 ? nirLim('lim_free_reset') : nirLim('lim_free_plan');
     }
   };
 
@@ -4196,14 +4295,14 @@ html.light .rp-foot, html.light .sb-lbl, html.light .shint, html.light .rc-time,
       if (!window.SB || !window.currentUser) return;
       var today = new Date().toISOString().split('T')[0];
       var uid   = window.currentUser.id;
-      var plan  = window.currentUser.user_metadata && window.currentUser.user_metadata.plan;
-      if (plan === 'pro') { window.updateUsageCounter(0); return; }
-      var { data } = await window.SB
+      var { data, error } = await window.SB
         .from('usage_daily')
         .select('usage_count')
         .eq('user_id', uid)
         .eq('date', today)
+        .eq('tool', 'general')
         .maybeSingle();
+      if (error) return; // keep last known value rather than showing a wrong one
       window.updateUsageCounter(data ? data.usage_count : 0);
     } catch(_) {}
   };
@@ -4211,6 +4310,7 @@ html.light .rp-foot, html.light .sb-lbl, html.light .shint, html.light .rc-time,
   // Hook: increment display after successful API call
   // Called from callAPI and astSend after successful response
   window._usageIncrement = function() {
+    setTimeout(function(){ if (window.fetchAndShowUsage) window.fetchAndShowUsage(); }, 800);
     var countEl = document.getElementById('sb-usage-count');
     if (!countEl) return;
     var text = countEl.textContent;
@@ -4220,7 +4320,7 @@ html.light .rp-foot, html.light .sb-lbl, html.light .shint, html.light .rc-time,
       var fill = document.getElementById('sb-usage-fill');
       var used = DAILY_LIMIT - newRemaining;
       var pct  = Math.min((used / DAILY_LIMIT) * 100, 100);
-      countEl.textContent = newRemaining + ' / ' + DAILY_LIMIT + ' remaining today';
+      countEl.textContent = nirLimCount(newRemaining, DAILY_LIMIT);
       if (fill) {
         fill.style.width = pct + '%';
         fill.className = 'sb-usage-fill' +
@@ -7272,13 +7372,13 @@ html.light #footer{--f-ink:#25221B;--f-mut:#6B6554;--f-gt:#8F6B14;--f-line:rgba(
 <div class="sb-usage" id="sb-usage-block" style="display:none">
     <div class="sb-usage-label" id="sb-usage-label">Daily Usage</div>
     <div class="sb-usage-bar" id="sb-usage-bar"><div class="sb-usage-fill" id="sb-usage-fill" style="width:0%"></div></div>
-    <div class="sb-usage-count" id="sb-usage-count">— / 8</div>
-    <div class="sb-usage-plan" id="sb-usage-plan">Free plan · 8 generations per day</div>
+    <div class="sb-usage-count" id="sb-usage-count">— / 5</div>
+    <div class="sb-usage-plan" id="sb-usage-plan">Free plan · 5 generations per day</div>
   </div>
   <div class="sb-pro">
     <div class="sp-t" id="sb-pro-title">✦ Go Pro</div>
-    <div class="sp-d" id="sb-pro-desc">Unlimited prompts, saved library, priority AI &amp; all tools.</div>
-    <button onclick="window.open('https://niracademy.com','_blank')" id="sb-pro-btn">Upgrade to Pro →</button>
+    <div class="sp-d" id="sb-pro-desc">$5/month · 100 generations per day, saved library, priority AI &amp; all tools.</div>
+    <button onclick="nirOpenUpgrade()" id="sb-pro-btn">Upgrade to Pro →</button>
   </div>
 </aside>
 <div id="sb-backdrop" onclick="closeSB()" aria-hidden="true"></div>
@@ -7444,7 +7544,7 @@ html.light #footer{--f-ink:#25221B;--f-mut:#6B6554;--f-gt:#8F6B14;--f-line:rgba(
       </div>
       <div class="dw-btns">
         <button class="btn-p" onclick="go('generator')" id="dash-gen-btn">⚡ Generate Now</button>
-        <button class="btn-o" onclick="window.open('https://niracademy.com','_blank')" id="dash-pro-btn">Join Pro →</button>
+        <button class="btn-o" onclick="nirOpenUpgrade()" id="dash-pro-btn">Join Pro →</button>
       </div>
     </div>
 
@@ -8012,7 +8112,7 @@ html.light #footer{--f-ink:#25221B;--f-mut:#6B6554;--f-gt:#8F6B14;--f-line:rgba(
         <div class="ps-item"><div class="ps-val">FREE</div><div class="ps-lbl">Current Plan</div></div>
       </div>
       <div style="margin-top:1.75rem;display:flex;gap:.75rem;flex-wrap:wrap">
-        <button class="btn-p" onclick="window.open('https://niracademy.com','_blank')">Upgrade to Pro</button>
+        <button class="btn-p" id="prof-upg-btn" onclick="nirOpenUpgrade()">Upgrade to Pro</button>
         <button class="btn-o" onclick="showPwdResetModal()">Change Password</button>
         <button class="btn-o" onclick="doLogout()">Sign Out</button>
       </div>
@@ -8056,7 +8156,7 @@ html.light #footer{--f-ink:#25221B;--f-mut:#6B6554;--f-gt:#8F6B14;--f-line:rgba(
     <div class="sgrid">
       <div class="sc"><div class="sc-ico"><i data-lucide="zap"></i></div><div class="sc-v" id="an-total">0</div><div class="sc-l">Total Prompts</div><div class="sc-s">All time</div></div>
       <div class="sc"><div class="sc-ico"><i data-lucide="bookmark"></i></div><div class="sc-v" id="an-saved">0</div><div class="sc-l">Saved Prompts</div><div class="sc-s">In your library</div></div>
-      <div class="sc"><div class="sc-ico"><i data-lucide="star"></i></div><div class="sc-v">FREE</div><div class="sc-l">Current Plan</div><div class="sc-s">Upgrade for more</div></div>
+      <div class="sc"><div class="sc-ico"><i data-lucide="star"></i></div><div class="sc-v">FREE</div><div class="sc-l">Current Plan</div><div class="sc-s" id="an-upg-more">Upgrade for more</div></div>
       <div class="sc"><div class="sc-ico"><i data-lucide="calendar"></i></div><div class="sc-v" id="an-days">0</div><div class="sc-l">Days Active</div><div class="sc-s">Since joining</div></div>
     </div>
 
@@ -8067,11 +8167,11 @@ html.light #footer{--f-ink:#25221B;--f-mut:#6B6554;--f-gt:#8F6B14;--f-line:rgba(
       <div class="tc" onclick="go('ielts')"><span class="tc-ico"><i data-lucide="graduation-cap"></i></span><h3>IELTS Generator</h3><p>Loading usage data…</p><button class="tc-cta">Open →</button></div>
     </div>
 
-    <div class="stitle" style="margin-top:1.5rem"><span class="stg">Upgrade to Pro</span></div>
+    <div class="stitle" style="margin-top:1.5rem"><span class="stg" id="an-upg-title">Upgrade to Pro</span></div>
     <div style="background:linear-gradient(135deg,rgba(201,168,76,.12),rgba(201,168,76,.05));border:1px solid var(--bdr2);border-radius:var(--rl);padding:2rem;text-align:center">
       <div style="font-family:'Cinzel',serif;font-size:1.3rem;color:var(--gold);margin-bottom:.6rem">✦ NIR Academy Pro</div>
-      <p style="font-size:13px;color:var(--muted);max-width:400px;margin:0 auto 1.5rem">Unlimited prompts, full history, advanced analytics, priority AI access, and all future tools.</p>
-      <button class="btn-p" onclick="window.open('https://niracademy.com','_blank')" id="analytics-pro-btn">Upgrade to Pro →</button>
+      <p style="font-size:13px;color:var(--muted);max-width:400px;margin:0 auto 1.5rem" id="an-upg-desc">$5/month · 100 generations per day, full history, advanced analytics, priority AI access, and all future tools.</p>
+      <button class="btn-p" onclick="nirOpenUpgrade()" id="analytics-pro-btn">Upgrade to Pro →</button>
     </div>
   </div>
 </div>
@@ -8896,9 +8996,9 @@ function renderMD(raw){
 }
 
 // ── Plan limit message ──
-function showLimitMsg(outId,btn){
+function showLimitMsg(outId,btn,msg){
   const out=document.getElementById(outId);
-  if(out) out.textContent="Daily limit reached. Upgrade to Nira Pro for unlimited access.";
+  if(out) out.textContent=msg||(window._nirLimitMsg?window._nirLimitMsg():"Daily limit reached. Please try again tomorrow.");
   if(btn){btn.classList.remove("loading");btn.textContent="✦  "+(btn.dataset.lbl||"Generate");}
 }
 
@@ -8938,12 +9038,19 @@ async function callAPI(prompt,outId,btn,onComplete){
       return {model:"claude-sonnet-4-20250514",max_tokens:2500,messages:[{role:"user",content:_p}]};
     })())
     });
-    if(res.status===429){showLimitMsg(outId,btn);return;}
+    if(res.status===429){var _lm=await window._nirApiErrorMsg(res,'');showLimitMsg(outId,btn,window._nirLocalizeLimit(_lm));if(window.fetchAndShowUsage)window.fetchAndShowUsage();return;}
     if(res.status===401){
       // Try to refresh session before giving up
       if(window.SB){try{await window.SB.auth.refreshSession();}catch(_){}}
-      if(out) out.textContent="Session expired. Please sign in again.";
+      if(out) out.textContent=token?"Session expired. Please sign in again.":"Please sign in to continue.";
       if(btn){btn.classList.remove("loading");btn.textContent="✦  "+(btn.dataset.lbl||"Generate");}
+      return;
+    }
+    if(!res.ok){
+      const _em=await window._nirApiErrorMsg(res,res.status===503?"Service temporarily unavailable. Please retry shortly.":res.status===504?"Request timed out. Please try again.":"Something went wrong (HTTP "+res.status+"). Please try again.");
+      if(out) out.textContent=_em;
+      if(btn){btn.classList.remove("loading");btn.textContent="✦  "+(btn.dataset.lbl||"Generate");}
+      T("Something went wrong. Please try again.");
       return;
     }
     const data=await res.json();
@@ -8975,6 +9082,7 @@ async function callAPI(prompt,outId,btn,onComplete){
       if(window.showNextSteps) window.showNextSteps();
       if(window.saveSession) window.saveSession();
     }
+    if(_failed && window.fetchAndShowUsage) window.fetchAndShowUsage();
     T(_failed ? "Something went wrong. Please try again." : "Content ready ✓");
     // ── Fix 1: dynamic ELT output label ──
     (function(){
@@ -9610,6 +9718,9 @@ async function initAuth(){
     if(session && session.user){
       currentUser = session.user;
       window.currentUser = currentUser;
+      if(event==='INITIAL_SESSION'||event==='TOKEN_REFRESHED'){
+        if(window.fetchAndShowUsage) window.fetchAndShowUsage();
+      }
       if(event==='SIGNED_IN'){
         if(window.fetchAndShowUsage) window.fetchAndShowUsage();
         onLogin(session.user);
@@ -10574,13 +10685,21 @@ async function astSend() {
     if (res.status === 429) {
       if (sendBtn) sendBtn.disabled = false;
       if (thinking) thinking.style.display = 'none';
-      astRenderMessage('assistant', 'Daily limit reached. Upgrade to Nira Pro for unlimited access.');
+      astRenderMessage('assistant', window._nirLocalizeLimit(await window._nirApiErrorMsg(res, '')));
+      if (window.fetchAndShowUsage) window.fetchAndShowUsage();
       return;
     }
     if (res.status === 401) {
       if (sendBtn) sendBtn.disabled = false;
       if (thinking) thinking.style.display = 'none';
       astRenderMessage('assistant', 'Please sign in to continue.');
+      return;
+    }
+    if (!res.ok) {
+      var _aem = await window._nirApiErrorMsg(res, res.status === 503 ? 'Service temporarily unavailable. Please retry shortly.' : res.status === 504 ? 'Request timed out. Please try again.' : 'Something went wrong (HTTP ' + res.status + '). Please try again.');
+      if (sendBtn) sendBtn.disabled = false;
+      if (thinking) thinking.style.display = 'none';
+      astRenderMessage('assistant', _aem);
       return;
     }
     var data = await res.json();
@@ -12320,6 +12439,97 @@ function watch(){IDS.forEach(function(id){var r=document.getElementById(id);if(r
 var oa=window.applyLang;
 if(typeof oa==='function') window.applyLang=function(){ var r=oa.apply(this,arguments); try{run(window._nirLang);}catch(e){} return r; };
 if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',function(){run();watch();}); else {run();watch();}
+})();
+</script>
+<style id="nir-upgrade-form-css">
+/* In-app Pro upgrade form — reuses the auth-modal look */
+#upg-overlay{position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:1100;display:none;align-items:center;justify-content:center;backdrop-filter:blur(8px);padding:1rem;overflow:auto}
+#upg-overlay.show{display:flex}
+#upg-overlay .auth-modal{max-width:460px;max-height:92vh;overflow:auto;padding:2rem}
+#upg-overlay .auth-field select,#upg-overlay .auth-field textarea{width:100%;background:#252525;border:1px solid rgba(201,168,76,.2);border-radius:6px;padding:10px 14px;font-family:'Plus Jakarta Sans',sans-serif;font-size:13px;color:#e4e4e4;outline:none;transition:border-color .2s}
+#upg-overlay .auth-field select:focus,#upg-overlay .auth-field textarea:focus{border-color:rgba(201,168,76,.5)}
+#upg-overlay .auth-field textarea{resize:vertical;min-height:74px}
+.upg-plan{border:1px solid rgba(201,168,76,.35);background:linear-gradient(135deg,rgba(201,168,76,.12),rgba(201,168,76,.05));border-radius:10px;padding:.8rem 1rem;margin-bottom:1.1rem;text-align:center;color:#E8C96A;font-size:12px}
+.upg-plan b{display:block;font-family:'Cinzel',serif;font-size:1.6rem;color:#C9A84C;line-height:1.2}
+.upg-hint,.upg-learn{font-size:11px;color:#787878;text-align:center;margin-top:.8rem;line-height:1.6}
+.upg-learn a{color:#C9A84C}
+html.light #upg-overlay .auth-field select,html.light #upg-overlay .auth-field textarea{background:#fff;border-color:#dde6f5;color:#1B2A4A}
+[dir="rtl"] #upg-overlay .auth-close{right:auto;left:1rem}
+</style>
+<script id="nir-upgrade-form">
+(function(){
+var MAIL='info@niracademy.com';
+var X={
+en:{title:'Upgrade to Pro',per:'per month · 100 generations per day',name:'Full name',email:'Email',pay:'Preferred payment method',p1:'Bank card',p2:'PayPal',p3:'Bank transfer',p4:'Other',msg:'Message (optional)',ph:'Anything we should know?',send:'Send upgrade request',hint:'Your request goes to {m}. We will reply with payment instructions.',e1:'Please enter your name.',e2:'Please enter a valid email address.',dt:'Request ready',dd:'Your email app should open with the request. If it did not, copy the text below and send it to {m}.',copy:'Copy request',copied:'Copied ✓',learn:'Learn more at niracademy.com',sending:'Sending…',ok_t:'Request received',ok_d:'We saved your request and notified our team. We will contact you at {e} with payment instructions. Pro is activated manually after payment.',dup:'You already have a pending Pro request. We will contact you soon.',fb:'We could not save your request online, so we prepared an email instead.'},
+tr:{title:'Pro Plana Yükselt',per:'aylık · günde 100 üretim',name:'Ad soyad',email:'E-posta',pay:'Tercih edilen ödeme yöntemi',p1:'Banka kartı',p2:'PayPal',p3:'Banka havalesi',p4:'Diğer',msg:'Mesaj (isteğe bağlı)',ph:'Bilmemizi istediğiniz bir şey var mı?',send:'Yükseltme talebi gönder',hint:'Talebiniz {m} adresine gönderilir. Ödeme talimatlarıyla size döneceğiz.',e1:'Lütfen adınızı girin.',e2:'Lütfen geçerli bir e-posta adresi girin.',dt:'Talep hazır',dd:'E-posta uygulamanız talebinizle açılmalı. Açılmazsa aşağıdaki metni kopyalayıp {m} adresine gönderin.',copy:'Talebi kopyala',copied:'Kopyalandı ✓',learn:'Daha fazla bilgi: niracademy.com',sending:'Gönderiliyor…',ok_t:'Talep alındı',ok_d:'Talebinizi kaydettik ve ekibimizi bilgilendirdik. Ödeme talimatlarıyla {e} adresinden size ulaşacağız. Pro plan, ödemeden sonra manuel olarak etkinleştirilir.',dup:'Bekleyen bir Pro talebiniz zaten var. Yakında size dönüş yapacağız.',fb:'Talebiniz çevrimiçi kaydedilemedi, bunun yerine bir e-posta hazırladık.'},
+ar:{title:'الترقية إلى Pro',per:'شهريًا · 100 عملية إنشاء يوميًا',name:'الاسم الكامل',email:'البريد الإلكتروني',pay:'طريقة الدفع المفضلة',p1:'بطاقة مصرفية',p2:'PayPal',p3:'حوالة مصرفية',p4:'أخرى',msg:'رسالة (اختياري)',ph:'هل هناك ما تود إخبارنا به؟',send:'إرسال طلب الترقية',hint:'يُرسل طلبك إلى {m}. سنرد عليك بتعليمات الدفع.',e1:'يرجى إدخال اسمك.',e2:'يرجى إدخال بريد إلكتروني صالح.',dt:'الطلب جاهز',dd:'يجب أن يفتح تطبيق البريد مع الطلب. إن لم يفتح، انسخ النص أدناه وأرسله إلى {m}.',copy:'نسخ الطلب',copied:'تم النسخ ✓',learn:'اعرف المزيد على niracademy.com',sending:'جارٍ الإرسال…',ok_t:'تم استلام الطلب',ok_d:'حفظنا طلبك وأبلغنا فريقنا. سنتواصل معك على {e} مع تعليمات الدفع. يتم تفعيل Pro يدويًا بعد الدفع.',dup:'لديك طلب Pro قيد الانتظار بالفعل. سنتواصل معك قريبًا.',fb:'تعذّر حفظ طلبك عبر الإنترنت، لذا جهّزنا رسالة بريد إلكتروني بدلاً من ذلك.'},
+zh:{title:'升级到 Pro',per:'每月 · 每天 100 次生成',name:'姓名',email:'电子邮箱',pay:'首选支付方式',p1:'银行卡',p2:'PayPal',p3:'银行转账',p4:'其他',msg:'留言（可选）',ph:'有什么想告诉我们的吗？',send:'发送升级申请',hint:'您的申请将发送至 {m}。我们会回复付款说明。',e1:'请输入您的姓名。',e2:'请输入有效的电子邮箱。',dt:'申请已生成',dd:'您的邮件应用应已打开并带有申请内容。如果没有，请复制下方文字并发送至 {m}。',copy:'复制申请',copied:'已复制 ✓',learn:'更多信息：niracademy.com',sending:'发送中…',ok_t:'已收到申请',ok_d:'我们已保存您的申请并通知了团队。我们将通过 {e} 联系您并提供付款说明。Pro 会在付款后手动开通。',dup:'您已有一个待处理的 Pro 申请，我们会尽快联系您。',fb:'无法在线保存您的申请，已为您准备了一封邮件。'},
+fa:{title:'ارتقا به نسخه حرفه‌ای',per:'ماهانه · ۱۰۰ تولید در روز',name:'نام و نام خانوادگی',email:'ایمیل',pay:'روش پرداخت ترجیحی',p1:'کارت بانکی',p2:'PayPal',p3:'حواله بانکی',p4:'سایر',msg:'پیام (اختیاری)',ph:'چیزی هست که باید بدانیم؟',send:'ارسال درخواست ارتقا',hint:'درخواست شما به {m} ارسال می‌شود. دستورالعمل پرداخت را برایتان می‌فرستیم.',e1:'لطفاً نام خود را وارد کنید.',e2:'لطفاً یک ایمیل معتبر وارد کنید.',dt:'درخواست آماده است',dd:'برنامه ایمیل شما باید با درخواست باز شود. اگر باز نشد، متن زیر را کپی کرده و به {m} بفرستید.',copy:'کپی درخواست',copied:'کپی شد ✓',learn:'اطلاعات بیشتر در niracademy.com',sending:'در حال ارسال…',ok_t:'درخواست دریافت شد',ok_d:'درخواست شما ذخیره شد و تیم ما مطلع شد. با شما از طریق {e} تماس می‌گیریم و دستورالعمل پرداخت را می‌فرستیم. نسخه حرفه‌ای پس از پرداخت به‌صورت دستی فعال می‌شود.',dup:'شما از قبل یک درخواست حرفه‌ای در انتظار دارید. به‌زودی با شما تماس می‌گیریم.',fb:'ذخیره آنلاین درخواست ممکن نشد؛ به‌جای آن یک ایمیل آماده کردیم.'}
+};
+var ov,lastText='';
+function lang(){return window._nirLang||(typeof currentLang!=='undefined'?currentLang:'en');}
+function T(){return X[lang()]||X.en;}
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+function $(id){return document.getElementById(id);}
+function render(){
+  var t=T(),u=window.currentUser||{},nm=(u.user_metadata&&u.user_metadata.full_name)||'',em=u.email||'';
+  if(!ov){ov=document.createElement('div');ov.id='upg-overlay';ov.addEventListener('click',function(e){if(e.target===ov)close();});document.body.appendChild(ov);}
+  ov.innerHTML='<div class="auth-modal" role="dialog" aria-modal="true" aria-labelledby="upg-title">'
+   +'<button class="auth-close" onclick="nirUpgClose()" aria-label="Close">✕</button>'
+   +'<h2 id="upg-title">'+esc(t.title)+'</h2><p class="am-sub">NIRA AI · NIR Academy</p>'
+   +'<div class="upg-plan"><b>$5</b>'+esc(t.per)+'</div>'
+   +'<div class="auth-error" id="upg-err"></div>'
+   +'<div class="auth-field"><label for="upg-name">'+esc(t.name)+'</label><input id="upg-name" type="text" autocomplete="name" value="'+esc(nm)+'"></div>'
+   +'<div class="auth-field"><label for="upg-email">'+esc(t.email)+'</label><input id="upg-email" type="email" autocomplete="email" value="'+esc(em)+'"></div>'
+   +'<div class="auth-field"><label for="upg-pay">'+esc(t.pay)+'</label><select id="upg-pay"><option value="Bank card">'+esc(t.p1)+'</option><option value="PayPal">'+esc(t.p2)+'</option><option value="Bank transfer">'+esc(t.p3)+'</option><option value="Other">'+esc(t.p4)+'</option></select></div>'
+   +'<div class="auth-field"><label for="upg-msg">'+esc(t.msg)+'</label><textarea id="upg-msg" placeholder="'+esc(t.ph)+'"></textarea></div>'
+   +'<button class="auth-submit" onclick="nirUpgSubmit()">✦ &nbsp;'+esc(t.send)+'</button>'
+   +'<div class="upg-hint">'+esc(t.hint.replace('{m}',MAIL))+'</div>'
+   +'<div class="upg-learn"><a href="https://niracademy.com" target="_blank" rel="noopener">'+esc(t.learn)+'</a></div></div>';
+}
+function open(){if(!window.currentUser&&typeof openAuth==='function'){openAuth();return;}render();ov.classList.add('show');document.body.style.overflow='hidden';setTimeout(function(){var f=$('upg-name');if(f&&!f.value)f.focus();},50);}
+function close(){if(!ov)return;ov.classList.remove('show');document.body.style.overflow='';}
+function err(m){var e=$('upg-err');if(e){e.textContent=m;e.style.display='block';}}
+function view(inner){ov.querySelector('.auth-modal').innerHTML='<button class="auth-close" onclick="nirUpgClose()" aria-label="Close">✕</button>'+inner;}
+function done(title,text){var t=T();view('<h2>'+esc(title)+'</h2><p class="am-sub">NIRA AI · NIR Academy</p><div class="upg-hint" style="margin:0 0 1.2rem">'+esc(text)+'</div><button class="auth-submit" onclick="nirUpgClose()">OK</button>');}
+function fallback(name){
+  var t=T();
+  view('<h2>'+esc(t.dt)+'</h2><p class="am-sub">NIRA AI · NIR Academy</p>'
+   +'<div class="upg-hint" style="margin:0 0 1rem">'+esc(t.fb+' '+t.dd.replace('{m}',MAIL))+'</div>'
+   +'<div class="auth-field"><textarea id="upg-out" readonly style="min-height:150px">'+esc(lastText)+'</textarea></div>'
+   +'<button class="auth-submit" id="upg-copy" onclick="nirUpgCopy()">'+esc(t.copy)+'</button>');
+  window.location.href='mailto:'+MAIL+'?subject='+encodeURIComponent('NIRA AI Pro upgrade request — '+name)+'&body='+encodeURIComponent(lastText);
+}
+async function notify(id){
+  try{
+    var ss=(await window.SB.auth.getSession()).data.session; if(!ss) return;
+    var c=new AbortController(); setTimeout(function(){c.abort();},10000);
+    await fetch('/api/pro-request',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+ss.access_token},body:JSON.stringify({id:id}),signal:c.signal});
+  }catch(_){}
+}
+async function submit(){
+  var t=T(),name=($('upg-name').value||'').trim(),email=($('upg-email').value||'').trim(),pay=$('upg-pay').value,msg=($('upg-msg').value||'').trim();
+  if(!name){err(t.e1);$('upg-name').focus();return;}
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)){err(t.e2);$('upg-email').focus();return;}
+  lastText=['NIRA AI — Pro upgrade request','','Name: '+name,'Email: '+email,'Plan: Pro — $5/month (100 generations/day)','Payment method: '+pay,'Interface language: '+lang(),'Current plan: '+((window.nirIsPro&&window.nirIsPro())?'pro':'free'),'','Message:',msg||'-'].join('\n');
+  var btn=ov.querySelector('.auth-submit'); btn.classList.add('loading'); btn.textContent=t.sending;
+  var L=lang(); if(['en','tr','fa','ar','zh'].indexOf(L)<0) L='en';
+  try{
+    if(!window.SB||!window.currentUser) throw new Error('no-session');
+    var r=await window.SB.from('pro_requests').insert({name:name.slice(0,120),email:email.slice(0,200),payment_method:pay,message:msg.slice(0,1000)||null,language:L,current_plan:((window.nirIsPro&&window.nirIsPro())?'pro':'free')}).select('id').single();
+    if(r.error){ if(r.error.code==='23505'){done(t.ok_t,t.dup);return;} throw r.error; }
+    notify(r.data.id);
+    done(t.ok_t,t.ok_d.replace('{e}',email));
+  }catch(e){ fallback(name); }
+}
+function copy(){
+  var b=$('upg-copy'),t=T(),o=$('upg-out');
+  function ok(){if(b){b.textContent=t.copied;}}
+  try{navigator.clipboard.writeText(lastText).then(ok,function(){o.select();document.execCommand('copy');ok();});}
+  catch(e){try{o.select();document.execCommand('copy');ok();}catch(_){}}
+}
+window.nirOpenUpgrade=open;window.nirUpgClose=close;window.nirUpgSubmit=submit;window.nirUpgCopy=copy;
+document.addEventListener('keydown',function(e){if(e.key==='Escape'&&ov&&ov.classList.contains('show'))close();});
 })();
 </script>
 </body>
