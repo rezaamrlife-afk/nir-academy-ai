@@ -960,6 +960,7 @@ window.applyLang = function applyLang(lang) {
   setT('analytics-pro-btn', T.sb_pro_btn);
   setT('prof-upg-btn', T.upg_btn); setT('an-upg-more', T.upg_more);
   setT('an-upg-title', T.upg_title); setT('an-upg-desc', T.upg_card_desc);
+  if (window.nirRenderPlanLabels) window.nirRenderPlanLabels();
   if (typeof window._nirLastUsed === 'number' && window.updateUsageCounter) window.updateUsageCounter(window._nirLastUsed);
 
   // HOME HERO
@@ -4252,6 +4253,26 @@ html.light .rp-foot, html.light .sb-lbl, html.light .shint, html.light .rc-time,
     return (!msg || /^\s*Daily limit reached/i.test(msg)) ? window._nirLimitMsg() : msg;
   };
 
+  // Keep the static plan cards (Dashboard / Profile / Analytics) in sync with the detected plan
+  window.nirRenderPlanLabels = function() {
+    var isPro = nirPlanOf(window.currentUser) === 'pro';
+    var val = isPro ? 'PRO' : 'FREE';
+    ['dash-plan-val', 'prof-plan-val', 'an-plan-val'].forEach(function(id) {
+      var el = document.getElementById(id);
+      if (el) el.textContent = val;
+    });
+    var dsub = document.getElementById('dash-plan-sub');
+    if (dsub) {
+      if (dsub.dataset.nirOrig === undefined) dsub.dataset.nirOrig = dsub.textContent;
+      dsub.textContent = isPro ? nirLim('lim_pro_plan') : dsub.dataset.nirOrig;
+    }
+    var asub = document.getElementById('an-upg-more');
+    if (asub) {
+      if (isPro) { asub.dataset.nirPro = '1'; asub.textContent = nirLim('lim_pro_plan'); }
+      else if (asub.dataset.nirPro === '1') { delete asub.dataset.nirPro; asub.textContent = nirLim('upg_more'); }
+    }
+  };
+
   window.updateUsageCounter = function(used) {
     var block  = document.getElementById('sb-usage-block');
     var fill   = document.getElementById('sb-usage-fill');
@@ -4268,6 +4289,7 @@ html.light .rp-foot, html.light .sb-lbl, html.light .shint, html.light .rc-time,
 
     var isPro = nirPlanOf(user) === 'pro';
     DAILY_LIMIT = isPro ? PRO_LIMIT : FREE_LIMIT;
+    if (window.nirRenderPlanLabels) window.nirRenderPlanLabels();
 
     block.style.display = 'block';
     if (bar)   bar.style.display   = 'block';
@@ -4293,6 +4315,20 @@ html.light .rp-foot, html.light .sb-lbl, html.light .shint, html.light .rc-time,
   window.fetchAndShowUsage = async function() {
     try {
       if (!window.SB || !window.currentUser) return;
+      // getSession() returns the cached user, so app_metadata.plan can be stale.
+      // Re-read the user from the server (throttled) before the plan is evaluated.
+      var _now = Date.now();
+      if (!window._nirUserSyncAt || _now - window._nirUserSyncAt > 30000) {
+        window._nirUserSyncAt = _now;
+        try {
+          var _ur = await window.SB.auth.getUser();
+          if (_ur && _ur.data && _ur.data.user && window.currentUser && _ur.data.user.id === window.currentUser.id) {
+            window.currentUser = _ur.data.user;
+          }
+        } catch (_) {}
+        if (!window.currentUser) return; // signed out while refreshing
+      }
+      if (window.nirRenderPlanLabels) window.nirRenderPlanLabels();
       var today = new Date().toISOString().split('T')[0];
       var uid   = window.currentUser.id;
       var { data, error } = await window.SB
@@ -7590,7 +7626,7 @@ html.light #footer{--f-ink:#25221B;--f-mut:#6B6554;--f-gt:#8F6B14;--f-line:rgba(
     <div class="sgrid">
       <div class="sc"><div class="sc-ico"><i data-lucide="circle-user-round"></i></div><div class="sc-v">✓</div><div class="sc-l">User Accounts</div><div class="sc-s">Supabase auth · Active</div></div>
       <div class="sc"><div class="sc-ico"><i data-lucide="bookmark-check"></i></div><div class="sc-v">✓</div><div class="sc-l">Saved Prompts</div><div class="sc-s">Login required · Active</div></div>
-      <div class="sc"><div class="sc-ico"><i data-lucide="gem"></i></div><div class="sc-v">FREE</div><div class="sc-l">Current Plan</div><div class="sc-s">Pro plan launching soon</div></div>
+      <div class="sc"><div class="sc-ico"><i data-lucide="gem"></i></div><div class="sc-v" id="dash-plan-val">FREE</div><div class="sc-l">Current Plan</div><div class="sc-s" id="dash-plan-sub">Pro plan launching soon</div></div>
       <div class="sc"><div class="sc-ico"><i data-lucide="smartphone"></i></div><div class="sc-v">PWA</div><div class="sc-l">Mobile App</div><div class="sc-s">Install as app · Available</div></div>
     </div>
   </div>
@@ -8109,7 +8145,7 @@ html.light #footer{--f-ink:#25221B;--f-mut:#6B6554;--f-gt:#8F6B14;--f-line:rgba(
       <div class="profile-stats">
         <div class="ps-item"><div class="ps-val" id="ps-saved">0</div><div class="ps-lbl">Saved Prompts</div></div>
         <div class="ps-item"><div class="ps-val">6</div><div class="ps-lbl">Tools Available</div></div>
-        <div class="ps-item"><div class="ps-val">FREE</div><div class="ps-lbl">Current Plan</div></div>
+        <div class="ps-item"><div class="ps-val" id="prof-plan-val">FREE</div><div class="ps-lbl">Current Plan</div></div>
       </div>
       <div style="margin-top:1.75rem;display:flex;gap:.75rem;flex-wrap:wrap">
         <button class="btn-p" id="prof-upg-btn" onclick="nirOpenUpgrade()">Upgrade to Pro</button>
@@ -8156,7 +8192,7 @@ html.light #footer{--f-ink:#25221B;--f-mut:#6B6554;--f-gt:#8F6B14;--f-line:rgba(
     <div class="sgrid">
       <div class="sc"><div class="sc-ico"><i data-lucide="zap"></i></div><div class="sc-v" id="an-total">0</div><div class="sc-l">Total Prompts</div><div class="sc-s">All time</div></div>
       <div class="sc"><div class="sc-ico"><i data-lucide="bookmark"></i></div><div class="sc-v" id="an-saved">0</div><div class="sc-l">Saved Prompts</div><div class="sc-s">In your library</div></div>
-      <div class="sc"><div class="sc-ico"><i data-lucide="star"></i></div><div class="sc-v">FREE</div><div class="sc-l">Current Plan</div><div class="sc-s" id="an-upg-more">Upgrade for more</div></div>
+      <div class="sc"><div class="sc-ico"><i data-lucide="star"></i></div><div class="sc-v" id="an-plan-val">FREE</div><div class="sc-l">Current Plan</div><div class="sc-s" id="an-upg-more">Upgrade for more</div></div>
       <div class="sc"><div class="sc-ico"><i data-lucide="calendar"></i></div><div class="sc-v" id="an-days">0</div><div class="sc-l">Days Active</div><div class="sc-s">Since joining</div></div>
     </div>
 
