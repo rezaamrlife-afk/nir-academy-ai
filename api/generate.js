@@ -4,6 +4,84 @@ export const config = {
 
 const activeRequests = new Map();
 
+const FREE_LIMIT = 5;
+const PRO_LIMIT  = 100;
+const MAX_USAGE_ATTEMPTS = 10;
+
+// Atomic check-and-increment using compare-and-swap on the row.
+// Concurrent requests can never push the count past `limit`: each increment only
+// succeeds if usage_count still equals the value we just read, otherwise we re-read.
+// Throws on any database error (caller must fail closed).
+async function checkAndIncrementUsage(supabase, userId, plan) {
+  const today = new Date().toISOString().slice(0, 10);
+  const limit = plan === 'pro' ? PRO_LIMIT : FREE_LIMIT;
+
+  for (let attempt = 0; attempt < MAX_USAGE_ATTEMPTS; attempt++) {
+    const { data: row, error: selectError } = await supabase
+      .from('usage_daily')
+      .select('usage_count')
+      .eq('user_id', userId)
+      .eq('date', today)
+      .eq('tool', 'general')
+      .maybeSingle();
+    if (selectError) throw selectError;
+
+    if (!row) {
+      // First request today: insert. Unique (user_id,date,tool) makes racing inserts fail.
+      const { error: insertError } = await supabase.from('usage_daily').insert({
+        user_id: userId, date: today, tool: 'general', usage_count: 1, updated_at: new Date().toISOString(),
+      });
+      if (!insertError) return { allowed: true, current: 1, limit, date: today };
+      if (insertError.code !== '23505') throw insertError; // not a duplicate-key race
+      continue; // another request created the row first; re-read
+    }
+
+    const current = row.usage_count;
+    if (current >= limit) return { allowed: false, current, limit, date: today };
+
+    // Only increments if nobody else changed the count since we read it.
+    const { data: updated, error: updateError } = await supabase
+      .from('usage_daily')
+      .update({ usage_count: current + 1, updated_at: new Date().toISOString() })
+      .eq('user_id', userId)
+      .eq('date', today)
+      .eq('tool', 'general')
+      .eq('usage_count', current)
+      .select('usage_count');
+    if (updateError) throw updateError;
+
+    if (updated && updated.length > 0) {
+      return { allowed: true, current: current + 1, limit, date: today };
+    }
+    // Lost the race; loop and re-read.
+  }
+
+  throw new Error('Usage counter contention');
+}
+
+// Atomic refund (same compare-and-swap approach). Never throws.
+async function refundUsage(supabase, userId, date) {
+  try {
+    for (let attempt = 0; attempt < MAX_USAGE_ATTEMPTS; attempt++) {
+      const { data: row, error: selectError } = await supabase
+        .from('usage_daily')
+        .select('usage_count')
+        .eq('user_id', userId).eq('date', date).eq('tool', 'general')
+        .maybeSingle();
+      if (selectError || !row || row.usage_count <= 0) return;
+
+      const { data: updated, error: updateError } = await supabase
+        .from('usage_daily')
+        .update({ usage_count: row.usage_count - 1, updated_at: new Date().toISOString() })
+        .eq('user_id', userId).eq('date', date).eq('tool', 'general')
+        .eq('usage_count', row.usage_count)
+        .select('usage_count');
+      if (updateError) return;
+      if (updated && updated.length > 0) return;
+    }
+  } catch (_) {}
+}
+
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
@@ -38,19 +116,43 @@ export default async function handler(req, res) {
   }
 
   let userId = null;
+  let userPlan = 'free';
+  let supabase = null;
 
   try {
     const { createClient } = await import('@supabase/supabase-js');
-    const supabase = createClient(
+    supabase = createClient(
       process.env.SUPABASE_URL,
       process.env.SUPABASE_SERVICE_KEY
     );
     const { data, error } = await supabase.auth.getUser(token);
-    if (!error && data?.user) userId = data.user.id;
+    if (!error && data?.user) {
+      userId = data.user.id;
+      // app_metadata can only be written with the service key (server-side),
+      // unlike user_metadata which any logged-in user can edit from the client.
+      userPlan = data.user.app_metadata?.plan === 'pro' ? 'pro' : 'free';
+    }
   } catch (_) {}
 
   if (!userId) {
     return res.status(401).json({ error: 'Authentication failed' });
+  }
+
+  // ── Usage limit check (before hitting AI) ──────────────────────────────────
+  let usageDate = null;
+  try {
+    const usage = await checkAndIncrementUsage(supabase, userId, userPlan);
+    if (!usage.allowed) {
+      const limitLabel = userPlan === 'pro' ? PRO_LIMIT : FREE_LIMIT;
+      return res.status(429).json({
+        error: `Daily limit reached (${limitLabel}/day). ${userPlan === 'pro' ? 'Resets at midnight UTC.' : 'Upgrade to Pro for 100 generations/day.'}`,
+      });
+    }
+    usageDate = usage.date;
+  } catch (err) {
+    // Fail closed: if usage can't be verified/recorded, don't serve the request.
+    console.error('Usage check failed:', err);
+    return res.status(503).json({ error: 'Usage service unavailable. Please retry shortly.' });
   }
 
   const provider = process.env.AI_PROVIDER || 'groq';
@@ -108,6 +210,9 @@ export default async function handler(req, res) {
       });
     }
 
+    // AI call failed — refund the usage count
+    await refundUsage(supabase, userId, usageDate);
+
     if (response.status === 429) {
       return res.status(503).json({
         error: 'AI busy. Please retry shortly.',
@@ -118,6 +223,9 @@ export default async function handler(req, res) {
 
   } catch (err) {
     clearTimeout(timeout);
+
+    // AI call failed — refund the usage count
+    await refundUsage(supabase, userId, usageDate);
 
     if (err.name === 'AbortError') {
       return res.status(504).json({ error: 'Request timeout' });
