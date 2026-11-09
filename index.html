@@ -4273,6 +4273,24 @@ html.light .rp-foot, html.light .sb-lbl, html.light .shint, html.light .rc-time,
     }
   };
 
+  // Profile/analytics entry point: render immediately from the cached user, then
+  // re-read the user from the server (shared 30s throttle) and render again.
+  // Independent of the usage_daily query, so the plan label never waits on it.
+  window.nirSyncPlanLabels = async function() {
+    if (window.nirRenderPlanLabels) window.nirRenderPlanLabels();
+    try {
+      if (!window.SB || !window.currentUser) return;
+      var now = Date.now();
+      if (window._nirUserSyncAt && now - window._nirUserSyncAt <= 30000) return;
+      window._nirUserSyncAt = now;
+      var r = await window.SB.auth.getUser();
+      if (r && r.data && r.data.user && window.currentUser && r.data.user.id === window.currentUser.id) {
+        window.currentUser = r.data.user;
+        if (window.nirRenderPlanLabels) window.nirRenderPlanLabels();
+      }
+    } catch (_) {}
+  };
+
   window.updateUsageCounter = function(used) {
     var block  = document.getElementById('sb-usage-block');
     var fill   = document.getElementById('sb-usage-fill');
@@ -8422,6 +8440,7 @@ function go(id){
     openAuth();
     return;
   }
+  if(id==='profile' && window.nirSyncPlanLabels) window.nirSyncPlanLabels();
   if(id==='history') loadHistory();
   if(id==='saved')   loadSavedPrompts();
 }
@@ -9754,6 +9773,7 @@ async function initAuth(){
     if(session && session.user){
       currentUser = session.user;
       window.currentUser = currentUser;
+      if(window.nirRenderPlanLabels) window.nirRenderPlanLabels();
       if(event==='INITIAL_SESSION'||event==='TOKEN_REFRESHED'){
         if(window.fetchAndShowUsage) window.fetchAndShowUsage();
       }
@@ -9794,6 +9814,7 @@ function onLogin(user){
   if(el_email) el_email.textContent = user.email;
   if(el_since) el_since.textContent = new Date(user.created_at).toLocaleDateString('en-GB',{day:'2-digit',month:'long',year:'numeric'});
   if(el_init)  el_init.textContent  = initial;
+  if(window.nirRenderPlanLabels) window.nirRenderPlanLabels();
   
   closeAuth();
   T('✓ Welcome back, ' + name + '!');
