@@ -12606,7 +12606,7 @@ async function submit(){
   var L=lang(); if(['en','tr','fa','ar','zh'].indexOf(L)<0) L='en';
   try{
     if(!window.SB||!window.currentUser) throw new Error('no-session');
-    var row={name:name.slice(0,120),email:email.slice(0,200),payment_method:pay,message:msg.slice(0,1000)||null,language:L,current_plan:((window.nirIsPro&&window.nirIsPro())?'pro':'free'),market:_market,currency:m.currency};
+    var row={user_id:window.currentUser.id,name:name.slice(0,120),email:email.slice(0,200),payment_method:pay,message:msg.slice(0,1000)||null,language:L,current_plan:((window.nirIsPro&&window.nirIsPro())?'pro':'free'),market:_market,currency:m.currency};
     if(m.price_usd!=null) row.price_usd=m.price_usd;
     if(m.price_toman!=null) row.price_toman=m.price_toman;
     var r=await window.SB.from('pro_requests').insert(row).select('id').single();
