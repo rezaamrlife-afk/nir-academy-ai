@@ -86,7 +86,7 @@ export default async function handler(req, res) {
       method: 'POST',
       headers: { Authorization: `Bearer ${RESEND_API_KEY}`, 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        from: process.env.PRO_REQUEST_FROM || 'NIRA AI <onboarding@resend.dev>',
+        from: process.env.PRO_REQUEST_FROM || 'NIRA AI <notifications@niracademy.com>',
         to: [ADMIN], reply_to: row.email,
         subject: `NIRA AI Pro request — ${row.name}`, html,
         text: lines.map(([k, v]) => `${k}: ${v}`).join('\n'),
