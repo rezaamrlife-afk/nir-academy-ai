@@ -7398,6 +7398,12 @@ html.light #footer{--f-ink:#25221B;--f-mut:#6B6554;--f-gt:#8F6B14;--f-line:rgba(
     <div class="sb-item" id="sb-assistant" onclick="go('assistant')" title="Your personal AI teaching companion — lesson delivery, classroom management, IELTS prep, student support, and more across 13 specialised modes."><span class="si"><i data-lucide="bot-message-square"></i></span> <span id="sb-txt-assistant">NIRA Chat</span> <span class="sb-badge">NEW</span></div>
   </div>
   <div class="sb-sec">
+    <span class="sb-lbl">Teaching Intelligence</span>
+    <div class="sb-item" id="sb-ti-reflection" onclick="go('ti-reflection')" title="Reflect on a real lesson and receive evidence-based pedagogical improvements."><span class="si"><i data-lucide="scan-eye"></i></span> <span>Lesson Reflection</span></div>
+    <div class="sb-item" id="sb-ti-errors" onclick="go('ti-errors')" title="Identify learner error patterns and generate CEFR-aligned remedial activities."><span class="si"><i data-lucide="git-branch"></i></span> <span>Error Patterns</span> <span class="sb-new">NEW</span></div>
+    <div class="sb-item" id="sb-ti-cpd" onclick="go('ti-cpd')" title="Generate a 15-minute personalised teacher development plan."><span class="si"><i data-lucide="sparkles"></i></span> <span>Micro-CPD</span> <span class="sb-new">NEW</span></div>
+  </div>
+  <div class="sb-sec">
     <span class="sb-lbl" id="sb-lbl-resources">Resources</span>
     <div class="sb-item" id="sb-library" onclick="go('library')" title="30+ curated ELT prompts ready to use across all skill areas — tested, TESOL-aligned, and organised by topic and level."><span class="si"><i data-lucide="book-marked"></i></span> <span id="sb-txt-library"><span id="hero-cta3"><span id="ft-lib-lnk">Prompt Library</span></span></span></div>
     <div class="sb-item" id="sb-insights" onclick="go('insights')"><span class="si"><i data-lucide="newspaper"></i></span> <span id="sb-txt-insights">Insights &amp; Blog</span></div>
@@ -8336,6 +8342,188 @@ html.light #footer{--f-ink:#25221B;--f-mut:#6B6554;--f-gt:#8F6B14;--f-line:rgba(
   </div>
 </div>
 <!-- /assistant -->
+
+<!-- ═══════════ TEACHING INTELLIGENCE ═══════════ -->
+
+<!-- TI: Lesson Reflection -->
+<div id="page-ti-reflection" class="page">
+  <div class="ph">
+    <span class="ph-ey">✦ Teaching Intelligence · Module 1</span>
+    <h1>Lesson <span>Reflection</span></h1>
+    <p>Analyse a real classroom experience and receive evidence-based pedagogical improvements.</p>
+  </div>
+  <div class="tool-wrap">
+    <div class="lpanel">
+      <div class="sblock">
+        <div class="shdr"><span class="snum">1</span><h3>The Lesson</h3></div>
+        <div class="sbody">
+          <div class="sg">
+            <label class="sg-lbl">CEFR Level</label>
+            <select id="ti-ref-level">
+              <option value="A1">A1 — Beginner</option>
+              <option value="A2">A2 — Elementary</option>
+              <option value="B1" selected>B1 — Intermediate</option>
+              <option value="B2">B2 — Upper-Intermediate</option>
+              <option value="C1">C1 — Advanced</option>
+              <option value="C2">C2 — Proficiency</option>
+            </select>
+          </div>
+          <div class="sg">
+            <label class="sg-lbl">Lesson Focus</label>
+            <div class="chip-row">
+              <span class="chip active" onclick="tiChip(this,'ref-focus')">Grammar</span>
+              <span class="chip" onclick="tiChip(this,'ref-focus')">Vocabulary</span>
+              <span class="chip" onclick="tiChip(this,'ref-focus')">Speaking</span>
+              <span class="chip" onclick="tiChip(this,'ref-focus')">Listening</span>
+              <span class="chip" onclick="tiChip(this,'ref-focus')">Reading</span>
+              <span class="chip" onclick="tiChip(this,'ref-focus')">Writing</span>
+            </div>
+          </div>
+          <div class="sg">
+            <label class="sg-lbl">Framework</label>
+            <div class="chip-row">
+              <span class="chip active" onclick="tiChip(this,'ref-fw')">PPP</span>
+              <span class="chip" onclick="tiChip(this,'ref-fw')">TBL</span>
+              <span class="chip" onclick="tiChip(this,'ref-fw')">ESA</span>
+              <span class="chip" onclick="tiChip(this,'ref-fw')">CLT</span>
+              <span class="chip" onclick="tiChip(this,'ref-fw')">Other</span>
+            </div>
+          </div>
+          <div class="sg">
+            <label class="sg-lbl">What happened in the lesson?</label>
+            <textarea id="ti-ref-desc" class="tin" rows="5" placeholder="Describe the lesson briefly: topic, activities used, how students responded, any moments that went well or didn't, and what you felt about the pacing or engagement…"></textarea>
+          </div>
+          <div class="sg">
+            <label class="sg-lbl">What specific challenge or moment do you want to reflect on? <span style="color:var(--muted);font-weight:400">(optional)</span></label>
+            <textarea id="ti-ref-challenge" class="tin" rows="3" placeholder="e.g. Students were disengaged during the presentation stage, TTT was too high, pair work broke down…"></textarea>
+          </div>
+        </div>
+      </div>
+      <button class="btn-gen btn-ripple" id="ti-ref-btn" data-lbl="Reflect" onclick="tiRunReflection()">✦ &nbsp;Analyse Lesson</button>
+    </div>
+    <div class="rpanel" id="ti-ref-rpanel">
+      <div class="rp-hdr"><span class="rp-title">Reflection Report</span><div class="rp-acts"><button class="rp-btn" onclick="tiCopy('ti-ref-out')">Copy</button></div></div>
+      <div class="out-txt" id="ti-ref-out"><span class="rp-ph">Describe your lesson above and click <strong>Analyse Lesson</strong> for structured pedagogical feedback.<br><br>Covers: lesson strengths · pedagogical gaps · student engagement analysis · specific improvement strategies · suggested follow-up activity</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- TI: Error Pattern Intelligence -->
+<div id="page-ti-errors" class="page">
+  <div class="ph">
+    <span class="ph-ey">✦ Teaching Intelligence · Module 2</span>
+    <h1>Error Pattern <span>Intelligence</span></h1>
+    <p>Identify recurring learner errors, understand the underlying patterns, and generate CEFR-aligned remedial activities.</p>
+  </div>
+  <div class="tool-wrap">
+    <div class="lpanel">
+      <div class="sblock">
+        <div class="shdr"><span class="snum">1</span><h3>Learner Context</h3></div>
+        <div class="sbody">
+          <div class="sg">
+            <label class="sg-lbl">CEFR Level</label>
+            <select id="ti-err-level">
+              <option value="A1">A1 — Beginner</option>
+              <option value="A2">A2 — Elementary</option>
+              <option value="B1" selected>B1 — Intermediate</option>
+              <option value="B2">B2 — Upper-Intermediate</option>
+              <option value="C1">C1 — Advanced</option>
+            </select>
+          </div>
+          <div class="sg">
+            <label class="sg-lbl">L1 Background <span style="color:var(--muted);font-weight:400">(optional — improves pattern analysis)</span></label>
+            <input type="text" id="ti-err-l1" class="tin" placeholder="e.g. Turkish, Arabic, Persian, Chinese…">
+          </div>
+        </div>
+      </div>
+      <div class="sblock">
+        <div class="shdr"><span class="snum">2</span><h3>Error Samples</h3></div>
+        <div class="sbody">
+          <div class="sg">
+            <label class="sg-lbl">Paste student errors — one per line</label>
+            <textarea id="ti-err-samples" class="tin" rows="7" placeholder="He don't understand the question.&#10;Yesterday I go to school early.&#10;She is more taller than her sister.&#10;I have 20 years old.&#10;We discussed about the problem."></textarea>
+          </div>
+          <div class="sg">
+            <label class="sg-lbl">Output focus</label>
+            <div class="chip-row">
+              <span class="chip active" onclick="tiChip(this,'err-out')">Pattern Analysis</span>
+              <span class="chip active" onclick="tiChip(this,'err-out')">Remedial Activities</span>
+              <span class="chip active" onclick="tiChip(this,'err-out')">CCQs</span>
+              <span class="chip" onclick="tiChip(this,'err-out')">Student-Friendly Explanation</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <button class="btn-gen btn-ripple" id="ti-err-btn" data-lbl="Analyse Errors" onclick="tiRunErrors()">✦ &nbsp;Analyse Error Patterns</button>
+    </div>
+    <div class="rpanel" id="ti-err-rpanel">
+      <div class="rp-hdr"><span class="rp-title">Error Pattern Report</span><div class="rp-acts"><button class="rp-btn" onclick="tiCopy('ti-err-out')">Copy</button></div></div>
+      <div class="out-txt" id="ti-err-out"><span class="rp-ph">Paste learner errors above and click <strong>Analyse Error Patterns</strong>.<br><br>Covers: error classification · linguistic root cause · frequency pattern · CEFR-aligned remedial activities · CCQs · student-safe explanation</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- TI: Micro-CPD -->
+<div id="page-ti-cpd" class="page">
+  <div class="ph">
+    <span class="ph-ey">✦ Teaching Intelligence · Module 3</span>
+    <h1>Micro-<span>CPD</span></h1>
+    <p>Generate a practical, personalised 15-minute teacher development plan based on a real classroom challenge.</p>
+  </div>
+  <div class="tool-wrap">
+    <div class="lpanel">
+      <div class="sblock">
+        <div class="shdr"><span class="snum">1</span><h3>Your Context</h3></div>
+        <div class="sbody">
+          <div class="sg">
+            <label class="sg-lbl">Years of teaching experience</label>
+            <div class="chip-row">
+              <span class="chip active" onclick="tiChip(this,'cpd-exp')">0–2 years</span>
+              <span class="chip" onclick="tiChip(this,'cpd-exp')">3–5 years</span>
+              <span class="chip" onclick="tiChip(this,'cpd-exp')">6–10 years</span>
+              <span class="chip" onclick="tiChip(this,'cpd-exp')">10+ years</span>
+            </div>
+          </div>
+          <div class="sg">
+            <label class="sg-lbl">Context</label>
+            <div class="chip-row">
+              <span class="chip active" onclick="tiChip(this,'cpd-ctx')">General ELT</span>
+              <span class="chip" onclick="tiChip(this,'cpd-ctx')">IELTS / Exam Prep</span>
+              <span class="chip" onclick="tiChip(this,'cpd-ctx')">Young Learners</span>
+              <span class="chip" onclick="tiChip(this,'cpd-ctx')">Business English</span>
+              <span class="chip" onclick="tiChip(this,'cpd-ctx')">Online Teaching</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="sblock">
+        <div class="shdr"><span class="snum">2</span><h3>Development Focus</h3></div>
+        <div class="sbody">
+          <div class="sg">
+            <label class="sg-lbl">What teaching challenge or area do you want to develop?</label>
+            <textarea id="ti-cpd-challenge" class="tin" rows="4" placeholder="e.g. My TTT is too high and students don't get enough speaking time. I struggle with eliciting effectively and tend to explain grammar directly rather than through guided discovery…"></textarea>
+          </div>
+          <div class="sg">
+            <label class="sg-lbl">CPD format preference</label>
+            <div class="chip-row">
+              <span class="chip active" onclick="tiChip(this,'cpd-fmt')">Step-by-step plan</span>
+              <span class="chip" onclick="tiChip(this,'cpd-fmt')">Reflection task</span>
+              <span class="chip" onclick="tiChip(this,'cpd-fmt')">Micro-task to try in class</span>
+              <span class="chip" onclick="tiChip(this,'cpd-fmt')">Research summary</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <button class="btn-gen btn-ripple" id="ti-cpd-btn" data-lbl="Generate CPD Plan" onclick="tiRunCPD()">✦ &nbsp;Generate My CPD Plan</button>
+    </div>
+    <div class="rpanel" id="ti-cpd-rpanel">
+      <div class="rp-hdr"><span class="rp-title">Your 15-Minute CPD Plan</span><div class="rp-acts"><button class="rp-btn" onclick="tiCopy('ti-cpd-out')">Copy</button></div></div>
+      <div class="out-txt" id="ti-cpd-out"><span class="rp-ph">Describe your teaching challenge above and click <strong>Generate My CPD Plan</strong>.<br><br>Covers: targeted development goal · research-informed strategy · 15-minute practice activity · reflection prompt · next steps</span></div>
+    </div>
+  </div>
+</div>
+<!-- /teaching intelligence -->
+
 </main>
 </div><!-- /shell -->
 
@@ -12624,6 +12812,72 @@ function copy(){
 window.nirOpenUpgrade=open;window.nirUpgClose=close;window.nirUpgSubmit=submit;window.nirUpgCopy=copy;
 document.addEventListener('keydown',function(e){if(e.key==='Escape'&&ov&&ov.classList.contains('show'))close();});
 })();
+</script>
+<script id="nir-teaching-intelligence">
+// ── Teaching Intelligence: shared chip helper ──
+function tiChip(el, group) {
+  var multi = ['err-out','cpd-fmt'];
+  if (multi.indexOf(group) !== -1) {
+    el.classList.toggle('active');
+  } else {
+    el.closest('.chip-row').querySelectorAll('.chip').forEach(function(c){ c.classList.remove('active'); });
+    el.classList.add('active');
+  }
+}
+function tiGetChips(group) {
+  var chips = [];
+  document.querySelectorAll('.chip[onclick*="' + group + '"].active').forEach(function(c){ chips.push(c.textContent.trim()); });
+  return chips.join(', ');
+}
+function tiCopy(id) {
+  var el = document.getElementById(id);
+  if (!el) return;
+  var txt = el.innerText || el.textContent || '';
+  navigator.clipboard.writeText(txt).then(function(){ if(window.T) T('Copied!'); });
+}
+
+// ── Module 1: Lesson Reflection ──
+async function tiRunReflection() {
+  var btn = document.getElementById('ti-ref-btn');
+  var level = document.getElementById('ti-ref-level').value;
+  var focus = tiGetChips('ref-focus') || 'General';
+  var fw    = tiGetChips('ref-fw')    || 'PPP';
+  var desc  = (document.getElementById('ti-ref-desc').value || '').trim();
+  var chal  = (document.getElementById('ti-ref-challenge').value || '').trim();
+  if (!desc) { if(window.T) T('Please describe your lesson first.'); return; }
+  var prompt = 'You are a senior ELT teacher educator and pedagogical coach with expertise in TESOL methodology, CEFR frameworks, and communicative language teaching (CLT).\n\nA teacher has shared a lesson reflection. Provide structured, evidence-based pedagogical feedback.\n\nLESSON DETAILS:\n- CEFR Level: '+level+'\n- Lesson Focus: '+focus+'\n- Framework Used: '+fw+'\n- Lesson Description: '+desc+(chal?'\n- Specific Challenge: '+chal:'')+'\n\nProvide a reflection report with these sections:\n\n## ✦ Lesson Strengths\nIdentify what worked well pedagogically (minimum 2 specific points).\n\n## ⚠ Areas for Development\nIdentify 2–3 specific pedagogical gaps or missed opportunities, with reference to ELT methodology (TTT, STT, task design, CCQs, scaffolding, etc.).\n\n## 🎯 Student Engagement Analysis\nBriefly analyse likely engagement patterns based on the lesson described.\n\n## 📋 Improvement Strategies\nProvide 3 concrete, actionable strategies the teacher can implement in their next lesson. Be specific — name techniques, give examples.\n\n## 🔄 Suggested Follow-Up Activity\nDesign one short activity (5–10 mins) the teacher can use next class to address the main gap identified.\n\n## 💬 Reflective Questions\nGive 2 reflective questions the teacher can journal about.\n\nKeep the tone warm, collegial, and growth-oriented — like a trusted mentor, not an assessor.';
+  await callAPI(prompt, 'ti-ref-out', btn, null);
+}
+
+// ── Module 2: Error Pattern Intelligence ──
+async function tiRunErrors() {
+  var btn     = document.getElementById('ti-err-btn');
+  var level   = document.getElementById('ti-err-level').value;
+  var l1      = (document.getElementById('ti-err-l1').value || '').trim();
+  var samples = (document.getElementById('ti-err-samples').value || '').trim();
+  var focus   = tiGetChips('err-out') || 'Pattern Analysis, Remedial Activities, CCQs';
+  if (!samples) { if(window.T) T('Please paste some learner errors first.'); return; }
+  var l1line = l1 ? '\n- Learner L1: '+l1 : '';
+  var remAct = focus.includes('Remedial') ? '\n\n## 🎓 CEFR-Aligned Remedial Activities\nDesign 2 short remedial activities (5–8 mins each) targeting the most critical pattern. Include: aim, procedure, expected outcome.' : '';
+  var ccqs   = focus.includes('CCQ') ? '\n\n## ❓ Concept Check Questions (CCQs)\nWrite 3–4 CCQs for the most problematic pattern. Keep them simple and learner-appropriate for '+level+'.' : '';
+  var stExp  = focus.includes('Student') ? '\n\n## 💬 Student-Friendly Explanation\nWrite a brief, clear explanation of the main error pattern in language a '+level+' student can understand. Avoid metalanguage.' : '';
+  var prompt = 'You are an expert ELT teacher educator specialising in error analysis, interlanguage theory, and CEFR-aligned remediation.\n\nCONTEXT:\n- CEFR Level: '+level+l1line+'\n- Output focus: '+focus+'\n\nLEARNER ERRORS:\n'+samples+'\n\n## ✦ Error Classification\nGroup errors by linguistic category (grammar, lexis, syntax, spelling, punctuation). List each error with its category.\n\n## 🔍 Pattern Analysis\nIdentify the 2–3 most significant underlying patterns. For each: name it, explain the likely cause (L1 transfer, overgeneralisation, developmental), cite the specific errors.'+remAct+ccqs+stExp+'\n\n## ✅ Suggested Teaching Priority\nWhich pattern should the teacher address first, and why?';
+  await callAPI(prompt, 'ti-err-out', btn, null);
+}
+
+// ── Module 3: Micro-CPD ──
+async function tiRunCPD() {
+  var btn       = document.getElementById('ti-cpd-btn');
+  var exp       = tiGetChips('cpd-exp') || '0–2 years';
+  var ctx       = tiGetChips('cpd-ctx') || 'General ELT';
+  var challenge = (document.getElementById('ti-cpd-challenge').value || '').trim();
+  var fmt       = tiGetChips('cpd-fmt') || 'Step-by-step plan';
+  if (!challenge) { if(window.T) T('Please describe your teaching challenge first.'); return; }
+  var awareness = fmt.includes('Reflection') ? 'A focused self-reflection task with 2–3 guiding questions.' : 'A short, concrete awareness activity.';
+  var action    = fmt.includes('Micro-task') ? 'A specific micro-task to try in your next class — with exact steps.' : fmt.includes('Research') ? 'Key takeaways from current ELT research with practical implications.' : 'A step-by-step technique to practise with a real classroom scenario.';
+  var prompt = 'You are a professional teacher development coach and ELT methodology expert. Create a focused, practical 15-minute Micro-CPD plan.\n\nTEACHER PROFILE:\n- Experience: '+exp+'\n- Context: '+ctx+'\n- Challenge: '+challenge+'\n- Format: '+fmt+'\n\n## ✦ Your Development Goal\nOne clear, achievable goal in one sentence.\n\n## 📚 Research Insight (2 min read)\nA concise, evidence-informed insight about this area, grounded in ELT research or methodology. Keep it accessible.\n\n## 🎯 15-Minute Development Plan\n\n**Minutes 1–5 · Awareness**\n'+awareness+'\n\n**Minutes 6–12 · Action**\n'+action+'\n\n**Minutes 13–15 · Reflection**\nOne journaling prompt and one measurable target for your next lesson.\n\n## 🔄 Next Steps\nTwo concrete follow-up actions (one this week, one this month).\n\nKeep the tone encouraging and practical — like a conversation with a trusted colleague, not a training manual.';
+  await callAPI(prompt, 'ti-cpd-out', btn, null);
+}
 </script>
 </body>
 </html>
