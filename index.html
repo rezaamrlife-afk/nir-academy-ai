@@ -12516,33 +12516,64 @@ html.light #upg-overlay .auth-field select,html.light #upg-overlay .auth-field t
 <script id="nir-upgrade-form">
 (function(){
 var MAIL='info@niracademy.com';
+// Market config — independent of app language
+var MARKETS={
+  intl:{label:'🌍 International',price:'$5',price_usd:5,currency:'USD',per_en:'per month',methods:['Bank card','PayPal','Bank transfer','Other']},
+  iran:{label:'🇮🇷 Iran',price:'300,000 T',price_usd:null,price_toman:300000,currency:'IRR',per_en:'per month (300,000 Toman)',methods:['Card to card','Bank transfer (Shaba)','Other']}
+};
+var _market='intl'; // default
 var X={
-en:{title:'Upgrade to Pro',per:'per month · 100 generations per day',name:'Full name',email:'Email',pay:'Preferred payment method',p1:'Bank card',p2:'PayPal',p3:'Bank transfer',p4:'Other',msg:'Message (optional)',ph:'Anything we should know?',send:'Send upgrade request',hint:'Your request goes to {m}. We will reply with payment instructions.',e1:'Please enter your name.',e2:'Please enter a valid email address.',dt:'Request ready',dd:'Your email app should open with the request. If it did not, copy the text below and send it to {m}.',copy:'Copy request',copied:'Copied ✓',learn:'Learn more at niracademy.com',sending:'Sending…',ok_t:'Request received',ok_d:'We saved your request and notified our team. We will contact you at {e} with payment instructions. Pro is activated manually after payment.',dup:'You already have a pending Pro request. We will contact you soon.',fb:'We could not save your request online, so we prepared an email instead.'},
-tr:{title:'Pro Plana Yükselt',per:'aylık · günde 100 üretim',name:'Ad soyad',email:'E-posta',pay:'Tercih edilen ödeme yöntemi',p1:'Banka kartı',p2:'PayPal',p3:'Banka havalesi',p4:'Diğer',msg:'Mesaj (isteğe bağlı)',ph:'Bilmemizi istediğiniz bir şey var mı?',send:'Yükseltme talebi gönder',hint:'Talebiniz {m} adresine gönderilir. Ödeme talimatlarıyla size döneceğiz.',e1:'Lütfen adınızı girin.',e2:'Lütfen geçerli bir e-posta adresi girin.',dt:'Talep hazır',dd:'E-posta uygulamanız talebinizle açılmalı. Açılmazsa aşağıdaki metni kopyalayıp {m} adresine gönderin.',copy:'Talebi kopyala',copied:'Kopyalandı ✓',learn:'Daha fazla bilgi: niracademy.com',sending:'Gönderiliyor…',ok_t:'Talep alındı',ok_d:'Talebinizi kaydettik ve ekibimizi bilgilendirdik. Ödeme talimatlarıyla {e} adresinden size ulaşacağız. Pro plan, ödemeden sonra manuel olarak etkinleştirilir.',dup:'Bekleyen bir Pro talebiniz zaten var. Yakında size dönüş yapacağız.',fb:'Talebiniz çevrimiçi kaydedilemedi, bunun yerine bir e-posta hazırladık.'},
-ar:{title:'الترقية إلى Pro',per:'شهريًا · 100 عملية إنشاء يوميًا',name:'الاسم الكامل',email:'البريد الإلكتروني',pay:'طريقة الدفع المفضلة',p1:'بطاقة مصرفية',p2:'PayPal',p3:'حوالة مصرفية',p4:'أخرى',msg:'رسالة (اختياري)',ph:'هل هناك ما تود إخبارنا به؟',send:'إرسال طلب الترقية',hint:'يُرسل طلبك إلى {m}. سنرد عليك بتعليمات الدفع.',e1:'يرجى إدخال اسمك.',e2:'يرجى إدخال بريد إلكتروني صالح.',dt:'الطلب جاهز',dd:'يجب أن يفتح تطبيق البريد مع الطلب. إن لم يفتح، انسخ النص أدناه وأرسله إلى {m}.',copy:'نسخ الطلب',copied:'تم النسخ ✓',learn:'اعرف المزيد على niracademy.com',sending:'جارٍ الإرسال…',ok_t:'تم استلام الطلب',ok_d:'حفظنا طلبك وأبلغنا فريقنا. سنتواصل معك على {e} مع تعليمات الدفع. يتم تفعيل Pro يدويًا بعد الدفع.',dup:'لديك طلب Pro قيد الانتظار بالفعل. سنتواصل معك قريبًا.',fb:'تعذّر حفظ طلبك عبر الإنترنت، لذا جهّزنا رسالة بريد إلكتروني بدلاً من ذلك.'},
-zh:{title:'升级到 Pro',per:'每月 · 每天 100 次生成',name:'姓名',email:'电子邮箱',pay:'首选支付方式',p1:'银行卡',p2:'PayPal',p3:'银行转账',p4:'其他',msg:'留言（可选）',ph:'有什么想告诉我们的吗？',send:'发送升级申请',hint:'您的申请将发送至 {m}。我们会回复付款说明。',e1:'请输入您的姓名。',e2:'请输入有效的电子邮箱。',dt:'申请已生成',dd:'您的邮件应用应已打开并带有申请内容。如果没有，请复制下方文字并发送至 {m}。',copy:'复制申请',copied:'已复制 ✓',learn:'更多信息：niracademy.com',sending:'发送中…',ok_t:'已收到申请',ok_d:'我们已保存您的申请并通知了团队。我们将通过 {e} 联系您并提供付款说明。Pro 会在付款后手动开通。',dup:'您已有一个待处理的 Pro 申请，我们会尽快联系您。',fb:'无法在线保存您的申请，已为您准备了一封邮件。'},
-fa:{title:'ارتقا به نسخه حرفه‌ای',per:'ماهانه · ۱۰۰ تولید در روز',name:'نام و نام خانوادگی',email:'ایمیل',pay:'روش پرداخت ترجیحی',p1:'کارت بانکی',p2:'PayPal',p3:'حواله بانکی',p4:'سایر',msg:'پیام (اختیاری)',ph:'چیزی هست که باید بدانیم؟',send:'ارسال درخواست ارتقا',hint:'درخواست شما به {m} ارسال می‌شود. دستورالعمل پرداخت را برایتان می‌فرستیم.',e1:'لطفاً نام خود را وارد کنید.',e2:'لطفاً یک ایمیل معتبر وارد کنید.',dt:'درخواست آماده است',dd:'برنامه ایمیل شما باید با درخواست باز شود. اگر باز نشد، متن زیر را کپی کرده و به {m} بفرستید.',copy:'کپی درخواست',copied:'کپی شد ✓',learn:'اطلاعات بیشتر در niracademy.com',sending:'در حال ارسال…',ok_t:'درخواست دریافت شد',ok_d:'درخواست شما ذخیره شد و تیم ما مطلع شد. با شما از طریق {e} تماس می‌گیریم و دستورالعمل پرداخت را می‌فرستیم. نسخه حرفه‌ای پس از پرداخت به‌صورت دستی فعال می‌شود.',dup:'شما از قبل یک درخواست حرفه‌ای در انتظار دارید. به‌زودی با شما تماس می‌گیریم.',fb:'ذخیره آنلاین درخواست ممکن نشد؛ به‌جای آن یک ایمیل آماده کردیم.'}
+en:{title:'Upgrade to Pro',per:'per month · 100 generations per day',name:'Full name',email:'Email',mkt:'Payment market',pay:'Preferred payment method',p1:'Bank card',p2:'PayPal',p3:'Bank transfer',p4:'Other',msg:'Message (optional)',ph:'Anything we should know?',send:'Send upgrade request',hint:'Your request goes to {m}. We will reply with payment instructions.',e1:'Please enter your name.',e2:'Please enter a valid email address.',dt:'Request ready',dd:'Your email app should open with the request. If it did not, copy the text below and send it to {m}.',copy:'Copy request',copied:'Copied ✓',learn:'Learn more at niracademy.com',sending:'Sending…',ok_t:'Request received',ok_d:'We saved your request and notified our team. We will contact you at {e} with payment instructions. Pro is activated manually after payment.',dup:'You already have a pending Pro request. We will contact you soon.',fb:'We could not save your request online, so we prepared an email instead.'},
+tr:{title:'Pro Plana Yükselt',per:'aylık · günde 100 üretim',name:'Ad soyad',email:'E-posta',mkt:'Ödeme pazarı',pay:'Tercih edilen ödeme yöntemi',p1:'Banka kartı',p2:'PayPal',p3:'Banka havalesi',p4:'Diğer',msg:'Mesaj (isteğe bağlı)',ph:'Bilmemizi istediğiniz bir şey var mı?',send:'Yükseltme talebi gönder',hint:'Talebiniz {m} adresine gönderilir. Ödeme talimatlarıyla size döneceğiz.',e1:'Lütfen adınızı girin.',e2:'Lütfen geçerli bir e-posta adresi girin.',dt:'Talep hazır',dd:'E-posta uygulamanız talebinizle açılmalı. Açılmazsa aşağıdaki metni kopyalayıp {m} adresine gönderin.',copy:'Talebi kopyala',copied:'Kopyalandı ✓',learn:'Daha fazla bilgi: niracademy.com',sending:'Gönderiliyor…',ok_t:'Talep alındı',ok_d:'Talebinizi kaydettik ve ekibimizi bilgilendirdik. Ödeme talimatlarıyla {e} adresinden size ulaşacağız. Pro plan, ödemeden sonra manuel olarak etkinleştirilir.',dup:'Bekleyen bir Pro talebiniz zaten var. Yakında size dönüş yapacağız.',fb:'Talebiniz çevrimiçi kaydedilemedi, bunun yerine bir e-posta hazırladık.'},
+ar:{title:'الترقية إلى Pro',per:'شهريًا · 100 عملية إنشاء يوميًا',name:'الاسم الكامل',email:'البريد الإلكتروني',mkt:'سوق الدفع',pay:'طريقة الدفع المفضلة',p1:'بطاقة مصرفية',p2:'PayPal',p3:'حوالة مصرفية',p4:'أخرى',msg:'رسالة (اختياري)',ph:'هل هناك ما تود إخبارنا به؟',send:'إرسال طلب الترقية',hint:'يُرسل طلبك إلى {m}. سنرد عليك بتعليمات الدفع.',e1:'يرجى إدخال اسمك.',e2:'يرجى إدخال بريد إلكتروني صالح.',dt:'الطلب جاهز',dd:'يجب أن يفتح تطبيق البريد مع الطلب. إن لم يفتح، انسخ النص أدناه وأرسله إلى {m}.',copy:'نسخ الطلب',copied:'تم النسخ ✓',learn:'اعرف المزيد على niracademy.com',sending:'جارٍ الإرسال…',ok_t:'تم استلام الطلب',ok_d:'حفظنا طلبك وأبلغنا فريقنا. سنتواصل معك على {e} مع تعليمات الدفع. يتم تفعيل Pro يدويًا بعد الدفع.',dup:'لديك طلب Pro قيد الانتظار بالفعل. سنتواصل معك قريبًا.',fb:'تعذّر حفظ طلبك عبر الإنترنت، لذا جهّزنا رسالة بريد إلكتروني بدلاً من ذلك.'},
+zh:{title:'升级到 Pro',per:'每月 · 每天 100 次生成',name:'姓名',email:'电子邮箱',mkt:'付款市场',pay:'首选支付方式',p1:'银行卡',p2:'PayPal',p3:'银行转账',p4:'其他',msg:'留言（可选）',ph:'有什么想告诉我们的吗？',send:'发送升级申请',hint:'您的申请将发送至 {m}。我们会回复付款说明。',e1:'请输入您的姓名。',e2:'请输入有效的电子邮箱。',dt:'申请已生成',dd:'您的邮件应用应已打开并带有申请内容。如果没有，请复制下方文字并发送至 {m}。',copy:'复制申请',copied:'已复制 ✓',learn:'更多信息：niracademy.com',sending:'发送中…',ok_t:'已收到申请',ok_d:'我们已保存您的申请并通知了团队。我们将通过 {e} 联系您并提供付款说明。Pro 会在付款后手动开通。',dup:'您已有一个待处理的 Pro 申请，我们会尽快联系您。',fb:'无法在线保存您的申请，已为您准备了一封邮件。'},
+fa:{title:'ارتقا به نسخه حرفه‌ای',per:'ماهانه · ۱۰۰ تولید در روز',name:'نام و نام خانوادگی',email:'ایمیل',mkt:'بازار پرداخت',pay:'روش پرداخت ترجیحی',p1:'کارت بانکی',p2:'PayPal',p3:'حواله بانکی',p4:'سایر',msg:'پیام (اختیاری)',ph:'چیزی هست که باید بدانیم؟',send:'ارسال درخواست ارتقا',hint:'درخواست شما به {m} ارسال می‌شود. دستورالعمل پرداخت را برایتان می‌فرستیم.',e1:'لطفاً نام خود را وارد کنید.',e2:'لطفاً یک ایمیل معتبر وارد کنید.',dt:'درخواست آماده است',dd:'برنامه ایمیل شما باید با درخواست باز شود. اگر باز نشد، متن زیر را کپی کرده و به {m} بفرستید.',copy:'کپی درخواست',copied:'کپی شد ✓',learn:'اطلاعات بیشتر در niracademy.com',sending:'در حال ارسال…',ok_t:'درخواست دریافت شد',ok_d:'درخواست شما ذخیره شد و تیم ما مطلع شد. با شما از طریق {e} تماس می‌گیریم و دستورالعمل پرداخت را می‌فرستیم. نسخه حرفه‌ای پس از پرداخت به‌صورت دستی فعال می‌شود.',dup:'شما از قبل یک درخواست حرفه‌ای در انتظار دارید. به‌زودی با شما تماس می‌گیریم.',fb:'ذخیره آنلاین درخواست ممکن نشد؛ به‌جای آن یک ایمیل آماده کردیم.'}
 };
 var ov,lastText='';
 function lang(){return window._nirLang||(typeof currentLang!=='undefined'?currentLang:'en');}
 function T(){return X[lang()]||X.en;}
 function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
 function $(id){return document.getElementById(id);}
+function mktCfg(){return MARKETS[_market]||MARKETS.intl;}
+function payOptions(){
+  var m=mktCfg(),t=T();
+  if(_market==='iran'){
+    return '<option value="Card to card">کارت به کارت</option>'
+      +'<option value="Bank transfer (Shaba)">حواله بانکی (شبا)</option>'
+      +'<option value="Other">'+esc(t.p4)+'</option>';
+  }
+  return '<option value="Bank card">'+esc(t.p1)+'</option>'
+    +'<option value="PayPal">'+esc(t.p2)+'</option>'
+    +'<option value="Bank transfer">'+esc(t.p3)+'</option>'
+    +'<option value="Other">'+esc(t.p4)+'</option>';
+}
+function onMktChange(){
+  _market=($('upg-mkt')||{}).value||'intl';
+  var m=mktCfg();
+  var pd=$('upg-price'); if(pd) pd.innerHTML='<b>'+esc(m.price)+'</b>'+esc(' / month · 100 generations/day');
+  var ps=$('upg-pay'); if(ps) ps.innerHTML=payOptions();
+}
 function render(){
-  var t=T(),u=window.currentUser||{},nm=(u.user_metadata&&u.user_metadata.full_name)||'',em=u.email||'';
+  var t=T(),u=window.currentUser||{},nm=(u.user_metadata&&u.user_metadata.full_name)||'',em=u.email||'',m=mktCfg();
   if(!ov){ov=document.createElement('div');ov.id='upg-overlay';ov.addEventListener('click',function(e){if(e.target===ov)close();});document.body.appendChild(ov);}
   ov.innerHTML='<div class="auth-modal" role="dialog" aria-modal="true" aria-labelledby="upg-title">'
    +'<button class="auth-close" onclick="nirUpgClose()" aria-label="Close">✕</button>'
    +'<h2 id="upg-title">'+esc(t.title)+'</h2><p class="am-sub">NIRA AI · NIR Academy</p>'
-   +'<div class="upg-plan"><b>$5</b>'+esc(t.per)+'</div>'
+   +'<div class="upg-plan" id="upg-price"><b>'+esc(m.price)+'</b>'+esc(t.per)+'</div>'
    +'<div class="auth-error" id="upg-err"></div>'
+   +'<div class="auth-field"><label for="upg-mkt">'+(t.mkt||'Payment market')+'</label>'
+   +'<select id="upg-mkt" onchange="onMktChange()">'
+   +'<option value="intl"'+((_market==='intl')?' selected':'')+'>'+esc(MARKETS.intl.label)+'</option>'
+   +'<option value="iran"'+((_market==='iran')?' selected':'')+'>'+esc(MARKETS.iran.label)+'</option>'
+   +'</select></div>'
    +'<div class="auth-field"><label for="upg-name">'+esc(t.name)+'</label><input id="upg-name" type="text" autocomplete="name" value="'+esc(nm)+'"></div>'
    +'<div class="auth-field"><label for="upg-email">'+esc(t.email)+'</label><input id="upg-email" type="email" autocomplete="email" value="'+esc(em)+'"></div>'
-   +'<div class="auth-field"><label for="upg-pay">'+esc(t.pay)+'</label><select id="upg-pay"><option value="Bank card">'+esc(t.p1)+'</option><option value="PayPal">'+esc(t.p2)+'</option><option value="Bank transfer">'+esc(t.p3)+'</option><option value="Other">'+esc(t.p4)+'</option></select></div>'
+   +'<div class="auth-field"><label for="upg-pay">'+esc(t.pay)+'</label><select id="upg-pay">'+payOptions()+'</select></div>'
    +'<div class="auth-field"><label for="upg-msg">'+esc(t.msg)+'</label><textarea id="upg-msg" placeholder="'+esc(t.ph)+'"></textarea></div>'
    +'<button class="auth-submit" onclick="nirUpgSubmit()">✦ &nbsp;'+esc(t.send)+'</button>'
    +'<div class="upg-hint">'+esc(t.hint.replace('{m}',MAIL))+'</div>'
    +'<div class="upg-learn"><a href="https://niracademy.com" target="_blank" rel="noopener">'+esc(t.learn)+'</a></div></div>';
+  window.onMktChange=onMktChange;
 }
 function open(){if(!window.currentUser&&typeof openAuth==='function'){openAuth();return;}render();ov.classList.add('show');document.body.style.overflow='hidden';setTimeout(function(){var f=$('upg-name');if(f&&!f.value)f.focus();},50);}
 function close(){if(!ov)return;ov.classList.remove('show');document.body.style.overflow='';}
@@ -12565,15 +12596,20 @@ async function notify(id){
   }catch(_){}
 }
 async function submit(){
-  var t=T(),name=($('upg-name').value||'').trim(),email=($('upg-email').value||'').trim(),pay=$('upg-pay').value,msg=($('upg-msg').value||'').trim();
+  var t=T(),m=mktCfg();
+  var name=($('upg-name').value||'').trim(),email=($('upg-email').value||'').trim(),pay=$('upg-pay').value,msg=($('upg-msg').value||'').trim();
   if(!name){err(t.e1);$('upg-name').focus();return;}
   if(!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)){err(t.e2);$('upg-email').focus();return;}
-  lastText=['NIRA AI — Pro upgrade request','','Name: '+name,'Email: '+email,'Plan: Pro — $5/month (100 generations/day)','Payment method: '+pay,'Interface language: '+lang(),'Current plan: '+((window.nirIsPro&&window.nirIsPro())?'pro':'free'),'','Message:',msg||'-'].join('\n');
+  var priceLabel=_market==='iran'?'300,000 Toman/month':'$5/month';
+  lastText=['NIRA AI — Pro upgrade request','','Name: '+name,'Email: '+email,'Plan: Pro — '+priceLabel+' (100 generations/day)','Market: '+(_market==='iran'?'Iran':'International'),'Payment method: '+pay,'Interface language: '+lang(),'Current plan: '+((window.nirIsPro&&window.nirIsPro())?'pro':'free'),'','Message:',msg||'-'].join('\n');
   var btn=ov.querySelector('.auth-submit'); btn.classList.add('loading'); btn.textContent=t.sending;
   var L=lang(); if(['en','tr','fa','ar','zh'].indexOf(L)<0) L='en';
   try{
     if(!window.SB||!window.currentUser) throw new Error('no-session');
-    var r=await window.SB.from('pro_requests').insert({name:name.slice(0,120),email:email.slice(0,200),payment_method:pay,message:msg.slice(0,1000)||null,language:L,current_plan:((window.nirIsPro&&window.nirIsPro())?'pro':'free')}).select('id').single();
+    var row={name:name.slice(0,120),email:email.slice(0,200),payment_method:pay,message:msg.slice(0,1000)||null,language:L,current_plan:((window.nirIsPro&&window.nirIsPro())?'pro':'free'),market:_market,currency:m.currency};
+    if(m.price_usd!=null) row.price_usd=m.price_usd;
+    if(m.price_toman!=null) row.price_toman=m.price_toman;
+    var r=await window.SB.from('pro_requests').insert(row).select('id').single();
     if(r.error){ if(r.error.code==='23505'){done(t.ok_t,t.dup);return;} throw r.error; }
     notify(r.data.id);
     done(t.ok_t,t.ok_d.replace('{e}',email));
