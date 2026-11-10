@@ -1,10 +1,15 @@
 // NIRA AI — emails the admin when a Pro request is saved. Independent of api/generate.js (no Groq, no usage logic).
 // Env vars (existing): SUPABASE_URL, SUPABASE_SERVICE_KEY. New: RESEND_API_KEY. Optional: PRO_REQUEST_FROM, PRO_REQUEST_ADMIN_EMAIL.
-// Flow: 1) validate the caller's Supabase access token  2) read THEIR pro_requests row with the service key  3) email the admin.
-// The service key bypasses RLS, so ownership is enforced here (user_id = the validated user) and the key never leaves the server.
+// Flow: 1) validate the caller's Supabase access token  2) read THEIR pro_requests row with the service key  3) validate price  4) guard duplicate email  5) email the admin.
 const ADMIN = process.env.PRO_REQUEST_ADMIN_EMAIL || 'info@niracademy.com';
 const esc = (s) => String(s == null ? '' : s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+
+// Canonical prices — never trust what the client/DB stored
+const CANONICAL = {
+  intl: { price_usd: 5,      price_toman: null,   label: 'International ($5/month)' },
+  iran: { price_usd: null,   price_toman: 300000, label: 'Iran (300,000 Toman/month)' },
+};
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
@@ -23,28 +28,60 @@ export default async function handler(req, res) {
   if (!UUID.test(id || '')) return res.status(400).json({ error: 'Bad request' });
 
   try {
-    // 1) Validate the user's token separately (the service key is only the project apikey here)
+    // 1) Validate the user's token
     const ur = await fetch(`${SUPABASE_URL}/auth/v1/user`, { headers: { apikey: SERVICE_KEY, Authorization: `Bearer ${token}` } });
     const user = ur.ok ? await ur.json() : null;
     if (!user || !UUID.test(user.id || '')) return res.status(401).json({ error: 'Invalid session' });
 
-    // 2) Read the row with the service key, restricted to this user's own request
+    // 2) Read the row — ownership enforced by user_id filter
     const rr = await fetch(
       `${SUPABASE_URL}/rest/v1/pro_requests?id=eq.${encodeURIComponent(id)}&user_id=eq.${encodeURIComponent(user.id)}&select=*`,
       { headers: { apikey: SERVICE_KEY, Authorization: `Bearer ${SERVICE_KEY}` } }
     );
-    const rows = rr.ok ? await rr.json() : [];
-    const row = rows && rows[0];
-    if (!row) return res.status(404).json({ error: 'Request not found' });
-    if (Date.now() - new Date(row.created_at).getTime() > 10 * 60 * 1000) return res.status(409).json({ error: 'Request too old' });
+    if (!rr.ok) return res.status(502).json({ error: 'Database error' }); // Fix #4: don't treat DB error as 404
+    const rows = await rr.json();
+    if (!Array.isArray(rows) || rows.length === 0) return res.status(404).json({ error: 'Request not found' });
+    const row = rows[0];
 
-    // 3) Email the admin (content comes from the saved row, never from the client)
+    // Fix #3: validate created_at before using it
+    const createdAt = row.created_at ? new Date(row.created_at).getTime() : NaN;
+    if (isNaN(createdAt) || Date.now() - createdAt > 10 * 60 * 1000) {
+      return res.status(409).json({ error: 'Request too old' });
+    }
+
+    // Fix #2: atomic claim — only proceed if email_sent was false (compare-and-swap)
+    // This prevents duplicate emails even under concurrent requests for the same id.
+    const claim = await fetch(
+      `${SUPABASE_URL}/rest/v1/pro_requests?id=eq.${encodeURIComponent(id)}&user_id=eq.${encodeURIComponent(user.id)}&email_sent=eq.false`,
+      {
+        method: 'PATCH',
+        headers: { apikey: SERVICE_KEY, Authorization: `Bearer ${SERVICE_KEY}`, 'Content-Type': 'application/json', Prefer: 'return=representation' },
+        body: JSON.stringify({ email_sent: true }),
+      }
+    );
+    if (!claim.ok) return res.status(502).json({ error: 'Database error' });
+    const claimed = await claim.json();
+    if (!Array.isArray(claimed) || claimed.length === 0) {
+      // Row not matched: either already sent or not owned — silently succeed (idempotent)
+      return res.status(200).json({ ok: true });
+    }
+
+    // Fix #1: use canonical prices based on market, never trust stored price
+    const market = row.market === 'iran' ? 'iran' : 'intl';
+    const canonical = CANONICAL[market];
+    const marketLabel = canonical.label;
+    const planLabel = market === 'iran'
+      ? `Pro — 300,000 Toman/month`
+      : `Pro — $5/month`;
+
+    // 3) Email the admin (prices come from CANONICAL, not from DB row)
     const lines = [
-      ['Name', row.name], ['Email', row.email], ['Plan', `Pro — $${row.price_usd}/month`], ['Payment method', row.payment_method],
-      ['Language', row.language], ['Current plan', row.current_plan], ['Message', row.message || '-'], ['Request ID', row.id], ['Status', row.status],
+      ['Name', row.name], ['Email', row.email], ['Market', marketLabel], ['Plan', planLabel],
+      ['Payment method', row.payment_method], ['Language', row.language], ['Current plan', row.current_plan],
+      ['Message', row.message || '-'], ['Request ID', row.id], ['Status', row.status],
     ];
     const html = `<h2>New NIRA AI Pro request</h2><table cellpadding="6">${lines.map(([k, v]) => `<tr><td><b>${k}</b></td><td>${esc(v)}</td></tr>`).join('')}</table>
-      <p>Activation is manual — see supabase/pro_requests.sql.</p>`;
+      <p>Activation is manual — update app_metadata.plan to "pro" in Supabase Auth.</p>`;
     const mail = await fetch('https://api.resend.com/emails', {
       method: 'POST',
       headers: { Authorization: `Bearer ${RESEND_API_KEY}`, 'Content-Type': 'application/json' },
@@ -55,7 +92,16 @@ export default async function handler(req, res) {
         text: lines.map(([k, v]) => `${k}: ${v}`).join('\n'),
       }),
     });
-    if (!mail.ok) return res.status(502).json({ error: 'Email failed' });
+    if (!mail.ok) {
+      // Resend failed — roll back email_sent so a retry is possible
+      fetch(`${SUPABASE_URL}/rest/v1/pro_requests?id=eq.${encodeURIComponent(id)}&user_id=eq.${encodeURIComponent(user.id)}`, {
+        method: 'PATCH',
+        headers: { apikey: SERVICE_KEY, Authorization: `Bearer ${SERVICE_KEY}`, 'Content-Type': 'application/json', Prefer: 'return=minimal' },
+        body: JSON.stringify({ email_sent: false }),
+      }).catch(() => {});
+      return res.status(502).json({ error: 'Email failed' });
+    }
+
     return res.status(200).json({ ok: true });
   } catch (e) {
     return res.status(500).json({ error: 'Server error' });
