@@ -6558,6 +6558,93 @@ html.light #page-error .etarea{background:#fff !important}
 #page-error .eo{padding:1rem .8rem;text-align:center}
 @media(max-width:700px){#page-error .ec-opts{grid-template-columns:minmax(0,1fr)}}
 </style>
+<style id="nir-ti-redesign-v1">
+/* NIR TEACHING INTELLIGENCE v1 — Lesson Reflection / Error Patterns / Micro-CPD use the exact same design system as Error Correction + Lesson Planner. Visual only. */
+:is(#page-ti-reflection,#page-ti-errors,#page-ti-cpd){--g-card:#2B251D;--g-card2:#211D18;--g-gold:#D4AF37;--g-gt:#E6C65C;--g-ink:#F4F0E6;--g-mut:#A89F8C;--g-line:rgba(212,175,55,.16);--g-line2:rgba(212,175,55,.42);--g-ease:cubic-bezier(.2,.8,.2,1)}
+html.light :is(#page-ti-reflection,#page-ti-errors,#page-ti-cpd){--g-card:#FFFFFF;--g-card2:#FBF8EF;--g-gold:#B18A25;--g-gt:#8F6B14;--g-ink:#25221B;--g-mut:#6B6554;--g-line:rgba(177,138,37,.22);--g-line2:rgba(177,138,37,.5)}
+/* header */
+:is(#page-ti-reflection,#page-ti-errors,#page-ti-cpd) .ph{margin:clamp(10px,2vw,22px) clamp(10px,2vw,22px) 0;padding:clamp(1.4rem,3.5vw,2.4rem) clamp(1.1rem,3vw,2.2rem);border:1px solid var(--g-line2);border-radius:24px;background:radial-gradient(520px 260px at 92% 0,rgba(212,175,55,.18),transparent 65%),linear-gradient(125deg,var(--g-card2),var(--g-card)) !important}
+:is(#page-ti-reflection,#page-ti-errors,#page-ti-cpd) .ph-ey{color:var(--g-gt) !important;font-weight:700;letter-spacing:2.2px}
+:is(#page-ti-reflection,#page-ti-errors,#page-ti-cpd) .ph h1{color:var(--g-ink) !important;font-size:clamp(1.6rem,3.4vw,2.5rem);letter-spacing:-.01em;line-height:1.1}
+:is(#page-ti-reflection,#page-ti-errors,#page-ti-cpd) .ph h1 span,:is(#page-ti-reflection,#page-ti-errors,#page-ti-cpd) .ph h1 span{color:var(--g-gt) !important}
+:is(#page-ti-reflection,#page-ti-errors,#page-ti-cpd) .ph p{color:var(--g-mut) !important;max-width:620px}
+:is(#page-ti-reflection,#page-ti-errors,#page-ti-cpd) .ph-tags{gap:6px}
+:is(#page-ti-reflection,#page-ti-errors,#page-ti-cpd) .ph-tag{border-color:var(--g-line2);color:var(--g-gt);background:rgba(212,175,55,.07);border-radius:99px;padding:4px 12px;font-weight:600}
+:is(#page-ti-reflection,#page-ti-errors,#page-ti-cpd) .content{padding:clamp(10px,2vw,22px) !important}
+:is(#page-ti-reflection,#page-ti-errors,#page-ti-cpd) .glayout{gap:clamp(.9rem,2vw,1.6rem);grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr)}
+/* step cards */
+:is(#page-ti-reflection,#page-ti-errors,#page-ti-cpd) .sblock{background:linear-gradient(150deg,var(--g-card),var(--g-card2)) !important;border:1px solid var(--g-line) !important;border-radius:20px;margin-bottom:12px;transition:border-color .25s,box-shadow .25s}
+:is(#page-ti-reflection,#page-ti-errors,#page-ti-cpd) .sblock:focus-within,:is(#page-ti-reflection,#page-ti-errors,#page-ti-cpd) .sblock:hover{border-color:var(--g-line2) !important}
+:is(#page-ti-reflection,#page-ti-errors,#page-ti-cpd) .sblock:focus-within{box-shadow:0 10px 30px rgba(0,0,0,.25)}
+:is(#page-ti-reflection,#page-ti-errors,#page-ti-cpd) .shdr{background:none !important;border:0 !important;padding:1rem 1.2rem .2rem;gap:12px}
+:is(#page-ti-reflection,#page-ti-errors,#page-ti-cpd) .snum{width:30px;height:30px;border:0;background:linear-gradient(145deg,#E6C65C,#B18A25);color:#1d1604;font-size:12px;font-weight:800;box-shadow:0 4px 14px rgba(212,175,55,.3)}
+:is(#page-ti-reflection,#page-ti-errors,#page-ti-cpd) .shdr h3{color:var(--g-ink) !important;font-size:15px;letter-spacing:.2px}
+:is(#page-ti-reflection,#page-ti-errors,#page-ti-cpd) .shint{color:var(--g-mut) !important;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+:is(#page-ti-reflection,#page-ti-errors,#page-ti-cpd) .sbdy{padding:.8rem 1.2rem 1.2rem}
+/* chips / levels / topic */
+:is(#page-ti-reflection,#page-ti-errors,#page-ti-cpd) .cgrid{gap:8px}
+:is(#page-ti-reflection,#page-ti-errors,#page-ti-cpd) .chip{min-height:38px;border-radius:99px;padding:7px 14px;font-size:12px;background:rgba(212,175,55,.05) !important;border:1px solid var(--g-line) !important;color:var(--g-mut) !important;transition:background .2s,border-color .2s,color .2s,transform .2s var(--g-ease),box-shadow .2s}
+html.light :is(#page-ti-reflection,#page-ti-errors,#page-ti-cpd) .chip{background:#fff !important}
+:is(#page-ti-reflection,#page-ti-errors,#page-ti-cpd) .chip:hover{border-color:var(--g-line2) !important;color:var(--g-ink) !important}
+:is(#page-ti-reflection,#page-ti-errors,#page-ti-cpd) .chip:active{transform:scale(.95)}
+:is(#page-ti-reflection,#page-ti-errors,#page-ti-cpd) .chip.active{background:linear-gradient(110deg,rgba(230,198,92,.22),rgba(212,175,55,.1)) !important;border-color:var(--g-gold) !important;color:var(--g-gt) !important;box-shadow:0 0 0 3px rgba(212,175,55,.1)}
+:is(#page-ti-reflection,#page-ti-errors,#page-ti-cpd) .lpills{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:6px;padding:4px;border:1px solid var(--g-line);border-radius:16px;background:rgba(0,0,0,.14)}
+html.light :is(#page-ti-reflection,#page-ti-errors,#page-ti-cpd) .lpills{background:#F5F1E4}
+:is(#page-ti-reflection,#page-ti-errors,#page-ti-cpd) .lvl{text-align:center;border:0 !important;border-radius:12px;padding:10px 4px;background:none !important;color:var(--g-mut) !important;transition:background .2s,color .2s,transform .2s var(--g-ease)}
+:is(#page-ti-reflection,#page-ti-errors,#page-ti-cpd) .lvl:hover{color:var(--g-ink) !important}
+:is(#page-ti-reflection,#page-ti-errors,#page-ti-cpd) .lvl.active{background:linear-gradient(110deg,#E6C65C,#D4AF37) !important;color:#1d1604 !important;box-shadow:0 4px 14px rgba(212,175,55,.3)}
+:is(#page-ti-reflection,#page-ti-errors,#page-ti-cpd) .tin{height:50px;border-radius:14px;padding:0 16px;background:rgba(0,0,0,.16) !important;border:1px solid var(--g-line) !important;color:var(--g-ink) !important;font-size:15px}
+html.light :is(#page-ti-reflection,#page-ti-errors,#page-ti-cpd) .tin{background:#fff !important}
+:is(#page-ti-reflection,#page-ti-errors,#page-ti-cpd) .tin:focus{border-color:var(--g-gold) !important;box-shadow:0 0 0 4px rgba(212,175,55,.14)}
+:is(#page-ti-reflection,#page-ti-errors,#page-ti-cpd) .ttags{gap:6px;margin-top:10px}
+:is(#page-ti-reflection,#page-ti-errors,#page-ti-cpd) .ttag{border-radius:99px;padding:5px 12px;min-height:30px;display:inline-flex;align-items:center;border-color:var(--g-line);color:var(--g-mut)}
+:is(#page-ti-reflection,#page-ti-errors,#page-ti-cpd) .ttag:hover{border-color:var(--g-gold);color:var(--g-gt);background:rgba(212,175,55,.08)}
+:is(#page-ti-reflection,#page-ti-errors,#page-ti-cpd) .selg{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+:is(#page-ti-reflection,#page-ti-errors,#page-ti-cpd) .sg label{color:var(--g-mut) !important;font-size:10.5px}
+:is(#page-ti-reflection,#page-ti-errors,#page-ti-cpd) .sg select{height:46px;border-radius:12px;background-color:rgba(0,0,0,.16) !important;border:1px solid var(--g-line) !important;color:var(--g-ink) !important}
+html.light :is(#page-ti-reflection,#page-ti-errors,#page-ti-cpd) .sg select{background-color:#fff !important}
+:is(#page-ti-reflection,#page-ti-errors,#page-ti-cpd) .sg select:focus{border-color:var(--g-gold) !important;box-shadow:0 0 0 4px rgba(212,175,55,.14)}
+/* generate button */
+:is(#page-ti-reflection,#page-ti-errors,#page-ti-cpd) .btn-gen{height:56px;border-radius:16px;background:linear-gradient(110deg,#E6C65C,#D4AF37 55%,#B18A25) !important;color:#1d1604 !important;font-size:13px;box-shadow:0 10px 30px rgba(212,175,55,.28);position:relative;overflow:hidden;transition:transform .25s var(--g-ease),box-shadow .25s}
+:is(#page-ti-reflection,#page-ti-errors,#page-ti-cpd) .btn-gen:before{content:"";position:absolute;inset:0;background:linear-gradient(110deg,transparent 30%,rgba(255,255,255,.35) 50%,transparent 70%);transform:translateX(-120%);transition:transform .7s var(--g-ease)}
+:is(#page-ti-reflection,#page-ti-errors,#page-ti-cpd) .btn-gen:hover{transform:translateY(-2px);box-shadow:0 14px 38px rgba(212,175,55,.4)}:is(#page-ti-reflection,#page-ti-errors,#page-ti-cpd) .btn-gen:hover:before{transform:translateX(120%)}
+:is(#page-ti-reflection,#page-ti-errors,#page-ti-cpd) .btn-gen:active{transform:scale(.98)}
+/* result panel */
+:is(#page-ti-reflection,#page-ti-errors,#page-ti-cpd) .rpanel{background:linear-gradient(160deg,var(--g-card),var(--g-card2)) !important;border:1px solid var(--g-line2) !important;border-radius:22px;box-shadow:0 20px 50px rgba(0,0,0,.28)}
+html.light :is(#page-ti-reflection,#page-ti-errors,#page-ti-cpd) .rpanel{box-shadow:0 18px 40px rgba(60,45,10,.1)}
+:is(#page-ti-reflection,#page-ti-errors,#page-ti-cpd) .rp-lbl{color:var(--g-gt) !important}
+:is(#page-ti-reflection,#page-ti-errors,#page-ti-cpd) .rp-acts{gap:6px;flex-wrap:wrap;justify-content:flex-end}
+:is(#page-ti-reflection,#page-ti-errors,#page-ti-cpd) .rp-btn{border-radius:10px;min-height:34px;background:rgba(212,175,55,.06) !important;border:1px solid var(--g-line) !important;color:var(--g-mut) !important;transition:background .2s,color .2s,border-color .2s,transform .2s var(--g-ease)}
+:is(#page-ti-reflection,#page-ti-errors,#page-ti-cpd) .rp-btn:hover{border-color:var(--g-line2) !important;color:var(--g-gt) !important;transform:translateY(-1px)}
+:is(#page-ti-reflection,#page-ti-errors,#page-ti-cpd) .rp-btn.ok{color:#6cc870 !important;border-color:rgba(108,200,112,.5) !important}
+:is(#page-ti-reflection,#page-ti-errors,#page-ti-cpd) .out-txt{border-left-color:var(--g-line2);color:var(--g-ink) !important}
+:is(#page-ti-reflection,#page-ti-errors,#page-ti-cpd) .out-txt h1,:is(#page-ti-reflection,#page-ti-errors,#page-ti-cpd) .out-txt h2,:is(#page-ti-reflection,#page-ti-errors,#page-ti-cpd) .out-txt h3,:is(#page-ti-reflection,#page-ti-errors,#page-ti-cpd) .out-txt h4{color:var(--g-gt) !important}
+:is(#page-ti-reflection,#page-ti-errors,#page-ti-cpd) .rp-empty{display:grid;place-items:center;text-align:center;padding:1.5rem .5rem;color:var(--g-mut)}
+:is(#page-ti-reflection,#page-ti-errors,#page-ti-cpd) .re-ico{display:grid;place-items:center;width:64px;height:64px;margin:0 auto .8rem;border-radius:20px;font-size:26px;color:var(--g-gt);background:radial-gradient(circle,rgba(212,175,55,.25),rgba(212,175,55,.05));border:1px solid var(--g-line2);animation:gFloat 5s ease-in-out infinite}
+:is(#page-ti-reflection,#page-ti-errors,#page-ti-cpd) .rp-foot{color:var(--g-mut)}
+@media(max-width:1100px){:is(#page-ti-reflection,#page-ti-errors,#page-ti-cpd) .glayout{grid-template-columns:minmax(0,1fr)}:is(#page-ti-reflection,#page-ti-errors,#page-ti-cpd) .rpanel{position:static;max-height:none}}
+@media(max-width:600px){
+:is(#page-ti-reflection,#page-ti-errors,#page-ti-cpd) .ph{border-radius:20px;padding:1.2rem 1.1rem}
+:is(#page-ti-reflection,#page-ti-errors,#page-ti-cpd) .ph-tags{flex-wrap:nowrap;overflow-x:auto;margin:.9rem -1.1rem 0;padding:0 1.1rem;scrollbar-width:none}:is(#page-ti-reflection,#page-ti-errors,#page-ti-cpd) .ph-tags::-webkit-scrollbar{display:none}:is(#page-ti-reflection,#page-ti-errors,#page-ti-cpd) .ph-tag{white-space:nowrap}
+:is(#page-ti-reflection,#page-ti-errors,#page-ti-cpd) .sblock{border-radius:18px}:is(#page-ti-reflection,#page-ti-errors,#page-ti-cpd) .sbdy{padding:.7rem 1rem 1rem}:is(#page-ti-reflection,#page-ti-errors,#page-ti-cpd) .shdr{padding:.9rem 1rem .1rem}
+:is(#page-ti-reflection,#page-ti-errors,#page-ti-cpd) .chip{min-height:42px;padding:8px 14px;font-size:12.5px}
+:is(#page-ti-reflection,#page-ti-errors,#page-ti-cpd) .lpills{grid-template-columns:repeat(3,minmax(0,1fr))}:is(#page-ti-reflection,#page-ti-errors,#page-ti-cpd) .lvl{padding:12px 4px;font-size:12.5px}
+:is(#page-ti-reflection,#page-ti-errors,#page-ti-cpd) .ttag{min-height:36px;padding:6px 13px}
+:is(#page-ti-reflection,#page-ti-errors,#page-ti-cpd) .selg{grid-template-columns:minmax(0,1fr)}
+:is(#page-ti-reflection,#page-ti-errors,#page-ti-cpd) .btn-gen{position:sticky;bottom:calc(var(--mob-nav-h,88px) + var(--safe-bottom,0px) + 8px);z-index:20;height:58px;box-shadow:0 12px 32px rgba(0,0,0,.45),0 6px 24px rgba(212,175,55,.3)}
+:is(#page-ti-reflection,#page-ti-errors,#page-ti-cpd) .rp-btn{min-height:40px;padding:6px 14px}
+}
+@media(prefers-reduced-motion:reduce){:is(#page-ti-reflection,#page-ti-errors,#page-ti-cpd) *{transition:none !important;animation:none !important}}
+
+/* TI extras: textareas, hints, mobile (16px stops iOS zoom) */
+:is(#page-ti-reflection,#page-ti-errors,#page-ti-cpd) textarea.tin{height:auto;min-height:130px;padding:14px 16px;line-height:1.65;font-size:14px;resize:vertical;display:block}
+:is(#page-ti-reflection,#page-ti-errors,#page-ti-cpd) textarea.tin::placeholder,:is(#page-ti-reflection,#page-ti-errors,#page-ti-cpd) input.tin::placeholder{color:var(--g-mut);opacity:.75}
+:is(#page-ti-reflection,#page-ti-errors,#page-ti-cpd) .shdr h3 em{font-style:normal;font-weight:400;font-size:.82em;opacity:.6}
+:is(#page-ti-reflection,#page-ti-errors,#page-ti-cpd) .tool-next-bar{border-radius:14px;border-color:var(--g-line);background:rgba(212,175,55,.05)}
+:is(#page-ti-reflection,#page-ti-errors,#page-ti-cpd) .nir-meta{color:var(--g-mut)}
+@media(max-width:600px){:is(#page-ti-reflection,#page-ti-errors,#page-ti-cpd) textarea.tin,:is(#page-ti-reflection,#page-ti-errors,#page-ti-cpd) input.tin{font-size:16px}:is(#page-ti-reflection,#page-ti-errors,#page-ti-cpd) .ph p{font-size:13.5px}}
+</style>
+
 <style id="nir-worksheet-redesign-v3">
 /* ═══ NIR WORKSHEET BUILDER REDESIGN v3 — scoped to #page-worksheet. Same system as Prompt Generator / Lesson Planner. Visual only. ═══ */
 #page-worksheet{--g-card:#2B251D;--g-card2:#211D18;--g-gold:#D4AF37;--g-gt:#E6C65C;--g-ink:#F4F0E6;--g-mut:#A89F8C;--g-line:rgba(212,175,55,.16);--g-line2:rgba(212,175,55,.42);--g-ease:cubic-bezier(.2,.8,.2,1)}
@@ -6791,14 +6878,14 @@ html.light #page-ielts .sg select{color-scheme:light}
 html.light #page-ielts .sg select option,html.light #page-ielts .sg select optgroup{background-color:#FFFFFF;color:#25221B}
 html.light #page-ielts .sg select option:hover,html.light #page-ielts .sg select option:focus{background:#F5F1E4 linear-gradient(#F5F1E4,#F5F1E4);color:#8F6B14}
 html.light #page-ielts .sg select option:checked{background:#E6C65C linear-gradient(#E6C65C,#E6C65C);color:#1d1604}
-#page-error .sg select{color-scheme:dark}
-html.light #page-error .sg select{color-scheme:light}
-#page-error .sg select option,#page-error .sg select optgroup{background-color:#211D18;color:#F4F0E6;font-weight:500}
-#page-error .sg select option:hover,#page-error .sg select option:focus{background:#3a3124 linear-gradient(#3a3124,#3a3124);color:#E6C65C}
-#page-error .sg select option:checked{background:#D4AF37 linear-gradient(#D4AF37,#D4AF37);color:#1d1604}
-html.light #page-error .sg select option,html.light #page-error .sg select optgroup{background-color:#FFFFFF;color:#25221B}
-html.light #page-error .sg select option:hover,html.light #page-error .sg select option:focus{background:#F5F1E4 linear-gradient(#F5F1E4,#F5F1E4);color:#8F6B14}
-html.light #page-error .sg select option:checked{background:#E6C65C linear-gradient(#E6C65C,#E6C65C);color:#1d1604}
+#page-error .sg select,#page-ti-reflection .sg select,#page-ti-errors .sg select,#page-ti-cpd .sg select{color-scheme:dark}
+html.light #page-error .sg select,html.light #page-ti-reflection .sg select,html.light #page-ti-errors .sg select,html.light #page-ti-cpd .sg select{color-scheme:light}
+#page-error .sg select option,#page-ti-reflection .sg select option,#page-ti-errors .sg select option,#page-ti-cpd .sg select option,#page-error .sg select optgroup,#page-ti-reflection .sg select optgroup,#page-ti-errors .sg select optgroup,#page-ti-cpd .sg select optgroup{background-color:#211D18;color:#F4F0E6;font-weight:500}
+#page-error .sg select option:hover,#page-ti-reflection .sg select option:hover,#page-ti-errors .sg select option:hover,#page-ti-cpd .sg select option:hover,#page-error .sg select option:focus,#page-ti-reflection .sg select option:focus,#page-ti-errors .sg select option:focus,#page-ti-cpd .sg select option:focus{background:#3a3124 linear-gradient(#3a3124,#3a3124);color:#E6C65C}
+#page-error .sg select option:checked,#page-ti-reflection .sg select option:checked,#page-ti-errors .sg select option:checked,#page-ti-cpd .sg select option:checked{background:#D4AF37 linear-gradient(#D4AF37,#D4AF37);color:#1d1604}
+html.light #page-error .sg select option,html.light #page-ti-reflection .sg select option,html.light #page-ti-errors .sg select option,html.light #page-ti-cpd .sg select option,html.light #page-error .sg select optgroup,html.light #page-ti-reflection .sg select optgroup,html.light #page-ti-errors .sg select optgroup,html.light #page-ti-cpd .sg select optgroup{background-color:#FFFFFF;color:#25221B}
+html.light #page-error .sg select option:hover,html.light #page-ti-reflection .sg select option:hover,html.light #page-ti-errors .sg select option:hover,html.light #page-ti-cpd .sg select option:hover,html.light #page-error .sg select option:focus,html.light #page-ti-reflection .sg select option:focus,html.light #page-ti-errors .sg select option:focus,html.light #page-ti-cpd .sg select option:focus{background:#F5F1E4 linear-gradient(#F5F1E4,#F5F1E4);color:#8F6B14}
+html.light #page-error .sg select option:checked,html.light #page-ti-reflection .sg select option:checked,html.light #page-ti-errors .sg select option:checked,html.light #page-ti-cpd .sg select option:checked{background:#E6C65C linear-gradient(#E6C65C,#E6C65C);color:#1d1604}
 #page-worksheet .sg select{color-scheme:dark}
 html.light #page-worksheet .sg select{color-scheme:light}
 #page-worksheet .sg select option,#page-worksheet .sg select optgroup{background-color:#211D18;color:#F4F0E6;font-weight:500}
@@ -6984,17 +7071,17 @@ html:not(.light) #mob-nav{background:rgba(29,25,20,.97) !important}html.light #m
 </style>
 <style id="nir-result-panel-v3">
 /* ═══ NIR RESULT PANEL v3 — larger output panel + Expand (full-screen) on all 5 tool pages. Visual only. ═══ */
-@media(min-width:1101px){#page-generator .glayout,#page-lesson .glayout,#page-ielts .glayout,#page-error .glayout,#page-worksheet .glayout{grid-template-columns:minmax(340px,.8fr) minmax(0,1.2fr)}}
-#page-generator .rpanel,#page-lesson .rpanel,#page-ielts .rpanel,#page-error .rpanel,#page-worksheet .rpanel{min-height:min(660px,calc(100vh - 120px));max-height:calc(100vh - 100px);padding:clamp(1.2rem,2vw,1.9rem)}
-#page-generator .out-txt,#page-lesson .out-txt,#page-ielts .out-txt,#page-error .out-txt,#page-worksheet .out-txt{font-size:15.5px;line-height:1.85}
-@media(max-width:1100px){#page-generator .rpanel,#page-lesson .rpanel,#page-ielts .rpanel,#page-error .rpanel,#page-worksheet .rpanel{max-height:none;min-height:min(72vh,600px)}#page-generator .out-txt,#page-lesson .out-txt,#page-ielts .out-txt,#page-error .out-txt,#page-worksheet .out-txt{min-height:min(52vh,400px)}}
+@media(min-width:1101px){#page-generator .glayout,#page-lesson .glayout,#page-ielts .glayout,#page-error .glayout,#page-ti-reflection .glayout,#page-ti-errors .glayout,#page-ti-cpd .glayout,#page-worksheet .glayout{grid-template-columns:minmax(340px,.8fr) minmax(0,1.2fr)}}
+#page-generator .rpanel,#page-lesson .rpanel,#page-ielts .rpanel,#page-error .rpanel,#page-ti-reflection .rpanel,#page-ti-errors .rpanel,#page-ti-cpd .rpanel,#page-worksheet .rpanel{min-height:min(660px,calc(100vh - 120px));max-height:calc(100vh - 100px);padding:clamp(1.2rem,2vw,1.9rem)}
+#page-generator .out-txt,#page-lesson .out-txt,#page-ielts .out-txt,#page-error .out-txt,#page-ti-reflection .out-txt,#page-ti-errors .out-txt,#page-ti-cpd .out-txt,#page-worksheet .out-txt{font-size:15.5px;line-height:1.85}
+@media(max-width:1100px){#page-generator .rpanel,#page-lesson .rpanel,#page-ielts .rpanel,#page-error .rpanel,#page-ti-reflection .rpanel,#page-ti-errors .rpanel,#page-ti-cpd .rpanel,#page-worksheet .rpanel{max-height:none;min-height:min(72vh,600px)}#page-generator .out-txt,#page-lesson .out-txt,#page-ielts .out-txt,#page-error .out-txt,#page-ti-reflection .out-txt,#page-ti-errors .out-txt,#page-ti-cpd .out-txt,#page-worksheet .out-txt{min-height:min(52vh,400px)}}
 .page.rp-lock{animation:none !important;transform:none !important}
 html.rp-lock-scroll{overflow:hidden !important}
-#page-generator .rpanel.rp-full,#page-lesson .rpanel.rp-full,#page-ielts .rpanel.rp-full,#page-error .rpanel.rp-full,#page-worksheet .rpanel.rp-full{position:fixed !important;inset:0;z-index:9300;width:auto;max-height:none !important;min-height:0 !important;margin:0;border-radius:0 !important;border:0 !important;overflow-y:auto !important;padding:calc(14px + env(safe-area-inset-top,0px)) clamp(14px,4vw,40px) calc(22px + env(safe-area-inset-bottom,0px)) !important;background:#171410 !important;box-shadow:none !important}
-html.light #page-generator .rpanel.rp-full,html.light #page-lesson .rpanel.rp-full,html.light #page-ielts .rpanel.rp-full,html.light #page-error .rpanel.rp-full,html.light #page-worksheet .rpanel.rp-full{background:#F7F7F5 !important}
-#page-generator .rpanel.rp-full > *,#page-lesson .rpanel.rp-full > *,#page-ielts .rpanel.rp-full > *,#page-error .rpanel.rp-full > *,#page-worksheet .rpanel.rp-full > *{width:100%;max-width:900px;margin-left:auto;margin-right:auto}
-#page-generator .rpanel.rp-full .rp-hdr,#page-lesson .rpanel.rp-full .rp-hdr,#page-ielts .rpanel.rp-full .rp-hdr,#page-error .rpanel.rp-full .rp-hdr,#page-worksheet .rpanel.rp-full .rp-hdr{position:sticky;top:calc(-14px - env(safe-area-inset-top,0px));z-index:3;padding:calc(14px + env(safe-area-inset-top,0px)) 0 .7rem;background:inherit;margin-top:calc(-14px - env(safe-area-inset-top,0px))}
-#page-generator .rpanel.rp-full .out-txt,#page-lesson .rpanel.rp-full .out-txt,#page-ielts .rpanel.rp-full .out-txt,#page-error .rpanel.rp-full .out-txt,#page-worksheet .rpanel.rp-full .out-txt{font-size:16px;min-height:0;flex:1 0 auto;max-height:none;overflow:visible}
+#page-generator .rpanel.rp-full,#page-lesson .rpanel.rp-full,#page-ielts .rpanel.rp-full,#page-error .rpanel.rp-full,#page-ti-reflection .rpanel.rp-full,#page-ti-errors .rpanel.rp-full,#page-ti-cpd .rpanel.rp-full,#page-worksheet .rpanel.rp-full{position:fixed !important;inset:0;z-index:9300;width:auto;max-height:none !important;min-height:0 !important;margin:0;border-radius:0 !important;border:0 !important;overflow-y:auto !important;padding:calc(14px + env(safe-area-inset-top,0px)) clamp(14px,4vw,40px) calc(22px + env(safe-area-inset-bottom,0px)) !important;background:#171410 !important;box-shadow:none !important}
+html.light #page-generator .rpanel.rp-full,html.light #page-lesson .rpanel.rp-full,html.light #page-ielts .rpanel.rp-full,html.light #page-error .rpanel.rp-full,html.light #page-ti-reflection .rpanel.rp-full,html.light #page-ti-errors .rpanel.rp-full,html.light #page-ti-cpd .rpanel.rp-full,html.light #page-worksheet .rpanel.rp-full{background:#F7F7F5 !important}
+#page-generator .rpanel.rp-full > *,#page-lesson .rpanel.rp-full > *,#page-ielts .rpanel.rp-full > *,#page-error .rpanel.rp-full > *,#page-ti-reflection .rpanel.rp-full > *,#page-ti-errors .rpanel.rp-full > *,#page-ti-cpd .rpanel.rp-full > *,#page-worksheet .rpanel.rp-full > *{width:100%;max-width:900px;margin-left:auto;margin-right:auto}
+#page-generator .rpanel.rp-full .rp-hdr,#page-lesson .rpanel.rp-full .rp-hdr,#page-ielts .rpanel.rp-full .rp-hdr,#page-error .rpanel.rp-full .rp-hdr,#page-ti-reflection .rpanel.rp-full .rp-hdr,#page-ti-errors .rpanel.rp-full .rp-hdr,#page-ti-cpd .rpanel.rp-full .rp-hdr,#page-worksheet .rpanel.rp-full .rp-hdr{position:sticky;top:calc(-14px - env(safe-area-inset-top,0px));z-index:3;padding:calc(14px + env(safe-area-inset-top,0px)) 0 .7rem;background:inherit;margin-top:calc(-14px - env(safe-area-inset-top,0px))}
+#page-generator .rpanel.rp-full .out-txt,#page-lesson .rpanel.rp-full .out-txt,#page-ielts .rpanel.rp-full .out-txt,#page-error .rpanel.rp-full .out-txt,#page-ti-reflection .rpanel.rp-full .out-txt,#page-ti-errors .rpanel.rp-full .out-txt,#page-ti-cpd .rpanel.rp-full .out-txt,#page-worksheet .rpanel.rp-full .out-txt{font-size:16px;min-height:0;flex:1 0 auto;max-height:none;overflow:visible}
 .rp-expand{white-space:nowrap}
 .rp-full .rp-expand{order:-1;background:linear-gradient(110deg,#E6C65C,#D4AF37) !important;color:#1d1604 !important;border-color:#E6C65C !important}
 </style>
@@ -8351,59 +8438,75 @@ html.light #footer{--f-ink:#25221B;--f-mut:#6B6554;--f-gt:#8F6B14;--f-line:rgba(
     <span class="ph-ey">✦ Teaching Intelligence · Module 1</span>
     <h1>Lesson <span>Reflection</span></h1>
     <p>Analyse a real classroom experience and receive evidence-based pedagogical improvements.</p>
+    <div class="ph-tags"><span class="ph-tag">Reflective Practice</span><span class="ph-tag">TESOL Methodology</span><span class="ph-tag">TTT / STT</span><span class="ph-tag">CEFR A1–C2</span></div>
   </div>
-  <div class="tool-wrap">
-    <div class="lpanel">
-      <div class="sblock">
-        <div class="shdr"><span class="snum">1</span><h3>The Lesson</h3></div>
-        <div class="sbody">
-          <div class="sg">
-            <label class="sg-lbl">CEFR Level</label>
-            <select id="ti-ref-level">
-              <option value="A1">A1 — Beginner</option>
-              <option value="A2">A2 — Elementary</option>
-              <option value="B1" selected>B1 — Intermediate</option>
-              <option value="B2">B2 — Upper-Intermediate</option>
-              <option value="C1">C1 — Advanced</option>
-              <option value="C2">C2 — Proficiency</option>
-            </select>
-          </div>
-          <div class="sg">
-            <label class="sg-lbl">Lesson Focus</label>
-            <div class="chip-row">
-              <span class="chip active" onclick="tiChip(this,'ref-focus')">Grammar</span>
-              <span class="chip" onclick="tiChip(this,'ref-focus')">Vocabulary</span>
-              <span class="chip" onclick="tiChip(this,'ref-focus')">Speaking</span>
-              <span class="chip" onclick="tiChip(this,'ref-focus')">Listening</span>
-              <span class="chip" onclick="tiChip(this,'ref-focus')">Reading</span>
-              <span class="chip" onclick="tiChip(this,'ref-focus')">Writing</span>
-            </div>
-          </div>
-          <div class="sg">
-            <label class="sg-lbl">Framework</label>
-            <div class="chip-row">
-              <span class="chip active" onclick="tiChip(this,'ref-fw')">PPP</span>
-              <span class="chip" onclick="tiChip(this,'ref-fw')">TBL</span>
-              <span class="chip" onclick="tiChip(this,'ref-fw')">ESA</span>
-              <span class="chip" onclick="tiChip(this,'ref-fw')">CLT</span>
-              <span class="chip" onclick="tiChip(this,'ref-fw')">Other</span>
-            </div>
-          </div>
-          <div class="sg">
-            <label class="sg-lbl">What happened in the lesson?</label>
-            <textarea id="ti-ref-desc" class="tin" rows="5" placeholder="Describe the lesson briefly: topic, activities used, how students responded, any moments that went well or didn't, and what you felt about the pacing or engagement…"></textarea>
-          </div>
-          <div class="sg">
-            <label class="sg-lbl">What specific challenge or moment do you want to reflect on? <span style="color:var(--muted);font-weight:400">(optional)</span></label>
-            <textarea id="ti-ref-challenge" class="tin" rows="3" placeholder="e.g. Students were disengaged during the presentation stage, TTT was too high, pair work broke down…"></textarea>
+  <div class="content" style="max-width:none">
+    <div class="glayout">
+      <!-- FORM -->
+      <div>
+        <div class="sblock">
+          <div class="shdr"><div class="snum">1</div><h3>Lesson Focus</h3><span class="shint">Skill taught</span></div>
+          <div class="sbdy">
+              <div class="cgrid" id="ti-ref-focus">
+              <div class="chip active" data-v="Grammar" onclick="tiChip(this,'ti-ref-focus')"><i data-lucide="square-function"></i> Grammar</div>
+              <div class="chip" data-v="Vocabulary" onclick="tiChip(this,'ti-ref-focus')"><i data-lucide="book-a"></i> Vocabulary</div>
+              <div class="chip" data-v="Speaking" onclick="tiChip(this,'ti-ref-focus')"><i data-lucide="mic-2"></i> Speaking</div>
+              <div class="chip" data-v="Listening" onclick="tiChip(this,'ti-ref-focus')"><i data-lucide="headphones"></i> Listening</div>
+              <div class="chip" data-v="Reading" onclick="tiChip(this,'ti-ref-focus')"><i data-lucide="book-open"></i> Reading</div>
+              <div class="chip" data-v="Writing" onclick="tiChip(this,'ti-ref-focus')"><i data-lucide="pen-line"></i> Writing</div>
+              </div>
           </div>
         </div>
+        <div class="sblock">
+          <div class="shdr"><div class="snum">2</div><h3>Level &amp; Framework</h3><span class="shint">CEFR &amp; approach</span></div>
+          <div class="sbdy">
+              <div class="lpills" id="ti-ref-level">
+              <div class="lvl" data-v="A1" onclick="tiLvl(this,'ti-ref-level')">A1</div>
+              <div class="lvl" data-v="A2" onclick="tiLvl(this,'ti-ref-level')">A2</div>
+              <div class="lvl active" data-v="B1" onclick="tiLvl(this,'ti-ref-level')">B1</div>
+              <div class="lvl" data-v="B2" onclick="tiLvl(this,'ti-ref-level')">B2</div>
+              <div class="lvl" data-v="C1" onclick="tiLvl(this,'ti-ref-level')">C1</div>
+              <div class="lvl" data-v="C2" onclick="tiLvl(this,'ti-ref-level')">C2</div>
+              </div>
+              <div style="height:.9rem"></div>
+              <div class="cgrid" id="ti-ref-fw">
+              <div class="chip active" data-v="PPP" onclick="tiChip(this,'ti-ref-fw')">PPP</div>
+              <div class="chip" data-v="TBL" onclick="tiChip(this,'ti-ref-fw')">TBL</div>
+              <div class="chip" data-v="ESA" onclick="tiChip(this,'ti-ref-fw')">ESA</div>
+              <div class="chip" data-v="CLT" onclick="tiChip(this,'ti-ref-fw')">CLT</div>
+              <div class="chip" data-v="Other" onclick="tiChip(this,'ti-ref-fw')">Other</div>
+              </div>
+          </div>
+        </div>
+        <div class="sblock">
+          <div class="shdr"><div class="snum">3</div><h3>The Lesson</h3><span class="shint">What happened</span></div>
+          <div class="sbdy">
+              <textarea id="ti-ref-desc" class="tin" rows="5" placeholder="Describe the lesson briefly: topic, activities used, how students responded, any moments that went well or didn't, and what you felt about the pacing or engagement…"></textarea>
+          </div>
+        </div>
+        <div class="sblock">
+          <div class="shdr"><div class="snum">4</div><h3>Challenge <em>(optional)</em></h3><span class="shint">Moment to reflect on</span></div>
+          <div class="sbdy">
+              <textarea id="ti-ref-challenge" class="tin" rows="3" placeholder="e.g. Students were disengaged during the presentation stage, TTT was too high, pair work broke down…"></textarea>
+          </div>
+        </div>
+        <button class="btn-gen" id="ti-ref-btn" data-lbl="Analyse Lesson" onclick="tiRunReflection()">✦ &nbsp;Analyse Lesson<span class="btn-progress"></span></button>
       </div>
-      <button class="btn-gen btn-ripple" id="ti-ref-btn" data-lbl="Reflect" onclick="tiRunReflection()">✦ &nbsp;Analyse Lesson</button>
-    </div>
-    <div class="rpanel" id="ti-ref-rpanel">
-      <div class="rp-hdr"><span class="rp-title">Reflection Report</span><div class="rp-acts"><button class="rp-btn" onclick="tiCopy('ti-ref-out')">Copy</button></div></div>
-      <div class="out-txt" id="ti-ref-out"><span class="rp-ph">Describe your lesson above and click <strong>Analyse Lesson</strong> for structured pedagogical feedback.<br><br>Covers: lesson strengths · pedagogical gaps · student engagement analysis · specific improvement strategies · suggested follow-up activity</span></div>
+      <!-- RESULT -->
+      <div>
+        <div class="rpanel">
+          <div class="rp-hdr"><span class="rp-lbl">Reflection Report</span><div class="rp-acts"><button class="rp-btn save-ws" onclick="saveToWorkspace('ti-ref-out','Lesson Reflection')">💾 Save</button><button class="rp-btn" onclick="copyOut('ti-ref-out')">Copy</button><button class="rp-btn" onclick="tiRunReflection()">Regenerate</button><button class="rp-btn" onclick="nirPrint('ti-ref-out')" title="Print">🖨</button><button class="rp-btn" onclick="nirDownloadDocx('ti-ref-out')" title="Download Word">📄</button></div></div>
+          <div class="nir-meta" id="ti-ref-meta" role="status" aria-live="polite"></div>
+          <div id="ti-ref-wc" style="font-size:11px;color:var(--muted);text-align:right;min-height:16px;padding-right:2px;"></div>
+          <div id="ti-ref-next" class="tool-next-bar"></div>
+          <div id="ti-ref-out" class="out-txt"><div class="rp-empty">
+  <div class="re-ico"><i data-lucide="scan-eye"></i></div>
+  <p>Your structured reflection report will appear here.</p>
+  <p style="margin-top:0.75rem;font-size:11px;opacity:0.7">Covers: strengths · pedagogical gaps · student engagement · improvement strategies · follow-up activity</p>
+</div></div>
+          <div class="rp-foot"><img src="" class="nir-logo" alt=""> NIR Academy · Dr. Niki Majidi</div>
+        </div>
+      </div>
     </div>
   </div>
 </div>
@@ -8414,51 +8517,66 @@ html.light #footer{--f-ink:#25221B;--f-mut:#6B6554;--f-gt:#8F6B14;--f-line:rgba(
     <span class="ph-ey">✦ Teaching Intelligence · Module 2</span>
     <h1>Error Pattern <span>Intelligence</span></h1>
     <p>Identify recurring learner errors, understand the underlying patterns, and generate CEFR-aligned remedial activities.</p>
+    <div class="ph-tags"><span class="ph-tag">Error Analysis</span><span class="ph-tag">L1 Transfer</span><span class="ph-tag">Remedial Activities</span><span class="ph-tag">CEFR A1–C2</span></div>
   </div>
-  <div class="tool-wrap">
-    <div class="lpanel">
-      <div class="sblock">
-        <div class="shdr"><span class="snum">1</span><h3>Learner Context</h3></div>
-        <div class="sbody">
-          <div class="sg">
-            <label class="sg-lbl">CEFR Level</label>
-            <select id="ti-err-level">
-              <option value="A1">A1 — Beginner</option>
-              <option value="A2">A2 — Elementary</option>
-              <option value="B1" selected>B1 — Intermediate</option>
-              <option value="B2">B2 — Upper-Intermediate</option>
-              <option value="C1">C1 — Advanced</option>
-            </select>
-          </div>
-          <div class="sg">
-            <label class="sg-lbl">L1 Background <span style="color:var(--muted);font-weight:400">(optional — improves pattern analysis)</span></label>
-            <input type="text" id="ti-err-l1" class="tin" placeholder="e.g. Turkish, Arabic, Persian, Chinese…">
+  <div class="content" style="max-width:none">
+    <div class="glayout">
+      <!-- FORM -->
+      <div>
+        <div class="sblock">
+          <div class="shdr"><div class="snum">1</div><h3>Learner Level</h3><span class="shint">CEFR</span></div>
+          <div class="sbdy">
+              <div class="lpills" id="ti-err-level">
+              <div class="lvl" data-v="A1" onclick="tiLvl(this,'ti-err-level')">A1</div>
+              <div class="lvl" data-v="A2" onclick="tiLvl(this,'ti-err-level')">A2</div>
+              <div class="lvl active" data-v="B1" onclick="tiLvl(this,'ti-err-level')">B1</div>
+              <div class="lvl" data-v="B2" onclick="tiLvl(this,'ti-err-level')">B2</div>
+              <div class="lvl" data-v="C1" onclick="tiLvl(this,'ti-err-level')">C1</div>
+              <div class="lvl" data-v="C2" onclick="tiLvl(this,'ti-err-level')">C2</div>
+              </div>
           </div>
         </div>
-      </div>
-      <div class="sblock">
-        <div class="shdr"><span class="snum">2</span><h3>Error Samples</h3></div>
-        <div class="sbody">
-          <div class="sg">
-            <label class="sg-lbl">Paste student errors — one per line</label>
-            <textarea id="ti-err-samples" class="tin" rows="7" placeholder="He don't understand the question.&#10;Yesterday I go to school early.&#10;She is more taller than her sister.&#10;I have 20 years old.&#10;We discussed about the problem."></textarea>
-          </div>
-          <div class="sg">
-            <label class="sg-lbl">Output focus</label>
-            <div class="chip-row">
-              <span class="chip active" onclick="tiChip(this,'err-out')">Pattern Analysis</span>
-              <span class="chip active" onclick="tiChip(this,'err-out')">Remedial Activities</span>
-              <span class="chip active" onclick="tiChip(this,'err-out')">CCQs</span>
-              <span class="chip" onclick="tiChip(this,'err-out')">Student-Friendly Explanation</span>
-            </div>
+        <div class="sblock">
+          <div class="shdr"><div class="snum">2</div><h3>L1 Background <em>(optional)</em></h3><span class="shint">Improves analysis</span></div>
+          <div class="sbdy">
+              <input class="tin" type="text" id="ti-err-l1" placeholder="e.g. Turkish, Arabic, Persian, Chinese…">
+            <div class="ttags"><span class="ttag" onclick="tiPickL1('Turkish')">Turkish</span><span class="ttag" onclick="tiPickL1('Persian')">Persian</span><span class="ttag" onclick="tiPickL1('Arabic')">Arabic</span><span class="ttag" onclick="tiPickL1('Chinese')">Chinese</span><span class="ttag" onclick="tiPickL1('Spanish')">Spanish</span><span class="ttag" onclick="tiPickL1('Russian')">Russian</span></div>
           </div>
         </div>
+        <div class="sblock">
+          <div class="shdr"><div class="snum">3</div><h3>Error Samples</h3><span class="shint">One per line</span></div>
+          <div class="sbdy">
+              <textarea id="ti-err-samples" class="tin" rows="7" placeholder="He don't understand the question.&#10;Yesterday I go to school early.&#10;She is more taller than her sister.&#10;I have 20 years old.&#10;We discussed about the problem."></textarea>
+          </div>
+        </div>
+        <div class="sblock">
+          <div class="shdr"><div class="snum">4</div><h3>Output Focus</h3><span class="shint">Tap to toggle</span></div>
+          <div class="sbdy">
+              <div class="cgrid" id="ti-err-out">
+              <div class="chip active" data-v="Pattern Analysis" onclick="tiChip(this,'ti-err-out')"><i data-lucide="git-branch"></i> Pattern Analysis</div>
+              <div class="chip active" data-v="Remedial Activities" onclick="tiChip(this,'ti-err-out')"><i data-lucide="pencil-ruler"></i> Remedial Activities</div>
+              <div class="chip active" data-v="CCQs" onclick="tiChip(this,'ti-err-out')"><i data-lucide="message-circle"></i> CCQs</div>
+              <div class="chip" data-v="Student-Friendly Explanation" onclick="tiChip(this,'ti-err-out')"><i data-lucide="graduation-cap"></i> Student-Friendly Explanation</div>
+              </div>
+          </div>
+        </div>
+        <button class="btn-gen" id="ti-err-btn" data-lbl="Analyse Error Patterns" onclick="tiRunErrors()">✦ &nbsp;Analyse Error Patterns<span class="btn-progress"></span></button>
       </div>
-      <button class="btn-gen btn-ripple" id="ti-err-btn" data-lbl="Analyse Errors" onclick="tiRunErrors()">✦ &nbsp;Analyse Error Patterns</button>
-    </div>
-    <div class="rpanel" id="ti-err-rpanel">
-      <div class="rp-hdr"><span class="rp-title">Error Pattern Report</span><div class="rp-acts"><button class="rp-btn" onclick="tiCopy('ti-err-out')">Copy</button></div></div>
-      <div class="out-txt" id="ti-err-out"><span class="rp-ph">Paste learner errors above and click <strong>Analyse Error Patterns</strong>.<br><br>Covers: error classification · linguistic root cause · frequency pattern · CEFR-aligned remedial activities · CCQs · student-safe explanation</span></div>
+      <!-- RESULT -->
+      <div>
+        <div class="rpanel">
+          <div class="rp-hdr"><span class="rp-lbl">Error Pattern Report</span><div class="rp-acts"><button class="rp-btn save-ws" onclick="saveToWorkspace('ti-err-out','Error Patterns')">💾 Save</button><button class="rp-btn" onclick="copyOut('ti-err-out')">Copy</button><button class="rp-btn" onclick="tiRunErrors()">Regenerate</button><button class="rp-btn" onclick="nirPrint('ti-err-out')" title="Print">🖨</button><button class="rp-btn" onclick="nirDownloadDocx('ti-err-out')" title="Download Word">📄</button></div></div>
+          <div class="nir-meta" id="ti-err-meta" role="status" aria-live="polite"></div>
+          <div id="ti-err-wc" style="font-size:11px;color:var(--muted);text-align:right;min-height:16px;padding-right:2px;"></div>
+          <div id="ti-err-next" class="tool-next-bar"></div>
+          <div id="ti-err-out" class="out-txt"><div class="rp-empty">
+  <div class="re-ico"><i data-lucide="git-branch"></i></div>
+  <p>Your error pattern report will appear here.</p>
+  <p style="margin-top:0.75rem;font-size:11px;opacity:0.7">Covers: classification · root cause · patterns · remedial activities · CCQs · student-safe explanation</p>
+</div></div>
+          <div class="rp-foot"><img src="" class="nir-logo" alt=""> NIR Academy · Dr. Niki Majidi</div>
+        </div>
+      </div>
     </div>
   </div>
 </div>
@@ -8469,56 +8587,69 @@ html.light #footer{--f-ink:#25221B;--f-mut:#6B6554;--f-gt:#8F6B14;--f-line:rgba(
     <span class="ph-ey">✦ Teaching Intelligence · Module 3</span>
     <h1>Micro-<span>CPD</span></h1>
     <p>Generate a practical, personalised 15-minute teacher development plan based on a real classroom challenge.</p>
+    <div class="ph-tags"><span class="ph-tag">15-Minute CPD</span><span class="ph-tag">Reflective Practice</span><span class="ph-tag">Teacher Development</span><span class="ph-tag">Action Plan</span></div>
   </div>
-  <div class="tool-wrap">
-    <div class="lpanel">
-      <div class="sblock">
-        <div class="shdr"><span class="snum">1</span><h3>Your Context</h3></div>
-        <div class="sbody">
-          <div class="sg">
-            <label class="sg-lbl">Years of teaching experience</label>
-            <div class="chip-row">
-              <span class="chip active" onclick="tiChip(this,'cpd-exp')">0–2 years</span>
-              <span class="chip" onclick="tiChip(this,'cpd-exp')">3–5 years</span>
-              <span class="chip" onclick="tiChip(this,'cpd-exp')">6–10 years</span>
-              <span class="chip" onclick="tiChip(this,'cpd-exp')">10+ years</span>
-            </div>
-          </div>
-          <div class="sg">
-            <label class="sg-lbl">Context</label>
-            <div class="chip-row">
-              <span class="chip active" onclick="tiChip(this,'cpd-ctx')">General ELT</span>
-              <span class="chip" onclick="tiChip(this,'cpd-ctx')">IELTS / Exam Prep</span>
-              <span class="chip" onclick="tiChip(this,'cpd-ctx')">Young Learners</span>
-              <span class="chip" onclick="tiChip(this,'cpd-ctx')">Business English</span>
-              <span class="chip" onclick="tiChip(this,'cpd-ctx')">Online Teaching</span>
-            </div>
+  <div class="content" style="max-width:none">
+    <div class="glayout">
+      <!-- FORM -->
+      <div>
+        <div class="sblock">
+          <div class="shdr"><div class="snum">1</div><h3>Years of Experience</h3><span class="shint">Your career stage</span></div>
+          <div class="sbdy">
+              <div class="cgrid" id="ti-cpd-exp">
+              <div class="chip active" data-v="0–2 years" onclick="tiChip(this,'ti-cpd-exp')">0–2 years</div>
+              <div class="chip" data-v="3–5 years" onclick="tiChip(this,'ti-cpd-exp')">3–5 years</div>
+              <div class="chip" data-v="6–10 years" onclick="tiChip(this,'ti-cpd-exp')">6–10 years</div>
+              <div class="chip" data-v="10+ years" onclick="tiChip(this,'ti-cpd-exp')">10+ years</div>
+              </div>
           </div>
         </div>
-      </div>
-      <div class="sblock">
-        <div class="shdr"><span class="snum">2</span><h3>Development Focus</h3></div>
-        <div class="sbody">
-          <div class="sg">
-            <label class="sg-lbl">What teaching challenge or area do you want to develop?</label>
-            <textarea id="ti-cpd-challenge" class="tin" rows="4" placeholder="e.g. My TTT is too high and students don't get enough speaking time. I struggle with eliciting effectively and tend to explain grammar directly rather than through guided discovery…"></textarea>
-          </div>
-          <div class="sg">
-            <label class="sg-lbl">CPD format preference</label>
-            <div class="chip-row">
-              <span class="chip active" onclick="tiChip(this,'cpd-fmt')">Step-by-step plan</span>
-              <span class="chip" onclick="tiChip(this,'cpd-fmt')">Reflection task</span>
-              <span class="chip" onclick="tiChip(this,'cpd-fmt')">Micro-task to try in class</span>
-              <span class="chip" onclick="tiChip(this,'cpd-fmt')">Research summary</span>
-            </div>
+        <div class="sblock">
+          <div class="shdr"><div class="snum">2</div><h3>Teaching Context</h3><span class="shint">Where you teach</span></div>
+          <div class="sbdy">
+              <div class="cgrid" id="ti-cpd-ctx">
+              <div class="chip active" data-v="General ELT" onclick="tiChip(this,'ti-cpd-ctx')"><i data-lucide="book-open"></i> General ELT</div>
+              <div class="chip" data-v="IELTS / Exam Prep" onclick="tiChip(this,'ti-cpd-ctx')"><i data-lucide="graduation-cap"></i> IELTS / Exam Prep</div>
+              <div class="chip" data-v="Young Learners" onclick="tiChip(this,'ti-cpd-ctx')"><i data-lucide="sparkles"></i> Young Learners</div>
+              <div class="chip" data-v="Business English" onclick="tiChip(this,'ti-cpd-ctx')"><i data-lucide="briefcase"></i> Business English</div>
+              <div class="chip" data-v="Online Teaching" onclick="tiChip(this,'ti-cpd-ctx')"><i data-lucide="monitor-play"></i> Online Teaching</div>
+              </div>
           </div>
         </div>
+        <div class="sblock">
+          <div class="shdr"><div class="snum">3</div><h3>Development Focus</h3><span class="shint">Your challenge</span></div>
+          <div class="sbdy">
+              <textarea id="ti-cpd-challenge" class="tin" rows="4" placeholder="e.g. My TTT is too high and students don't get enough speaking time. I struggle with eliciting effectively and tend to explain grammar directly rather than through guided discovery…"></textarea>
+          </div>
+        </div>
+        <div class="sblock">
+          <div class="shdr"><div class="snum">4</div><h3>CPD Format</h3><span class="shint">Tap to toggle</span></div>
+          <div class="sbdy">
+              <div class="cgrid" id="ti-cpd-fmt">
+              <div class="chip active" data-v="Step-by-step plan" onclick="tiChip(this,'ti-cpd-fmt')"><i data-lucide="list-checks"></i> Step-by-step plan</div>
+              <div class="chip" data-v="Reflection task" onclick="tiChip(this,'ti-cpd-fmt')"><i data-lucide="scan-eye"></i> Reflection task</div>
+              <div class="chip" data-v="Micro-task to try in class" onclick="tiChip(this,'ti-cpd-fmt')"><i data-lucide="zap"></i> Micro-task to try in class</div>
+              <div class="chip" data-v="Research summary" onclick="tiChip(this,'ti-cpd-fmt')"><i data-lucide="book-open"></i> Research summary</div>
+              </div>
+          </div>
+        </div>
+        <button class="btn-gen" id="ti-cpd-btn" data-lbl="Generate My CPD Plan" onclick="tiRunCPD()">✦ &nbsp;Generate My CPD Plan<span class="btn-progress"></span></button>
       </div>
-      <button class="btn-gen btn-ripple" id="ti-cpd-btn" data-lbl="Generate CPD Plan" onclick="tiRunCPD()">✦ &nbsp;Generate My CPD Plan</button>
-    </div>
-    <div class="rpanel" id="ti-cpd-rpanel">
-      <div class="rp-hdr"><span class="rp-title">Your 15-Minute CPD Plan</span><div class="rp-acts"><button class="rp-btn" onclick="tiCopy('ti-cpd-out')">Copy</button></div></div>
-      <div class="out-txt" id="ti-cpd-out"><span class="rp-ph">Describe your teaching challenge above and click <strong>Generate My CPD Plan</strong>.<br><br>Covers: targeted development goal · research-informed strategy · 15-minute practice activity · reflection prompt · next steps</span></div>
+      <!-- RESULT -->
+      <div>
+        <div class="rpanel">
+          <div class="rp-hdr"><span class="rp-lbl">Your 15-Minute CPD Plan</span><div class="rp-acts"><button class="rp-btn save-ws" onclick="saveToWorkspace('ti-cpd-out','Micro-CPD')">💾 Save</button><button class="rp-btn" onclick="copyOut('ti-cpd-out')">Copy</button><button class="rp-btn" onclick="tiRunCPD()">Regenerate</button><button class="rp-btn" onclick="nirPrint('ti-cpd-out')" title="Print">🖨</button><button class="rp-btn" onclick="nirDownloadDocx('ti-cpd-out')" title="Download Word">📄</button></div></div>
+          <div class="nir-meta" id="ti-cpd-meta" role="status" aria-live="polite"></div>
+          <div id="ti-cpd-wc" style="font-size:11px;color:var(--muted);text-align:right;min-height:16px;padding-right:2px;"></div>
+          <div id="ti-cpd-next" class="tool-next-bar"></div>
+          <div id="ti-cpd-out" class="out-txt"><div class="rp-empty">
+  <div class="re-ico"><i data-lucide="sparkles"></i></div>
+  <p>Your personalised 15-minute CPD plan will appear here.</p>
+  <p style="margin-top:0.75rem;font-size:11px;opacity:0.7">Covers: development goal · research insight · 15-minute practice · reflection prompt · next steps</p>
+</div></div>
+          <div class="rp-foot"><img src="" class="nir-logo" alt=""> NIR Academy · Dr. Niki Majidi</div>
+        </div>
+      </div>
     </div>
   </div>
 </div>
@@ -10394,6 +10525,9 @@ function openSavedInTool(id, tool) {
     'IELTS Generator':   { page:'ielts',     outId:'ielts-out' },
     'Feedback':  { page:'error',     outId:'ec-out' },
     'Worksheet Builder': { page:'worksheet', outId:'ws-out' },
+    'Lesson Reflection': { page:'ti-reflection', outId:'ti-ref-out' },
+    'Error Patterns':    { page:'ti-errors',     outId:'ti-err-out' },
+    'Micro-CPD':         { page:'ti-cpd',        outId:'ti-cpd-out' },
     'Prompt Generator':  { page:'home',      outId:'prompt-out' }
   };
   var target = toolPageMap[tool] || toolPageMap['Prompt Generator'];
@@ -10494,10 +10628,11 @@ function saveToWorkspace(outId, tool){
   const lvl   = (S.level||'').replace(/\s*\(.*\)/,'').trim();
   const topic = (S.topic||'').trim();
   const ts    = new Date().toLocaleDateString('en-GB',{day:'2-digit',month:'short'});
-  const titleParts = [tool, lvl, topic].filter(Boolean);
+  const _ti = /^(Lesson Reflection|Error Patterns|Micro-CPD)$/.test(tool);
+  const titleParts = _ti ? [tool] : [tool, lvl, topic].filter(Boolean);
   const autoTitle = titleParts.join(' · ') + ' — ' + ts;
   // Capture tool-specific state for restore
-  var meta = { topic: topic };
+  var meta = { topic: _ti ? '' : topic };
   if (tool === 'Lesson Planner')    { meta.level = S.lpLevel; meta.focus = (document.querySelector('#lp-focus .chip.active')||{}).dataset && document.querySelector('#lp-focus .chip.active').dataset.v; }
   if (tool === 'IELTS Generator')   { meta.level = S.ieltBand; meta.ieltType = S.ieltType; }
   if (tool === 'Feedback')  { meta.level = S.ecLevel; meta.ecType = S.ecType; meta.studentText = (document.getElementById('ec-text')||{}).value||''; }
@@ -11579,7 +11714,10 @@ function nirPrint(outId) {
   if (!el) return;
   // For ws-out with images, use the live rendered HTML directly
   var rendered;
-  if (outId === 'ws-out' && S.wsImages && el.querySelector('.ws-fig')) {
+  if (/^ti-(?:ref|err|cpd)-out$/.test(outId)) {
+    if (el.textContent.includes('will appear')) return;
+    rendered = el.innerHTML;
+  } else if (outId === 'ws-out' && S.wsImages && el.querySelector('.ws-fig')) {
     rendered = el.innerHTML;
   } else {
     // Use stored raw text (S.last) when available, else extract textContent
@@ -11628,6 +11766,7 @@ function nirDownloadDocx(outId) {
   if (!el) return;
   var raw = (S.last && (outId === 'lp-out' || outId === 'ielts-out' || outId === 'ec-out' || outId === 'ws-out' || outId === 'prompt-out'))
     ? S.last : (el.textContent || '');
+  if (window._tiRaw && window._tiRaw[outId]) raw = window._tiRaw[outId];
   if (!raw.trim() || raw.includes('Configure') || raw.includes('will appear')) return;
 
   function doGenerate(docx) {
@@ -12416,6 +12555,9 @@ if(window.lucide){ lucide.createIcons(); } else { setTimeout(function(){ if(wind
       { outId: 'ielts-out',   actsId: null,  btnId: 'share-btn-ielts'  },
       { outId: 'ec-out',      actsId: null,  btnId: 'share-btn-ec'     },
       { outId: 'ws-out',      actsId: null,  btnId: 'share-btn-ws'     },
+      { outId: 'ti-ref-out',  actsId: null,  btnId: 'share-btn-ti-ref' },
+      { outId: 'ti-err-out',  actsId: null,  btnId: 'share-btn-ti-err' },
+      { outId: 'ti-cpd-out',  actsId: null,  btnId: 'share-btn-ti-cpd' },
     ];
 
     panels.forEach(function(p){
@@ -12607,6 +12749,9 @@ h.querySelectorAll('.onboard,.ob-step,.home-tools .tc,.iband,.hcta,.rm').forEach
     <button type="button" class="ts-item" onclick="go('error')"><span class="ts-ico"><i data-lucide="scan-text"></i></span><b>Error Correction</b><small>Writing feedback</small></button>
     <button type="button" class="ts-item" onclick="go('worksheet')"><span class="ts-ico"><i data-lucide="layout-template"></i></span><b>Worksheet Builder</b><small>Print-ready sheets</small></button>
     <button type="button" class="ts-item" onclick="go('assistant')"><span class="ts-ico"><i data-lucide="brain-circuit"></i></span><b>NIRA Chat</b><small>AI teaching assistant</small></button>
+    <button type="button" class="ts-item" onclick="go('ti-reflection')"><span class="ts-ico"><i data-lucide="scan-eye"></i></span><b>Lesson Reflection</b><small>Reflect &amp; improve</small></button>
+    <button type="button" class="ts-item" onclick="go('ti-errors')"><span class="ts-ico"><i data-lucide="git-branch"></i></span><b>Error Patterns</b><small>Learner error analysis</small></button>
+    <button type="button" class="ts-item" onclick="go('ti-cpd')"><span class="ts-ico"><i data-lucide="sparkles"></i></span><b>Micro-CPD</b><small>15-minute dev plan</small></button>
   </div>
 </div>
 <script>
@@ -12615,7 +12760,7 @@ h.querySelectorAll('.onboard,.ob-step,.home-tools .tc,.iband,.hcta,.rm').forEach
 function open(){last=document.activeElement;sh.classList.add('open');ov.classList.add('open');sh.setAttribute('aria-hidden','false');ov.setAttribute('aria-hidden','false');document.documentElement.style.overflow='hidden';if(tab)tab.classList.add('sheet-open');try{window.lucide&&lucide.createIcons()}catch(e){}setTimeout(function(){x.focus()},60)}
 function close(){if(!sh.classList.contains('open'))return;sh.classList.remove('open');ov.classList.remove('open');sh.setAttribute('aria-hidden','true');ov.setAttribute('aria-hidden','true');document.documentElement.style.overflow='';if(tab)tab.classList.remove('sheet-open');if(last&&last.focus)try{last.focus()}catch(e){}}
 window.openToolsSheet=open;window.closeToolsSheet=close;ov.addEventListener('click',close);x.addEventListener('click',close);addEventListener('keydown',function(e){if(e.key==='Escape')close()});
-var T={lesson:1,ielts:1,error:1,worksheet:1,assistant:1},_go=window.go;
+var T={lesson:1,ielts:1,error:1,worksheet:1,assistant:1,'ti-reflection':1,'ti-errors':1,'ti-cpd':1},_go=window.go;
 if(typeof _go==='function')window.go=function(id){close();return _go.apply(this,arguments)};
 function sync(){var a=document.querySelector('.page.active'),id=a?a.id.replace('page-',''):'';if(tab&&T[id]&&!tab.classList.contains('active'))tab.classList.add('active')}
 if(window.MutationObserver){var mo=new MutationObserver(sync);document.querySelectorAll('.page').forEach(function(p){mo.observe(p,{attributes:true,attributeFilter:['class']})});sync()}
@@ -12623,7 +12768,7 @@ if(window.MutationObserver){var mo=new MutationObserver(sync);document.querySele
 </script>
 <script>
 /* NIR result panel: adds an Expand (full-screen reading view) button to the five tool result panels. Additive; existing buttons/IDs untouched. */
-(function(){var pages=['generator','lesson','ielts','error','worksheet'],cur=null;
+(function(){var pages=['generator','lesson','ielts','error','worksheet','ti-reflection','ti-errors','ti-cpd'],cur=null;
 function setFull(rp,on){var pg=rp.closest('.page');rp.classList.toggle('rp-full',on);if(pg)pg.classList.toggle('rp-lock',on);document.documentElement.classList.toggle('rp-lock-scroll',on);var b=rp.querySelector('.rp-expand');if(b){b.textContent=on?'\u2715 Close':'\u2922 Expand';b.setAttribute('aria-label',on?'Close full view':'Expand result')}cur=on?rp:null;if(on)rp.scrollTop=0}
 pages.forEach(function(id){var pg=document.getElementById('page-'+id);if(!pg)return;var rp=pg.querySelector('.rpanel');if(!rp)return;var acts=rp.querySelector('.rp-acts');if(!acts||acts.querySelector('.rp-expand'))return;var b=document.createElement('button');b.type='button';b.className='rp-btn rp-expand';b.textContent='\u2922 Expand';b.setAttribute('aria-label','Expand result');b.addEventListener('click',function(){setFull(rp,!rp.classList.contains('rp-full'))});acts.appendChild(b)});
 addEventListener('keydown',function(e){if(e.key==='Escape'&&cur)setFull(cur,false)});
@@ -12814,69 +12959,108 @@ document.addEventListener('keydown',function(e){if(e.key==='Escape'&&ov&&ov.clas
 })();
 </script>
 <script id="nir-teaching-intelligence">
-// ── Teaching Intelligence: shared chip helper ──
-function tiChip(el, group) {
-  var multi = ['err-out','cpd-fmt'];
-  if (multi.indexOf(group) !== -1) {
+// ── Teaching Intelligence (same page system as the other tools) ──
+function tiChip(el, id){
+  var box=document.getElementById(id); if(!box) return;
+  var multi=(id==='ti-err-out'||id==='ti-cpd-fmt');
+  if(multi){
+    if(el.classList.contains('active') && box.querySelectorAll('.chip.active').length<=1) return;
     el.classList.toggle('active');
   } else {
-    el.closest('.chip-row').querySelectorAll('.chip').forEach(function(c){ c.classList.remove('active'); });
+    box.querySelectorAll('.chip').forEach(function(c){ c.classList.remove('active'); });
     el.classList.add('active');
   }
 }
-function tiGetChips(group) {
-  var chips = [];
-  document.querySelectorAll('.chip[onclick*="' + group + '"].active').forEach(function(c){ chips.push(c.textContent.trim()); });
-  return chips.join(', ');
+function tiLvl(el, id){
+  document.querySelectorAll('#'+id+' .lvl').forEach(function(p){ p.classList.remove('active'); });
+  el.classList.add('active');
 }
-function tiCopy(id) {
-  var el = document.getElementById(id);
-  if (!el) return;
-  var txt = el.innerText || el.textContent || '';
-  navigator.clipboard.writeText(txt).then(function(){ if(window.T) T('Copied!'); });
+function tiVals(id){
+  return Array.prototype.map.call(document.querySelectorAll('#'+id+' .chip.active'), function(c){
+    return (c.dataset.v||c.textContent).trim();
+  }).join(', ');
+}
+function tiLevel(id, def){
+  var a=document.querySelector('#'+id+' .lvl.active'); return a?a.dataset.v:def;
+}
+function tiPickL1(v){
+  var i=document.getElementById('ti-err-l1'); if(i){ i.value=v; }
+}
+function tiToast(m){ if(typeof T==='function') T(m); }
+function tiReset(prefix){
+  var bar=document.getElementById(prefix+'-next'); if(bar) bar.classList.remove('visible');
+  nirToolMeta(prefix+'-meta');
+}
+function tiDone(prefix, outId, text, pairs, steps){
+  if(!text || text.startsWith('Unable to generate') || text.startsWith('Connection error')) return;
+  window._tiRaw = window._tiRaw || {}; window._tiRaw[outId] = text;
+  nirToolMeta(prefix+'-meta', pairs);
+  showToolNextBar(prefix+'-next', steps);
 }
 
 // ── Module 1: Lesson Reflection ──
 async function tiRunReflection() {
   var btn = document.getElementById('ti-ref-btn');
-  var level = document.getElementById('ti-ref-level').value;
-  var focus = tiGetChips('ref-focus') || 'General';
-  var fw    = tiGetChips('ref-fw')    || 'PPP';
-  var desc  = (document.getElementById('ti-ref-desc').value || '').trim();
-  var chal  = (document.getElementById('ti-ref-challenge').value || '').trim();
-  if (!desc) { if(window.T) T('Please describe your lesson first.'); return; }
+  var level = tiLevel('ti-ref-level','B1');
+  var focus = tiVals('ti-ref-focus') || 'General';
+  var fw    = tiVals('ti-ref-fw')    || 'PPP';
+  var desc  = nirVal('ti-ref-desc');
+  var chal  = nirVal('ti-ref-challenge');
+  if (!desc) { tiToast('Please describe your lesson first.'); return; }
+  tiReset('ti-ref');
   var prompt = 'You are a senior ELT teacher educator and pedagogical coach with expertise in TESOL methodology, CEFR frameworks, and communicative language teaching (CLT).\n\nA teacher has shared a lesson reflection. Provide structured, evidence-based pedagogical feedback.\n\nLESSON DETAILS:\n- CEFR Level: '+level+'\n- Lesson Focus: '+focus+'\n- Framework Used: '+fw+'\n- Lesson Description: '+desc+(chal?'\n- Specific Challenge: '+chal:'')+'\n\nProvide a reflection report with these sections:\n\n## ✦ Lesson Strengths\nIdentify what worked well pedagogically (minimum 2 specific points).\n\n## ⚠ Areas for Development\nIdentify 2–3 specific pedagogical gaps or missed opportunities, with reference to ELT methodology (TTT, STT, task design, CCQs, scaffolding, etc.).\n\n## 🎯 Student Engagement Analysis\nBriefly analyse likely engagement patterns based on the lesson described.\n\n## 📋 Improvement Strategies\nProvide 3 concrete, actionable strategies the teacher can implement in their next lesson. Be specific — name techniques, give examples.\n\n## 🔄 Suggested Follow-Up Activity\nDesign one short activity (5–10 mins) the teacher can use next class to address the main gap identified.\n\n## 💬 Reflective Questions\nGive 2 reflective questions the teacher can journal about.\n\nKeep the tone warm, collegial, and growth-oriented — like a trusted mentor, not an assessor.';
-  await callAPI(prompt, 'ti-ref-out', btn, null);
+  await callAPI(prompt, 'ti-ref-out', btn, function(text){
+    tiDone('ti-ref','ti-ref-out',text,[['CEFR Level',level],['Focus',focus],['Framework',fw]],[
+      ['🎓 Turn into Micro-CPD Plan', function(){
+        var t=document.getElementById('ti-cpd-challenge'); if(t && !t.value.trim() && chal) t.value=chal;
+        go('ti-cpd');
+      }],
+      ['📅 Plan Next Lesson', function(){ go('lesson'); }]
+    ]);
+  });
 }
 
 // ── Module 2: Error Pattern Intelligence ──
 async function tiRunErrors() {
   var btn     = document.getElementById('ti-err-btn');
-  var level   = document.getElementById('ti-err-level').value;
-  var l1      = (document.getElementById('ti-err-l1').value || '').trim();
-  var samples = (document.getElementById('ti-err-samples').value || '').trim();
-  var focus   = tiGetChips('err-out') || 'Pattern Analysis, Remedial Activities, CCQs';
-  if (!samples) { if(window.T) T('Please paste some learner errors first.'); return; }
+  var level   = tiLevel('ti-err-level','B1');
+  var l1      = nirVal('ti-err-l1');
+  var samples = nirVal('ti-err-samples');
+  var focus   = tiVals('ti-err-out') || 'Pattern Analysis, Remedial Activities, CCQs';
+  if (!samples) { tiToast('Please paste some learner errors first.'); return; }
+  tiReset('ti-err');
   var l1line = l1 ? '\n- Learner L1: '+l1 : '';
   var remAct = focus.includes('Remedial') ? '\n\n## 🎓 CEFR-Aligned Remedial Activities\nDesign 2 short remedial activities (5–8 mins each) targeting the most critical pattern. Include: aim, procedure, expected outcome.' : '';
   var ccqs   = focus.includes('CCQ') ? '\n\n## ❓ Concept Check Questions (CCQs)\nWrite 3–4 CCQs for the most problematic pattern. Keep them simple and learner-appropriate for '+level+'.' : '';
   var stExp  = focus.includes('Student') ? '\n\n## 💬 Student-Friendly Explanation\nWrite a brief, clear explanation of the main error pattern in language a '+level+' student can understand. Avoid metalanguage.' : '';
   var prompt = 'You are an expert ELT teacher educator specialising in error analysis, interlanguage theory, and CEFR-aligned remediation.\n\nCONTEXT:\n- CEFR Level: '+level+l1line+'\n- Output focus: '+focus+'\n\nLEARNER ERRORS:\n'+samples+'\n\n## ✦ Error Classification\nGroup errors by linguistic category (grammar, lexis, syntax, spelling, punctuation). List each error with its category.\n\n## 🔍 Pattern Analysis\nIdentify the 2–3 most significant underlying patterns. For each: name it, explain the likely cause (L1 transfer, overgeneralisation, developmental), cite the specific errors.'+remAct+ccqs+stExp+'\n\n## ✅ Suggested Teaching Priority\nWhich pattern should the teacher address first, and why?';
-  await callAPI(prompt, 'ti-err-out', btn, null);
+  var n = samples.split(/\n+/).filter(function(x){return x.trim();}).length;
+  await callAPI(prompt, 'ti-err-out', btn, function(text){
+    tiDone('ti-err','ti-err-out',text,[['CEFR Level',level],['L1',l1],['Samples',String(n)]],[
+      ['📄 Create Practice Worksheet', function(){ go('worksheet'); }],
+      ['🎓 Build a Micro-CPD', function(){ go('ti-cpd'); }]
+    ]);
+  });
 }
 
 // ── Module 3: Micro-CPD ──
 async function tiRunCPD() {
   var btn       = document.getElementById('ti-cpd-btn');
-  var exp       = tiGetChips('cpd-exp') || '0–2 years';
-  var ctx       = tiGetChips('cpd-ctx') || 'General ELT';
-  var challenge = (document.getElementById('ti-cpd-challenge').value || '').trim();
-  var fmt       = tiGetChips('cpd-fmt') || 'Step-by-step plan';
-  if (!challenge) { if(window.T) T('Please describe your teaching challenge first.'); return; }
+  var exp       = tiVals('ti-cpd-exp') || '0–2 years';
+  var ctx       = tiVals('ti-cpd-ctx') || 'General ELT';
+  var challenge = nirVal('ti-cpd-challenge');
+  var fmt       = tiVals('ti-cpd-fmt') || 'Step-by-step plan';
+  if (!challenge) { tiToast('Please describe your teaching challenge first.'); return; }
+  tiReset('ti-cpd');
   var awareness = fmt.includes('Reflection') ? 'A focused self-reflection task with 2–3 guiding questions.' : 'A short, concrete awareness activity.';
   var action    = fmt.includes('Micro-task') ? 'A specific micro-task to try in your next class — with exact steps.' : fmt.includes('Research') ? 'Key takeaways from current ELT research with practical implications.' : 'A step-by-step technique to practise with a real classroom scenario.';
   var prompt = 'You are a professional teacher development coach and ELT methodology expert. Create a focused, practical 15-minute Micro-CPD plan.\n\nTEACHER PROFILE:\n- Experience: '+exp+'\n- Context: '+ctx+'\n- Challenge: '+challenge+'\n- Format: '+fmt+'\n\n## ✦ Your Development Goal\nOne clear, achievable goal in one sentence.\n\n## 📚 Research Insight (2 min read)\nA concise, evidence-informed insight about this area, grounded in ELT research or methodology. Keep it accessible.\n\n## 🎯 15-Minute Development Plan\n\n**Minutes 1–5 · Awareness**\n'+awareness+'\n\n**Minutes 6–12 · Action**\n'+action+'\n\n**Minutes 13–15 · Reflection**\nOne journaling prompt and one measurable target for your next lesson.\n\n## 🔄 Next Steps\nTwo concrete follow-up actions (one this week, one this month).\n\nKeep the tone encouraging and practical — like a conversation with a trusted colleague, not a training manual.';
-  await callAPI(prompt, 'ti-cpd-out', btn, null);
+  await callAPI(prompt, 'ti-cpd-out', btn, function(text){
+    tiDone('ti-cpd','ti-cpd-out',text,[['Experience',exp],['Context',ctx]],[
+      ['🪞 Reflect on a Lesson', function(){ go('ti-reflection'); }],
+      ['📅 Plan a Lesson', function(){ go('lesson'); }]
+    ]);
+  });
 }
 </script>
 </body>
