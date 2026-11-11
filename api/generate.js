@@ -207,6 +207,9 @@ export default async function handler(req, res) {
 
       return res.status(200).json({
         content: [{ type: 'text', text }],
+        finish_reason: provider === 'groq'
+          ? (data?.choices?.[0]?.finish_reason ?? null)
+          : (data?.stop_reason ?? null),
       });
     }
 
