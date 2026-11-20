@@ -7687,6 +7687,9 @@ html[dir="rtl"] #page-home .fc { text-align: right; }
 html[dir="rtl"] #goal-count-badge { margin-left: 0 !important; margin-right: .6rem; }
 /* settings menu: the button sits on the left in RTL, so the menu opens rightwards (desktop only; phones keep the full-width sheet) */
 @media (min-width: 601px) { html[dir="rtl"] #settings-menu { right: auto; left: 0; } }
+/* tool-card corner badge on phones: the page rules set right:.8rem, which stretched the badge across the card once RTL also set left */
+@media (max-width: 720px) { html[dir="rtl"] #page-home .tc-bdg { left: .8rem; right: auto; } }
+@media (max-width: 700px) { html[dir="rtl"] #page-dashboard .tc-bdg { left: .8rem; right: auto; } }
 </style>
 </head>
 <body>
