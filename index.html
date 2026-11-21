@@ -10028,7 +10028,8 @@ function nirEltLangNote(outId, L){
     'ws-out':{ui:'teacher notes and any explanations meant for the teacher only',
       en:'the worksheet title, learning objective, student instructions, every exercise item, text, option and example sentence, and the answer-key answers'},
     'aud-imp-out':{ui:'the headings and the "What Changed" notes',
-      en:'the revised lesson plan, worksheet or assessment itself: every learner-facing instruction, example, text, item and answer, which must stay in the same language as the submitted original'}
+      en:'the revised lesson plan, worksheet or assessment itself: every learner-facing instruction, example, text, item and answer, which must stay in the same language as the submitted original'},
+  'prompt-out':{ui:'the prompt\u2019s section headings and all of its explanations and instructions to the AI (ROLE, TASK, LEARNER CONTEXT, TOPIC & CONSTRAINTS, FORMAT, QUALITY STANDARDS and EXTRAS), including the instruction that every learner-facing item the AI generates must be written in English', en:'every example sentence, sample or model language, exercise item, dialogue, reading text, vocabulary list and other learner-facing teaching content that appears inside the prompt, plus CEFR levels, framework names (PPP, TBL, ESA, CLT) and ELT technical terms'}
   }[outId];
   if(!K) return '';
   return '\n\n[OUTPUT LANGUAGE RULES: the interface language is '+L+'. Write ONLY the following in '+L+': '+K.ui+'. '
@@ -11809,6 +11810,14 @@ function astBuildSystemPrompt() {
   ].join('\n');
   prompt += '\n\n' + _std;
   prompt += '\n\n' + _NIRA_KB;
+  // answer in the selected interface language; English-learning content stays English
+  var _lns = {tr:'Turkish',ar:'Arabic',zh:'Chinese (Simplified)',fa:'Persian (Farsi)'};
+  var _ln = _lns[window._nirLang || (typeof currentLang !== 'undefined' ? currentLang : 'en') || 'en'];
+  if (_ln) {
+    prompt += '\n\n[OUTPUT LANGUAGE RULES: the interface language is ' + _ln + '. Write your replies, explanations, feedback, advice and analysis in ' + _ln + ' (unless the user explicitly asks for a different language). '
+      + 'Keep ALL English-learning and assessment content in English, never translated, whatever the interface language: example sentences, model language, vocabulary items, dialogues, reading texts, practice exercises and student-facing tasks, exam task wording (IELTS, TOEFL, PTE), the learner\u2019s own text and its corrections, and grammar terms. '
+      + 'Do not translate English source texts, test questions, model answers or learner-facing practice content. Keep the Markdown structure exactly as specified above.]';
+  }
   return prompt;
 }
 
